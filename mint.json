@@ -1,0 +1,85 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Starter Kit",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "api": {
+    "baseUrl": "https://wallet-api-sandbox.finup.io/",
+    "auth": {
+      "method": "key",
+      "name": "Authorization"
+    }
+  },
+  "openapi": "api-reference/openapi.json",
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373",
+    "anchors": {
+      "from": "#0D9373",
+      "to": "#07C983"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:hi@mintlify.com"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://dashboard.mintlify.com"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "development"
+      ]
+    },
+    {
+      "group": "Auth",
+      "pages": [
+        "api-reference/endpoint/auth/token-login",
+        "api-reference/endpoint/auth/get-user-me"
+      ]
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "api-reference/endpoint/transactions/get-list-of-transactions"
+      ]
+    },
+    {
+      "group": "Leads",
+      "pages": [
+        "api-reference/endpoint/leads/get-lead-by-link",
+        "api-reference/endpoint/leads/get-list-of-leads-by-icp",
+        "api-reference/endpoint/leads/count-leads-by-icp"
+      ]
+    },
+    {
+      "group": "Companies",
+      "pages": [
+        "api-reference/endpoint/companies/get-company-by-link",
+        "api-reference/endpoint/companies/get-list-of-companies-by-icp",
+        "api-reference/endpoint/companies/count-companies-by-icp"
+      ]
+    }
+  ],
+  "footerSocials": {
+
+  }
+}
