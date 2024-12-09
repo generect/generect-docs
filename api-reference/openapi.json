@@ -1557,9 +1557,213 @@
         "requestBody": {
           "content": {
             "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "company_link": {
+                    "type": "string"
+                  },
+                  "without_company": {
+                    "type": "boolean"
+                  },
+                  "locations": {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "personas": {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "array",
+                            "items": {}
+                          },
+                          {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "array",
+                        "items": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "array",
+                            "items": {}
+                          },
+                          {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "limit_by": {
+                    "type": "integer"
+                  },
+                  "get_max_leads": {
+                    "type": "boolean"
+                  },
+                  "exclude_names": {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "filter_empty_vars": {
+                    "type": "array",
+                    "items": [
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "company_link",
+                  "without_company",
+                  "locations",
+                  "personas",
+                  "limit_by",
+                  "get_max_leads",
+                  "exclude_names",
+                  "filter_empty_vars"
+                ]
+              },
               "examples": {
                 "Get List of Leads by ICP": {
-                  "value": "{\r\n    \"company_link\": \"https://www.linkedin.com/company/fette-compacting-gmbh\", // Use \"company_link\" or \"company_id\". One of them required, if without_company=false\r\n    //   \"company_id\": 111111,\r\n    \"without_company\": false,\r\n    \"locations\": [\r\n        // \"Germany\",\r\n        \"Austria\",\r\n        \"Switzerland\"\r\n    ],\r\n    \"personas\": [\r\n        [\r\n            \"Communication\",\r\n            [\r\n                \"Communication\",\r\n                \"Kommunikation\",\r\n                \"Communication\"\r\n            ],\r\n            [],\r\n            [\r\n                \"Assistant\",\r\n                \"Intern\",\r\n                \"Student\"\r\n            ]\r\n        ],\r\n        [\r\n            \"Communications\",\r\n            [\r\n                \"Communications\",\r\n                \"Kommunikation\",\r\n                \"Communications\"\r\n            ],\r\n            [],\r\n            [\r\n                \"Assistant\",\r\n                \"Intern\",\r\n                \"Student\"\r\n            ]\r\n        ]\r\n    ],\r\n    \"limit_by\": 14,\r\n    \"get_max_leads\": true,\r\n    \"exclude_names\": [ // optional, list of str\r\n        \"Volker Reinsch\",\r\n        \"Nathalie Hoffmann\",\r\n        \"Nora Behrens\",\r\n        \"Emanuel da Silva Gomes\",\r\n        \"Kerstin Schaper\",\r\n        \"Angela Hogrefe\"\r\n    ],\r\n    \"filter_empty_vars\": [ // optional, list of str\r\n        \"started_at_position\"\r\n    ]\r\n    // “changed_jobs”: true,\r\n    // “posted_on_linkedin”: true,\r\n    // “mentioned_in_news”: true,\r\n    // \"lead_industries\": [\"Software Development\"],        // optional, list of str, only with without_company=true\r\n    // \"company_locations\": [\"United States\", \"Canada\"],   // optional, list of str\r\n    // \"company_headcounts\": [\"1-10\", \"11-50\"],            // optional, list of str\r\n    // \"company_types\": [\"Partnership\", \"Self Owned\"],     // optional, list of str\r\n    // \"past_company_names\": [\"apple\"],\t        \t    // optional, list of str\r\n    // \"years_in_company\": [1, 2],\t        \t\t        // optional, list of int\r\n    // \"years_in_position\": [1, 2],\t       \t \t        // optional, list of int\r\n    // \"groups\": [123, 456],\t        \t\t\t        // optional, list of int\r\n    // \"schools\": [123, 456]\t        \t\t\t        // optional, list of int\r\n    // \"offset_by\": 1                                   // optinal, only with without_company=true\r\n}"
+                  "value": {
+                    "company_link": "https://",
+                    "without_company": false,
+                    "locations": [
+                        "Austria",
+                        "Switzerland"
+                    ],
+                    "personas": [
+                        [
+                            "Communication",
+                            [
+                                "Communication",
+                                "Kommunikation",
+                                "Communication"
+                            ],
+                            [],
+                            [
+                                "Assistant",
+                                "Intern",
+                                "Student"
+                            ]
+                        ],
+                        [
+                            "Communications",
+                            [
+                                "Communications",
+                                "Kommunikation",
+                                "Communications"
+                            ],
+                            [],
+                            [
+                                "Assistant",
+                                "Intern",
+                                "Student"
+                            ]
+                        ]
+                    ],
+                    "limit_by": 14,
+                    "get_max_leads": true,
+                    "exclude_names": [ 
+                        "Volker Reinsch",
+                        "Nathalie Hoffmann",
+                        "Nora Behrens",
+                        "Emanuel da Silva Gomes",
+                        "Kerstin Schaper",
+                        "Angela Hogrefe"
+                    ],
+                    "filter_empty_vars": [ 
+                        "started_at_position"
+                    ]
+                  }
                 }
               }
             }
