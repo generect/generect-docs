@@ -6,7 +6,7 @@
     "light": "/logo/light.svg"
   },
   "api": {
-    "baseUrl": "https://wallet-api-sandbox.finup.io/",
+    "baseUrl": "https://api.generect.com/",
     "auth": {
       "method": "key",
       "name": "Authorization"
@@ -15,13 +15,16 @@
   "openapi": "api-reference/openapi.json",
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#3a23a6",
+    "light": "#7981c9",
+    "dark": "#3a23a6",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#3a23a6",
+      "to": "#7981c9"
     }
+  },
+  "background": {
+    "style": "gradient"
   },
   "topbarLinks": [
     {
