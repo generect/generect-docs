@@ -1,3 +1,139 @@
 ---
 openapi: post /api/linkedin/companies/by_icp/
 ---
+
+## Possible values:
+
+- `"num_of_followers"`: `["1-50", "51-100", "101-1000", "1001-5000", "5001+"]`
+    
+- `"headcounts"`: `["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+"]`
+    
+
+## Additional information:
+
+- 20 Parallel processing supported (multiple threads)
+    
+- 1 company from results list = 1 credit
+    
+- First 1600 companies will be searched
+    
+- Companies with 0 employees and bad/null website (except cases when company hosted that `website-aggregator`) will not be shown
+    
+    - List of bad websites is listed below:
+        
+    - `'bit.ly', 'goo.gl', 'linktr.ee', 'buff.ly', 'sites.google.com', 'meta.com', 'facebook.com', 'instagram.com', 'linkedin.com', 'youtube.com', 'meetup.com', 'wixsite.com', 'wordpress.com', 'twitter.com', 'microage.ca', 'google.com', 'business.site', 'vimeo.com', 'medium.com', 'behance.net', 'github.io', 'calendly.com', 'upwork.com'`
+        
+- Companies Headcount:
+    
+    - Company headcount is shown as headcount text field from l-in/about page.
+        
+    - In the case of filtering companies on sales navigator, it filters depending on the exact headcount (exact number of employees).
+        
+    - e.g. Company A has 600 employees on L-In, and states its headcount range is 1000-5000.
+        
+        - 1\. Sales Navigator will show this company when filtering 500-1000 companies
+            
+        - 2\. L-In will show exact headcount as 600 and range-headcount as 1000-5000
+            
+        - 3\. This endpoint will output headcount as p.2
+            
+- Supported locations:
+    
+    - [List of Supported Locations](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=0).
+        
+    - In case of inputting a location which is not listed you will receive a `ValidationError` (free request), with Hint what location you need to edit.
+        
+- Supported industries:
+    
+    - [List of Supported Industries](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=1393250894). Use `industry_name` column as input.
+        
+    - In case of inputting an industry which is not listed you will receive a `ValidationError` (free request), with Hint what industry you need to edit.
+        
+- Supported departments:
+    
+    - [List of Supported departments](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=358444705).
+        
+- limit_by rules:
+    
+    - limit_by should be > 1 and < 1600
+        
+- offset_by rules:
+    
+    - offset_by should be > 0 and < 1599
+        
+- Limit_by, offset_by additional info:
+    
+    - Without limit_by and offset_by parameters all companies from filters will be searched
+        
+    - Unsutable (bad website, or 0 headcount) companies will not be skipped with limit_by logic, but won't be charged or outputted.
+        
+        - e.g. `limit_by = 5`, `offset_by = 200`, and 3 of these companies do not have websites. Then you will see only 2 companies (despite the fact limit_by = 5).
+            
+        - Best Practice to use (Limit_by + Offset_by) is implementing pagination for Researcher’s workflow. For example, page 1 stands for 0-25 results, page 2 for 25-50, etc.
+            
+- keywords logic:
+    
+    - keywords from list of inputs will be separated in SN search header with “OR” parameter:
+        
+        - e.g. `[“academy”, “technician”]` will be passed to SN as “(academy) OR (technician)”.
+            
+        - Except cases when 1 word is passed. e.g. `[“world”]` will be passed to SN as `“world”` (without parentheses)
+            
+    - you are able to pass discrete logic, for example:
+        
+        - `[“(education AND management)”, “(project AND office)”]`
+            
+            - then SN search will look like: “(education AND management) OR (project AND office)”
+                
+        - same with NOT, OR, AND operators
+            
+    - validations:
+        
+        - keyword length must be {'<='} 40 symbols
+            
+        - keywords count must be {'<='} 10
+            
+        - keywords must be `without special characters (!@#$%^\\\\*(){}[]/\|)`
+            
+- headcount parameters:
+    
+    - List if supported headcounts `["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+"]`
+        
+- Caching:
+    
+    - For cases when companies appear in a different order or are duplicated with each subsequent request (after a certain period of time), caching of the order of companies has been added.
+        
+    - The actuality of the company data is 100%.
+        
+    - The order remains valid for the next 30 days, from 1 request.
+        
+    - To check when the order of companies was cached, the original key time_cached (type: timestamp) is used. If this is the first request that was not taken from the cache, then `time_cached=null`.
+        
+    - Results caching depends only on the match of the following parameters: `headcounts`, `locations`, `industries`, `keywords`
+        
+- Custom Parameter:
+    
+    - With a custom parameter you will receive 200 responses specifying that you need to refine your search, for cases when the count of companies by that criteria is > 1600. Such requests are also paid (fixed to 3 credits). Example of the output:
+        
+
+``` json
+{
+    "companies": [],
+    "message": "Please refine your search",
+    "amount": 3,
+    "results_count": 198806
+}
+
+ ```
+
+- parameter `strict`
+    
+    - with the strict parameter: `[“company_locations”]` will perform post-filtering on a strict occurrence of `company_locations`.
+        
+- parameter `exclude_ids`
+    
+    - exclude companies by linkedin_id or linkedin_urn (http://linkedin.com/company/company_urn/)
+        
+- parameter `exclude_domains`
+    
+    - exclude companies by domains

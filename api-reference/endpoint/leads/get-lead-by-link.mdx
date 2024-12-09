@@ -1,3 +1,41 @@
 ---
 openapi: post /api/linkedin/leads/by_link/
 ---
+
+# Additional information
+
+- Supported input urls example:
+    
+    - [https://www.linkedin.com/in/boris-johnson](https://www.linkedin.com/in/boris-johnson)
+        
+    - [https://www.linkedin.com/in/boris-johnson](https://www.linkedin.com/in/boris-johnson)/
+        
+    - [linkedin.com/in/boris-johnson](https://www.linkedin.com/in/boris-johnson)
+        
+    - [https://in.linkedin.com/in/boris-johnson](https://www.linkedin.com/in/boris-johnson)
+        
+    - [http://linkedin.com/in/boris-johnson](https://www.linkedin.com/in/boris-johnson)
+        
+    - <ins>linkedin.com/pub/...</ins>
+        
+    - `linkedin.com/pub-profile/…`
+        
+    - [http://www.linkedin.com/pub-profile/](http://www.linkedin.com/pub-profile/)...
+        
+    - `https://www.linkedin.com/in/ACwAADIiK28BsZHX22c9Rm80fUW3LiXKvcLu1Cc` (sales id)
+        
+    - `https://www.linkedin.com/sales/lead/ACwAAA0BOw8BTT9lGuZQWNg9Hd3rK2gHtrjTYOw,NAME_SEARCH,c_8o`
+        
+- Custom parameter inexact_company = true:
+    
+    - Will find `Company ID` for output datapoint `inexact_company` via company search. Only for cases when lead `company id == None` AND `company_name != empty`.
+        
+- Custom Parameter: `people_also_viewed` allows to fetch up to 20 similar profiles, costs 1 additional credit
+    
+- Custom Parameter `posts` allows to fetch last 20 posts, costs 1 additional credit
+    
+- Custom Parameter `comments` allows to fetch last 20 comments, costs 1 additional credit
+    
+- Multiple parameters pass are allowed (`posts` + `comments` + `people_also_viewed`)
+    
+- In case of response with `500 status code`, please send request again

@@ -1,0 +1,3162 @@
+openapi: 3.0.3
+info:
+  title: Generect + Reply
+  description: |-
+    Welcome to the Generect API documentation. Here we will help you integrate and use our API.
+
+    API base url: `api.generect.com`  
+    Protocol: `HTTPS`
+
+    # Authentication
+
+    Firstly, add a `API Token` to the enviroment variables `auth_token` in `Settings` tab.
+
+    # Rate limits
+
+    Credits: You can request data depending on your data plan and credit balance. The default is 10000/month. The estimated number of credits to spend is based on the complexity of the query and the number of results. The amount spent can be increased by additional data flags in the queries.
+
+    # Note
+
+    _Ensure that you are add a "/" to the end of url._
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: https://api.generect.com
+paths:
+  /api/auth/token/login/:
+    post:
+      tags:
+        - 1. Auth
+      summary: Token login
+      description: Login to account and get `auth_token`
+      operationId: tokenLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: example@example.com
+                password:
+                  type: string
+                  example: '12345678'
+            examples:
+              Token login:
+                value:
+                  email: example@example.com
+                  password: '12345678'
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '134'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Wed, 04 Dec 2024 14:43:33 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Cookie, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth_token:
+                    type: string
+                    example: '0000011111222223333344444555556666677777'
+                  email:
+                    type: string
+                    example: example@example.com
+                  user_id:
+                    type: string
+                    example: 00000111-1122-2223-3333-444445555566
+              examples:
+                '200':
+                  value:
+                    auth_token: '0000011111222223333344444555556666677777'
+                    email: example@example.com
+                    user_id: 00000111-1122-2223-3333-444445555566
+      security:
+        - {}
+  /api/auth/users/me/:
+    get:
+      tags:
+        - 1. Auth
+      summary: Get User (me)
+      description: Return information about current user
+      operationId: getUserMe
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '872'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 20:45:10 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance_companies_by_icp:
+                    type: number
+                    example: -101
+                  balance_company_by_link:
+                    type: number
+                    example: 0
+                  balance_email_finder:
+                    type: number
+                    example: 0
+                  balance_email_verifier:
+                    type: number
+                    example: 0
+                  balance_lead_by_link:
+                    type: number
+                    example: -3
+                  balance_leads_by_icp:
+                    type: number
+                    example: -1719
+                  balance_platform:
+                    type: number
+                    example: 8531
+                  beta_tester:
+                    type: boolean
+                    example: false
+                  blocked_balance_platform:
+                    type: number
+                    example: 0
+                  consultancy_hours:
+                    type: number
+                    example: 3
+                  count_parallel_searches:
+                    type: number
+                    example: 0
+                  count_searches_completed_today:
+                    type: number
+                    example: 0
+                  count_searches_in_progress_today:
+                    type: number
+                    example: 0
+                  email:
+                    type: string
+                    example: admin@example.com
+                  full_name:
+                    type: string
+                    example: ''
+                  icp_flow:
+                    type: object
+                    properties:
+                      A:
+                        type: string
+                        example: '1'
+                      active_compaign_count_lead:
+                        type: number
+                        example: 1000
+                      active_compaign_first_icp:
+                        type: string
+                        example: 'true'
+                      active_compaign_first_lead:
+                        type: string
+                        example: 'true'
+                      active_compaign_first_search:
+                        type: string
+                        example: 'true'
+                  is_staff:
+                    type: boolean
+                    example: true
+                  last_invoice_status:
+                    type: boolean
+                    example: true
+                  last_password_changed:
+                    type: string
+                    example: '2024-10-30T13:09:31'
+                  logo:
+                    nullable: true
+                    example: null
+                  max_credits:
+                    type: number
+                    example: 10000
+                  max_parallel_searches:
+                    type: number
+                    example: 5
+                  max_searches_daily:
+                    type: number
+                    example: 20
+                  prev_subscription_status:
+                    nullable: true
+                    example: null
+                  spent_for_emails:
+                    type: number
+                    example: 303
+                  spent_for_export:
+                    type: number
+                    example: 0
+                  subscription:
+                    type: string
+                    example: Business
+                  trial_available:
+                    type: boolean
+                    example: true
+              examples:
+                '200':
+                  value:
+                    balance_companies_by_icp: -101
+                    balance_company_by_link: 0
+                    balance_email_finder: 0
+                    balance_email_verifier: 0
+                    balance_lead_by_link: -3
+                    balance_leads_by_icp: -1719
+                    balance_platform: 8531
+                    beta_tester: false
+                    blocked_balance_platform: 0
+                    consultancy_hours: 3
+                    count_parallel_searches: 0
+                    count_searches_completed_today: 0
+                    count_searches_in_progress_today: 0
+                    email: admin@example.com
+                    full_name: ''
+                    icp_flow:
+                      A: '1'
+                      active_compaign_count_lead: 1000
+                      active_compaign_first_icp: 'true'
+                      active_compaign_first_lead: 'true'
+                      active_compaign_first_search: 'true'
+                    is_staff: true
+                    last_invoice_status: true
+                    last_password_changed: '2024-10-30T13:09:31'
+                    logo: null
+                    max_credits: 10000
+                    max_parallel_searches: 5
+                    max_searches_daily: 20
+                    prev_subscription_status: null
+                    spent_for_emails: 303
+                    spent_for_export: 0
+                    subscription: Business
+                    trial_available: true
+  /api/auth/transactions/:
+    get:
+      tags:
+        - 2. Transactions
+      summary: Get List of Transactions
+      description: Return list of latest transactions
+      operationId: getListOfTransactions
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '100'
+          description: Limit of transactions in result
+        - name: offset
+          in: query
+          schema:
+            type: string
+            example: '0'
+          description: Offset  in list of transactions
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: GET, HEAD, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '25393'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 20:50:51 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                    example: 1
+                  limit:
+                    type: number
+                    example: 100
+                  max_limit:
+                    type: number
+                    example: 100
+                  next:
+                    type: string
+                    example: https://api.generect.com/api/auth/transactions/?limit=100&offset=100
+                  offset:
+                    type: number
+                    example: 0
+                  previous:
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        after_balance:
+                          type: number
+                          example: -3
+                        amount:
+                          type: number
+                          example: 1
+                        balance_type:
+                          type: string
+                          example: lead_by_link
+                        created_at:
+                          type: string
+                          example: '2024-12-02T20:07:43.284641'
+                        description:
+                          type: string
+                          example: refund on transaction 43b5c573-0863-4363-b9cc-98a53f8d25b5
+                        id:
+                          type: string
+                          example: 6d4374f4-f1c1-4516-aec0-54cfa7c0d72f
+                        status:
+                          type: string
+                          example: success
+                        updated_at:
+                          type: string
+                          example: '2024-12-02T20:07:43.284650'
+                    example:
+                      - after_balance: -3
+                        amount: 1
+                        balance_type: lead_by_link
+                        created_at: '2024-12-02T20:07:43.284641'
+                        description: refund on transaction 43b5c573-0863-4363-b9cc-98a53f8d25b5
+                        id: 6d4374f4-f1c1-4516-aec0-54cfa7c0d72f
+                        status: success
+                        updated_at: '2024-12-02T20:07:43.284650'
+              examples:
+                '200':
+                  value:
+                    count: 1
+                    limit: 100
+                    max_limit: 100
+                    next: https://api.generect.com/api/auth/transactions/?limit=100&offset=100
+                    offset: 0
+                    previous: null
+                    results:
+                      - after_balance: -3
+                        amount: 1
+                        balance_type: lead_by_link
+                        created_at: '2024-12-02T20:07:43.284641'
+                        description: refund on transaction 43b5c573-0863-4363-b9cc-98a53f8d25b5
+                        id: 6d4374f4-f1c1-4516-aec0-54cfa7c0d72f
+                        status: success
+                        updated_at: '2024-12-02T20:07:43.284650'
+  /api/linkedin/leads/by_link/:
+    post:
+      tags:
+        - 3. Leads
+      summary: Get Lead by link
+      description: Get Lead by linkedin link
+      operationId: getLeadByLink
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comments:
+                  type: boolean
+                  example: false
+                inexact_company:
+                  type: boolean
+                  example: false
+                people_also_viewed:
+                  type: boolean
+                  example: false
+                posts:
+                  type: boolean
+                  example: false
+                url:
+                  type: string
+                  example: https://www.linkedin.com/in/birama-traor%c3%a9/
+            examples:
+              Get Lead by link:
+                value:
+                  comments: false
+                  inexact_company: false
+                  people_also_viewed: false
+                  posts: false
+                  url: https://www.linkedin.com/in/birama-traor%c3%a9/
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '7540'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 19:57:51 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: -1
+                  lead:
+                    type: object
+                    properties:
+                      certifications:
+                        type: array
+                        items: {}
+                        example: []
+                      company_city:
+                        nullable: true
+                        example: null
+                      company_country:
+                        type: string
+                        example: France
+                      company_description:
+                        type: string
+                        example: |-
+                          ENGIE is a global reference in low-carbon energy and services. With its 97,000 employees, clients, partners and stakeholders, the Group strives every day to accelerate the transition towards a carbon-neutral economy, through reduced energy consumption and more environmentally friendly solutions. Inspired by its purpose statement, ENGIE reconciles economic performance with a positive impact on people and the planet, building on its key businesses (gas, renewable energy, services) to offer competitive solutions to its clients. 
+
+                          We are a united group, committed to inclusiveness and diversity, where everyone can forge their own career path , improve on their skills, and continually enhance their expertise. We work in a caring, flexible, and secure environment that encourages personal and professional development. #WithENGIE 
+
+
+                          Turnover in 2023: EUR82.6 billion. The Group is listed on the Paris and Brussels stock exchanges (ENGI) and is represented in the main financial indices (CAC 40, Euronext 100, FTSE Euro 100, MSCI Europe) and non-financial indices (DJSI World, Euronext Vigeo Eiris - Europe 120 / France 20, MSCI EMU ESG screened, MSCI EUROPE ESG Universal Select, Stoxx Europe 600 ESG-X).
+                      company_headcount_range:
+                        type: string
+                        example: 10001+
+                      company_id:
+                        type: string
+                        example: '298246'
+                      company_image:
+                        type: string
+                        example: https://media.licdn.com/dms/image/v2/C4D0BAQHQn5EB4SKDyg/company-logo_400_400/company-logo_400_400/0/1630570629615/engie_logo?e=1741219200&v=beta&t=-Ga4LKJPrvzQnNm3PuUG9lkHYwO4IRP1R79TgqSeftc
+                      company_industry:
+                        type: string
+                        example: Utilities
+                      company_location:
+                        type: string
+                        example: France
+                      company_name:
+                        type: string
+                        example: ENGIE
+                      company_state:
+                        type: string
+                        example: ''
+                      company_url:
+                        type: string
+                        example: https://www.linkedin.com/company/engie/
+                      company_website:
+                        type: string
+                        example: https://www.engie.com/en
+                      educations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            degree:
+                              type: string
+                              example: Certificat de formation generale (CFG)
+                            ended_on:
+                              type: object
+                              properties:
+                                month:
+                                  type: number
+                                  example: 5
+                                year:
+                                  type: number
+                                  example: 2023
+                              nullable: true
+                            fields_of_study:
+                              type: array
+                              items:
+                                nullable: true
+                                example: null
+                            started_on:
+                              type: object
+                              properties:
+                                month:
+                                  type: number
+                                  example: 3
+                                year:
+                                  type: number
+                                  example: 2023
+                            university_id:
+                              type: string
+                              nullable: true
+                              example: '14803'
+                            university_name:
+                              type: string
+                              example: CentraleSupelec
+                        example:
+                          - degree: Certificat de formation generale (CFG)
+                            ended_on:
+                              month: 5
+                              year: 2023
+                            fields_of_study: null
+                            started_on:
+                              month: 3
+                              year: 2023
+                            university_id: '14803'
+                            university_name: CentraleSupelec
+                          - degree: Ingenieur
+                            ended_on:
+                              year: 2007
+                            fields_of_study:
+                              - Systeme et Reseau
+                            started_on:
+                              year: 2002
+                            university_id: null
+                            university_name: EITI
+                          - degree: Certification EasyVista
+                            ended_on: null
+                            fields_of_study: null
+                            started_on:
+                              year: 2013
+                            university_id: null
+                            university_name: EasyVista
+                          - degree: Certification HP SM 9
+                            ended_on: null
+                            fields_of_study: null
+                            started_on:
+                              year: 2012
+                            university_id: null
+                            university_name: HP
+                          - degree: Certification ITIL V2
+                            ended_on: null
+                            fields_of_study: null
+                            started_on:
+                              year: 2012
+                            university_id: null
+                            university_name: ITIL
+                      first_name:
+                        type: string
+                        example: Birama
+                      full_name:
+                        type: string
+                        example: Birama Traoré
+                      headline:
+                        type: string
+                        example: CIO Procurement - Finance - CSR
+                      industry:
+                        type: string
+                        example: IT Services and IT Consulting
+                      input_url:
+                        type: string
+                        example: https://www.linkedin.com/in/birama-traor%c3%a9/
+                      is_full_data:
+                        type: boolean
+                        example: true
+                      is_job_seeker:
+                        type: boolean
+                        example: false
+                      is_openlink:
+                        type: boolean
+                        example: false
+                      is_premium:
+                        type: boolean
+                        example: false
+                      is_retired:
+                        type: boolean
+                        example: false
+                      job_description:
+                        nullable: true
+                        example: null
+                      job_ended_on:
+                        nullable: true
+                        example: null
+                      job_location:
+                        type: string
+                        example: Paris et peripherie
+                      job_location_city:
+                        nullable: true
+                        example: null
+                      job_location_country:
+                        type: string
+                        example: Ethiopia
+                      job_location_county:
+                        nullable: true
+                        example: null
+                      job_location_state:
+                        nullable: true
+                        example: null
+                      job_started_on:
+                        type: string
+                        example: Sep 2023
+                      job_still_working:
+                        type: boolean
+                        example: true
+                      job_title:
+                        type: string
+                        example: CIO Procurement - Finance - CSR
+                      jobs:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            company_city:
+                              nullable: true
+                              example: null
+                            company_country:
+                              type: string
+                              example: France
+                            company_description:
+                              type: string
+                              example: |-
+                                ENGIE is a global reference in low-carbon energy and services. With its 97,000 employees, clients, partners and stakeholders, the Group strives every day to accelerate the transition towards a carbon-neutral economy, through reduced energy consumption and more environmentally friendly solutions. Inspired by its purpose statement, ENGIE reconciles economic performance with a positive impact on people and the planet, building on its key businesses (gas, renewable energy, services) to offer competitive solutions to its clients. 
+
+                                We are a united group, committed to inclusiveness and diversity, where everyone can forge their own career path , improve on their skills, and continually enhance their expertise. We work in a caring, flexible, and secure environment that encourages personal and professional development. #WithENGIE 
+
+
+                                Turnover in 2023: EUR82.6 billion. The Group is listed on the Paris and Brussels stock exchanges (ENGI) and is represented in the main financial indices (CAC 40, Euronext 100, FTSE Euro 100, MSCI Europe) and non-financial indices (DJSI World, Euronext Vigeo Eiris - Europe 120 / France 20, MSCI EMU ESG screened, MSCI EUROPE ESG Universal Select, Stoxx Europe 600 ESG-X).
+                            company_headcount_range:
+                              type: string
+                              example: 10001+
+                            company_id:
+                              type: string
+                              example: '298246'
+                            company_image:
+                              type: string
+                              example: https://media.licdn.com/dms/image/v2/C4D0BAQHQn5EB4SKDyg/company-logo_400_400/company-logo_400_400/0/1630570629615/engie_logo?e=1741219200&v=beta&t=-Ga4LKJPrvzQnNm3PuUG9lkHYwO4IRP1R79TgqSeftc
+                            company_industry:
+                              type: string
+                              example: Utilities
+                            company_location:
+                              type: string
+                              example: France
+                            company_name:
+                              type: string
+                              example: ENGIE
+                            company_state:
+                              type: string
+                              example: ''
+                            company_url:
+                              type: string
+                              example: https://www.linkedin.com/company/engie/
+                            company_website:
+                              type: string
+                              example: https://www.engie.com/en
+                            job_description:
+                              nullable: true
+                              example: null
+                            job_ended_on:
+                              nullable: true
+                              example: null
+                            job_location:
+                              type: string
+                              example: Paris et peripherie
+                            job_location_city:
+                              nullable: true
+                              example: null
+                            job_location_country:
+                              type: string
+                              example: Ethiopia
+                            job_location_county:
+                              nullable: true
+                              example: null
+                            job_location_state:
+                              nullable: true
+                              example: null
+                            job_started_on:
+                              type: string
+                              example: Sep 2023
+                            job_still_working:
+                              type: boolean
+                              example: true
+                            job_title:
+                              type: string
+                              example: CIO Procurement - Finance - CSR
+                            raw_company_name:
+                              type: string
+                              example: ENGIE
+                            raw_job_title:
+                              type: string
+                              example: CIO Procurement - Finance - CSR
+                        example:
+                          - company_city: null
+                            company_country: France
+                            company_description: |-
+                              ENGIE is a global reference in low-carbon energy and services. With its 97,000 employees, clients, partners and stakeholders, the Group strives every day to accelerate the transition towards a carbon-neutral economy, through reduced energy consumption and more environmentally friendly solutions. Inspired by its purpose statement, ENGIE reconciles economic performance with a positive impact on people and the planet, building on its key businesses (gas, renewable energy, services) to offer competitive solutions to its clients. 
+
+                              We are a united group, committed to inclusiveness and diversity, where everyone can forge their own career path , improve on their skills, and continually enhance their expertise. We work in a caring, flexible, and secure environment that encourages personal and professional development. #WithENGIE 
+
+
+                              Turnover in 2023: EUR82.6 billion. The Group is listed on the Paris and Brussels stock exchanges (ENGI) and is represented in the main financial indices (CAC 40, Euronext 100, FTSE Euro 100, MSCI Europe) and non-financial indices (DJSI World, Euronext Vigeo Eiris - Europe 120 / France 20, MSCI EMU ESG screened, MSCI EUROPE ESG Universal Select, Stoxx Europe 600 ESG-X).
+                            company_headcount_range: 10001+
+                            company_id: '298246'
+                            company_image: https://media.licdn.com/dms/image/v2/C4D0BAQHQn5EB4SKDyg/company-logo_400_400/company-logo_400_400/0/1630570629615/engie_logo?e=1741219200&v=beta&t=-Ga4LKJPrvzQnNm3PuUG9lkHYwO4IRP1R79TgqSeftc
+                            company_industry: Utilities
+                            company_location: France
+                            company_name: ENGIE
+                            company_state: ''
+                            company_url: https://www.linkedin.com/company/engie/
+                            company_website: https://www.engie.com/en
+                            job_description: null
+                            job_ended_on: null
+                            job_location: Paris et peripherie
+                            job_location_city: null
+                            job_location_country: Ethiopia
+                            job_location_county: null
+                            job_location_state: null
+                            job_started_on: Sep 2023
+                            job_still_working: true
+                            job_title: CIO Procurement - Finance - CSR
+                            raw_company_name: ENGIE
+                            raw_job_title: CIO Procurement - Finance - CSR
+                      languages:
+                        type: array
+                        items: {}
+                        example: []
+                      last_name:
+                        type: string
+                        example: Traoré
+                      linkedin_id:
+                        type: string
+                        example: '113966911'
+                      linkedin_sales_link:
+                        type: string
+                        example: https://www.linkedin.com/sales/lead/ACwAAAbK_z8BitOI-5PxZa_jkG05STRmNLRaK14,NAME_SEARCH,OJWs
+                      linkedin_url:
+                        type: string
+                        example: https://www.linkedin.com/in/birama-traor%C3%A9
+                      location:
+                        type: string
+                        example: Greater Paris Metropolitan Region
+                      location_city:
+                        type: string
+                        example: ''
+                      location_country:
+                        type: string
+                        example: France
+                      location_county:
+                        nullable: true
+                        example: null
+                      location_state:
+                        type: string
+                        example: Ile-de-France
+                      middle_name:
+                        type: string
+                        example: ''
+                      num_of_connections:
+                        type: number
+                        example: 2253
+                      private_website:
+                        nullable: true
+                        example: null
+                      profile_photo:
+                        type: string
+                        example: https://media.licdn.com/dms/image/v2/C4D03AQFUuSLnGkiKVA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1625575996700?e=1738800000&v=beta&t=y0ZfbWCCWzmJOHFim2Y5_MSDchOztFjtsqbP61ze_EU
+                      raw_company_name:
+                        type: string
+                        example: ENGIE
+                      raw_headline:
+                        type: string
+                        example: CIO Procurement - Finance - CSR
+                      raw_job_title:
+                        type: string
+                        example: CIO Procurement - Finance - CSR
+                      sales_id:
+                        type: string
+                        example: ACwAAAbK_z8BitOI-5PxZa_jkG05STRmNLRaK14
+                      skills:
+                        type: array
+                        items: {}
+                        example: []
+                      source:
+                        type: string
+                        example: lead_by_link
+                      summary:
+                        type: string
+                        example: |-
+                          I have been working in the Information Technology for the last 15 years. I have occupied different consultancy and management roles within the value chain, ranging from Infrastructure ones to transformation lead ones. In these roles I had the privilege to directly manage highly-skilled teams up to 80 people across 5 different geographies. I have managed business IT operations, process and transformation projects.
+
+                          3 years ago, I joined ENGIE IT as the Head of Enterprise Service Management with notably two major programs in my scope: The Salesforce & Service Now Center Of Excellence - Both initiatives aims to help our client to achieve exponential growth. 
+
+                          My best contributions are in transformation environments, where we have to lead our teams through changes in business models and culture. I do believe in leadership by example and I like to enable teams and clients to grow and achieve goals they did not think possible.
+
+                          My current topics consist of setting up powerful Center of Excellence in order to foster expertise and take it to the next level of the organization in terms of business objectives & value. The goal is to lead transformation and enhance expertise to serve business growth.
+                      twitter_link:
+                        nullable: true
+                        example: null
+                      unformatted_full_name:
+                        type: string
+                        example: Birama Traoré
+              examples:
+                '200':
+                  value:
+                    amount: -1
+                    lead:
+                      certifications: []
+                      company_city: null
+                      company_country: France
+                      company_description: |-
+                        ENGIE is a global reference in low-carbon energy and services. With its 97,000 employees, clients, partners and stakeholders, the Group strives every day to accelerate the transition towards a carbon-neutral economy, through reduced energy consumption and more environmentally friendly solutions. Inspired by its purpose statement, ENGIE reconciles economic performance with a positive impact on people and the planet, building on its key businesses (gas, renewable energy, services) to offer competitive solutions to its clients. 
+
+                        We are a united group, committed to inclusiveness and diversity, where everyone can forge their own career path , improve on their skills, and continually enhance their expertise. We work in a caring, flexible, and secure environment that encourages personal and professional development. #WithENGIE 
+
+
+                        Turnover in 2023: EUR82.6 billion. The Group is listed on the Paris and Brussels stock exchanges (ENGI) and is represented in the main financial indices (CAC 40, Euronext 100, FTSE Euro 100, MSCI Europe) and non-financial indices (DJSI World, Euronext Vigeo Eiris - Europe 120 / France 20, MSCI EMU ESG screened, MSCI EUROPE ESG Universal Select, Stoxx Europe 600 ESG-X).
+                      company_headcount_range: 10001+
+                      company_id: '298246'
+                      company_image: https://media.licdn.com/dms/image/v2/C4D0BAQHQn5EB4SKDyg/company-logo_400_400/company-logo_400_400/0/1630570629615/engie_logo?e=1741219200&v=beta&t=-Ga4LKJPrvzQnNm3PuUG9lkHYwO4IRP1R79TgqSeftc
+                      company_industry: Utilities
+                      company_location: France
+                      company_name: ENGIE
+                      company_state: ''
+                      company_url: https://www.linkedin.com/company/engie/
+                      company_website: https://www.engie.com/en
+                      educations:
+                        - degree: Certificat de formation generale (CFG)
+                          ended_on:
+                            month: 5
+                            year: 2023
+                          fields_of_study: null
+                          started_on:
+                            month: 3
+                            year: 2023
+                          university_id: '14803'
+                          university_name: CentraleSupelec
+                        - degree: Ingenieur
+                          ended_on:
+                            year: 2007
+                          fields_of_study:
+                            - Systeme et Reseau
+                          started_on:
+                            year: 2002
+                          university_id: null
+                          university_name: EITI
+                        - degree: Certification EasyVista
+                          ended_on: null
+                          fields_of_study: null
+                          started_on:
+                            year: 2013
+                          university_id: null
+                          university_name: EasyVista
+                        - degree: Certification HP SM 9
+                          ended_on: null
+                          fields_of_study: null
+                          started_on:
+                            year: 2012
+                          university_id: null
+                          university_name: HP
+                        - degree: Certification ITIL V2
+                          ended_on: null
+                          fields_of_study: null
+                          started_on:
+                            year: 2012
+                          university_id: null
+                          university_name: ITIL
+                      first_name: Birama
+                      full_name: Birama Traoré
+                      headline: CIO Procurement - Finance - CSR
+                      industry: IT Services and IT Consulting
+                      input_url: https://www.linkedin.com/in/birama-traor%c3%a9/
+                      is_full_data: true
+                      is_job_seeker: false
+                      is_openlink: false
+                      is_premium: false
+                      is_retired: false
+                      job_description: null
+                      job_ended_on: null
+                      job_location: Paris et peripherie
+                      job_location_city: null
+                      job_location_country: Ethiopia
+                      job_location_county: null
+                      job_location_state: null
+                      job_started_on: Sep 2023
+                      job_still_working: true
+                      job_title: CIO Procurement - Finance - CSR
+                      jobs:
+                        - company_city: null
+                          company_country: France
+                          company_description: |-
+                            ENGIE is a global reference in low-carbon energy and services. With its 97,000 employees, clients, partners and stakeholders, the Group strives every day to accelerate the transition towards a carbon-neutral economy, through reduced energy consumption and more environmentally friendly solutions. Inspired by its purpose statement, ENGIE reconciles economic performance with a positive impact on people and the planet, building on its key businesses (gas, renewable energy, services) to offer competitive solutions to its clients. 
+
+                            We are a united group, committed to inclusiveness and diversity, where everyone can forge their own career path , improve on their skills, and continually enhance their expertise. We work in a caring, flexible, and secure environment that encourages personal and professional development. #WithENGIE 
+
+
+                            Turnover in 2023: EUR82.6 billion. The Group is listed on the Paris and Brussels stock exchanges (ENGI) and is represented in the main financial indices (CAC 40, Euronext 100, FTSE Euro 100, MSCI Europe) and non-financial indices (DJSI World, Euronext Vigeo Eiris - Europe 120 / France 20, MSCI EMU ESG screened, MSCI EUROPE ESG Universal Select, Stoxx Europe 600 ESG-X).
+                          company_headcount_range: 10001+
+                          company_id: '298246'
+                          company_image: https://media.licdn.com/dms/image/v2/C4D0BAQHQn5EB4SKDyg/company-logo_400_400/company-logo_400_400/0/1630570629615/engie_logo?e=1741219200&v=beta&t=-Ga4LKJPrvzQnNm3PuUG9lkHYwO4IRP1R79TgqSeftc
+                          company_industry: Utilities
+                          company_location: France
+                          company_name: ENGIE
+                          company_state: ''
+                          company_url: https://www.linkedin.com/company/engie/
+                          company_website: https://www.engie.com/en
+                          job_description: null
+                          job_ended_on: null
+                          job_location: Paris et peripherie
+                          job_location_city: null
+                          job_location_country: Ethiopia
+                          job_location_county: null
+                          job_location_state: null
+                          job_started_on: Sep 2023
+                          job_still_working: true
+                          job_title: CIO Procurement - Finance - CSR
+                          raw_company_name: ENGIE
+                          raw_job_title: CIO Procurement - Finance - CSR
+                      languages: []
+                      last_name: Traoré
+                      linkedin_id: '113966911'
+                      linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAAbK_z8BitOI-5PxZa_jkG05STRmNLRaK14,NAME_SEARCH,OJWs
+                      linkedin_url: https://www.linkedin.com/in/birama-traor%C3%A9
+                      location: Greater Paris Metropolitan Region
+                      location_city: ''
+                      location_country: France
+                      location_county: null
+                      location_state: Ile-de-France
+                      middle_name: ''
+                      num_of_connections: 2253
+                      private_website: null
+                      profile_photo: https://media.licdn.com/dms/image/v2/C4D03AQFUuSLnGkiKVA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1625575996700?e=1738800000&v=beta&t=y0ZfbWCCWzmJOHFim2Y5_MSDchOztFjtsqbP61ze_EU
+                      raw_company_name: ENGIE
+                      raw_headline: CIO Procurement - Finance - CSR
+                      raw_job_title: CIO Procurement - Finance - CSR
+                      sales_id: ACwAAAbK_z8BitOI-5PxZa_jkG05STRmNLRaK14
+                      skills: []
+                      source: lead_by_link
+                      summary: |-
+                        I have been working in the Information Technology for the last 15 years. I have occupied different consultancy and management roles within the value chain, ranging from Infrastructure ones to transformation lead ones. In these roles I had the privilege to directly manage highly-skilled teams up to 80 people across 5 different geographies. I have managed business IT operations, process and transformation projects.
+
+                        3 years ago, I joined ENGIE IT as the Head of Enterprise Service Management with notably two major programs in my scope: The Salesforce & Service Now Center Of Excellence - Both initiatives aims to help our client to achieve exponential growth. 
+
+                        My best contributions are in transformation environments, where we have to lead our teams through changes in business models and culture. I do believe in leadership by example and I like to enable teams and clients to grow and achieve goals they did not think possible.
+
+                        My current topics consist of setting up powerful Center of Excellence in order to foster expertise and take it to the next level of the organization in terms of business objectives & value. The goal is to lead transformation and enhance expertise to serve business growth.
+                      twitter_link: null
+                      unformatted_full_name: Birama Traoré
+        '400':
+          description: 400 (Bad url)
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '128'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 20:07:43 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: 0
+                  detail:
+                    type: string
+                    example: Bad url
+                  input_url:
+                    type: string
+                    example: https://www.facebook.com/in/birama-traor%c3%a9/
+                  status:
+                    type: string
+                    example: error
+                  status_code:
+                    type: number
+                    example: 400
+              examples:
+                400 (Bad url):
+                  value:
+                    amount: 0
+                    detail: Bad url
+                    input_url: https://www.facebook.com/in/birama-traor%c3%a9/
+                    status: error
+                    status_code: 400
+        '401':
+          description: '401'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '94'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 19:58:56 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            WWW-Authenticate:
+              schema:
+                type: string
+                example: Token
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid token header. No credentials provided.
+                  status:
+                    type: string
+                    example: error
+                  status_code:
+                    type: number
+                    example: 401
+              examples:
+                '401':
+                  value:
+                    detail: Invalid token header. No credentials provided.
+                    status: error
+                    status_code: 401
+  /api/linkedin/leads/by_icp/:
+    post:
+      tags:
+        - 3. Leads
+      summary: Get List of Leads by ICP
+      operationId: getListOfLeadsByIcp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_link:
+                  type: string
+                  description: "Use 'company_link' or 'company_id'. One of them is required if without_company is false."
+                company_id:
+                  type: integer
+                  description: "Optional, used if 'without_company' is false."
+                without_company:
+                  type: boolean
+                locations:
+                  type: array
+                  items:
+                    type: string
+                personas:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: string
+                        - type: array
+                          items:
+                            type: string
+                    minItems: 4
+                limit_by:
+                  type: integer
+                get_max_leads:
+                  type: boolean
+                exclude_names:
+                  type: array
+                  items:
+                    type: string
+                filter_empty_vars:
+                  type: array
+                  items:
+                    type: string
+                changed_jobs:
+                  type: boolean
+                  description: "Optional, flag to specify if jobs have changed."
+                posted_on_linkedin:
+                  type: boolean
+                  description: "Optional, flag to specify if posted on LinkedIn."
+                mentioned_in_news:
+                  type: boolean
+                  description: "Optional, flag to specify if mentioned in news."
+                lead_industries:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, list of industries. Only applicable if 'without_company' is true."
+                company_locations:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, company locations."
+                company_headcounts:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, company headcounts."
+                company_types:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, company types."
+                past_company_names:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, list of past company names."
+                years_in_company:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, number of years in a company."
+                years_in_position:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, number of years in the position."
+                groups:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, list of group IDs."
+                schools:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, list of school IDs."
+                offset_by:
+                  type: integer
+                  description: "Optional, used only with 'without_company' set to true."
+
+            examples:
+              Get List of Leads by ICP:
+                value:
+                  company_link: https://www.linkedin.com/company/fette-compacting-gmbh
+                  without_company: false
+                  locations:
+                    - Austria
+                    - Switzerland
+                  personas:
+                    - - Communication
+                      - - Communication
+                        - Kommunikation
+                        - Communication
+                      - []
+                      - - Assistant
+                        - Intern
+                        - Student
+                    - - Communications
+                      - - Communications
+                        - Kommunikation
+                        - Communications
+                      - []
+                      - - Assistant
+                        - Intern
+                        - Student
+                  limit_by: 14
+                  get_max_leads: true
+                  exclude_names:
+                    - Volker Reinsch
+                    - Nathalie Hoffmann
+                    - Nora Behrens
+                    - Emanuel da Silva Gomes
+                    - Kerstin Schaper
+                    - Angela Hogrefe
+                  filter_empty_vars:
+                    - started_at_position
+      responses:
+        '200':
+          description: 200 / 200 (Leads not found)
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '70'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 21:10:37 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: -1
+                  leads:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        certifications:
+                          type: array
+                          items: {}
+                          example: []
+                        company_city:
+                          type: string
+                          example: Schwarzenbek
+                        company_country:
+                          type: string
+                          example: Germany
+                        company_description:
+                          type: string
+                          example: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                        company_headcount_range:
+                          type: string
+                          example: 501-1000
+                        company_id:
+                          type: string
+                          example: '7590254'
+                        company_image:
+                          type: string
+                          example: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_200_200/company-logo_200_200/0/1720783130887/fette_compacting_gmbh_logo?e=1740009600&v=beta&t=jP_aJALpJhdsmjNIpbePqKkzUyp1-Qno9lWH9eV9g9M
+                        company_industry:
+                          type: string
+                          example: Pharmaceutical Manufacturing
+                        company_location:
+                          type: string
+                          example: Schwarzenbek, Schleswig-Holstein, Germany
+                        company_name:
+                          type: string
+                          example: Fette Compacting
+                        company_state:
+                          type: string
+                          example: Schleswig-Holstein
+                        company_url:
+                          nullable: true
+                          example: null
+                        company_website:
+                          type: string
+                          example: http://www.fette-compacting.com
+                        educations:
+                          type: array
+                          items: {}
+                          example: []
+                        first_name:
+                          type: string
+                          example: Nicole
+                        full_name:
+                          type: string
+                          example: Nicole Anderson
+                        headline:
+                          type: string
+                          example: Corporate Communication Manager at Fette Compacting GmbH
+                        industry:
+                          type: string
+                          example: Machinery Manufacturing
+                        is_full_data:
+                          type: boolean
+                          example: true
+                        is_job_seeker:
+                          type: boolean
+                          example: false
+                        is_openlink:
+                          type: boolean
+                          example: false
+                        is_premium:
+                          type: boolean
+                          example: false
+                        is_retired:
+                          type: boolean
+                          example: false
+                        job_description:
+                          type: string
+                          example: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                        job_ended_on:
+                          nullable: true
+                          example: null
+                        job_location:
+                          type: string
+                          example: Schwarzenbek, Schleswig-Holstein, Deutschland
+                        job_started_on:
+                          type: string
+                          example: Mar 2023
+                        job_still_working:
+                          type: boolean
+                          example: true
+                        job_title:
+                          type: string
+                          example: Corporate Communication Manager
+                        jobs:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              company_city:
+                                type: string
+                                example: Cincinnati
+                              company_country:
+                                type: string
+                                example: United States
+                              company_description:
+                                type: string
+                                example: ART WORKS IN ANDERSON LLC is a retail company based out of 1115 MAYCLIFFE PL, Cincinnati, Ohio, United States.
+                              company_headcount_range:
+                                type: string
+                                example: 11-50
+                              company_id:
+                                type: string
+                                example: '63587704'
+                              company_image:
+                                type: string
+                                nullable: true
+                                example: null
+                              company_industry:
+                                type: string
+                                example: Retail
+                              company_location:
+                                type: string
+                                example: Cincinnati, Ohio, United States
+                              company_name:
+                                type: string
+                                example: Anderson Art Work / Self-employed
+                              company_state:
+                                type: string
+                                example: Ohio
+                              company_url:
+                                type: string
+                                example: https://www.linkedin.com/company/art-works-in-anderson-llc/
+                              company_website:
+                                type: string
+                                example: http://cincinnatiartclasses.com
+                              job_description:
+                                type: string
+                                example: |-
+                                  http://www.andersonartwork.de/
+                                  https://www.facebook.com/AndersonArtWork.de
+                                  http://instagram.com/nicoleandersonartwork 
+                                  http://www.pinterest.com/AndersonAW/
+                              job_ended_on:
+                                nullable: true
+                                example: null
+                              job_location:
+                                type: string
+                                example: Hamburg und Umgebung, Deutschland
+                              job_started_on:
+                                type: string
+                                example: '2013'
+                              job_still_working:
+                                type: boolean
+                                example: true
+                              job_title:
+                                type: string
+                                example: Freelance Artist
+                              raw_company_name:
+                                type: string
+                                example: Anderson Art Work / Self-employed
+                              raw_job_title:
+                                type: string
+                                example: Freelance Artist
+                          example:
+                            - company_city: Cincinnati
+                              company_country: United States
+                              company_description: ART WORKS IN ANDERSON LLC is a retail company based out of 1115 MAYCLIFFE PL, Cincinnati, Ohio, United States.
+                              company_headcount_range: 11-50
+                              company_id: '63587704'
+                              company_image: null
+                              company_industry: Retail
+                              company_location: Cincinnati, Ohio, United States
+                              company_name: Anderson Art Work / Self-employed
+                              company_state: Ohio
+                              company_url: https://www.linkedin.com/company/art-works-in-anderson-llc/
+                              company_website: http://cincinnatiartclasses.com
+                              job_description: |-
+                                http://www.andersonartwork.de/
+                                https://www.facebook.com/AndersonArtWork.de
+                                http://instagram.com/nicoleandersonartwork 
+                                http://www.pinterest.com/AndersonAW/
+                              job_ended_on: null
+                              job_location: Hamburg und Umgebung, Deutschland
+                              job_started_on: '2013'
+                              job_still_working: true
+                              job_title: Freelance Artist
+                              raw_company_name: Anderson Art Work / Self-employed
+                              raw_job_title: Freelance Artist
+                            - company_city: Schwarzenbek
+                              company_country: Germany
+                              company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                              company_headcount_range: 501-1000
+                              company_id: '7590254'
+                              company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_400_400/company-logo_400_400/0/1720783130887/fette_compacting_gmbh_logo?e=1741219200&v=beta&t=HvwsgIyJYXepYTbSz8ySstMn8d3F9LgQtRtqEeLdqKI
+                              company_industry: Pharmaceutical Manufacturing
+                              company_location: Schwarzenbek, Schleswig-Holstein, Germany
+                              company_name: Fette Compacting
+                              company_state: Schleswig Holstein
+                              company_url: https://www.linkedin.com/company/fette-compacting-gmbh/
+                              company_website: http://www.fette-compacting.com
+                              job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                              job_ended_on: null
+                              job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                              job_started_on: Mar 2023
+                              job_still_working: true
+                              job_title: Corporate Communication Manager
+                              raw_company_name: Fette Compacting
+                              raw_job_title: Corporate Communication Manager
+                        languages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: Englisch
+                              proficiency:
+                                type: string
+                                example: FULL_PROFESSIONAL
+                          example:
+                            - name: Englisch
+                              proficiency: FULL_PROFESSIONAL
+                            - name: Deutsch
+                              proficiency: NATIVE_OR_BILINGUAL
+                        last_name:
+                          type: string
+                          example: Anderson
+                        linkedin_company_id:
+                          type: string
+                          example: '7590254'
+                        linkedin_id:
+                          type: string
+                          example: '80282110'
+                        linkedin_lead_persona:
+                          type: string
+                          example: Communication
+                        linkedin_sales_link:
+                          type: string
+                          example: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
+                        linkedin_url:
+                          type: string
+                          example: https://www.linkedin.com/in/nicole-anderson-profile
+                        location:
+                          type: string
+                          example: Greater Hamburg Area
+                        location_city:
+                          nullable: true
+                          example: null
+                        location_country:
+                          type: string
+                          example: Germany
+                        location_county:
+                          nullable: true
+                          example: null
+                        location_state:
+                          type: string
+                          example: Hamburg
+                        middle_name:
+                          type: string
+                          example: ''
+                        num_of_connections:
+                          type: number
+                          example: 710
+                        private_website:
+                          nullable: true
+                          example: null
+                        profile_photo:
+                          type: string
+                          example: https://media.licdn.com/dms/image/v2/D4D03AQHdu7xNE9zgIw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724341778966?e=1738800000&v=beta&t=bEH4zW5MrIkRknwhvnOX5GQYRUOlIg9jib4wpsEWahE
+                        raw_company_name:
+                          type: string
+                          example: Fette Compacting
+                        raw_headline:
+                          type: string
+                          example: Corporate Communication Manager at Fette Compacting GmbH
+                        raw_job_title:
+                          type: string
+                          example: Corporate Communication Manager
+                        sales_id:
+                          type: string
+                          example: ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0
+                        skills:
+                          type: array
+                          items: {}
+                          example: []
+                        summary:
+                          type: string
+                          example: |-
+                            I have in-depth knowledge of marketing, public relations and internal communication. In addition, I have extensive knowledge of the needs and work processes of internal and external interest groups. I have extensive experience in the area of   reputation and crisis management as well as the control of internal and external communication processes. I offer several years of management experience.
+
+                            My personal interests and hobbies: painting, traveling, skiing, horse riding, yoga and cooking.
+                        twitter_link:
+                          nullable: true
+                          example: null
+                        unformatted_full_name:
+                          type: string
+                          example: Nicole Anderson
+                    example:
+                      - certifications: []
+                        company_city: Schwarzenbek
+                        company_country: Germany
+                        company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                        company_headcount_range: 501-1000
+                        company_id: '7590254'
+                        company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_200_200/company-logo_200_200/0/1720783130887/fette_compacting_gmbh_logo?e=1740009600&v=beta&t=jP_aJALpJhdsmjNIpbePqKkzUyp1-Qno9lWH9eV9g9M
+                        company_industry: Pharmaceutical Manufacturing
+                        company_location: Schwarzenbek, Schleswig-Holstein, Germany
+                        company_name: Fette Compacting
+                        company_state: Schleswig-Holstein
+                        company_url: null
+                        company_website: http://www.fette-compacting.com
+                        educations: []
+                        first_name: Nicole
+                        full_name: Nicole Anderson
+                        headline: Corporate Communication Manager at Fette Compacting GmbH
+                        industry: Machinery Manufacturing
+                        is_full_data: true
+                        is_job_seeker: false
+                        is_openlink: false
+                        is_premium: false
+                        is_retired: false
+                        job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                        job_ended_on: null
+                        job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                        job_started_on: Mar 2023
+                        job_still_working: true
+                        job_title: Corporate Communication Manager
+                        jobs:
+                          - company_city: Cincinnati
+                            company_country: United States
+                            company_description: ART WORKS IN ANDERSON LLC is a retail company based out of 1115 MAYCLIFFE PL, Cincinnati, Ohio, United States.
+                            company_headcount_range: 11-50
+                            company_id: '63587704'
+                            company_image: null
+                            company_industry: Retail
+                            company_location: Cincinnati, Ohio, United States
+                            company_name: Anderson Art Work / Self-employed
+                            company_state: Ohio
+                            company_url: https://www.linkedin.com/company/art-works-in-anderson-llc/
+                            company_website: http://cincinnatiartclasses.com
+                            job_description: |-
+                              http://www.andersonartwork.de/
+                              https://www.facebook.com/AndersonArtWork.de
+                              http://instagram.com/nicoleandersonartwork 
+                              http://www.pinterest.com/AndersonAW/
+                            job_ended_on: null
+                            job_location: Hamburg und Umgebung, Deutschland
+                            job_started_on: '2013'
+                            job_still_working: true
+                            job_title: Freelance Artist
+                            raw_company_name: Anderson Art Work / Self-employed
+                            raw_job_title: Freelance Artist
+                          - company_city: Schwarzenbek
+                            company_country: Germany
+                            company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                            company_headcount_range: 501-1000
+                            company_id: '7590254'
+                            company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_400_400/company-logo_400_400/0/1720783130887/fette_compacting_gmbh_logo?e=1741219200&v=beta&t=HvwsgIyJYXepYTbSz8ySstMn8d3F9LgQtRtqEeLdqKI
+                            company_industry: Pharmaceutical Manufacturing
+                            company_location: Schwarzenbek, Schleswig-Holstein, Germany
+                            company_name: Fette Compacting
+                            company_state: Schleswig Holstein
+                            company_url: https://www.linkedin.com/company/fette-compacting-gmbh/
+                            company_website: http://www.fette-compacting.com
+                            job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                            job_ended_on: null
+                            job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                            job_started_on: Mar 2023
+                            job_still_working: true
+                            job_title: Corporate Communication Manager
+                            raw_company_name: Fette Compacting
+                            raw_job_title: Corporate Communication Manager
+                        languages:
+                          - name: Englisch
+                            proficiency: FULL_PROFESSIONAL
+                          - name: Deutsch
+                            proficiency: NATIVE_OR_BILINGUAL
+                        last_name: Anderson
+                        linkedin_company_id: '7590254'
+                        linkedin_id: '80282110'
+                        linkedin_lead_persona: Communication
+                        linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
+                        linkedin_url: https://www.linkedin.com/in/nicole-anderson-profile
+                        location: Greater Hamburg Area
+                        location_city: null
+                        location_country: Germany
+                        location_county: null
+                        location_state: Hamburg
+                        middle_name: ''
+                        num_of_connections: 710
+                        private_website: null
+                        profile_photo: https://media.licdn.com/dms/image/v2/D4D03AQHdu7xNE9zgIw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724341778966?e=1738800000&v=beta&t=bEH4zW5MrIkRknwhvnOX5GQYRUOlIg9jib4wpsEWahE
+                        raw_company_name: Fette Compacting
+                        raw_headline: Corporate Communication Manager at Fette Compacting GmbH
+                        raw_job_title: Corporate Communication Manager
+                        sales_id: ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0
+                        skills: []
+                        summary: |-
+                          I have in-depth knowledge of marketing, public relations and internal communication. In addition, I have extensive knowledge of the needs and work processes of internal and external interest groups. I have extensive experience in the area of   reputation and crisis management as well as the control of internal and external communication processes. I offer several years of management experience.
+
+                          My personal interests and hobbies: painting, traveling, skiing, horse riding, yoga and cooking.
+                        twitter_link: null
+                        unformatted_full_name: Nicole Anderson
+                  results_count:
+                    type: string
+                    example: within limit
+                  status:
+                    type: string
+                    example: No leads match with input criteria
+              examples:
+                '200':
+                  value:
+                    amount: -1
+                    leads:
+                      - certifications: []
+                        company_city: Schwarzenbek
+                        company_country: Germany
+                        company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                        company_headcount_range: 501-1000
+                        company_id: '7590254'
+                        company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_200_200/company-logo_200_200/0/1720783130887/fette_compacting_gmbh_logo?e=1740009600&v=beta&t=jP_aJALpJhdsmjNIpbePqKkzUyp1-Qno9lWH9eV9g9M
+                        company_industry: Pharmaceutical Manufacturing
+                        company_location: Schwarzenbek, Schleswig-Holstein, Germany
+                        company_name: Fette Compacting
+                        company_state: Schleswig-Holstein
+                        company_url: null
+                        company_website: http://www.fette-compacting.com
+                        educations: []
+                        first_name: Nicole
+                        full_name: Nicole Anderson
+                        headline: Corporate Communication Manager at Fette Compacting GmbH
+                        industry: Machinery Manufacturing
+                        is_full_data: true
+                        is_job_seeker: false
+                        is_openlink: false
+                        is_premium: false
+                        is_retired: false
+                        job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                        job_ended_on: null
+                        job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                        job_started_on: Mar 2023
+                        job_still_working: true
+                        job_title: Corporate Communication Manager
+                        jobs:
+                          - company_city: Cincinnati
+                            company_country: United States
+                            company_description: ART WORKS IN ANDERSON LLC is a retail company based out of 1115 MAYCLIFFE PL, Cincinnati, Ohio, United States.
+                            company_headcount_range: 11-50
+                            company_id: '63587704'
+                            company_image: null
+                            company_industry: Retail
+                            company_location: Cincinnati, Ohio, United States
+                            company_name: Anderson Art Work / Self-employed
+                            company_state: Ohio
+                            company_url: https://www.linkedin.com/company/art-works-in-anderson-llc/
+                            company_website: http://cincinnatiartclasses.com
+                            job_description: |-
+                              http://www.andersonartwork.de/
+                              https://www.facebook.com/AndersonArtWork.de
+                              http://instagram.com/nicoleandersonartwork 
+                              http://www.pinterest.com/AndersonAW/
+                            job_ended_on: null
+                            job_location: Hamburg und Umgebung, Deutschland
+                            job_started_on: '2013'
+                            job_still_working: true
+                            job_title: Freelance Artist
+                            raw_company_name: Anderson Art Work / Self-employed
+                            raw_job_title: Freelance Artist
+                          - company_city: Schwarzenbek
+                            company_country: Germany
+                            company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                            company_headcount_range: 501-1000
+                            company_id: '7590254'
+                            company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_400_400/company-logo_400_400/0/1720783130887/fette_compacting_gmbh_logo?e=1741219200&v=beta&t=HvwsgIyJYXepYTbSz8ySstMn8d3F9LgQtRtqEeLdqKI
+                            company_industry: Pharmaceutical Manufacturing
+                            company_location: Schwarzenbek, Schleswig-Holstein, Germany
+                            company_name: Fette Compacting
+                            company_state: Schleswig Holstein
+                            company_url: https://www.linkedin.com/company/fette-compacting-gmbh/
+                            company_website: http://www.fette-compacting.com
+                            job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                            job_ended_on: null
+                            job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                            job_started_on: Mar 2023
+                            job_still_working: true
+                            job_title: Corporate Communication Manager
+                            raw_company_name: Fette Compacting
+                            raw_job_title: Corporate Communication Manager
+                        languages:
+                          - name: Englisch
+                            proficiency: FULL_PROFESSIONAL
+                          - name: Deutsch
+                            proficiency: NATIVE_OR_BILINGUAL
+                        last_name: Anderson
+                        linkedin_company_id: '7590254'
+                        linkedin_id: '80282110'
+                        linkedin_lead_persona: Communication
+                        linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
+                        linkedin_url: https://www.linkedin.com/in/nicole-anderson-profile
+                        location: Greater Hamburg Area
+                        location_city: null
+                        location_country: Germany
+                        location_county: null
+                        location_state: Hamburg
+                        middle_name: ''
+                        num_of_connections: 710
+                        private_website: null
+                        profile_photo: https://media.licdn.com/dms/image/v2/D4D03AQHdu7xNE9zgIw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724341778966?e=1738800000&v=beta&t=bEH4zW5MrIkRknwhvnOX5GQYRUOlIg9jib4wpsEWahE
+                        raw_company_name: Fette Compacting
+                        raw_headline: Corporate Communication Manager at Fette Compacting GmbH
+                        raw_job_title: Corporate Communication Manager
+                        sales_id: ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0
+                        skills: []
+                        summary: |-
+                          I have in-depth knowledge of marketing, public relations and internal communication. In addition, I have extensive knowledge of the needs and work processes of internal and external interest groups. I have extensive experience in the area of   reputation and crisis management as well as the control of internal and external communication processes. I offer several years of management experience.
+
+                          My personal interests and hobbies: painting, traveling, skiing, horse riding, yoga and cooking.
+                        twitter_link: null
+                        unformatted_full_name: Nicole Anderson
+                    results_count: within limit
+                200 (Leads not found):
+                  value:
+                    amount: -1
+                    leads: []
+                    status: No leads match with input criteria
+  /api/linkedin/leads/by_icp/get_count/:
+    post:
+      tags:
+        - 3. Leads
+      summary: Count leads by ICP
+      description: Return exact count of _Leads_ for this ICP (Paid)
+      operationId: countLeadsByIcp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+            examples:
+              Count leads by ICP:
+                value:
+                  company_link: https://www.linkedin.com/company/fette-compacting-gmbh
+                  without_company: false
+                  locations:
+                    - Germany
+                    - Austria
+                    - Switzerland
+                  personas:
+                    - - CEO
+                      - - ceo
+                      - []
+                      - []
+                  limit_by: 14
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '44'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 21:38:18 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: -3
+                  results_count:
+                    type: string
+                    example: within limit
+              examples:
+                '200':
+                  value:
+                    amount: -3
+                    results_count: within limit
+      security:
+        - apiKey: []
+  /api/linkedin/companies/by_link/:
+    post:
+      tags:
+        - 4. Companies
+      summary: Get Company by link
+      description: Get company by link/name
+      operationId: getCompanyByLink
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                people_also_viewed:
+                  type: boolean
+                people_also_follow:
+                  type: boolean
+                posts:
+                  type: boolean
+              required:
+              - url
+              - people_also_viewed
+              - people_also_follow
+              - posts
+
+            examples:
+              Get Company by link:
+                value:
+                  url: https://www.linkedin.com/company/a2-aprende-y-aplica-capacitaciГіn
+                  people_also_viewed: false
+                  people_also_follow: false
+                  posts: false
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '1918'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 21:55:14 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            djdt-store-id:
+              schema:
+                type: string
+                example: 31890c37311043a089c11732738015df
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: -1
+                  company:
+                    type: object
+                    properties:
+                      background_image:
+                        type: string
+                        example: https://media.licdn.com/dms/image/v2/C561BAQG9Ktb_CKMogA/company-background_10000/company-background_10000/0/1585429294192/a2_aprende_y_aplica_capacitacin_cover?e=1733781600&v=beta&t=Ob5IiQY2u18mTXsF8DXY3zI2rYoPhYGX5gG_EWJeams
+                      company_type:
+                        type: string
+                        example: Educational
+                      crunchbase_urn:
+                        nullable: true
+                        example: null
+                      default_locale:
+                        type: string
+                        example: es
+                      description:
+                        type: string
+                        example: "La mision de A2 es hacer de la capacitacion en las empresas el principal motor de la productividad de su gente.\r\n\r\nCreemos que una capacitacion no solo debe de consistir de un simple curso, sino que el curso debe de ser parte de un proceso mas grande que resulte en mejoras de procedmientos, correccion de errores e innovacion interna."
+                      domain:
+                        type: string
+                        example: a2capacitacion.com
+                      founded_year:
+                        type: number
+                        example: 2009
+                      groups:
+                        type: array
+                        items: {}
+                        example: []
+                      hashtags:
+                        type: array
+                        items:
+                          type: string
+                          example: spreadsheets
+                        example:
+                          - spreadsheets
+                          - spreadsheet
+                          - microsoftexcel
+                      headcount_exact:
+                        type: number
+                        example: 14
+                      headcount_range:
+                        type: string
+                        example: 1-10
+                      hq_additional_info:
+                        type: string
+                        example: La Estancia
+                      hq_city:
+                        type: string
+                        example: Zapopan
+                      hq_country:
+                        type: string
+                        example: Mexico
+                      hq_country_code:
+                        type: string
+                        example: MX
+                      hq_postal_code:
+                        type: string
+                        example: '45030'
+                      hq_state:
+                        type: string
+                        example: Jalisco
+                      hq_street:
+                        type: string
+                        example: Hector Berlioz 5691
+                      industry:
+                        type: string
+                        example: Education Management
+                      is_claimable:
+                        type: boolean
+                        example: false
+                      linkedin_id:
+                        type: string
+                        example: '10403092'
+                      linkedin_link:
+                        type: string
+                        example: https://www.linkedin.com/company/a2-aprende-y-aplica-capacitaci-n/
+                      linkedin_urn:
+                        type: string
+                        example: a2-aprende-y-aplica-capacitaci-n
+                      location:
+                        type: string
+                        example: Zapopan, Jalisco, Mexico
+                      logo_url:
+                        type: string
+                        example: https://media.licdn.com/dms/image/v2/D560BAQGn4NkVFt7_cw/company-logo_200_200/company-logo_200_200/0/1712690269654/a2_aprende_y_aplica_capacitacin_logo?e=1741219200&v=beta&t=fCAoQ1xShF-4JtIpqUahalzYnHDEUUttqNG0CyByF3o
+                      name:
+                        type: string
+                        example: A2 Aprende y Aplica Capacitacion
+                      number_of_locations:
+                        type: number
+                        example: 1
+                      other_locations_json:
+                        type: array
+                        items: {}
+                        example: []
+                      phone_number:
+                        nullable: true
+                        example: null
+                      raw_name:
+                        type: string
+                        example: A2 Aprende y Aplica Capacitación
+                      showcase_pages:
+                        nullable: true
+                        example: null
+                      source:
+                        type: string
+                        example: company_by_link
+                      specialities:
+                        type: array
+                        items:
+                          type: string
+                          example: Capacitacion
+                        example:
+                          - Capacitacion
+                          - Consultoria en Educacion
+                          - Diseno de Materiales Educativos
+                          - Excel
+                      tagline:
+                        type: string
+                        example: |
+                          Haz Magia con Excel
+                      website:
+                        type: string
+                        example: http://www.a2capacitacion.com
+              examples:
+                '200':
+                  value:
+                    amount: -1
+                    company:
+                      background_image: https://media.licdn.com/dms/image/v2/C561BAQG9Ktb_CKMogA/company-background_10000/company-background_10000/0/1585429294192/a2_aprende_y_aplica_capacitacin_cover?e=1733781600&v=beta&t=Ob5IiQY2u18mTXsF8DXY3zI2rYoPhYGX5gG_EWJeams
+                      company_type: Educational
+                      crunchbase_urn: null
+                      default_locale: es
+                      description: "La mision de A2 es hacer de la capacitacion en las empresas el principal motor de la productividad de su gente.\r\n\r\nCreemos que una capacitacion no solo debe de consistir de un simple curso, sino que el curso debe de ser parte de un proceso mas grande que resulte en mejoras de procedmientos, correccion de errores e innovacion interna."
+                      domain: a2capacitacion.com
+                      founded_year: 2009
+                      groups: []
+                      hashtags:
+                        - spreadsheets
+                        - spreadsheet
+                        - microsoftexcel
+                      headcount_exact: 14
+                      headcount_range: 1-10
+                      hq_additional_info: La Estancia
+                      hq_city: Zapopan
+                      hq_country: Mexico
+                      hq_country_code: MX
+                      hq_postal_code: '45030'
+                      hq_state: Jalisco
+                      hq_street: Hector Berlioz 5691
+                      industry: Education Management
+                      is_claimable: false
+                      linkedin_id: '10403092'
+                      linkedin_link: https://www.linkedin.com/company/a2-aprende-y-aplica-capacitaci-n/
+                      linkedin_urn: a2-aprende-y-aplica-capacitaci-n
+                      location: Zapopan, Jalisco, Mexico
+                      logo_url: https://media.licdn.com/dms/image/v2/D560BAQGn4NkVFt7_cw/company-logo_200_200/company-logo_200_200/0/1712690269654/a2_aprende_y_aplica_capacitacin_logo?e=1741219200&v=beta&t=fCAoQ1xShF-4JtIpqUahalzYnHDEUUttqNG0CyByF3o
+                      name: A2 Aprende y Aplica Capacitacion
+                      number_of_locations: 1
+                      other_locations_json: []
+                      phone_number: null
+                      raw_name: A2 Aprende y Aplica Capacitación
+                      showcase_pages: null
+                      source: company_by_link
+                      specialities:
+                        - Capacitacion
+                        - Consultoria en Educacion
+                        - Diseno de Materiales Educativos
+                        - Excel
+                      tagline: |
+                        Haz Magia con Excel
+                      website: http://www.a2capacitacion.com
+        '400':
+          description: 400 (Bad url)
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '147'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 21:55:47 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            djdt-store-id:
+              schema:
+                type: string
+                example: 0450519dba5f40beb0cb3c6e778dac29
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: 0
+                  detail:
+                    type: string
+                    example: Bad url
+                  input_url:
+                    type: string
+                    example: https://www.facebook.com/company/a2-aprende-y-aplica-capacitación
+                  status:
+                    type: string
+                    example: error
+                  status_code:
+                    type: number
+                    example: 400
+              examples:
+                400 (Bad url):
+                  value:
+                    amount: 0
+                    detail: Bad url
+                    input_url: https://www.facebook.com/company/a2-aprende-y-aplica-capacitación
+                    status: error
+                    status_code: 400
+      security:
+        - apiKey: []
+  /api/linkedin/companies/by_icp/:
+    post:
+      tags:
+        - 4. Companies
+      summary: Get List of Companies by ICP
+      operationId: getListOfCompaniesByIcp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_types:
+                  type: array
+                  items:
+                    type: string
+                    example: Public Company
+                  example:
+                    - Public Company
+                    - Self Employed
+                    - Self Owned
+                    - Privately Held
+                    - Partnership
+                get_max_companies:
+                  type: boolean
+                  example: true
+                headcounts:
+                  type: array
+                  items:
+                    type: string
+                    example: 201-500
+                  example:
+                    - 201-500
+                industries:
+                  type: array
+                  items:
+                    type: string
+                    example: Software Development
+                  example:
+                    - Software Development
+                keywords:
+                  type: array
+                  items:
+                    type: string
+                    example: platform
+                  example:
+                    - platform
+                    - marketplace
+                limit_by:
+                  type: number
+                  example: 3
+                locations:
+                  type: array
+                  items:
+                    type: string
+                    example: United States
+                  example:
+                    - United States
+                num_of_followers:
+                  type: array
+                  items:
+                    type: string
+                    example: 5001+
+                  example:
+                    - 5001+
+                offset_by:
+                  type: number
+                  example: 0
+                revenues_range:
+                  type: object
+                  properties:
+                    max:
+                      type: number
+                      example: 1
+                    min:
+                      type: number
+                      example: 0
+                website_blacklist:
+                  type: boolean
+                  example: false
+            examples:
+              Get List of Companies by ICP:
+                value:
+                  company_types:
+                    - Public Company
+                    - Self Employed
+                    - Self Owned
+                    - Privately Held
+                    - Partnership
+                  get_max_companies: true
+                  headcounts:
+                    - 201-500
+                  industries:
+                    - Software Development
+                  keywords:
+                    - platform
+                    - marketplace
+                  limit_by: 3
+                  locations:
+                    - United States
+                  num_of_followers:
+                    - 5001+
+                  offset_by: 0
+                  revenues_range:
+                    max: 1
+                    min: 0
+                  website_blacklist: false
+      responses:
+        '200':
+          description: 200 / 200 (Companies not found)
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '88'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 22:18:01 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Server-Timing:
+              schema:
+                type: string
+                example: TimerPanel_utime;dur=432.78699999996206;desc="User CPU time", TimerPanel_stime;dur=165.48099999999977;desc="System CPU time", TimerPanel_total;dur=598.2679999999618;desc="Total CPU time", TimerPanel_total_time;dur=6539.156198501587;desc="Elapsed time", SQLPanel_sql_time;dur=104.11524772644043;desc="SQL 61 queries", CachePanel_total_time;dur=0;desc="Cache 0 Calls"
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            djdt-store-id:
+              schema:
+                type: string
+                example: 1ff04b8b7f2e46fe8719a56c58b38f64
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: -3
+                  companies:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        background_image:
+                          type: string
+                          example: https://media.licdn.com/dms/image/v2/D561BAQH-LSq7Ba0bIw/company-background_10000/company-background_10000/0/1661361722654/platform_science_cover?e=1733781600&v=beta&t=nNQUFM5YTQNAeH2xQ4IN1g00oUwIxL6LmP-80VJrB2g
+                        company_type:
+                          type: string
+                          example: Privately Held
+                        crunchbase_urn:
+                          type: string
+                          example: platform-science
+                        description:
+                          type: string
+                          example: |-
+                            Since 2015, Platform Science has connected fleets across the nation with the tools they need to take control of their technology. As part of our ongoing mission to transform transportation, we've made it easy for fleets to develop, deploy, and manage their commercial vehicles' mobile devices and applications on a single platform.
+
+
+                            Through our partnerships with industry leaders at every stage of 
+                            the supply chain, we empower fleets with endless opportunities to innovate and create solutions that evolve as their businesses grow.
+                        domain:
+                          type: string
+                          example: platformscience.com
+                        founded_year:
+                          type: number
+                          nullable: true
+                          example: 2015
+                        hashtags:
+                          type: array
+                          items:
+                            type: string
+                            example: innovation
+                          example:
+                            - innovation
+                            - platformscience
+                            - trucking
+                        headcount_exact:
+                          type: number
+                          example: 307
+                        headcount_range:
+                          type: string
+                          example: 201-500
+                        hq_additional_info:
+                          type: string
+                          nullable: true
+                          example: Ste 100
+                        hq_city:
+                          type: string
+                          example: San Diego
+                        hq_country:
+                          type: string
+                          example: United States
+                        hq_country_code:
+                          type: string
+                          example: US
+                        hq_postal_code:
+                          type: string
+                          nullable: true
+                          example: '92121'
+                        hq_state:
+                          type: string
+                          nullable: true
+                          example: California
+                        hq_street:
+                          type: string
+                          example: 9620 Towne Centre Dr
+                        industry:
+                          type: string
+                          example: Software Development
+                        linkedin_id:
+                          type: string
+                          example: '18000638'
+                        linkedin_link:
+                          type: string
+                          example: https://www.linkedin.com/company/platform-science/
+                        linkedin_sales_link:
+                          type: string
+                          example: https://www.linkedin.com/sales/company/18000638/
+                        linkedin_urn:
+                          type: string
+                          example: platform-science
+                        location:
+                          type: string
+                          example: San Diego, California, United States
+                        logo_url:
+                          type: string
+                          example: https://media.licdn.com/dms/image/v2/C560BAQFwDh5F4FjKSg/company-logo_200_200/company-logo_200_200/0/1630640177343/platform_science_logo?e=1741219200&v=beta&t=15yZwQUYLQyFiNhVZJIA6c0RoW1pmh4SgbwrIt3DTaU
+                        name:
+                          type: string
+                          example: Platform Science
+                        number_of_locations:
+                          type: number
+                          example: 1
+                        other_locations_json:
+                          type: array
+                          items: {}
+                          example: []
+                        phone_number:
+                          nullable: true
+                          example: null
+                        raw_name:
+                          type: string
+                          example: Platform Science
+                        specialities:
+                          type: array
+                          items: {}
+                          example: []
+                        tagline:
+                          type: string
+                          example: Making it easy for enterprise trucking fleets to develop, deploy, and manage mobile devices and applications.
+                        website:
+                          type: string
+                          example: http://www.platformscience.com
+                    example:
+                      - background_image: https://media.licdn.com/dms/image/v2/D561BAQH-LSq7Ba0bIw/company-background_10000/company-background_10000/0/1661361722654/platform_science_cover?e=1733781600&v=beta&t=nNQUFM5YTQNAeH2xQ4IN1g00oUwIxL6LmP-80VJrB2g
+                        company_type: Privately Held
+                        crunchbase_urn: platform-science
+                        description: |-
+                          Since 2015, Platform Science has connected fleets across the nation with the tools they need to take control of their technology. As part of our ongoing mission to transform transportation, we've made it easy for fleets to develop, deploy, and manage their commercial vehicles' mobile devices and applications on a single platform.
+
+
+                          Through our partnerships with industry leaders at every stage of 
+                          the supply chain, we empower fleets with endless opportunities to innovate and create solutions that evolve as their businesses grow.
+                        domain: platformscience.com
+                        founded_year: 2015
+                        hashtags:
+                          - innovation
+                          - platformscience
+                          - trucking
+                        headcount_exact: 307
+                        headcount_range: 201-500
+                        hq_additional_info: Ste 100
+                        hq_city: San Diego
+                        hq_country: United States
+                        hq_country_code: US
+                        hq_postal_code: '92121'
+                        hq_state: California
+                        hq_street: 9620 Towne Centre Dr
+                        industry: Software Development
+                        linkedin_id: '18000638'
+                        linkedin_link: https://www.linkedin.com/company/platform-science/
+                        linkedin_sales_link: https://www.linkedin.com/sales/company/18000638/
+                        linkedin_urn: platform-science
+                        location: San Diego, California, United States
+                        logo_url: https://media.licdn.com/dms/image/v2/C560BAQFwDh5F4FjKSg/company-logo_200_200/company-logo_200_200/0/1630640177343/platform_science_logo?e=1741219200&v=beta&t=15yZwQUYLQyFiNhVZJIA6c0RoW1pmh4SgbwrIt3DTaU
+                        name: Platform Science
+                        number_of_locations: 1
+                        other_locations_json: []
+                        phone_number: null
+                        raw_name: Platform Science
+                        specialities: []
+                        tagline: Making it easy for enterprise trucking fleets to develop, deploy, and manage mobile devices and applications.
+                        website: http://www.platformscience.com
+                      - background_image: https://media.licdn.com/dms/image/v2/C4E1BAQGQDeszLg8-bQ/company-background_10000/company-background_10000/0/1584798432532/pivotal_software_inc_cover?e=1733781600&v=beta&t=po2KejTkWo6n4wTKKFdcq2PJ5_0BO3LtGDH8NTa-psk
+                        company_type: Public Company
+                        crunchbase_urn: pivotal
+                        description: 'VMware Tanzu helps you modernize your applications and infrastructure with a common goal: deliver better software to production, continuously. The portfolio simplifies multi-cloud operations, while freeing developers to move faster and access the right resources for building the best applications. VMware Tanzu enables development and operations'' teams to work together in new ways that deliver transformative business results.'
+                        domain: vmware.com
+                        founded_year: null
+                        hashtags: []
+                        headcount_exact: 271
+                        headcount_range: 1001-5000
+                        hq_additional_info: Fifth Floor
+                        hq_city: San Francisco
+                        hq_country: United States
+                        hq_country_code: US
+                        hq_postal_code: '94103'
+                        hq_state: California
+                        hq_street: 875 Howard Street
+                        industry: Software Development
+                        linkedin_id: '3048967'
+                        linkedin_link: https://www.linkedin.com/company/pivotal-software-inc./
+                        linkedin_sales_link: https://www.linkedin.com/sales/company/3048967/
+                        linkedin_urn: pivotal-software-inc.
+                        location: San Francisco, California, United States
+                        logo_url: https://media.licdn.com/dms/image/v2/C560BAQEDUiaAXDr9tQ/company-logo_200_200/company-logo_200_200/0/1630621022655/pivotal_software_inc_logo?e=1741219200&v=beta&t=ZjLtQx9D3dr7nCau3PRRer33CUnUvl1i16hQTnBPiIk
+                        name: Pivotal Software
+                        number_of_locations: 13
+                        other_locations_json:
+                          - additional_info: Sixth Floor
+                            city: New York
+                            country: United States
+                            description: New York
+                            postal_code: 10011-2020
+                            state: New York
+                            street: 636 Avenue of the Americas
+                          - additional_info: null
+                            city: Toronto
+                            country: Canada
+                            description: Toronto
+                            postal_code: M5C 2V6
+                            state: Ontario
+                            street: 1 Toronto Street Suite 1100
+                          - additional_info: Second Floor
+                            city: London
+                            country: United Kingdom
+                            description: London
+                            postal_code: 'EC1V 9NR '
+                            state: London
+                            street: The Warehouse, 211 Old Street
+                          - additional_info: null
+                            city: Denver
+                            country: United States
+                            description: Denver
+                            postal_code: '80202'
+                            state: CO
+                            street: 1644 Platte St
+                          - additional_info: Suite 7500
+                            city: Atlanta
+                            country: United States
+                            description: Atlanta
+                            postal_code: '30308'
+                            state: GA
+                            street: '675 Ponce de Leon Avenue NE '
+                          - additional_info: Level 16
+                            city: Singapore
+                            country: Singapore
+                            description: Singapore
+                            postal_code: '068907'
+                            state: Singapore
+                            street: 140 Robinson Road
+                          - additional_info: Suite 1305
+                            city: Chicago
+                            country: United States
+                            description: Chicago
+                            postal_code: '60654'
+                            state: Illinois
+                            street: 222 W Merchandise Mart Plaza
+                          - additional_info: null
+                            city: Dallas
+                            country: United States
+                            description: Dallas
+                            postal_code: null
+                            state: Texas
+                            street: 3001 Hackberry Rd
+                          - additional_info: Suite 200
+                            city: Santa Monica
+                            country: United States
+                            description: Los Angeles
+                            postal_code: '90401'
+                            state: California
+                            street: 1333 2nd Street
+                          - additional_info: Third Floor
+                            city: Seattle
+                            country: United States
+                            description: Seattle
+                            postal_code: '98104'
+                            state: Washington
+                            street: 111 S Jackson St
+                          - additional_info: Suite 601
+                            city: Washington, D.C.
+                            country: United States
+                            description: Washington, D.C.
+                            postal_code: '20006'
+                            state: DC
+                            street: 1625 I St NW
+                          - additional_info: Sixth Floor
+                            city: Cambridge
+                            country: United States
+                            description: Cambridge
+                            postal_code: '02142'
+                            state: MA
+                            street: 255 Main St
+                        phone_number: null
+                        raw_name: Pivotal Software, Inc.
+                        specialities:
+                          - big data
+                          - cloud computing
+                          - hadoop
+                          - analytics
+                          - software
+                          - open source software
+                          - containerization
+                          - private cloud
+                          - data science
+                          - cloud foundry
+                          - mobile software development
+                          - platform-as-a-service
+                          - hybrid cloud
+                          - microservices
+                          - pair programming
+                          - agile development
+                        tagline: 'We''ve moved! Follow us at VMware Tanzu: https://bit.ly/VMwareTanzuLinkedIn'
+                        website: https://cloud.vmware.com/tanzu
+                      - background_image: https://media.licdn.com/dms/image/v2/D4E1BAQHzLZJfSBt5-Q/company-background_10000/company-background_10000/0/1715298939407/kickstarter_cover?e=1733781600&v=beta&t=hlYd_IVSuB_24TF-wSqWWcUHUpjwoZ79rTLb-Ka4eis
+                        company_type: Privately Held
+                        crunchbase_urn: kickstarter
+                        description: |-
+                          Kickstarter helps creative projects come to life. Backers have pledged over $7B to projects on our platform, helping artists, musicians, filmmakers, designers, and other creators make their ideas a reality.
+
+                          In 2022, we'll be experimenting with a work-from-anywhere policy, a four-day workweek, and new asynchronous work practices that support a fully virtual and flexible work environment. 
+                            
+                          Current job openings listed at jobs.kickstarter.com
+                        domain: kck.st
+                        founded_year: 2009
+                        hashtags: []
+                        headcount_exact: 340
+                        headcount_range: 201-500
+                        hq_additional_info: null
+                        hq_city: Work From Anywhere
+                        hq_country: United States
+                        hq_country_code: US
+                        hq_postal_code: null
+                        hq_state: null
+                        hq_street: Fully Virtual
+                        industry: Software Development
+                        linkedin_id: '413999'
+                        linkedin_link: https://www.linkedin.com/company/kickstarter/
+                        linkedin_sales_link: https://www.linkedin.com/sales/company/413999/
+                        linkedin_urn: kickstarter
+                        location: United States
+                        logo_url: https://media.licdn.com/dms/image/v2/D560BAQGc1nYjgaNebw/company-logo_200_200/company-logo_200_200/0/1708024813718/kickstarter_logo?e=1741219200&v=beta&t=JP5QWgE_QQuHUvJLqdslb3h_OID-eBSJ8F2H9TuIZTU
+                        name: Kickstarter
+                        number_of_locations: 1
+                        other_locations_json: []
+                        phone_number: null
+                        raw_name: Kickstarter
+                        specialities: []
+                        tagline: Bringing creative projects to life.
+                        website: https://kck.st/3Gsc7QW
+                  results_count:
+                    type: number
+                    example: 522
+                  time_cached:
+                    type: string
+                    example: '2024-12-02T21:57:53.469659'
+              examples:
+                '200':
+                  value:
+                    amount: -3
+                    companies:
+                      - background_image: https://media.licdn.com/dms/image/v2/D561BAQH-LSq7Ba0bIw/company-background_10000/company-background_10000/0/1661361722654/platform_science_cover?e=1733781600&v=beta&t=nNQUFM5YTQNAeH2xQ4IN1g00oUwIxL6LmP-80VJrB2g
+                        company_type: Privately Held
+                        crunchbase_urn: platform-science
+                        description: |-
+                          Since 2015, Platform Science has connected fleets across the nation with the tools they need to take control of their technology. As part of our ongoing mission to transform transportation, we've made it easy for fleets to develop, deploy, and manage their commercial vehicles' mobile devices and applications on a single platform.
+
+
+                          Through our partnerships with industry leaders at every stage of 
+                          the supply chain, we empower fleets with endless opportunities to innovate and create solutions that evolve as their businesses grow.
+                        domain: platformscience.com
+                        founded_year: 2015
+                        hashtags:
+                          - innovation
+                          - platformscience
+                          - trucking
+                        headcount_exact: 307
+                        headcount_range: 201-500
+                        hq_additional_info: Ste 100
+                        hq_city: San Diego
+                        hq_country: United States
+                        hq_country_code: US
+                        hq_postal_code: '92121'
+                        hq_state: California
+                        hq_street: 9620 Towne Centre Dr
+                        industry: Software Development
+                        linkedin_id: '18000638'
+                        linkedin_link: https://www.linkedin.com/company/platform-science/
+                        linkedin_sales_link: https://www.linkedin.com/sales/company/18000638/
+                        linkedin_urn: platform-science
+                        location: San Diego, California, United States
+                        logo_url: https://media.licdn.com/dms/image/v2/C560BAQFwDh5F4FjKSg/company-logo_200_200/company-logo_200_200/0/1630640177343/platform_science_logo?e=1741219200&v=beta&t=15yZwQUYLQyFiNhVZJIA6c0RoW1pmh4SgbwrIt3DTaU
+                        name: Platform Science
+                        number_of_locations: 1
+                        other_locations_json: []
+                        phone_number: null
+                        raw_name: Platform Science
+                        specialities: []
+                        tagline: Making it easy for enterprise trucking fleets to develop, deploy, and manage mobile devices and applications.
+                        website: http://www.platformscience.com
+                      - background_image: https://media.licdn.com/dms/image/v2/C4E1BAQGQDeszLg8-bQ/company-background_10000/company-background_10000/0/1584798432532/pivotal_software_inc_cover?e=1733781600&v=beta&t=po2KejTkWo6n4wTKKFdcq2PJ5_0BO3LtGDH8NTa-psk
+                        company_type: Public Company
+                        crunchbase_urn: pivotal
+                        description: 'VMware Tanzu helps you modernize your applications and infrastructure with a common goal: deliver better software to production, continuously. The portfolio simplifies multi-cloud operations, while freeing developers to move faster and access the right resources for building the best applications. VMware Tanzu enables development and operations'' teams to work together in new ways that deliver transformative business results.'
+                        domain: vmware.com
+                        founded_year: null
+                        hashtags: []
+                        headcount_exact: 271
+                        headcount_range: 1001-5000
+                        hq_additional_info: Fifth Floor
+                        hq_city: San Francisco
+                        hq_country: United States
+                        hq_country_code: US
+                        hq_postal_code: '94103'
+                        hq_state: California
+                        hq_street: 875 Howard Street
+                        industry: Software Development
+                        linkedin_id: '3048967'
+                        linkedin_link: https://www.linkedin.com/company/pivotal-software-inc./
+                        linkedin_sales_link: https://www.linkedin.com/sales/company/3048967/
+                        linkedin_urn: pivotal-software-inc.
+                        location: San Francisco, California, United States
+                        logo_url: https://media.licdn.com/dms/image/v2/C560BAQEDUiaAXDr9tQ/company-logo_200_200/company-logo_200_200/0/1630621022655/pivotal_software_inc_logo?e=1741219200&v=beta&t=ZjLtQx9D3dr7nCau3PRRer33CUnUvl1i16hQTnBPiIk
+                        name: Pivotal Software
+                        number_of_locations: 13
+                        other_locations_json:
+                          - additional_info: Sixth Floor
+                            city: New York
+                            country: United States
+                            description: New York
+                            postal_code: 10011-2020
+                            state: New York
+                            street: 636 Avenue of the Americas
+                          - additional_info: null
+                            city: Toronto
+                            country: Canada
+                            description: Toronto
+                            postal_code: M5C 2V6
+                            state: Ontario
+                            street: 1 Toronto Street Suite 1100
+                          - additional_info: Second Floor
+                            city: London
+                            country: United Kingdom
+                            description: London
+                            postal_code: 'EC1V 9NR '
+                            state: London
+                            street: The Warehouse, 211 Old Street
+                          - additional_info: null
+                            city: Denver
+                            country: United States
+                            description: Denver
+                            postal_code: '80202'
+                            state: CO
+                            street: 1644 Platte St
+                          - additional_info: Suite 7500
+                            city: Atlanta
+                            country: United States
+                            description: Atlanta
+                            postal_code: '30308'
+                            state: GA
+                            street: '675 Ponce de Leon Avenue NE '
+                          - additional_info: Level 16
+                            city: Singapore
+                            country: Singapore
+                            description: Singapore
+                            postal_code: '068907'
+                            state: Singapore
+                            street: 140 Robinson Road
+                          - additional_info: Suite 1305
+                            city: Chicago
+                            country: United States
+                            description: Chicago
+                            postal_code: '60654'
+                            state: Illinois
+                            street: 222 W Merchandise Mart Plaza
+                          - additional_info: null
+                            city: Dallas
+                            country: United States
+                            description: Dallas
+                            postal_code: null
+                            state: Texas
+                            street: 3001 Hackberry Rd
+                          - additional_info: Suite 200
+                            city: Santa Monica
+                            country: United States
+                            description: Los Angeles
+                            postal_code: '90401'
+                            state: California
+                            street: 1333 2nd Street
+                          - additional_info: Third Floor
+                            city: Seattle
+                            country: United States
+                            description: Seattle
+                            postal_code: '98104'
+                            state: Washington
+                            street: 111 S Jackson St
+                          - additional_info: Suite 601
+                            city: Washington, D.C.
+                            country: United States
+                            description: Washington, D.C.
+                            postal_code: '20006'
+                            state: DC
+                            street: 1625 I St NW
+                          - additional_info: Sixth Floor
+                            city: Cambridge
+                            country: United States
+                            description: Cambridge
+                            postal_code: '02142'
+                            state: MA
+                            street: 255 Main St
+                        phone_number: null
+                        raw_name: Pivotal Software, Inc.
+                        specialities:
+                          - big data
+                          - cloud computing
+                          - hadoop
+                          - analytics
+                          - software
+                          - open source software
+                          - containerization
+                          - private cloud
+                          - data science
+                          - cloud foundry
+                          - mobile software development
+                          - platform-as-a-service
+                          - hybrid cloud
+                          - microservices
+                          - pair programming
+                          - agile development
+                        tagline: 'We''ve moved! Follow us at VMware Tanzu: https://bit.ly/VMwareTanzuLinkedIn'
+                        website: https://cloud.vmware.com/tanzu
+                      - background_image: https://media.licdn.com/dms/image/v2/D4E1BAQHzLZJfSBt5-Q/company-background_10000/company-background_10000/0/1715298939407/kickstarter_cover?e=1733781600&v=beta&t=hlYd_IVSuB_24TF-wSqWWcUHUpjwoZ79rTLb-Ka4eis
+                        company_type: Privately Held
+                        crunchbase_urn: kickstarter
+                        description: |-
+                          Kickstarter helps creative projects come to life. Backers have pledged over $7B to projects on our platform, helping artists, musicians, filmmakers, designers, and other creators make their ideas a reality.
+
+                          In 2022, we'll be experimenting with a work-from-anywhere policy, a four-day workweek, and new asynchronous work practices that support a fully virtual and flexible work environment. 
+                            
+                          Current job openings listed at jobs.kickstarter.com
+                        domain: kck.st
+                        founded_year: 2009
+                        hashtags: []
+                        headcount_exact: 340
+                        headcount_range: 201-500
+                        hq_additional_info: null
+                        hq_city: Work From Anywhere
+                        hq_country: United States
+                        hq_country_code: US
+                        hq_postal_code: null
+                        hq_state: null
+                        hq_street: Fully Virtual
+                        industry: Software Development
+                        linkedin_id: '413999'
+                        linkedin_link: https://www.linkedin.com/company/kickstarter/
+                        linkedin_sales_link: https://www.linkedin.com/sales/company/413999/
+                        linkedin_urn: kickstarter
+                        location: United States
+                        logo_url: https://media.licdn.com/dms/image/v2/D560BAQGc1nYjgaNebw/company-logo_200_200/company-logo_200_200/0/1708024813718/kickstarter_logo?e=1741219200&v=beta&t=JP5QWgE_QQuHUvJLqdslb3h_OID-eBSJ8F2H9TuIZTU
+                        name: Kickstarter
+                        number_of_locations: 1
+                        other_locations_json: []
+                        phone_number: null
+                        raw_name: Kickstarter
+                        specialities: []
+                        tagline: Bringing creative projects to life.
+                        website: https://kck.st/3Gsc7QW
+                    results_count: 522
+                    time_cached: '2024-12-02T21:57:53.469659'
+                200 (Companies not found):
+                  value:
+                    amount: 0
+                    companies: []
+      security:
+        - apiKey: []
+  /api/linkedin/companies/by_icp/get_count/:
+    post:
+      tags:
+        - 4. Companies
+      summary: Count companies by ICP
+      description: Return exact count of _Companies_ for this ICP (Paid)
+      operationId: countCompaniesByIcp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                get_max_companies:
+                  type: boolean
+                  example: true
+                headcounts:
+                  type: array
+                  items:
+                    type: string
+                    example: 1-10
+                  example:
+                    - 1-10
+                industries:
+                  type: array
+                  items:
+                    type: string
+                    example: Media Production
+                  example:
+                    - Media Production
+                locations:
+                  type: array
+                  items:
+                    type: string
+                    example: Ontario, Canada
+                  example:
+                    - Ontario, Canada
+                num_of_followers:
+                  type: array
+                  items:
+                    type: string
+                    example: 1-50
+                  example:
+                    - 1-50
+                revenues_range:
+                  type: object
+                  properties:
+                    max:
+                      type: number
+                      example: 5
+                    min:
+                      type: number
+                      example: 1
+            examples:
+              Count companies by ICP:
+                value:
+                  get_max_companies: true
+                  headcounts:
+                    - 1-10
+                  industries:
+                    - Media Production
+                  locations:
+                    - Ontario, Canada
+                  num_of_followers:
+                    - 1-50
+                  revenues_range:
+                    max: 5
+                    min: 1
+      responses:
+        '200':
+          description: '200'
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST, OPTIONS
+            Content-Length:
+              schema:
+                type: string
+                example: '32'
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Date:
+              schema:
+                type: string
+                example: Mon, 02 Dec 2024 22:19:04 GMT
+            Referrer-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Server:
+              schema:
+                type: string
+                example: WSGIServer/0.2 CPython/3.11.10
+            Vary:
+              schema:
+                type: string
+                example: Accept, Origin
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    example: -1
+                  results_count:
+                    type: number
+                    example: 46
+              examples:
+                '200':
+                  value:
+                    amount: -1
+                    results_count: 46
+      security:
+        - apiKey: []
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - apiKey: []
+tags:
+  - name: 1. Auth
+    description: Login and get user info
+  - name: 2. Transactions
+    description: List of latest transactions in your account
+  - name: 3. Leads
+    description: Fetch information about leads by _link/name/ICP_.
+  - name: 4. Companies
+    description: Fetch information about companies by link/name/ICP.
