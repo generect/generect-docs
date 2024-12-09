@@ -448,10 +448,13 @@ paths:
             schema:
               type: object
               properties:
-                comments:
+                url:
+                  type: string
+                  example: https://www.linkedin.com/in/birama-traor%c3%a9/
+                inexact_company:
                   type: boolean
                   example: false
-                inexact_company:
+                comments:
                   type: boolean
                   example: false
                 people_also_viewed:
@@ -460,9 +463,6 @@ paths:
                 posts:
                   type: boolean
                   example: false
-                url:
-                  type: string
-                  example: https://www.linkedin.com/in/birama-traor%c3%a9/
             examples:
               Get Lead by link:
                 value:
