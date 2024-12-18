@@ -4,114 +4,112 @@ openapi: post /api/linkedin/leads/by_icp/
 
 # Additional information:
 
-- 50 Parallel processing available (multiple threads)
-    
-- Supported locations:
-    
-    - [List of Supported Locations](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=0).
-        
-    - In case of inputting a location which is not listed you will receive a `ValidationError` (free request), with Hint what location you need to edit.
-        
-- Personas rules: (see example request first)
-    
-    - Parent List contains a list of personas (list type).
-        
-    - 1 parameter is Name (string type) - required.
-        
-    - 2 parameter is Function (list of type strings) - required
-        
-        - If words like OR operator.
-            
-        - e.g. To look for all marketing and sales titles you have to create `["marketing", "sales"]` function.
-            
-    - 3 parameter is Seniority (list of type strings) - optional (if not selected, you should pass it as `[ ]` (empty list) )
-        
-        - It works like [Logical_conjunction](https://en.wikipedia.org/wiki/Logical_conjunction): in conjunction with Functions looks for a 1-to-1 match
-            
-            - For example if Seniority passed are `["Head", "Manager"]`.
-                
-        - e.g. To look for such titles: Head of Marketing, Head of Sales, Manager of Marketing, Manager of Sales - you have to create `["marketing", "sales"]` Function and `["Head", "Manager"]` Seniority.
-            
-        - Expands
-            
-            - VP automatically search for `[VP, SVP, EVP, GVP]`
-                
-    - 4 parameter is Prohibit Keywords (list of type strings) - optional (if not selected, you should pass it as `[ ]` (empty list) )
-        
-        - When at least 1 of that keyword appears in the `Job Title` of lead, this lead will be filtered out.
-            
-    - In case of bad input you will receive a `ValidationError` (free request), with Hint what you need to edit.
-        
-    - More Persona _Bad Examples and Good Practise_ [you can see here](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=753174520)
-        
-- limit_by rules:
-    
-    - Will return only N-strip of first leads that match input criteria
-        
-- company_link supported formats:
-    
-    - [https://www.linkedin.com/company/reply-io](https://www.linkedin.com/company/reply-io)
-        
-    - [https://www.linkedin.com/company/reply-io/](https://www.linkedin.com/company/reply-io/)
-        
-    - linkedin.com/company/reply-io
-        
-    - [https://in.linkedin.com/company/reply-io](https://in.linkedin.com/company/reply-io)
-        
-    - [http://linkedin.com/company/reply-io](http://linkedin.com/company/reply-io)
-        
-    - linkedin.com/pub/...
-        
-    - linkedin.com/pub-profile/…
-        
-    - [http://www.linkedin.com/pub-profile/](http://www.linkedin.com/pub-profile/)...
-        
-    - [https://www.linkedin.com/company/18584851](https://www.linkedin.com/company/18584851) (sales id)
-        
-    - [https://www.linkedin.com/sales/company/18584851](https://www.linkedin.com/sales/company/18584851)
-        
-- company_types:
-    
-    - `"Public Company"`, `"Educational"`, `"Self Employed"`, `"Government Agency"`
-        
-    - `"Non Profit"`, `"Self Owned"`, `"Privately Held"`, `"Partnership"`
-        
-- With Custom Parameter `"get_max_leads"` you will be able to search up to linkedin limits (_2500 results_)
-    
-- With Custom Parameter `"without company"` you will be able to for leads details without relations to companies. Limited to 200 searches per day / customer
-    
-- Custom Parameters `changed_jobs` `posted_on_linkedin` `mentioned_in_news` only with `without_company: true`
-    
-- Parameter `"company_locations"` \- companies headquarters locations
-    
-- Parameter `"company_headcounts"` \- headcounts of companies, vars - `["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+"]`
-    
-- Parameter `"exclude_names"` \- skip leads by unformatted full name
-    
-- Parameter `"filter_empty_vars"` \- skip leads if variables is empty/None/False
-    
-    - available - job_started_on, profile_photo, started_at_position, company_website
-        
-- Parameter `"group"` \- list of groups id
-    
-- Parameter `"schools"` \- list of schools id
-    
-- Parameter `"past_company_names"` \- list of past company names
-    
-- Parameter `"years_in_company"` \- list of ids by time in current company
-    
-- Parameter `"years_in_position"` \- list of ids by time in current position
-    
+* 50 Parallel processing available (multiple threads)
+
+* Supported locations:
+
+  * [List of Supported Locations](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=0).
+
+  * In case of inputting a location which is not listed you will receive a `ValidationError` (free request), with Hint what location you need to edit.
+
+* Personas rules: (see example request first)
+
+  * Parent List contains a list of personas (list type).
+
+  * 1 parameter is Name (string type) - required.
+
+  * 2 parameter is Function (list of type strings) - required
+
+    * If words like OR operator.
+
+    * e.g. To look for all marketing and sales titles you have to create `["marketing", "sales"]` function.
+
+  * 3 parameter is Seniority (list of type strings) - optional (if not selected, you should pass it as `[ ]` (empty list) )
+
+    * It works like [Logical\_conjunction](https://en.wikipedia.org/wiki/Logical_conjunction): in conjunction with Functions looks for a 1-to-1 match
+
+      * For example if Seniority passed are `["Head", "Manager"]`.
+
+    * e.g. To look for such titles: Head of Marketing, Head of Sales, Manager of Marketing, Manager of Sales - you have to create `["marketing", "sales"]` Function and `["Head", "Manager"]` Seniority.
+
+    * Expands
+
+      * VP automatically search for `[VP, SVP, EVP, GVP]`
+
+  * 4 parameter is Prohibit Keywords (list of type strings) - optional (if not selected, you should pass it as `[ ]` (empty list) )
+
+    * When at least 1 of that keyword appears in the `Job Title` of lead, this lead will be filtered out.
+
+  * In case of bad input you will receive a `ValidationError` (free request), with Hint what you need to edit.
+
+  * More Persona *Bad Examples and Good Practise* [you can see here](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=753174520)
+
+* limit\_by rules:
+
+  * Will return only N-strip of first leads that match input criteria
+
+* company\_link supported formats:
+
+  * [https://www.linkedin.com/company/reply-io](https://www.linkedin.com/company/reply-io)
+
+  * [https://www.linkedin.com/company/reply-io/](https://www.linkedin.com/company/reply-io/)
+
+  * linkedin.com/company/reply-io
+
+  * [https://in.linkedin.com/company/reply-io](https://in.linkedin.com/company/reply-io)
+
+  * [http://linkedin.com/company/reply-io](http://linkedin.com/company/reply-io)
+
+  * linkedin.com/pub/...
+
+  * linkedin.com/pub-profile/…
+
+  * [http://www.linkedin.com/pub-profile/](http://www.linkedin.com/pub-profile/)...
+
+  * [https://www.linkedin.com/company/18584851](https://www.linkedin.com/company/18584851) (sales id)
+
+  * [https://www.linkedin.com/sales/company/18584851](https://www.linkedin.com/sales/company/18584851)
+
+* company\_types:
+
+  * `"Public Company"`, `"Educational"`, `"Self Employed"`, `"Government Agency"`
+
+  * `"Non Profit"`, `"Self Owned"`, `"Privately Held"`, `"Partnership"`
+
+* By default Generect is able to search up to linkedin limits (*2500 results*)
+
+* With Custom Parameter `"without company"` you will be able to for leads details without relations to companies. Limited to 200 searches per day / customer
+
+* Custom Parameters `changed_jobs` `posted_on_linkedin` `mentioned_in_news` only with `without_company: true`
+
+* Parameter `"company_locations"` - companies headquarters locations
+
+* Parameter `"company_headcounts"` - headcounts of companies, vars - `["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+"]`
+
+* Parameter `"exclude_names"` - skip leads by unformatted full name
+
+* Parameter `"filter_empty_vars"` - skip leads if variables is empty/None/False
+
+  * available - job\_started\_on, profile\_photo, started\_at\_position, company\_website
+
+* Parameter `"group"` - list of groups id
+
+* Parameter `"schools"` - list of schools id
+
+* Parameter `"past_company_names"` - list of past company names
+
+* Parameter `"years_in_company"` - list of ids by time in current company
+
+* Parameter `"years_in_position"` - list of ids by time in current position
 
 Time ranges for `"years_in_company"` & `"years_in_position"`:
 
-1. _"Less than 1 year"_
+1. *"Less than 1 year"*
 
-2. _"1 to 2 years"_
+2. *"1 to 2 years"*
 
-3. _"3 to 5 years"_
+3. *"3 to 5 years"*
 
-4. _"6 to 10 years"_
+4. *"6 to 10 years"*
 
-5. _"More than 10 years"_
-
+5. *"More than 10 years"*
