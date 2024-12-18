@@ -4,40 +4,36 @@ openapi: post /api/linkedin/companies/by_link/
 
 ## Additional information:
 
-- 100 Parallel processing available (multiple threads)
-    
-- Supported input urls example:
-    
-    - [https://www.linkedin.com/company/boris-johnson](https://www.linkedin.com/in/boris-johnson)
-        
-    - [https://www.linkedin.com/company/boris-johnson](https://www.linkedin.com/in/boris-johnson)/
-        
-    - [https://www.linkedin.com/company/cisco](https://www.linkedin.com/company/cisco)
-        
-    - [https://www.linkedin.com/company/cisco/](https://www.linkedin.com/company/cisco/)
-        
-    - [https://www.linkedin.com/school/jcsuniversity/](https://www.linkedin.com/school/jcsuniversity/)
-        
-    - linkedin.com/company/cisco
-        
-    - [https://in.linkedin.com/company/cisco](https://in.linkedin.com/company/cisco)
-        
-    - linkedin.com/pub/cisco
-        
-    - linkedin.com/pub-profile/cisco
-        
-    - [https://www.linkedin.com/pub-profile/…](https://www.linkedin.com/pub-profile/%E2%80%A6)
-        
-    - [https://www.linkedin.com/company/9491418](https://www.linkedin.com/company/9491418)
-        
-    - [https://www.linkedin.com/sales/company/9491418](https://www.linkedin.com/company/9491418)
-        
-- In case of response with `500 status code`, please send request again
-    
-- Custom Parameter: `people_also_viewed` allows to fetch up to 20 similar companies, costs 1 additional credit
-    
-- Custom Parameter: `people_also_follow` allows to fetch last 20 followed companies, costs 1 additional credit
-    
-- Custom Parameter: `posts` allows to fetch last 20 posts, costs 1 additional credit
-    
-- Multiple parameters pass are allowed (`posts` + `people_also_follow` + `people_also_viewed`)
+* 100 Parallel processing available (multiple threads)
+
+* Supported input urls example:
+
+  * [https://www.linkedin.com/company/cisco](https://www.linkedin.com/company/cisco)
+
+  * [https://www.linkedin.com/company/cisco/](https://www.linkedin.com/company/cisco/)
+
+  * [https://www.linkedin.com/school/jcsuniversity/](https://www.linkedin.com/school/jcsuniversity/)
+
+  * linkedin.com/company/cisco
+
+  * [https://in.linkedin.com/company/cisco](https://in.linkedin.com/company/cisco)
+
+  * linkedin.com/pub/cisco
+
+  * linkedin.com/pub-profile/cisco
+
+  * [https://www.linkedin.com/pub-profile/…](https://www.linkedin.com/pub-profile/%E2%80%A6)
+
+  * [https://www.linkedin.com/company/9491418](https://www.linkedin.com/company/9491418)
+
+  * [https://www.linkedin.com/sales/company/9491418](https://www.linkedin.com/company/9491418)
+
+* In case of response with `500 status code`, please send request again
+
+* Custom Parameter: `people_also_viewed` allows to fetch up to 20 similar companies, costs 1 additional credit
+
+* Custom Parameter: `people_also_follow` allows to fetch last 20 followed companies, costs 1 additional credit
+
+* Custom Parameter: `posts` allows to fetch last 20 posts, costs 1 additional credit
+
+* Multiple parameters pass are allowed (`posts` + `people_also_follow` + `people_also_viewed`)
