@@ -3,22 +3,58 @@ title: 'Introduction'
 description: 'Short description about API'
 ---
 
-Welcome to the Generect API documentation. Here we will help you integrate and use our API.
+**Welcome to Generect Live API**
+
+**Unlock real-time, accurate data directly from its source.**
+
+Our API stands apart as each request is sent directly to live data sources, including LinkedIn, Crunchbase, websites, and our internal AI-powered system. Unlike static databases, the Generect Live API ensures up-to-date information with every call.
+
+**Core Unique Selling Proposition:**
+
+• **Dynamic Data:** All queries pull fresh data directly from social platforms, ensuring real-time accuracy.
+
+• **Email Finder:** Using AI, we intelligently guess email addresses based on provided inputs (e.g., first name, last name, and domain) and validate them with our proprietary in-house system.
+
+• **Catch-All Validation:** We validate even catch-all domains, reducing risky addresses to just 10% compared to 40-50% with other providers.
+
+Whether you’re searching for leads, companies, or validating emails, Generect Live API ensures the highest data quality for your use cases.
 
 API base url: `api.generect.com`  
 Protocol: `HTTPS`
 
 <Tip>Ensure that you are add a "/" to the end of url.</Tip>
 
-## Authorization
-Add your `auth_token` to `Authorization` key in `headers`. Like this:
-```python
-headers = {
-  "Authorziation": "Token {auth_token}",
-  ...
-}
-```
+## Use case example
+**Use Case: Finding “Newborn Founders” for a Venture Fund**
 
-## Rate limits
+A venture capital fund specializing in early-stage investments wanted to connect with new startup founders as soon as they transitioned from roles like C-level executives or top engineers in enterprise companies. Timing was crucial, as reaching these founders early ensured an edge in building strong relationships.
 
-You can request data depending on your data plan and credit balance. The default is `10000/month`. The estimated number of credits to spend is based on the complexity of the query and the number of results. The amount spent can be increased by additional data flags in the queries. For information on additional costs, please refer to the endpoint description.
+**Challenge:**
+
+The fund had a list of 15,000 target companies, encompassing over 300,000 professionals. They needed to monitor these individuals weekly, identifying those who had recently changed their job title to `“Founder”`.
+
+**Solution with Generect Live API:**
+
+1.	**Company and Lead Data Retrieval:**
+
+•	Using [/companies/by_icp/](/api-reference/endpoint/companies/get-list-of-companies-by-icp), the fund maintained a fresh list of target companies.
+
+•	With [/leads/by_icp/](/api-reference/endpoint/leads/get-list-of-leads-by-icp), they retrieved profiles of professionals in these companies.
+
+2.	**Weekly Monitoring:**
+
+•	The API dynamically updated data for all 300,000 professionals, tracking changes to job titles in real-time.
+
+3.	**Identifying New Founders:**
+
+•	Whenever a professional updated their title to `“Founder”`, the API flagged them as a high-priority lead.
+
+4.	**Email Validation:**
+
+•	Through [/email_validator/](/api-reference/endpoint/emails/email-validation), email addresses for these new founders were verified, ensuring a seamless outreach process.
+
+**Results:**
+
+The fund successfully identified and connected with “newborn founders” within days of their career change, allowing them to build relationships early in the startup lifecycle. This automated process saved time, reduced manual effort, and enhanced outreach precision.
+
+This example showcases the power of Generect Live API in solving complex, real-time data challenges for clients across various industries. Let us help you streamline your workflows and unlock new opportunities.

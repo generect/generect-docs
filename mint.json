@@ -29,12 +29,12 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:support@generect.com"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Website",
+    "url": "https://generect.com/"
   },
   "tabs": [
     {
@@ -47,13 +47,14 @@
     {
       "group": "Get Started",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/introduction",
+        "api-reference/limits"
       ]
     },
     {
       "group": "Auth",
       "pages": [
-        "api-reference/endpoint/auth/token-login",
+        "api-reference/authentication",
         "api-reference/endpoint/auth/get-user-me"
       ]
     },
@@ -67,8 +68,14 @@
       "group": "Leads",
       "pages": [
         "api-reference/endpoint/leads/get-lead-by-link",
-        "api-reference/endpoint/leads/get-list-of-leads-by-icp",
-        "api-reference/endpoint/leads/count-leads-by-icp"
+        "api-reference/endpoint/leads/get-list-of-leads-by-icp"
+      ]
+    },
+    {
+      "group": "Emails",
+      "pages": [
+        "api-reference/endpoint/emails/email-finder",
+        "api-reference/endpoint/emails/email-validation"
       ]
     },
     {

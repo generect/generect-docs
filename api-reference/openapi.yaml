@@ -114,7 +114,7 @@ paths:
       tags:
         - 1. Auth
       summary: Get User (me)
-      description: Return information about current user
+      description: Retrieve the current user’s credit balance and account details
       operationId: getUserMe
       responses:
         '200':
@@ -301,7 +301,7 @@ paths:
       tags:
         - 2. Transactions
       summary: Get List of Transactions
-      description: Return list of latest transactions
+      description: Retrieve a log of API usage, including endpoints accessed and credits consumed.
       operationId: getListOfTransactions
       parameters:
         - name: limit
@@ -440,7 +440,7 @@ paths:
       tags:
         - 3. Leads
       summary: Get Lead by link
-      description: Get Lead by linkedin link
+      description: Enrich or update your database with detailed lead information from a provided URL.
       operationId: getLeadByLink
       requestBody:
         content:
@@ -450,7 +450,7 @@ paths:
               properties:
                 url:
                   type: string
-                  example: https://www.linkedin.com/in/birama-traor%c3%a9/
+                  example: https://www.linkedin.com/company/boris-johnson
                 inexact_company:
                   type: boolean
                   example: false
@@ -470,7 +470,7 @@ paths:
                   inexact_company: false
                   people_also_viewed: false
                   posts: false
-                  url: https://www.linkedin.com/in/birama-traor%c3%a9/
+                  url: https://www.linkedin.com/company/boris-johnson
       responses:
         '200':
           description: '200'
@@ -564,7 +564,7 @@ paths:
                         example: ''
                       company_url:
                         type: string
-                        example: https://www.linkedin.com/company/engie/
+                        example: https://www.linkedin.com/company/boris-johnson
                       company_website:
                         type: string
                         example: https://www.engie.com/en
@@ -662,7 +662,7 @@ paths:
                         example: IT Services and IT Consulting
                       input_url:
                         type: string
-                        example: https://www.linkedin.com/in/birama-traor%c3%a9/
+                        example: https://www.linkedin.com/company/boris-johnson
                       is_full_data:
                         type: boolean
                         example: true
@@ -1181,6 +1181,7 @@ paths:
       tags:
         - 3. Leads
       summary: Get List of Leads by ICP
+      description: Search for leads based on your Ideal Customer Profile (ICP). Retrieve leads by criteria or from specified companies.
       operationId: getListOfLeadsByIcp
       requestBody:
         content:
@@ -1213,8 +1214,6 @@ paths:
                     minItems: 4
                 limit_by:
                   type: integer
-                get_max_leads:
-                  type: boolean
                 exclude_names:
                   type: array
                   items:
@@ -1307,7 +1306,6 @@ paths:
                         - Intern
                         - Student
                   limit_by: 14
-                  get_max_leads: true
                   exclude_names:
                     - Volker Reinsch
                     - Nathalie Hoffmann
@@ -1981,7 +1979,7 @@ paths:
       tags:
         - 4. Companies
       summary: Get Company by link
-      description: Get company by link/name
+      description: Enrich or update your database with detailed company information from a provided URL, domain or company name.
       operationId: getCompanyByLink
       requestBody:
         content:
@@ -2312,6 +2310,7 @@ paths:
       tags:
         - 4. Companies
       summary: Get List of Companies by ICP
+      description: Search for companies matching your ICP criteria, such as location, industry, revenue and more.
       operationId: getListOfCompaniesByIcp
       requestBody:
         content:
@@ -3022,7 +3021,7 @@ paths:
       tags:
         - 4. Companies
       summary: Count companies by ICP
-      description: Return exact count of _Companies_ for this ICP (Paid)
+      description: Estimate the number of companies matching specific search criteria.
       operationId: countCompaniesByIcp
       requestBody:
         content:
@@ -3143,6 +3142,132 @@ paths:
                     results_count: 46
       security:
         - apiKey: []
+  /api/linkedin/email_finder/:
+    post:
+      summary: Generate email
+      description: Generate valid corporate email addresses using first name, last name, and domain.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  domain:
+                    type: string
+              example:
+                - first_name: Jack
+                  last_name: Kennedy
+                  domain: platformscience.com
+      responses:
+        '200':
+          description: Successful response with email details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    domain:
+                      type: string
+                    result:
+                      type: string
+                    catch_all:
+                      type: string
+                    error:
+                      type: string
+                      nullable: true
+                    valid_email:
+                      type: string
+                    source:
+                      type: string
+                    email_format:
+                      type: string
+                    mx_domain:
+                      type: string
+                    logs:
+                      type: string
+                    exist:
+                      type: string
+              example:
+                - first_name: Jack
+                  last_name: Kennedy
+                  domain: platformscience.com
+                  result: valid
+                  catch_all: true
+                  error: null
+                  valid_email: jkennedy@platformscience.com
+                  source: name2email
+                  email_format: flast
+                  mx_domain: pphosted.com
+                  logs: "get mx_record: pphosted.com\ncheck outlook,gmail,onedrive,o365,o365_get_creds\n"
+                  exist: yes
+
+  /api/linkedin/email_validator/:
+    post:
+      summary: Validate an email address
+      description: Validate email addresses for deliverability, including catch-all domains, using our proprietary system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+              example:
+                - jkennedy@platformscience.com
+      responses:
+        '200':
+          description: Successful email validation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    result:
+                      type: string
+                    catch_all:
+                      type: string
+                    error:
+                      type: string
+                      nullable: true
+                    source:
+                      type: string
+                    mx_domain:
+                      type: string
+                    exist:
+                      type: string
+                    email:
+                      type: string
+                    logs:
+                      type: array
+                      items:
+                        type: string
+              example:
+                - result: valid
+                  catch_all: true
+                  error: null
+                  source: name2email
+                  mx_domain: pphosted.com
+                  exist: yes
+                  email: jkennedy@platformscience.com
+                  logs:
+                    - get mx_record: pphosted.com
+                    - check outlook,gmail,onedrive,o365,o365_get_creds
 components:
   securitySchemes:
     apiKey:

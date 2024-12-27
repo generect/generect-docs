@@ -1,0 +1,11 @@
+To authenticate your requests, include your `auth_token` in the `Authorization` header. Here's how you can do it:
+
+```python
+headers = {
+  "Authorization": f"Token {auth_token}",
+  ...
+}
+```
+
+### Important:
+Ensure you prepend `Token` to your `auth_token` for proper authorization.
