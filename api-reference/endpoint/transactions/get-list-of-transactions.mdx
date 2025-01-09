@@ -1,3 +1,49 @@
 ---
 openapi: get /api/auth/transactions/
 ---
+
+# Filtering
+The `/api/auth/transactions/` endpoint allows you to filter transactions based on various properties. By applying filters directly in your request URL, you can narrow down results to meet specific criteria
+
+## Example:
+To retrieve all transactions from the year 2025: `/auth/transactions/?created_at__range=2025-01-01,2025-12-31`
+
+## Available Parameters and Modifiers
+Below is the list of parameters and the modifiers you can use for filtering:
+<AccordionGroup>
+    <Accordion title="created_at">
+        Modifiers: __exact, gt, gte, lt, lte, range__ <br />
+        Example: `?created_at__range=2025-01-01,2025-12-31`
+    </Accordion>
+    <Accordion title="status">
+        Modifiers: __exact__ <br />
+        Example: `?status__exact=success`
+    </Accordion>
+    <Accordion title="balance_type">
+        Modifiers: __exact__ <br />
+        Example: `?balance_type__exact=leads_by_icp`
+    </Accordion>
+    <Accordion title="amount">
+        Modifiers: __exact, gt, gte, lt, lte, range__ <br />
+        Examples: `?amount__lt=-5`
+    </Accordion>
+    <Accordion title="after_balance">
+       Modifiers: __exact, gt, gte, lt, lte, range__ <br />
+       Examples: `?after_balance__lte=500`
+    </Accordion>
+</AccordionGroup>
+
+Modifier Descriptions:
+- `exact`: Matches the exact value \(==\)
+- `gt`: Greater than \(>)
+- `gte`: Greter than or equal to \(>=\)
+- `lt`: Lower than \(\<\)
+- `lte`: Lower than or equal to \(\<=\)
+- `range`: Filters values between `x` and `y` \(number or date\). Syntax: `x,y`
+
+## Date
+- Date: yyyy-mm-dd  
+  Example: 2025-01-01
+
+- Date and Time: yyyy-mm-ddTHH:MM:SS.ssssss  
+  Example: 2025-01-01T02:03:04.000000
