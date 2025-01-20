@@ -1926,28 +1926,137 @@ paths:
       tags:
         - 3. Leads
       summary: Count leads by ICP
-      description: Return exact count of _Leads_ for this ICP (Paid)
+      description:  Estimate the number of leads matching specific search criteria.
       operationId: countLeadsByIcp
       requestBody:
         content:
           application/json:
             schema:
               type: object
+              properties:
+                company_link:
+                  type: string
+                  description: "Use 'company_link' or 'company_id'. One of them is required if without_company is false."
+                company_id:
+                  type: integer
+                  description: "Optional, used if 'without_company' is false."
+                without_company:
+                  type: boolean
+                locations:
+                  type: array
+                  items:
+                    type: string
+                personas:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: string
+                        - type: array
+                          items:
+                            type: string
+                    minItems: 4
+                exclude_names:
+                  type: array
+                  items:
+                    type: string
+                filter_empty_vars:
+                  type: array
+                  items:
+                    type: string
+                changed_jobs:
+                  type: boolean
+                  description: "Optional, flag to specify if jobs have changed."
+                posted_on_linkedin:
+                  type: boolean
+                  description: "Optional, flag to specify if posted on LinkedIn."
+                mentioned_in_news:
+                  type: boolean
+                  description: "Optional, flag to specify if mentioned in news."
+                lead_industries:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, list of industries. Only applicable if 'without_company' is true."
+                company_locations:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, company locations."
+                company_headcounts:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, company headcounts."
+                company_types:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, company types."
+                past_company_names:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, list of past company names."
+                years_in_company:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, number of years in a company."
+                years_in_position:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, number of years in the position."
+                groups:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, list of group IDs."
+                schools:
+                  type: array
+                  items:
+                    type: integer
+                  description: "Optional, list of school IDs."
+                offset_by:
+                  type: integer
+                  description: "Optional, used only with 'without_company' set to true."
+
             examples:
-              Count leads by ICP:
+              Get List of Leads by ICP:
                 value:
                   company_link: https://www.linkedin.com/company/fette-compacting-gmbh
                   without_company: false
                   locations:
-                    - Germany
                     - Austria
                     - Switzerland
                   personas:
-                    - - CEO
-                      - - ceo
+                    - - Communication
+                      - - Communication
+                        - Kommunikation
+                        - Communication
                       - []
+                      - - Assistant
+                        - Intern
+                        - Student
+                    - - Communications
+                      - - Communications
+                        - Kommunikation
+                        - Communications
                       - []
-                  limit_by: 14
+                      - - Assistant
+                        - Intern
+                        - Student
+                  exclude_names:
+                    - Volker Reinsch
+                    - Nathalie Hoffmann
+                    - Nora Behrens
+                    - Emanuel da Silva Gomes
+                    - Kerstin Schaper
+                    - Angela Hogrefe
+                  filter_empty_vars:
+                    - started_at_position
       responses:
         '200':
           description: '200'

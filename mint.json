@@ -61,21 +61,8 @@
     {
       "group": "Transactions",
       "pages": [
-        "api-reference/endpoint/transactions/get-list-of-transactions"
-      ]
-    },
-    {
-      "group": "Leads",
-      "pages": [
-        "api-reference/endpoint/leads/get-lead-by-link",
-        "api-reference/endpoint/leads/get-list-of-leads-by-icp"
-      ]
-    },
-    {
-      "group": "Emails",
-      "pages": [
-        "api-reference/endpoint/emails/email-finder",
-        "api-reference/endpoint/emails/email-validation"
+        "api-reference/endpoint/transactions/get-list-of-transactions",
+        "api-reference/endpoint/transactions/spent-amount-of-transactions"
       ]
     },
     {
@@ -84,6 +71,21 @@
         "api-reference/endpoint/companies/get-company-by-link",
         "api-reference/endpoint/companies/get-list-of-companies-by-icp",
         "api-reference/endpoint/companies/count-companies-by-icp"
+      ]
+    },
+    {
+      "group": "Leads",
+      "pages": [
+        "api-reference/endpoint/leads/get-lead-by-link",
+        "api-reference/endpoint/leads/get-list-of-leads-by-icp",
+        "api-reference/endpoint/leads/count-leads-by-icp"
+      ]
+    },
+    {
+      "group": "Emails",
+      "pages": [
+        "api-reference/endpoint/emails/email-finder",
+        "api-reference/endpoint/emails/email-validation"
       ]
     }
   ],
