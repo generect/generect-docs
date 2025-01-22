@@ -1,3 +1,17 @@
 ---
-openapi: get /api/auth/transactions/
+openapi: get /api/auth/transactions/spent_credits/
+title: "Spent amount of credits"
 ---
+# Filtering
+The `/api/auth/transactions/spent_credits/` endpoint allows you to get all spent credits grouped by endpoints in the period.
+
+## Period
+Must be on of: `day`, `week`, `month`, `quarter`, `year`.
+
+## Date
+- Date: yyyy-mm-dd  
+  Example: 2025-01-01
+
+- Date and Time: yyyy-mm-ddTHH:MM:SS.ssssss  
+  Example: 2025-01-01T02:03:04.000000
+

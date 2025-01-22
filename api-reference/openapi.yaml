@@ -467,6 +467,78 @@ paths:
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2380
+
+  /api/auth/transactions/spent_credits/:
+    get:
+      summary: Fetch spent credits transactions
+      description: |
+        Retrieve a list of spent credits transactions based on the specified period and date range.
+      parameters:
+        - name: timezone
+          in: query
+          description: Timezone for date calculations
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          description: The aggregation period for transactions
+          required: true
+          schema:
+            type: string
+            enum: [day, week, month, quarter, year]
+        - name: start_date
+          in: query
+          description: The start date for the transaction filter (ISO 8601 format)
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: The end date for the transaction filter (ISO 8601 format)
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: A list of transactions for the specified period and date range
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  spent_credits:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      additionalProperties:
+                        type: number
+                    example:
+                      "2025-01-01T00:00:00":
+                        "/api/linkedin/leads/by_icp/": -4428.0
+                        "/api/linkedin/companies/by_icp/": -39.0
+                        "/api/linkedin/company/by_link/": -5.0
+                        "/api/linkedin/lead/by_link/": -3.0
+                        "/api/linkedin/email_finder/": -1.0
+                        "platform": -9.0
+                      "2024-12-01T00:00:00":
+                        "/api/linkedin/leads/by_icp/": -383.0
+                        "/api/linkedin/company/by_link/": -17.0
+                        "/api/linkedin/companies/by_icp/": -156.0
+                        "/api/linkedin/lead/by_link/": -6.0
+                        "platform": -12.0
+                      "2024-11-01T00:00:00":
+                        "/api/linkedin/companies/by_icp/": -101.0
+                        "/api/linkedin/leads/by_icp/": -1720.0
+                        "platform": -1469.0
+                  total_spent_credits:
+                    type: number
+                    example: -8349.0
+      security:
+        - apiKey: []
+
   /api/linkedin/leads/by_link/:
     post:
       tags:
