@@ -1399,16 +1399,16 @@ paths:
                         - Communication
                       - []
                       - - Assistant
-                        - Intern
-                        - Student
+                        - Operations
+                        - Hubspot
                     - - Communications
                       - - Communications
                         - Kommunikation
                         - Communications
                       - []
                       - - Assistant
-                        - Intern
-                        - Student
+                        - Operations
+                        - Hubspot
                   limit_by: 14
                   exclude_names:
                     - Volker Reinsch
@@ -2110,16 +2110,16 @@ paths:
                         - Communication
                       - []
                       - - Assistant
-                        - Intern
-                        - Student
+                        - Operations
+                        - Hubspot
                     - - Communications
                       - - Communications
                         - Kommunikation
                         - Communications
                       - []
                       - - Assistant
-                        - Intern
-                        - Student
+                        - Operations
+                        - Hubspot
                   exclude_names:
                     - Volker Reinsch
                     - Nathalie Hoffmann
