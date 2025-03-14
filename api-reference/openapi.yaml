@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Generect + Reply
+  title: Generect API
   description: |-
     Welcome to the Generect API documentation. Here we will help you integrate and use our API.
 
@@ -3487,6 +3487,7 @@ components:
       type: apiKey
       name: Authorization
       in: header
+      description: "Use 'Token <api-key>' as the value"
 security:
   - apiKey: []
 tags:
