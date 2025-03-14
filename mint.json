@@ -9,7 +9,8 @@
     "baseUrl": "https://api.generect.com/",
     "auth": {
       "method": "key",
-      "name": "Authorization"
+      "name": "Authorization",
+      "prefix": "Token "
     }
   },
   "openapi": "api-reference/openapi.yaml",
