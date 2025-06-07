@@ -1295,12 +1295,10 @@ paths:
               properties:
                 company_link:
                   type: string
-                  description: "Use 'company_link' or 'company_id'. One of them is required if without_company is false."
+                  description: "Use 'company_link' or 'company_id'. One of them is required"
                 company_id:
                   type: integer
-                  description: "Optional, used if 'without_company' is false."
-                without_company:
-                  type: boolean
+                  description: "Optional."
                 locations:
                   type: array
                   items:
@@ -1339,7 +1337,7 @@ paths:
                   type: array
                   items:
                     type: string
-                  description: "Optional, list of industries. Only applicable if 'without_company' is true."
+                  description: "Optional, list of industries."
                 company_locations:
                   type: array
                   items:
@@ -1380,15 +1378,11 @@ paths:
                   items:
                     type: integer
                   description: "Optional, list of school IDs."
-                offset_by:
-                  type: integer
-                  description: "Optional, used only with 'without_company' set to true."
 
             examples:
               Get List of Leads by ICP:
                 value:
                   company_link: https://www.linkedin.com/company/fette-compacting-gmbh
-                  without_company: false
                   locations:
                     - Austria
                     - Switzerland
@@ -2008,12 +2002,10 @@ paths:
               properties:
                 company_link:
                   type: string
-                  description: "Use 'company_link' or 'company_id'. One of them is required if without_company is false."
+                  description: "Use 'company_link' or 'company_id'. One of them is required."
                 company_id:
                   type: integer
-                  description: "Optional, used if 'without_company' is false."
-                without_company:
-                  type: boolean
+                  description: "Optional"
                 locations:
                   type: array
                   items:
@@ -2050,7 +2042,7 @@ paths:
                   type: array
                   items:
                     type: string
-                  description: "Optional, list of industries. Only applicable if 'without_company' is true."
+                  description: "Optional, list of industries"
                 company_locations:
                   type: array
                   items:
@@ -2091,15 +2083,11 @@ paths:
                   items:
                     type: integer
                   description: "Optional, list of school IDs."
-                offset_by:
-                  type: integer
-                  description: "Optional, used only with 'without_company' set to true."
 
             examples:
               Get List of Leads by ICP:
                 value:
                   company_link: https://www.linkedin.com/company/fette-compacting-gmbh
-                  without_company: false
                   locations:
                     - Austria
                     - Switzerland
