@@ -3,7 +3,7 @@
   "name": "Starter Kit",
   "logo": {
     "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "light": "/logo/light.svg" 
   },
   "api": {
     "baseUrl": "https://api.generect.com/",
@@ -49,6 +49,14 @@
       "pages": [
         "api-reference/introduction",
         "api-reference/limits"
+      ]
+    },
+    {
+      "group": "MCP (Model Context Protocol)",
+      "pages": [
+        "api-reference/mcp/about-mcp",
+        "api-reference/mcp/quick-start",
+        "api-reference/mcp/common-problems"
       ]
     },
     {

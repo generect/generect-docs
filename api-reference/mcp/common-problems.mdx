@@ -1,0 +1,43 @@
+---
+title: Common problems
+description: This page describes common problems you may encounter when using **MCP with Generect API**, and how to solve them.
+---
+
+---
+
+## 401 Unauthorized error
+**Cause:** Your API key is invalid or missing.  
+**Solution:**  
+- Make sure you replaced `your-api-key` with your actual key.
+- Do not remove the word `Token` from the value — it should look like: `GENERECT_API_KEY="Token your-real-key"`
+- Ask for a status for this key.
+
+---
+
+## Timeout error
+**Cause:** The API request took longer than the default timeout (1 minute). For example, a lead search may take longer with very broad filters.
+**Solution:**  
+- Increase the timeout limit in your MCP configuration (default: `60000` ms).
+```json
+"GENERECT_TIMEOUT_MS": "180000"
+```
+- Try refining your query (e.g., add more filters for leads or companies).
+
+---
+
+## MCP server does not appear in the client
+
+**Cause**: Configuration file is invalid, or the MCP server didn't start.
+**Solution**:
+- Double-check JSON syntax and content in your config (`claude_desktop_config.json`, Cursor config). NPM should be `generect-ultimate-mcp`
+- Try setting MCP_DEBUG=1 to see logs when starting the MCP.
+- Restart your client after editing the configuration.
+
+---
+
+### LLM doesn't call MCP tools
+
+**Cause**: The LLM decides when to call external tools — it may not always trigger them.
+**Solution**:
+- Rephrase your request in a way that makes tool usage more likely (e.g., explicitly ask to “search leads”).
+- Check that the MCP server is shown as active in the client's settings.

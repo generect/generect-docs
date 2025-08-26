@@ -1,0 +1,72 @@
+---
+description: 'Quick guide to use Genrect MCP'
+---
+
+Our remote MCP server provides integration between the **Generect Live API** and any Client that supports MCP
+ (e.g., [Cursor](https://cursor.com/home), [Claude Desktop](https://claude.ai/download), [OpenAI’s Responses API](https://platform.openai.com/docs/api-reference/responses)).
+ This allows you to access **Generect’s lead search, company search, email generation**, and other tools directly in **natural language workflows**.
+
+The MCP Server is hosted at `https://api.generect.com`. You will use this endpoint on every integration. However, the configuration on different clients has some minor differences.
+
+# Configuration
+<Warning>
+  In all configurations, don't forget to replace the placeholder API key with your actual key.
+</Warning>
+## How to use MCP with Claude Desktop?
+You can't access MCP settings on Claude chat in web (for now), so use [Claude Desktop](https://claude.ai/download).
+
+Visit **Settings** in the Claude Desktop app. You can find them in dropdown when click on your account icon. Then navigate to the **Developer** tab, click **Edit config** button
+<img src="/media/claude-developer-settings2.png" alt="claude-developer-settings" className="rounded-lg" />
+
+This will show your `claude_desktop_config.json` file:
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Next, add MCP Server configuration to this file. Don't forget to **replace API Keys intsead of `your-api-key`** (don't remove first `Token` word) with your API key.
+
+```json
+{
+  "mcpServers": {
+    "generect-api": {
+      "command": "npx",
+      "args": ["-y", "generect-ultimate-mcp@latest"],
+      "env": {
+        "GENERECT_API_BASE": "https://api.generect.com",
+        "GENERECT_API_KEY": "Token your-api-key",
+        "GENERECT_TIMEOUT_MS": "60000",
+        "MCP_DEBUG": "0"
+      }
+    }
+  }
+}
+
+```
+
+Restart Claude Desktop to apply changes. After that you will see `generect-api` MCP as active in `Search and tools` dropdown.
+
+After some message where Claude decides to (for example) search leads, you will be prompted to allow the use of external tool.
+<img src="/media/claude-prompt.png" alt="claude-prompt" className="rounded-lg" />
+
+Here is response of example, where Claude automaticlly analyzed LinkedIn profile (some sensitive information was hidden)
+<img src="/media/response-example.png" alt="response-example" className="rounded-lg" />
+
+---
+
+## How to use MCP with Cursor?
+Use this button to add MCP **directly to Cursor IDE**:
+<a href="https://cursor.com/en/install-mcp?name=generect-liveapi&config=eyJjb21tYW5kIjoibm9kZSAuL25vZGVfbW9kdWxlcy90c3gvZGlzdC9jbGkubWpzIHNyYy9zZXJ2ZXIudHMiLCJlbnYiOnsiR0VORVJFQ1RfQVBJX0JBU0UiOiJodHRwczovL2FwaS5nZW5lcmVjdC5jb20iLCJHRU5FUkVDVF9BUElfS0VZIjoiVG9rZW4gPGFwaS1rZXk%2BIiwiR0VORVJFQ1RfVElNRU9VVF9NUyI6IjYwMDAwIn19" target="_blank">
+  <img src="https://cursor.com/deeplink/mcp-install-light.svg" alt="Install MCP Server" className="hidden dark:block" noZoom />
+</a>
+
+<a href="https://cursor.com/en/install-mcp?name=generect-liveapi&config=eyJjb21tYW5kIjoibm9kZSAuL25vZGVfbW9kdWxlcy90c3gvZGlzdC9jbGkubWpzIHNyYy9zZXJ2ZXIudHMiLCJlbnYiOnsiR0VORVJFQ1RfQVBJX0JBU0UiOiJodHRwczovL2FwaS5nZW5lcmVjdC5jb20iLCJHRU5FUkVDVF9BUElfS0VZIjoiVG9rZW4gPGFwaS1rZXk%2BIiwiR0VORVJFQ1RfVElNRU9VVF9NUyI6IjYwMDAwIn19" target="_blank">
+  <img src="https://cursor.com/deeplink/mcp-install-dark.svg" alt="Install MCP Server" className="block dark:hidden" noZoom />
+</a>
+Read [Cursor Docs](https://docs.cursor.com/en/context/mcp) for more info.
+
+# Available Tools
+The MCP integration provides access to the following `Generect API` functions:
+- `search_leads`: Search for leads by ICP filters
+- `search_companies`: Search for companies by ICP filters
+- `generate_email`: Generate email by first/last name and domain
+- `get_lead_by_url`: Get LinkedIn lead by profile URL
+- `health`: Quick health check against the API
