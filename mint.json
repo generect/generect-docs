@@ -52,14 +52,6 @@
       ]
     },
     {
-      "group": "MCP (Model Context Protocol)",
-      "pages": [
-        "api-reference/mcp/about-mcp",
-        "api-reference/mcp/quick-start",
-        "api-reference/mcp/common-problems"
-      ]
-    },
-    {
       "group": "Auth",
       "pages": [
         "api-reference/authentication",
@@ -94,6 +86,14 @@
       "pages": [
         "api-reference/endpoint/emails/email-finder",
         "api-reference/endpoint/emails/email-validation"
+      ]
+    },
+    {
+      "group": "MCP",
+      "pages": [
+        "api-reference/mcp/about-mcp",
+        "api-reference/mcp/quick-start",
+        "api-reference/mcp/common-problems"
       ]
     }
   ],
