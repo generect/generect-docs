@@ -3474,7 +3474,7 @@ components:
     ApiTokenAuth:
       type: http
       scheme: bearer
-      bearerFormat: Token
+      bearerFormat: JWT
       description: "Use 'Token <api-key>' as the value"
 security:
   - ApiTokenAuth: []
