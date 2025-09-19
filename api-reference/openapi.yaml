@@ -3472,9 +3472,9 @@ paths:
 components:
   securitySchemes:
     apiKey:
-      type: apiKey
-      name: Authorization
-      in: header
+      type: http
+      scheme: bearer
+      bearerFormat: Token
       description: "Use 'Token <api-key>' as the value"
 security:
   - apiKey: []
