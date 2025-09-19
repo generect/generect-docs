@@ -3471,13 +3471,13 @@ paths:
                     - check outlook,gmail,onedrive,o365,o365_get_creds
 components:
   securitySchemes:
-    ApiTokenAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
       description: "Use 'Token <api-key>' as the value"
 security:
-  - ApiTokenAuth: []
+  - apiKey: []
 tags:
   - name: 1. Auth
     description: Login and get user info
