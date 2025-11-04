@@ -1378,6 +1378,9 @@ paths:
                   items:
                     type: integer
                   description: "Optional, list of school IDs."
+                linkedin_filter_link:
+                  type: string
+                  description: "Optional, pre-built LinkedIn search URL (Sales Navigator or regular search) containing search filters."
 
             examples:
               Get List of Leads by ICP:
@@ -1413,6 +1416,10 @@ paths:
                     - Angela Hogrefe
                   filter_empty_vars:
                     - started_at_position
+              Get List of Leads using LinkedIn Filter Link:
+                value:
+                  linkedin_filter_link: "https://www.linkedin.com/sales/search/people?query=(spellCorrectionEnabled%3Atrue%2Ckeywords%3Amarketing%2CfirstName%3A%2ClastName%3A%2Ctitle%3A%2Ccompany%3A%2Cschool%3A%2CcontactInterest%3A%2CnetworkDepth%3A%2Clanguage%3A%2Clocation%3A%2Cindustry%3A%2CcurrentCompany%3A%2CpastCompany%3A%2CprofileLanguage%3A%2CnonprofitInterest%3A%2CfortuneOrGlobal500Size%3A%2CsalesPersona%3A)"
+                  limit_by: 100
       responses:
         '200':
           description: 200 / 200 (Leads not found)
