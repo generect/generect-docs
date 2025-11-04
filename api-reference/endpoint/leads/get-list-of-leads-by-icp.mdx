@@ -98,12 +98,9 @@ The `linkedin_filter_link` parameter allows you to use a pre-built LinkedIn sear
 - The URL must contain valid query parameters that can be parsed
 - Both Sales Navigator and regular LinkedIn search URLs are supported
 
-## Search by Company Name or Domain
+## Search by Company Name
 
-You can search for leads by specifying company information in several ways:
-
-### Using Company Name
-Search for leads by providing the company name directly:
+You can search for leads by specifying the company name directly:
 
 ```json
 {
@@ -115,34 +112,14 @@ Search for leads by providing the company name directly:
 }
 ```
 
-### Using Email Domain
-Search for leads by providing email addresses from the target company domain:
-
-```json
-{
-  "emails": ["john@microsoft.com", "jane@microsoft.com"],
-  "personas": [
-    ["Sales", ["sales", "business development"], [], []]
-  ],
-  "limit_by": 30
-}
-```
-
-**How Email Domain Search Works:**
-1. The API automatically extracts the domain from provided email addresses
-2. All emails must belong to the same domain (mixed domains are not allowed)
-3. The domain is used to identify and search the target company
-4. Maximum 500 email addresses per request
-
-### Important Notes for Company/Domain Search:
-- You must specify **exactly one** of: `company_id`, `company_link`, `company_name`, or `emails`
-- When using `emails`, all email addresses must have the same domain
+### Important Notes for Company Search:
+- You must specify **exactly one** of: `company_id`, `company_link`, or `company_name`
 - The API will automatically find the LinkedIn company profile based on the provided information
 - If no exact company match is found, the search may return an error or empty results
 
 ## Search Without Company Restriction
 
-For broader lead searches across all companies, use the `without_company` parameter:
+For lead searches based purely on lead parameters without targeting a specific company, use the `without_company` parameter:
 
 ```json
 {
@@ -156,14 +133,16 @@ For broader lead searches across all companies, use the `without_company` parame
 ```
 
 ### How Without Company Search Works:
-1. Searches across all LinkedIn profiles, not limited to specific companies
-2. Useful for finding leads based on job titles, locations, and other criteria
-3. Higher limit of 2400 results available
-4. May have usage restrictions based on your account plan
+1. Searches for leads based only on their individual characteristics (job titles, locations, experience, etc.)
+2. Does not require specifying any company information (`company_id`, `company_link`, or `company_name`)
+3. Useful for finding leads across all companies that match specific criteria
+4. Higher limit of 2400 results available
+5. May have usage restrictions based on your account plan
 
 ### Important Notes for Without Company Search:
 - `without_company: true` removes the requirement to specify company information
+- Search is performed based entirely on lead parameters: personas, locations, seniority levels, etc.
 - Maximum limit of 2400 results when using this mode
 - May have daily usage limits depending on your subscription
-- Combines well with location, persona, and other filtering criteria
 - Cannot be used together with `company_id`, `company_link`, or `company_name`
+- Ideal for broad prospecting across multiple companies based on lead profiles

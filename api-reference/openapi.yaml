@@ -1433,18 +1433,6 @@ paths:
                       - []
                       - []
                   limit_by: 50
-              Get List of Leads by Email Domain:
-                value:
-                  emails:
-                    - "john@microsoft.com"
-                    - "jane@microsoft.com"
-                  personas:
-                    - - "Sales"
-                      - - "sales"
-                        - "business development"
-                      - []
-                      - []
-                  limit_by: 30
               Get List of Leads without Company Restriction:
                 value:
                   without_company: true
