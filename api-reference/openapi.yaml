@@ -1433,7 +1433,7 @@ paths:
                       - []
                       - []
                   limit_by: 50
-              Get List of Leads without Company Restriction:
+              Get List of Leads by Lead Criteria Only:
                 value:
                   without_company: true
                   locations:

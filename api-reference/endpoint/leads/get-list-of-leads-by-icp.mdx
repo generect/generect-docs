@@ -117,7 +117,7 @@ You can search for leads by specifying the company name directly:
 - The API will automatically find the LinkedIn company profile based on the provided information
 - If no exact company match is found, the search may return an error or empty results
 
-## Search Without Company Restriction
+## Search by Lead Criteria Only
 
 For lead searches based purely on lead parameters without targeting a specific company, use the `without_company` parameter:
 
@@ -132,14 +132,14 @@ For lead searches based purely on lead parameters without targeting a specific c
 }
 ```
 
-### How Without Company Search Works:
+### How Lead Criteria Search Works:
 1. Searches for leads based only on their individual characteristics (job titles, locations, experience, etc.)
 2. Does not require specifying any company information (`company_id`, `company_link`, or `company_name`)
 3. Useful for finding leads across all companies that match specific criteria
 4. Higher limit of 2400 results available
 5. May have usage restrictions based on your account plan
 
-### Important Notes for Without Company Search:
+### Important Notes for Lead Criteria Search:
 - `without_company: true` removes the requirement to specify company information
 - Search is performed based entirely on lead parameters: personas, locations, seniority levels, etc.
 - Maximum limit of 2400 results when using this mode
