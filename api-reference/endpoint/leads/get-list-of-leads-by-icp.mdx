@@ -60,6 +60,7 @@ Build a targeted list of prospects for outreach campaigns
 - Parameter `"past_company_names"` - list of past company names
 - Parameter `"years_in_company"` - list of ids by time in current company
 - Parameter `"years_in_position"` - list of ids by time in current position
+- Parameter `"linkedin_filter_link"` - allows you to use pre-built LinkedIn search URLs instead of specifying individual search criteria
 
 Time ranges for `"years_in_company"` & `"years_in_position"`:
 
@@ -68,3 +69,31 @@ Time ranges for `"years_in_company"` & `"years_in_position"`:
 3. _"3 to 5 years"_
 4. _"6 to 10 years"_
 5. _"More than 10 years"_
+
+## LinkedIn Filter Link Usage
+
+The `linkedin_filter_link` parameter allows you to use a pre-built LinkedIn search URL instead of manually specifying individual search criteria. This is particularly useful when you have complex search filters already configured in LinkedIn.
+
+### Supported LinkedIn URLs:
+- **Sales Navigator People Search**: `https://www.linkedin.com/sales/search/people?query=...`
+- **Regular LinkedIn People Search**: `https://www.linkedin.com/search/results/people/?keywords=...`
+
+### How it works:
+1. Create your desired search in LinkedIn (Sales Navigator or regular search)
+2. Copy the URL from the browser address bar
+3. Use this URL as the `linkedin_filter_link` parameter
+4. The API will extract and apply the search filters from your URL
+
+### Usage Example:
+```json
+{
+  "linkedin_filter_link": "https://www.linkedin.com/sales/search/people?query=(spellCorrectionEnabled%3Atrue%2Ckeywords%3Amarketing%2CfirstName%3A%2ClastName%3A%2Ctitle%3A%2Ccompany%3A%2Cschool%3A%2CcontactInterest%3A%2CnetworkDepth%3A%2Clanguage%3A%2Clocation%3A%2Cindustry%3A%2CcurrentCompany%3A%2CpastCompany%3A%2CprofileLanguage%3A%2CnonprofitInterest%3A%2CfortuneOrGlobal500Size%3A%2CsalesPersona%3A)",
+  "limit_by": 100
+}
+```
+
+### Important Notes:
+- When using `linkedin_filter_link`, you don't need to specify other filter parameters (locations, company_name, personas, etc.)
+- Maximum limit when using `linkedin_filter_link` is 2400 results
+- The URL must contain valid query parameters that can be parsed
+- Both Sales Navigator and regular LinkedIn search URLs are supported
