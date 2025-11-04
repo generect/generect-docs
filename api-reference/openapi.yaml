@@ -1381,6 +1381,9 @@ paths:
                 linkedin_filter_link:
                   type: string
                   description: "Optional, pre-built LinkedIn search URL (Sales Navigator or regular search) containing search filters."
+                without_company:
+                  type: boolean
+                  description: "Optional, set to true to search leads across all companies without company restriction."
 
             examples:
               Get List of Leads by ICP:
@@ -1419,6 +1422,42 @@ paths:
               Get List of Leads using LinkedIn Filter Link:
                 value:
                   linkedin_filter_link: "https://www.linkedin.com/sales/search/people?query=(spellCorrectionEnabled%3Atrue%2Ckeywords%3Amarketing%2CfirstName%3A%2ClastName%3A%2Ctitle%3A%2Ccompany%3A%2Cschool%3A%2CcontactInterest%3A%2CnetworkDepth%3A%2Clanguage%3A%2Clocation%3A%2Cindustry%3A%2CcurrentCompany%3A%2CpastCompany%3A%2CprofileLanguage%3A%2CnonprofitInterest%3A%2CfortuneOrGlobal500Size%3A%2CsalesPersona%3A)"
+                  limit_by: 100
+              Get List of Leads by Company Name:
+                value:
+                  company_name: "Microsoft"
+                  personas:
+                    - - "Marketing"
+                      - - "marketing"
+                        - "digital marketing"
+                      - []
+                      - []
+                  limit_by: 50
+              Get List of Leads by Email Domain:
+                value:
+                  emails:
+                    - "john@microsoft.com"
+                    - "jane@microsoft.com"
+                  personas:
+                    - - "Sales"
+                      - - "sales"
+                        - "business development"
+                      - []
+                      - []
+                  limit_by: 30
+              Get List of Leads without Company Restriction:
+                value:
+                  without_company: true
+                  locations:
+                    - "New York, New York, United States"
+                  personas:
+                    - - "Tech Leaders"
+                      - - "CTO"
+                        - "VP Engineering"
+                        - "Tech Director"
+                      - - "VP"
+                        - "Director"
+                      - []
                   limit_by: 100
       responses:
         '200':
