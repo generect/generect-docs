@@ -544,7 +544,7 @@ paths:
       tags:
         - 3. Leads
       summary: Get Lead by link
-      description: Enrich or update your database with detailed lead information from a provided URL.
+      description: Enrich or update your database with detailed lead information from a provided URL. By default, returns cached data for faster response times. Set up_to_the_second_fresh=true for real-time data retrieval.
       operationId: getLeadByLink
       requestBody:
         content:
@@ -567,6 +567,10 @@ paths:
                 posts:
                   type: boolean
                   example: false
+                up_to_the_second_fresh:
+                  type: boolean
+                  example: true
+                  description: Use real-time search instead of cached data. Default is false for faster response times.
             examples:
               Get Lead by link:
                 value:
@@ -574,6 +578,7 @@ paths:
                   inexact_company: false
                   people_also_viewed: false
                   posts: false
+                  up_to_the_second_fresh: true
                   url: https://www.linkedin.com/company/boris-johnson
       responses:
         '200':

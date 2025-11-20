@@ -42,7 +42,9 @@ Enhance existing CRM records with updated roles, locations, or company data.
 - Custom Parameter `posts` allows to fetch last 20 posts, costs 1 additional credit
     
 - Custom Parameter `comments` allows to fetch last 20 comments, costs 1 additional credit
+
+- Custom Parameter `up_to_the_second_fresh` = true: enables real-time data retrieval instead of cached data (default: false). Use this when you need the most current information, though it may result in slower response times.
     
-- Multiple parameters pass are allowed (`posts` + `comments` + `people_also_viewed`)
+- Multiple parameters pass are allowed (`posts` + `comments` + `people_also_viewed` + `up_to_the_second_fresh`)
     
 - In case of response with `500 status code`, please send request again
