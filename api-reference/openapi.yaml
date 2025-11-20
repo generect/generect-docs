@@ -3379,8 +3379,8 @@ paths:
         - apiKey: []
   /api/linkedin/email_finder/:
     post:
-      summary: Generate email
-      description: Generate valid corporate email addresses using first name, last name, and domain.
+      summary: Generate valid email
+      description: Generate and validate corporate email addresses using first name, last name, and domain. All generated emails are automatically validated and ready for use - no additional validation required.
       requestBody:
         required: true
         content:
