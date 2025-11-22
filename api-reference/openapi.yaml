@@ -563,10 +563,12 @@ paths:
                   example: false
                 people_also_viewed:
                   type: boolean
-                  example: false
+                  example: true
+                  description: Include people also viewed data (+1 credit)
                 posts:
                   type: boolean
-                  example: false
+                  example: true
+                  description: Include posts data (+1 credit)
                 up_to_the_second_fresh:
                   type: boolean
                   example: true
@@ -576,8 +578,8 @@ paths:
                 value:
                   comments: false
                   inexact_company: false
-                  people_also_viewed: false
-                  posts: false
+                  people_also_viewed: true
+                  posts: true
                   up_to_the_second_fresh: true
                   url: https://www.linkedin.com/company/boris-johnson
       responses:
@@ -2231,10 +2233,12 @@ paths:
                   type: string
                 people_also_viewed:
                   type: boolean
+                  description: Include people also viewed data (+1 credit)
                 people_also_follow:
                   type: boolean
                 posts:
                   type: boolean
+                  description: Include posts data (+1 credit)
               required:
               - url
               - people_also_viewed
@@ -2245,9 +2249,9 @@ paths:
               Get Company by link:
                 value:
                   url: https://www.linkedin.com/company/a2-aprende-y-aplica-capacitaciГіn
-                  people_also_viewed: false
+                  people_also_viewed: true
                   people_also_follow: false
-                  posts: false
+                  posts: true
       responses:
         '200':
           description: '200'
