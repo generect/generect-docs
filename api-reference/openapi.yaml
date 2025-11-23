@@ -1395,37 +1395,65 @@ paths:
             examples:
               Get List of Leads by ICP:
                 value:
-                  company_link: https://www.linkedin.com/company/fette-compacting-gmbh
+                  company_link: https://www.linkedin.com/company/slack-technologies
                   locations:
-                    - Austria
-                    - Switzerland
+                    - "San Francisco Bay Area"
+                    - "New York, New York, United States"
+                    - "London, England, United Kingdom"
                   personas:
-                    - - Communication
-                      - - Communication
-                        - Kommunikation
-                        - Communication
-                      - []
-                      - - Assistant
-                        - Operations
-                        - Hubspot
-                    - - Communications
-                      - - Communications
-                        - Kommunikation
-                        - Communications
-                      - []
-                      - - Assistant
-                        - Operations
-                        - Hubspot
-                  limit_by: 14
+                    - - "Marketing Leaders"
+                      - - "marketing"
+                        - "digital marketing"
+                        - "growth"
+                        - "demand generation"
+                        - "brand"
+                      - - "Director"
+                        - "VP"
+                        - "Head"
+                        - "Manager"
+                      - - "intern"
+                        - "coordinator"
+                        - "specialist"
+                        - "associate"
+                    - - "Sales Executives"
+                      - - "sales"
+                        - "business development"
+                        - "revenue"
+                        - "enterprise sales"
+                        - "account management"
+                      - - "VP"
+                        - "Director"
+                        - "Head"
+                        - "Manager"
+                      - - "representative"
+                        - "coordinator"
+                        - "intern"
+                        - "junior"
+                    - - "Product Managers"
+                      - - "product"
+                        - "product management"
+                        - "product marketing"
+                        - "product strategy"
+                        - "product operations"
+                      - - "VP"
+                        - "Director"
+                        - "Head"
+                        - "Senior"
+                      - - "analyst"
+                        - "coordinator"
+                        - "intern"
+                        - "associate"
+                  limit_by: 50
                   exclude_names:
-                    - Volker Reinsch
-                    - Nathalie Hoffmann
-                    - Nora Behrens
-                    - Emanuel da Silva Gomes
-                    - Kerstin Schaper
-                    - Angela Hogrefe
+                    - "John Smith"
+                    - "Sarah Johnson" 
+                    - "Michael Brown"
+                    - "Emily Davis"
+                    - "David Wilson"
+                    - "Jennifer Garcia"
                   filter_empty_vars:
-                    - started_at_position
+                    - "job_started_on"
+                    - "profile_photo"
               Get List of Leads using LinkedIn Filter Link:
                 value:
                   linkedin_filter_link: "https://www.linkedin.com/sales/search/people?query=(spellCorrectionEnabled%3Atrue%2Ckeywords%3Amarketing%2CfirstName%3A%2ClastName%3A%2Ctitle%3A%2Ccompany%3A%2Cschool%3A%2CcontactInterest%3A%2CnetworkDepth%3A%2Clanguage%3A%2Clocation%3A%2Cindustry%3A%2CcurrentCompany%3A%2CpastCompany%3A%2CprofileLanguage%3A%2CnonprofitInterest%3A%2CfortuneOrGlobal500Size%3A%2CsalesPersona%3A)"
@@ -1519,7 +1547,7 @@ paths:
                           example: Germany
                         company_description:
                           type: string
-                          example: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
+                          example: Slack is a business communication platform offering persistent workplace chat, private groups, direct messaging, file sharing, and application integration.
                         company_headcount_range:
                           type: string
                           example: 501-1000
@@ -1537,7 +1565,7 @@ paths:
                           example: Schwarzenbek, Schleswig-Holstein, Germany
                         company_name:
                           type: string
-                          example: Fette Compacting
+                          example: Slack
                         company_state:
                           type: string
                           example: Schleswig-Holstein
@@ -1553,13 +1581,13 @@ paths:
                           example: []
                         first_name:
                           type: string
-                          example: Nicole
+                          example: Sarah
                         full_name:
                           type: string
-                          example: Nicole Anderson
+                          example: Sarah Chen
                         headline:
                           type: string
-                          example: Corporate Communication Manager at Fette Compacting GmbH
+                          example: Senior Marketing Director at Slack
                         industry:
                           type: string
                           example: Machinery Manufacturing
@@ -1595,7 +1623,7 @@ paths:
                           example: true
                         job_title:
                           type: string
-                          example: Corporate Communication Manager
+                          example: Senior Marketing Director
                         jobs:
                           type: array
                           items:
@@ -1691,26 +1719,26 @@ paths:
                               job_title: Freelance Artist
                               raw_company_name: Anderson Art Work / Self-employed
                               raw_job_title: Freelance Artist
-                            - company_city: Schwarzenbek
-                              company_country: Germany
+                            - company_city: San Francisco
+                              company_country: United States
                               company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
                               company_headcount_range: 501-1000
-                              company_id: '7590254'
+                              company_id: '21828'
                               company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_400_400/company-logo_400_400/0/1720783130887/fette_compacting_gmbh_logo?e=1741219200&v=beta&t=HvwsgIyJYXepYTbSz8ySstMn8d3F9LgQtRtqEeLdqKI
-                              company_industry: Pharmaceutical Manufacturing
-                              company_location: Schwarzenbek, Schleswig-Holstein, Germany
-                              company_name: Fette Compacting
-                              company_state: Schleswig Holstein
-                              company_url: https://www.linkedin.com/company/fette-compacting-gmbh/
-                              company_website: http://www.fette-compacting.com
-                              job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                              company_industry: Software Development
+                              company_location: San Francisco, California, United States
+                              company_name: Slack
+                              company_state: California
+                              company_url: https://www.linkedin.com/company/slack-technologies/
+                              company_website: https://slack.com
+                              job_description: 'Lead global marketing strategy and demand generation programs to drive customer acquisition and retention. Oversee brand positioning, content marketing, and digital campaigns across all channels. Collaborate with product, sales, and growth teams to accelerate user adoption and revenue growth. Manage marketing budget allocation and performance metrics to optimize ROI and scale marketing operations globally.'
                               job_ended_on: null
-                              job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                              job_location: San Francisco, California, United States
                               job_started_on: Mar 2023
                               job_still_working: true
-                              job_title: Corporate Communication Manager
-                              raw_company_name: Fette Compacting
-                              raw_job_title: Corporate Communication Manager
+                              job_title: Senior Marketing Director
+                              raw_company_name: Slack
+                              raw_job_title: Senior Marketing Director
                         languages:
                           type: array
                           items:
@@ -1738,7 +1766,7 @@ paths:
                           example: '80282110'
                         linkedin_lead_persona:
                           type: string
-                          example: Communication
+                          example: Marketing Leaders
                         linkedin_sales_link:
                           type: string
                           example: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
@@ -1747,7 +1775,7 @@ paths:
                           example: https://www.linkedin.com/in/nicole-anderson-profile
                         location:
                           type: string
-                          example: Greater Hamburg Area
+                          example: San Francisco Bay Area
                         location_city:
                           nullable: true
                           example: null
@@ -1774,13 +1802,13 @@ paths:
                           example: https://media.licdn.com/dms/image/v2/D4D03AQHdu7xNE9zgIw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724341778966?e=1738800000&v=beta&t=bEH4zW5MrIkRknwhvnOX5GQYRUOlIg9jib4wpsEWahE
                         raw_company_name:
                           type: string
-                          example: Fette Compacting
+                          example: Slack
                         raw_headline:
                           type: string
-                          example: Corporate Communication Manager at Fette Compacting GmbH
+                          example: Senior Marketing Director at Slack
                         raw_job_title:
                           type: string
-                          example: Corporate Communication Manager
+                          example: Senior Marketing Director
                         sales_id:
                           type: string
                           example: ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0
@@ -1791,45 +1819,45 @@ paths:
                         summary:
                           type: string
                           example: |-
-                            I have in-depth knowledge of marketing, public relations and internal communication. In addition, I have extensive knowledge of the needs and work processes of internal and external interest groups. I have extensive experience in the area of   reputation and crisis management as well as the control of internal and external communication processes. I offer several years of management experience.
+                            Experienced marketing leader with 8+ years driving growth for B2B SaaS companies. Expert in demand generation, content marketing, and marketing automation platforms. Proven track record of scaling marketing operations from startup to IPO, including leading marketing teams of 20+ professionals. Specialized in product marketing, customer lifecycle campaigns, and conversion optimization.
 
-                            My personal interests and hobbies: painting, traveling, skiing, horse riding, yoga and cooking.
+                            Passionate about data-driven marketing, emerging technologies, and building high-performing teams.
                         twitter_link:
                           nullable: true
                           example: null
                         unformatted_full_name:
                           type: string
-                          example: Nicole Anderson
+                          example: Sarah Chen
                     example:
                       - certifications: []
-                        company_city: Schwarzenbek
-                        company_country: Germany
+                        company_city: San Francisco
+                        company_country: United States
                         company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
                         company_headcount_range: 501-1000
-                        company_id: '7590254'
+                        company_id: '21828'
                         company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_200_200/company-logo_200_200/0/1720783130887/fette_compacting_gmbh_logo?e=1740009600&v=beta&t=jP_aJALpJhdsmjNIpbePqKkzUyp1-Qno9lWH9eV9g9M
-                        company_industry: Pharmaceutical Manufacturing
-                        company_location: Schwarzenbek, Schleswig-Holstein, Germany
-                        company_name: Fette Compacting
-                        company_state: Schleswig-Holstein
+                        company_industry: Software Development
+                        company_location: San Francisco, California, United States
+                        company_name: Slack
+                        company_state: California
                         company_url: null
-                        company_website: http://www.fette-compacting.com
+                        company_website: https://slack.com
                         educations: []
-                        first_name: Nicole
-                        full_name: Nicole Anderson
-                        headline: Corporate Communication Manager at Fette Compacting GmbH
-                        industry: Machinery Manufacturing
+                        first_name: Sarah
+                        full_name: Sarah Chen
+                        headline: Senior Marketing Director at Slack
+                        industry: Software Development
                         is_full_data: true
                         is_job_seeker: false
                         is_openlink: false
                         is_premium: false
                         is_retired: false
-                        job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                        job_description: 'Lead global marketing strategy and demand generation programs to drive customer acquisition and retention. Oversee brand positioning, content marketing, and digital campaigns across all channels. Collaborate with product, sales, and growth teams to accelerate user adoption and revenue growth. Manage marketing budget allocation and performance metrics to optimize ROI and scale marketing operations globally.'
                         job_ended_on: null
-                        job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                        job_location: San Francisco, California, United States
                         job_started_on: Mar 2023
                         job_still_working: true
-                        job_title: Corporate Communication Manager
+                        job_title: Senior Marketing Director
                         jobs:
                           - company_city: Cincinnati
                             company_country: United States
@@ -1855,57 +1883,57 @@ paths:
                             job_title: Freelance Artist
                             raw_company_name: Anderson Art Work / Self-employed
                             raw_job_title: Freelance Artist
-                          - company_city: Schwarzenbek
-                            company_country: Germany
+                          - company_city: San Francisco
+                            company_country: United States
                             company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
                             company_headcount_range: 501-1000
-                            company_id: '7590254'
+                            company_id: '21828'
                             company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_400_400/company-logo_400_400/0/1720783130887/fette_compacting_gmbh_logo?e=1741219200&v=beta&t=HvwsgIyJYXepYTbSz8ySstMn8d3F9LgQtRtqEeLdqKI
-                            company_industry: Pharmaceutical Manufacturing
-                            company_location: Schwarzenbek, Schleswig-Holstein, Germany
-                            company_name: Fette Compacting
-                            company_state: Schleswig Holstein
-                            company_url: https://www.linkedin.com/company/fette-compacting-gmbh/
-                            company_website: http://www.fette-compacting.com
-                            job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                            company_industry: Software Development
+                            company_location: San Francisco, California, United States
+                            company_name: Slack
+                            company_state: California
+                            company_url: https://www.linkedin.com/company/slack-technologies/
+                            company_website: https://slack.com
+                            job_description: 'Lead global marketing strategy and demand generation programs to drive customer acquisition and retention. Oversee brand positioning, content marketing, and digital campaigns across all channels. Collaborate with product, sales, and growth teams to accelerate user adoption and revenue growth. Manage marketing budget allocation and performance metrics to optimize ROI and scale marketing operations globally.'
                             job_ended_on: null
-                            job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                            job_location: San Francisco, California, United States
                             job_started_on: Mar 2023
                             job_still_working: true
-                            job_title: Corporate Communication Manager
-                            raw_company_name: Fette Compacting
-                            raw_job_title: Corporate Communication Manager
+                            job_title: Senior Marketing Director
+                            raw_company_name: Slack
+                            raw_job_title: Senior Marketing Director
                         languages:
                           - name: Englisch
                             proficiency: FULL_PROFESSIONAL
                           - name: Deutsch
                             proficiency: NATIVE_OR_BILINGUAL
                         last_name: Anderson
-                        linkedin_company_id: '7590254'
+                        linkedin_company_id: '21828'
                         linkedin_id: '80282110'
-                        linkedin_lead_persona: Communication
+                        linkedin_lead_persona: Marketing Leaders
                         linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
-                        linkedin_url: https://www.linkedin.com/in/nicole-anderson-profile
-                        location: Greater Hamburg Area
+                        linkedin_url: https://www.linkedin.com/in/sarah-chen-marketing
+                        location: San Francisco Bay Area
                         location_city: null
-                        location_country: Germany
+                        location_country: United States
                         location_county: null
-                        location_state: Hamburg
+                        location_state: California
                         middle_name: ''
                         num_of_connections: 710
                         private_website: null
                         profile_photo: https://media.licdn.com/dms/image/v2/D4D03AQHdu7xNE9zgIw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724341778966?e=1738800000&v=beta&t=bEH4zW5MrIkRknwhvnOX5GQYRUOlIg9jib4wpsEWahE
-                        raw_company_name: Fette Compacting
-                        raw_headline: Corporate Communication Manager at Fette Compacting GmbH
-                        raw_job_title: Corporate Communication Manager
+                        raw_company_name: Slack
+                        raw_headline: Senior Marketing Director at Slack
+                        raw_job_title: Senior Marketing Director
                         sales_id: ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0
                         skills: []
                         summary: |-
-                          I have in-depth knowledge of marketing, public relations and internal communication. In addition, I have extensive knowledge of the needs and work processes of internal and external interest groups. I have extensive experience in the area of   reputation and crisis management as well as the control of internal and external communication processes. I offer several years of management experience.
+                          Experienced marketing leader with 8+ years driving growth for B2B SaaS companies. Expert in demand generation, content marketing, and marketing automation platforms. Proven track record of scaling marketing operations from startup to IPO, including leading marketing teams of 20+ professionals. Specialized in product marketing, customer lifecycle campaigns, and conversion optimization.
 
-                          My personal interests and hobbies: painting, traveling, skiing, horse riding, yoga and cooking.
+                          Passionate about data-driven marketing, emerging technologies, and building high-performing teams.
                         twitter_link: null
-                        unformatted_full_name: Nicole Anderson
+                        unformatted_full_name: Sarah Chen
                   results_count:
                     type: string
                     example: within limit
@@ -1918,34 +1946,34 @@ paths:
                     amount: -1
                     leads:
                       - certifications: []
-                        company_city: Schwarzenbek
-                        company_country: Germany
+                        company_city: San Francisco
+                        company_country: United States
                         company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
                         company_headcount_range: 501-1000
-                        company_id: '7590254'
+                        company_id: '21828'
                         company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_200_200/company-logo_200_200/0/1720783130887/fette_compacting_gmbh_logo?e=1740009600&v=beta&t=jP_aJALpJhdsmjNIpbePqKkzUyp1-Qno9lWH9eV9g9M
-                        company_industry: Pharmaceutical Manufacturing
-                        company_location: Schwarzenbek, Schleswig-Holstein, Germany
-                        company_name: Fette Compacting
-                        company_state: Schleswig-Holstein
+                        company_industry: Software Development
+                        company_location: San Francisco, California, United States
+                        company_name: Slack
+                        company_state: California
                         company_url: null
-                        company_website: http://www.fette-compacting.com
+                        company_website: https://slack.com
                         educations: []
-                        first_name: Nicole
-                        full_name: Nicole Anderson
-                        headline: Corporate Communication Manager at Fette Compacting GmbH
-                        industry: Machinery Manufacturing
+                        first_name: Sarah
+                        full_name: Sarah Chen
+                        headline: Senior Marketing Director at Slack
+                        industry: Software Development
                         is_full_data: true
                         is_job_seeker: false
                         is_openlink: false
                         is_premium: false
                         is_retired: false
-                        job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                        job_description: 'Lead global marketing strategy and demand generation programs to drive customer acquisition and retention. Oversee brand positioning, content marketing, and digital campaigns across all channels. Collaborate with product, sales, and growth teams to accelerate user adoption and revenue growth. Manage marketing budget allocation and performance metrics to optimize ROI and scale marketing operations globally.'
                         job_ended_on: null
-                        job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                        job_location: San Francisco, California, United States
                         job_started_on: Mar 2023
                         job_still_working: true
-                        job_title: Corporate Communication Manager
+                        job_title: Senior Marketing Director
                         jobs:
                           - company_city: Cincinnati
                             company_country: United States
@@ -1971,57 +1999,57 @@ paths:
                             job_title: Freelance Artist
                             raw_company_name: Anderson Art Work / Self-employed
                             raw_job_title: Freelance Artist
-                          - company_city: Schwarzenbek
-                            company_country: Germany
+                          - company_city: San Francisco
+                            company_country: United States
                             company_description: Fette Compacting is the world's leading provider of integrated solutions for industrial tablet production.
                             company_headcount_range: 501-1000
-                            company_id: '7590254'
+                            company_id: '21828'
                             company_image: https://media.licdn.com/dms/image/v2/D4E0BAQEuyU0O4IbVRQ/company-logo_400_400/company-logo_400_400/0/1720783130887/fette_compacting_gmbh_logo?e=1741219200&v=beta&t=HvwsgIyJYXepYTbSz8ySstMn8d3F9LgQtRtqEeLdqKI
-                            company_industry: Pharmaceutical Manufacturing
-                            company_location: Schwarzenbek, Schleswig-Holstein, Germany
-                            company_name: Fette Compacting
-                            company_state: Schleswig Holstein
-                            company_url: https://www.linkedin.com/company/fette-compacting-gmbh/
-                            company_website: http://www.fette-compacting.com
-                            job_description: 'Conception, elaboration and further development of the global communication strategy (media, budget) as a basis for decision-making for the management. Advising global management on communication issues such as change processes. Coordination, control and implementation of the communication strategy process: putting together international project teams, participating in the communication strategy process as an expert/adviser, writing speeches, specialist articles, press releases, etc., controlling editorial activities, expanding press work, further developing and implementing employer branding activities. www.fette-compacting.com'
+                            company_industry: Software Development
+                            company_location: San Francisco, California, United States
+                            company_name: Slack
+                            company_state: California
+                            company_url: https://www.linkedin.com/company/slack-technologies/
+                            company_website: https://slack.com
+                            job_description: 'Lead global marketing strategy and demand generation programs to drive customer acquisition and retention. Oversee brand positioning, content marketing, and digital campaigns across all channels. Collaborate with product, sales, and growth teams to accelerate user adoption and revenue growth. Manage marketing budget allocation and performance metrics to optimize ROI and scale marketing operations globally.'
                             job_ended_on: null
-                            job_location: Schwarzenbek, Schleswig-Holstein, Deutschland
+                            job_location: San Francisco, California, United States
                             job_started_on: Mar 2023
                             job_still_working: true
-                            job_title: Corporate Communication Manager
-                            raw_company_name: Fette Compacting
-                            raw_job_title: Corporate Communication Manager
+                            job_title: Senior Marketing Director
+                            raw_company_name: Slack
+                            raw_job_title: Senior Marketing Director
                         languages:
                           - name: Englisch
                             proficiency: FULL_PROFESSIONAL
                           - name: Deutsch
                             proficiency: NATIVE_OR_BILINGUAL
                         last_name: Anderson
-                        linkedin_company_id: '7590254'
+                        linkedin_company_id: '21828'
                         linkedin_id: '80282110'
-                        linkedin_lead_persona: Communication
+                        linkedin_lead_persona: Marketing Leaders
                         linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
-                        linkedin_url: https://www.linkedin.com/in/nicole-anderson-profile
-                        location: Greater Hamburg Area
+                        linkedin_url: https://www.linkedin.com/in/sarah-chen-marketing
+                        location: San Francisco Bay Area
                         location_city: null
-                        location_country: Germany
+                        location_country: United States
                         location_county: null
-                        location_state: Hamburg
+                        location_state: California
                         middle_name: ''
                         num_of_connections: 710
                         private_website: null
                         profile_photo: https://media.licdn.com/dms/image/v2/D4D03AQHdu7xNE9zgIw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724341778966?e=1738800000&v=beta&t=bEH4zW5MrIkRknwhvnOX5GQYRUOlIg9jib4wpsEWahE
-                        raw_company_name: Fette Compacting
-                        raw_headline: Corporate Communication Manager at Fette Compacting GmbH
-                        raw_job_title: Corporate Communication Manager
+                        raw_company_name: Slack
+                        raw_headline: Senior Marketing Director at Slack
+                        raw_job_title: Senior Marketing Director
                         sales_id: ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0
                         skills: []
                         summary: |-
-                          I have in-depth knowledge of marketing, public relations and internal communication. In addition, I have extensive knowledge of the needs and work processes of internal and external interest groups. I have extensive experience in the area of   reputation and crisis management as well as the control of internal and external communication processes. I offer several years of management experience.
+                          Experienced marketing leader with 8+ years driving growth for B2B SaaS companies. Expert in demand generation, content marketing, and marketing automation platforms. Proven track record of scaling marketing operations from startup to IPO, including leading marketing teams of 20+ professionals. Specialized in product marketing, customer lifecycle campaigns, and conversion optimization.
 
-                          My personal interests and hobbies: painting, traveling, skiing, horse riding, yoga and cooking.
+                          Passionate about data-driven marketing, emerging technologies, and building high-performing teams.
                         twitter_link: null
-                        unformatted_full_name: Nicole Anderson
+                        unformatted_full_name: Sarah Chen
                     results_count: within limit
                 200 (Leads not found):
                   value:
