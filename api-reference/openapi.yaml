@@ -1397,7 +1397,7 @@ paths:
                 value:
                   company_link: https://www.linkedin.com/company/slack-technologies
                   locations:
-                    - "San Francisco Bay Area"
+                    - "San Francisco, California, United States"
                     - "New York, New York, United States"
                     - "London, England, United Kingdom"
                   personas:
@@ -1775,7 +1775,7 @@ paths:
                           example: https://www.linkedin.com/in/nicole-anderson-profile
                         location:
                           type: string
-                          example: San Francisco Bay Area
+                          example: San Francisco, California, United States
                         location_city:
                           nullable: true
                           example: null
@@ -1914,7 +1914,7 @@ paths:
                         linkedin_lead_persona: Marketing Leaders
                         linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
                         linkedin_url: https://www.linkedin.com/in/sarah-chen-marketing
-                        location: San Francisco Bay Area
+                        location: San Francisco, California, United States
                         location_city: null
                         location_country: United States
                         location_county: null
@@ -2030,7 +2030,7 @@ paths:
                         linkedin_lead_persona: Marketing Leaders
                         linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAATJAf4BWNxU442ZgFSJw2zzlmG6S3zv-e0,NAME_SEARCH,OJWs
                         linkedin_url: https://www.linkedin.com/in/sarah-chen-marketing
-                        location: San Francisco Bay Area
+                        location: San Francisco, California, United States
                         location_city: null
                         location_country: United States
                         location_county: null
