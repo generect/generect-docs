@@ -47,6 +47,20 @@ Enhance existing CRM records with updated roles, locations, or company data.
 
 - Custom Parameter `get_full_experience`: by default, only current jobs (where `job_still_working == true`) are returned. Set to `true` to return full work history including past positions (default: false)
 
+<Warning>
+  **Full Work History:** To get all positions (not just current), use both parameters together:
+
+  ```json
+  {
+    "url": "https://www.linkedin.com/in/username",
+    "get_full_experience": true,
+    "up_to_the_second_fresh": true
+  }
+  ```
+
+  Without `up_to_the_second_fresh`, cached data with only the current position is returned.
+</Warning>
+
 - Multiple parameters pass are allowed (`posts` + `comments` + `people_also_viewed` + `up_to_the_second_fresh` + `get_full_experience`)
     
 - In case of response with `500 status code`, please send request again
