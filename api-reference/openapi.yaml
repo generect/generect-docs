@@ -563,24 +563,29 @@ paths:
                   example: false
                 people_also_viewed:
                   type: boolean
-                  example: true
-                  description: Include people also viewed data (+1 credit)
+                  example: false
+                  description: Include people also viewed data (+1 credit). Default is false.
                 posts:
                   type: boolean
-                  example: true
-                  description: Include posts data (+1 credit)
+                  example: false
+                  description: Include posts data (+1 credit). Default is false.
                 up_to_the_second_fresh:
                   type: boolean
                   example: true
                   description: Use real-time search instead of cached data. Default is false for faster response times.
+                get_full_experience:
+                  type: boolean
+                  example: false
+                  description: By default, only current jobs (where job_still_working == true) are returned. Set to true to return full work history including past positions.
             examples:
               Get Lead by link:
                 value:
                   comments: false
                   inexact_company: false
-                  people_also_viewed: true
-                  posts: true
+                  people_also_viewed: false
+                  posts: false
                   up_to_the_second_fresh: true
+                  get_full_experience: false
                   url: https://www.linkedin.com/company/boris-johnson
       responses:
         '200':
