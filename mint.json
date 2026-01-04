@@ -38,16 +38,37 @@
   },
   "tabs": [
     {
+      "name": "Documentation",
+      "url": "docs"
+    },
+    {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Biling & Pricing",
+      "url": "biling"
+    },
+    {
+      "name": "Integrations",
+      "url": "integrations"
+    },
+    {
+      "name": "Use Cases & Best Practices",
+      "url": "use-cases"
     }
   ],
   "anchors": [],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Getting Started",
       "pages": [
-        "api-reference/introduction",
+        "docs/introduction"
+      ]
+    },
+    {
+      "group": "Getting started",
+      "pages": [
         "api-reference/limits"
       ]
     },
@@ -91,9 +112,15 @@
     {
       "group": "MCP",
       "pages": [
-        "api-reference/mcp/about-mcp",
-        "api-reference/mcp/quick-start",
-        "api-reference/mcp/common-problems"
+        "integrations/mcp/about-mcp",
+        "integrations/mcp/quick-start",
+        "integrations/mcp/common-problems"
+      ]
+    },
+    {
+      "group": "OpenAI Agent builder",
+      "pages": [
+        "integrations/agent-builder/agent-builder"
       ]
     }
   ],
