@@ -1,0 +1,110 @@
+---
+title: 'Email Validation'
+description: 'Validate existing email addresses for deliverability'
+---
+
+The Email Validation module is designed to check *existing* email addresses and determine whether they are valid, invalid, or belong to catch-all domains.  
+Unlike the **Email Finder**, this tool does not generate an email – it only validates the one you already have.
+
+## How Generect Validates Emails
+
+Generect performs a multi-layered validation process to ensure maximum accuracy for every email address.
+
+**Validation process:**
+<img src="/media/email-validation-1.png" alt="Validation Process" />
+
+### Syntax Check
+
+Verifies whether the email is written correctly (presence of "@", domain format, allowed characters, etc.).
+
+### SMTP Verification (core step)
+
+Generect sends a request to the email server to determine:
+
+- whether the mailbox exists
+- whether the server accepts mail
+- whether the domain is configured as catch-all
+
+The server returns a confirmation or rejection response.
+
+### Catch-All Detection
+
+If a domain accepts all emails – even for non-existing addresses – Generect marks it as **Catch-All**.
+
+### Additional Signals
+
+The system also analyzes:
+
+- historical deliverability data
+- previous validation results
+- domain behavior patterns
+
+This helps improve accuracy when servers use strict anti-spam or anti-bot protection.
+
+## Possible validation statuses
+
+- **Valid** – the address exists; the server confirmed mail acceptance.
+- **Invalid** – the mailbox does not exist or the server rejected it.
+- **SMTP** – the server does not provide a clear response (common on protected domains).
+- **Catch-all** – the domain accepts any email, real or not; true deliverability is uncertain.
+- **Unknown** – the server did not respond or provided an ambiguous response.
+
+## What the user receives
+
+- A clear validation status (Valid / Invalid / Catch-All / SMTP / Unknown)
+- Technical verification details
+- Automatic logging in **Validation History**
+- Ability to export, filter, and clean lists based on validation results
+
+## How to Validate a Single Email (Email Validator)
+
+The **Email Validator** section allows you to manually check one email at a time.
+
+**How it works:**
+
+1. Go to **Email Validator**.
+2. Enter an email address into the form.
+3. Click **Validate email**.
+4. The system performs an SMTP check and displays the result.
+
+**Results appear in a table showing:**
+
+- Email
+- Status (Valid / Invalid / Catch-all / SMTP / Unknown)
+- Validation date
+
+All validated emails are saved in your **Validation History**.
+
+## Bulk Email Validation
+
+This module is used when you already have a list of email addresses and want to validate them all at once.
+
+**How to run Bulk Validation:**
+
+1. Go to **Bulks → Bulk email validation**.
+2. Upload a CSV or XLSX file containing:
+   - **Email**
+3. Click **Upload file**.
+4. The system processes each email individually.
+5. Results appear in the table and are available for export.
+
+**What Generect returns**
+
+For each email:
+
+- Status: **Valid / Invalid / Catch-all / Unknown / SMTP**
+- Validation source
+- Date of validation
+
+Summary statistics:
+
+- % of valid emails
+- count of catch-all addresses
+- count of invalid addresses
+- number of unknown / SMTP results
+
+You can download the cleaned list using the **Export** button.
+
+<Card title="Catch-All Email Validation" icon="envelope" href="/docs/catch-all-validation">
+  Learn about advanced validation for catch-all domains
+</Card>

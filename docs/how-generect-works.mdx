@@ -1,0 +1,76 @@
+---
+title: 'How Generect Works'
+description: 'Core workflow from ICP definition to outreach'
+---
+
+A typical end-to-end workflow looks like this:  
+**Define your ICP → Find companies or leads → Get contact data → Validate emails → Export/Integrate → Start outreach**
+
+```mermaid
+graph TD
+    A[Define ICP] --> B[Find Companies/Leads]
+    B --> C{Get Data}
+    C --> D[Reveal Contacts]
+    C --> E[Enrich Existing]
+    D --> F[Validate Emails]
+    E --> F
+    F --> G[Export/Integrate]
+    G --> H[Start Outreach]
+```
+
+## Step-by-Step Breakdown
+
+### Build Your ICP (Ideal Customer Profile)
+
+Define the attributes of your target customer.  
+You can specify:
+
+- Industry
+- Company size
+- Location
+- Technology stack (optional but useful)
+- Job titles, skills, and other criteria
+
+### Find Target Companies and Leads
+
+Use your ICP to run a company or lead search.  
+You can:
+
+- Apply additional filters to narrow down results
+- Exclude unwanted audiences (for example, existing customers) using exclude lists
+
+### Get Contacts for Decision-Makers
+
+Select relevant roles such as CEO, CTO, VP Sales, Head of Marketing, etc.  
+Generect will automatically:
+
+- Identify contacts that match your criteria
+- Provide verified emails and direct phone numbers
+- Use AI Corporate Email Finder to generate corporate emails when necessary
+
+### Validate Before Sending
+
+Ensure your emails are deliverable.  
+Generect provides:
+
+- Standard email validation
+- Detection of fake or disposable emails
+- Catch-All Email Validation with confidence scoring
+
+### Export or Integrate Your Data
+
+You can:
+
+- Download results in CSV/XLSX for email tools
+- Sync your data directly with your CRM
+
+### Start Personalized Outreach
+
+Use your verified contact data to:
+
+- Create tailored outreach sequences
+- Improve reply rates with accurate, up-to-date information
+
+<Card title="Learn More About ICP Search" icon="magnifying-glass" href="/docs/icp-search">
+  Deep dive into building effective ICP searches
+</Card>

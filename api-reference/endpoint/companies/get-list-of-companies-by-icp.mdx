@@ -81,17 +81,17 @@ Build a comprehensive list of companies to target for business opportunities.
             
 - keywords logic:
     
-    - keywords from list of inputs will be separated in SN search header with “OR” parameter:
+    - keywords from list of inputs will be separated in SN search header with "OR" parameter:
         
-        - e.g. `[“academy”, “technician”]` will be passed to SN as “(academy) OR (technician)”.
+        - e.g. `["academy", "technician"]` will be passed to SN as "(academy) OR (technician)".
             
-        - Except cases when 1 word is passed. e.g. `[“world”]` will be passed to SN as `“world”` (without parentheses)
+        - Except cases when 1 word is passed. e.g. `["world"]` will be passed to SN as `"world"` (without parentheses)
             
     - you are able to pass discrete logic, for example:
         
-        - `[“(education AND management)”, “(project AND office)”]`
+        - `["(education AND management)", "(project AND office)"]`
             
-            - then SN search will look like: “(education AND management) OR (project AND office)”
+            - then SN search will look like: "(education AND management) OR (project AND office)"
                 
         - same with NOT, OR, AND operators
             
@@ -136,7 +136,7 @@ Build a comprehensive list of companies to target for business opportunities.
 
 - parameter `strict`
     
-    - with the strict parameter: `[“company_locations”]` will perform post-filtering on a strict occurrence of `company_locations`.
+    - with the strict parameter: `["company_locations"]` will perform post-filtering on a strict occurrence of `company_locations`.
         
 - parameter `exclude_ids`
     

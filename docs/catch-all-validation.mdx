@@ -1,0 +1,89 @@
+---
+title: 'Catch-All Email Validation'
+description: 'Advanced validation for catch-all email domains'
+---
+
+## What Is a Catch-All Email and Why Validation Matters
+
+**Definition:**  
+A *catch-all* domain is configured to accept **any** email address, even if the mailbox does not actually exist.  
+This means the server always replies "accepted", making standard SMTP validation unreliable.
+
+**Example:**
+
+```
+info@company.com        → accepted    
+sales@company.com       → accepted    
+anyname@company.com     → accepted    
+randomtext@company.com  → also accepted  
+```
+
+In catch-all domains, an SMTP check cannot determine whether a specific mailbox is real because the server confirms every possible address.
+
+## Why this matters
+
+- It's impossible to confirm real mailbox existence using standard validation
+- High risk of bounce rate
+- Potential negative impact on your sender reputation
+- Harder to filter high-quality contacts for outreach
+- Increases campaign risk, especially at scale
+
+## Why additional validation is needed
+
+Generect applies enhanced intelligence signals to estimate whether a catch-all email is *likely* to be deliverable.
+
+The system provides a **confidence score**, helping you decide whether to include such emails in your outreach.
+
+## How Generect Validates Catch-All Emails
+
+Generect uses a combined, multi-layered approach to evaluate catch-all emails more accurately than a standard SMTP check.
+
+### Validation Process
+
+#### SMTP Check (baseline validation)
+
+Checks whether the server accepts emails.  
+On catch-all domains the response is always "accepted" → therefore insufficient on its own.
+
+#### Pattern Analysis (AI-driven)
+
+The system analyzes:
+
+- whether the email matches the company's known email pattern
+- similarity to other confirmed valid emails from the same domain
+- frequency of this email format in previous validations
+
+#### Historical Data Review
+
+Generect checks:
+
+- past successful deliveries to similar addresses
+- whether similar formats previously resulted in bounces
+- patterns observed across the domain
+
+#### Public Records Matching
+
+Generect searches for external signals verifying the address, including:
+
+- corporate websites
+- email signatures
+- mentions in public documents
+- references in social profiles (e.g., LinkedIn)
+
+#### Deliverability Score (final result)
+
+Every email receives a predicted deliverability score:
+
+- **Low (30–50%)**
+- **Medium (50–75%)**
+- **High (75–95%)**
+
+This is not a guarantee but provides a realistic risk assessment for catch-all domains.
+
+<Tip>
+  Use catch-all validation confidence scores to prioritize your outreach. High confidence scores (75%+) are generally safer to include in campaigns.
+</Tip>
+
+<Warning>
+  Even with high confidence scores, catch-all emails carry more risk than standard validated emails. Consider this when planning large-scale campaigns.
+</Warning>

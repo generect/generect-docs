@@ -21,7 +21,7 @@ API Base URL: https://api.generect.com/
 OpenAI’s **Agent Builder** lets you visually design, debug, and deploy multi-step AI workflows.  
  By integrating Generect into it via MCP, you can create agents that **search live company data**, **find leads**, **validate emails**, and **summarize results**, all in one conversational flow.
 
-Imagine typing this into a chat: “Find 5 leads from Google and 5 from Microsoft, then compare their recent hires.”
+Imagine typing this into a chat: "Find 5 leads from Google and 5 from Microsoft, then compare their recent hires."
 
 The agent automatically:
 
@@ -125,7 +125,7 @@ A simple workflow might look like this:
 
 Here’s what each node does:
 
-* **Start Node:** Captures user input (e.g., “Find founders from biotech startups.”)  
+* **Start Node:** Captures user input (e.g., "Find founders from biotech startups.")  
 * **Agent Node:** Interprets the query, decides what to fetch.  
 * **MCP Node:** Sends a request to the Generect API.  
 * **Transform Node:** Reshapes or filters the data.  
@@ -172,5 +172,5 @@ Sample transformation (pseudo-code):
 }
 ```
 
-Then pass that to your final **Agent node** to generate a summary like: “Here are 5 verified leads from biotech startups in San Francisco.”
+Then pass that to your final **Agent node** to generate a summary like: "Here are 5 verified leads from biotech startups in San Francisco."
 

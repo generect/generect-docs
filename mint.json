@@ -46,8 +46,8 @@
       "url": "api-reference"
     },
     {
-      "name": "Biling & Pricing",
-      "url": "biling"
+      "name": "Billing & Pricing",
+      "url": "billing"
     },
     {
       "name": "Integrations",
@@ -63,12 +63,54 @@
     {
       "group": "Getting Started",
       "pages": [
-        "docs/introduction"
+        "docs/what-is-generect",
+        "docs/create-account",
+        "docs/platform-overview",
+        "docs/how-generect-works",
+        "docs/api-overview",
+        "docs/data-coverage",
+        "docs/cached-databases",
+        "docs/faq"
       ]
     },
     {
-      "group": "Getting started",
+      "group": "Product Guides",
       "pages": [
+        "docs/icp-search",
+        "docs/exclude-lists",
+        "docs/email-finder",
+        "docs/email-validation",
+        "docs/catch-all-validation"
+      ]
+    },
+    {
+      "group": "Billing & Pricing",
+      "pages": [
+        "billing/pay-as-you-go",
+        "billing/managing-billing",
+        "billing/usage-history",
+        "billing/faq"
+      ]
+    },
+    {
+      "group": "Use Cases & Best Practices",
+      "pages": [
+        "use-cases/finding-newborn-founders",
+        "use-cases/preview-search-saas-platform",
+        "use-cases/icp-search-sales-team",
+        "use-cases/contact-enrichment-customer-success",
+        "use-cases/email-finding-marketing",
+        "use-cases/phone-discovery-recruiting",
+        "use-cases/usage-control-manager",
+        "use-cases/icp-search-engineering-leads",
+        "use-cases/personas-sdr-workflow",
+        "use-cases/exclude-lists-use-cases"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/introduction",
         "api-reference/limits"
       ]
     },
