@@ -15,12 +15,12 @@
   "openapi": "api-reference/openapi.yaml",
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#3a23a6",
-    "light": "#7981c9",
-    "dark": "#3a23a6",
+    "primary": "#2d59c8",
+    "light": "#5b85e6",
+    "dark": "#2d59c8",
     "anchors": {
-      "from": "#3a23a6",
-      "to": "#7981c9"
+      "from": "#2d59c8",
+      "to": "#5b85e6"
     }
   },
   "background": {
