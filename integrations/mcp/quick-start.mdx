@@ -1,8 +1,15 @@
 ---
-description: "Quick guide to use Generect MCP"
+title: Local MCP (npx)
+description: "Quick guide to use Generect MCP with local installation"
 ---
 
-Our remote MCP server provides integration between the **Generect Live API** and any Client that supports MCP (e.g., [Cursor](https://cursor.com/home), [Claude Desktop](https://claude.ai/download), [OpenAI’s Responses API](https://platform.openai.com/docs/api-reference/responses)). This allows you to access **Generect’s lead search, company search, email generation**, and other tools directly in **natural language workflows**.
+Our MCP server provides integration between the **Generect Live API** and any Client that supports MCP (e.g., [Cursor](https://cursor.com/home), [Claude Desktop](https://claude.ai/download), [OpenAI's Responses API](https://platform.openai.com/docs/api-reference/responses)). This allows you to access **Generect's lead search, company search, email generation**, and other tools directly in **natural language workflows**.
+
+<Note>
+  <strong>Two integration methods available:</strong>
+  - **[Remote MCP (Custom Connectors)](remote-mcp)** — No installation required, connect via URL or registry ID
+  - **Local MCP (this page)** — Uses `npx` to run the MCP server locally
+</Note>
 
 The MCP Server is hosted at `https://api.generect.com`. You will use this endpoint on every integration. However, the configuration on different clients has some minor differences.
 
@@ -14,7 +21,9 @@ The MCP Server is hosted at `https://api.generect.com`. You will use this endpoi
 
 ## How to use MCP with Claude Desktop?
 
-You can't access MCP settings on Claude chat in web (for now), so use [Claude Desktop](https://claude.ai/download).
+For remote MCP (no installation), see [Remote MCP (Custom Connectors)](remote-mcp). This page covers local MCP via npx.
+
+Use [Claude Desktop](https://claude.ai/download) and visit **Settings** (click your account icon → **Developer** tab → **Edit config**).
 
 Visit **Settings** in the Claude Desktop app. You can find them in dropdown when click on your account icon. Then navigate to the **Developer** tab, click **Edit config** button
 
@@ -100,6 +109,6 @@ The MCP integration provides access to the following `Generect API` functions:
 
 - `search_leads`: Search for leads by ICP filters
 - `search_companies`: Search for companies by ICP filters
-- `generate_email`: Generate email by first/last name and domain
+- `generate_email`: Generate an email using first/last name and domain
 - `get_lead_by_url`: Get LinkedIn lead by profile URL
 - `health`: Quick health check against the API

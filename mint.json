@@ -155,6 +155,7 @@
       "group": "MCP",
       "pages": [
         "integrations/mcp/about-mcp",
+        "integrations/mcp/remote-mcp",
         "integrations/mcp/quick-start",
         "integrations/mcp/common-problems"
       ]
