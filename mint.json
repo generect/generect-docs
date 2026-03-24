@@ -3,7 +3,7 @@
   "name": "Starter Kit",
   "logo": {
     "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg" 
+    "light": "/logo/light.svg"
   },
   "api": {
     "baseUrl": "https://api.generect.com/",
@@ -93,26 +93,32 @@
       ]
     },
     {
-      "group": "Use Cases & Best Practices",
+      "group": "SaaS",
       "pages": [
-        "use-cases/finding-newborn-founders",
-        "use-cases/preview-search-saas-platform",
-        "use-cases/icp-search-sales-team",
-        "use-cases/contact-enrichment-customer-success",
-        "use-cases/email-finding-marketing",
-        "use-cases/phone-discovery-recruiting",
-        "use-cases/usage-control-manager",
-        "use-cases/icp-search-engineering-leads",
-        "use-cases/personas-sdr-workflow",
-        "use-cases/exclude-lists-use-cases"
+        "use-cases/saas/introduction",
+        "use-cases/saas/lead-search",
+        "use-cases/saas/company-search",
+        "use-cases/saas/verify-emails",
+        "use-cases/saas/find-contacts"
       ]
     },
     {
-      "group": "API Reference",
+      "group": "API",
       "pages": [
-        "api-reference/introduction",
-        "api-reference/limits"
+        "use-cases/api/introduction",
+        "use-cases/api/lead-search",
+        "use-cases/api/company-search",
+        "use-cases/api/verify-emails",
+        "use-cases/api/find-contacts"
       ]
+    },
+    {
+      "group": "MCP",
+      "pages": ["use-cases/mcp/introduction"]
+    },
+    {
+      "group": "API Reference",
+      "pages": ["api-reference/introduction", "api-reference/limits"]
     },
     {
       "group": "Auth",
@@ -162,12 +168,8 @@
     },
     {
       "group": "OpenAI Agent builder",
-      "pages": [
-        "integrations/agent-builder/agent-builder"
-      ]
+      "pages": ["integrations/agent-builder/agent-builder"]
     }
   ],
-  "footerSocials": {
-
-  }
+  "footerSocials": {}
 }

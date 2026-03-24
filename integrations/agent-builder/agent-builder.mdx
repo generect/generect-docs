@@ -2,11 +2,11 @@
 title: "Agent Builder"
 ---
 
-As we already know from [About MCP](/api-reference/mcp/about-mcp) — MCP allows to LLM use API by just asking AI. This approach is especially useful for connecting tools like Generect, which provides live company and lead data, to OpenAI’s Agent Builder, which orchestrates multi-step workflows.
+As we already know from [About MCP](/api-reference/mcp/about-mcp) — MCP allows to LLM use API by just asking AI. This approach is especially useful for connecting tools like Generect, which provides live company and lead data, to OpenAI's Agent Builder, which orchestrates multi-step workflows.
 
 # What Generect does
 
-Generect Live API delivers real-time business and contact data from verified sources like LinkedIn, Crunchbase, and company websites. Unlike static databases, it doesn’t rely on outdated snapshots – every request fetches live information.
+Generect Live API delivers real-time business and contact data from verified sources like LinkedIn, Crunchbase, and company websites. Unlike static databases, it doesn't rely on outdated snapshots – every request fetches live information.
 
 What makes it useful:
 
@@ -18,7 +18,7 @@ API Base URL: https://api.generect.com/
 
 ## Why combine Generect \+ OpenAI Agent Builder
 
-OpenAI’s **Agent Builder** lets you visually design, debug, and deploy multi-step AI workflows.  
+OpenAI's **Agent Builder** lets you visually design, debug, and deploy multi-step AI workflows.  
  By integrating Generect into it via MCP, you can create agents that **search live company data**, **find leads**, **validate emails**, and **summarize results**, all in one conversational flow.
 
 Imagine typing this into a chat: "Find 5 leads from Google and 5 from Microsoft, then compare their recent hires."
@@ -31,7 +31,7 @@ The agent automatically:
 
 ## How the integration works
 
-Connecting Generect to OpenAI’s Agent Builder through **MCP** only takes a few minutes. Once it’s connected, your agents can directly call Generect’s live API (fetching company data, finding leads, and validating emails) all from within your workflow.
+Connecting Generect to OpenAI's Agent Builder through **MCP** only takes a few minutes. Once it's connected, your agents can directly call Generect's live API (fetching company data, finding leads, and validating emails) all from within your workflow.
 
 Follow these steps:
 
@@ -70,14 +70,14 @@ In the _Server URL_ field, enter: `https://api.generect.com/`
 />
 
 <Tip>
-  Make sure the URL ends with a trailing slash / because the connection won’t
+  Make sure the URL ends with a trailing slash / because the connection won't
   work correctly without it.
 </Tip>
 
 ### Step 4. Choose authentication type
 From the authentication dropdown, choose Access Token.
 Generect uses a simple Bearer Token (API key) system for secure access.
-Now you’ll need to generate that token.
+Now you'll need to generate that token.
 
 #### Step 4.1. Log In to Generect
 Go to https://beta.generect.com/ and sign in with your account.
@@ -107,7 +107,7 @@ In the MCP server connection window:
 - Review your settings.
 - Click *Connect*.
 
-Once connected, you’ll see your Generect MCP server appear in the list.
+Once connected, you'll see your Generect MCP server appear in the list.
 
 <img
   src="/media/agent-builder-4_4.png"
@@ -117,13 +117,13 @@ Once connected, you’ll see your Generect MCP server appear in the list.
 
 ### Step 5. Create your agent workflow
 
-In **Agent Builder**, everything happens on a visual canvas. You’ll build a workflow with a series of **nodes** that represent steps.
+In **Agent Builder**, everything happens on a visual canvas. You'll build a workflow with a series of **nodes** that represent steps.
 
 A simple workflow might look like this:
 
 `User Input → Agent → MCP (Generect) → Transform → Output`
 
-Here’s what each node does:
+Here's what each node does:
 
 * **Start Node:** Captures user input (e.g., "Find founders from biotech startups.")  
 * **Agent Node:** Interprets the query, decides what to fetch.  

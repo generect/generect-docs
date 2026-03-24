@@ -114,7 +114,7 @@ paths:
       tags:
         - 1. Auth
       summary: Get User (me)
-      description: Retrieve the current user’s credit balance and account details
+      description: Retrieve the current user's credit balance and account details
       operationId: getUserMe
       responses:
         '200':
