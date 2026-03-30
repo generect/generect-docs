@@ -17,26 +17,31 @@ Below are the main use cases that will help you understand how the platform solv
 
 ### **Finding target leads based on ICP**
 
-## Who it's for  
+**Who it's for**
+  
 Sales teams, SDR, marketing, founders, growth teams.
 
-## Problem  
+**Problem**
+  
 Most teams spend hours on manual research to find the “right” contacts. As a result:
 
 * leads don't match the ICP  
 * outreach efforts are ineffective  
 * teams work with noise instead of focus
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to build lead search based on your Ideal Customer Profile and work only with a relevant audience.
 
-## How it works  
+**How it works**
+  
 You define your ICP: roles, industries, company size, locations, and other attributes  
 You run a lead search  
 You get a list of contacts that match your criteria  
 You start working with leads without additional cleaning
 
-## Input data
+**Input data**
+
 
 * roles and/or personas  
 * industry  
@@ -44,7 +49,8 @@ You start working with leads without additional cleaning
 * location  
 * additional filters such as data freshness or number of contacts per company
 
-## Outcome
+**Outcome**
+
 
 * clearly focused list of leads  
 * less noise, more replies  
@@ -54,27 +60,33 @@ You start working with leads without additional cleaning
 
 ### **Leads by domain / website**
 
-## Who it's for  
+**Who it's for**
+  
 Account-based sales, founders, sales managers.
 
-## Problem  
+**Problem**
+  
 You already know which companies you want to work with, but you don't have contacts within those companies or the data is outdated.
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to find contacts of people working at specific companies using a domain or website as a starting point.
 
-## How it works  
+**How it works**
+  
 You enter a domain or a list of company websites  
 You choose who you are looking for (role, location)  
 You get relevant contacts within those companies
 
-## Input data
+**Input data**
+
 
 * domain or list of domains  
 * roles / personas  
 * location or other filters (optional)
 
-## Outcome
+**Outcome**
+
 
 * direct access to decision-makers  
 * ideal for account-based sales  
@@ -84,27 +96,33 @@ You get relevant contacts within those companies
 
 ### **Speeding up SDR workflows with personas**
 
-## Who it's for  
+**Who it's for**
+  
 SDR, sales managers, teams with a high volume of searches.
 
-## Problem  
+**Problem**
+  
 SDRs repeatedly set up the same filters, wasting time and making mistakes.
 
-## What Generect enables  
+**What Generect enables**
+  
 Personas allow you to save typical role configurations and reuse them in any search.
 
-## How it works  
+**How it works**
+  
 A persona is created (for example, “Sales Leadership”)  
 SDR selects a persona instead of manually setting filters  
 The search is launched instantly
 
-## Input data
+**Input data**
+
 
 * functions  
 * seniority  
 * keywords (include / exclude)
 
-## Outcome
+**Outcome**
+
 
 * faster search  
 * consistent team standards  
@@ -114,30 +132,36 @@ The search is launched instantly
 
 ### **Refreshing and cleaning searches with exclude lists**
 
-## Who it's for  
+**Who it's for**
+  
 Sales, RevOps, marketing.
 
-## Problem  
+**Problem**
+  
 Teams repeatedly contact:
 
 * existing customers  
 * already processed leads  
 * irrelevant or “no-go” accounts
 
-## What Generect enables  
+**What Generect enables**
+  
 Exclude lists allow you to automatically remove unwanted contacts and companies from search results.
 
-## How it works  
+**How it works**
+  
 You create an exclude list (CRM customers, competitors, etc.)  
 You apply it to your search  
 You work only with relevant data
 
-## Input data
+**Input data**
+
 
 * lists of contacts or companies  
 * exclusion rules
 
-## Outcome
+**Outcome**
+
 
 * clean lists  
 * reduced risks  
@@ -147,10 +171,12 @@ You work only with relevant data
 
 ### **Monitoring new leads in target segments**
 
-## Who it's for  
+**Who it's for**
+  
  Sales teams, SDR, growth teams, and founders tracking dynamic markets.
 
-## Problem  
+**Problem**
+  
 New potential leads constantly appear as people change roles, join new companies, or enter your target segment.  
  Without continuous monitoring:
 
@@ -158,22 +184,26 @@ New potential leads constantly appear as people change roles, join new companies
 * outreach happens too late  
 * competitors reach leads first
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to continuously monitor your target segments and identify new leads as they appear.
 
-## How it works
+**How it works**
+
 
 1. You define your ICP and target segment  
 2. Generect continuously updates data within that segment  
 3. New matching leads are identified automatically  
 4. You review and act on fresh leads without running new searches from scratch
 
-## Input data
+**Input data**
+
 
 * ICP criteria  
 * segment filters (industry, roles, location, etc.)
 
-## Outcome
+**Outcome**
+
 
 * continuous flow of new leads  
 * faster response to market changes  
@@ -186,33 +216,39 @@ Generect allows you to continuously monitor your target segments and identify ne
 
 ### **Discovering companies that match ICP**
 
-## Who it's for  
+**Who it's for**
+  
 Sales teams, founders, business development, strategy.
 
-## Problem  
+**Problem**
+  
 Teams often don't have a clear list of companies to target. ICP exists “in theory” but not as real data:
 
 * hard to define which companies are actually relevant  
 * difficult to scale across a team  
 * unclear where to focus sales efforts
 
-## What Generect enables  
+**What Generect enables**
+  
 Company Search allows you to turn an abstract ICP into a concrete, data-backed and verifiable list of companies to target.
 
-## How it works  
+**How it works**
+  
 You define your ICP at the company level: industries, size, locations, and other attributes  
 Generect generates a list of companies that match these criteria  
 You analyze results, refine filters, and see the real structure of your target market  
 You use this list as a foundation for lead search or account-based sales
 
-## Input data
+**Input data**
+
 
 * industries  
 * company size  
 * geography  
 * additional company attributes
 
-## Outcome
+**Outcome**
+
 
 * clear list of target companies  
 * transparent understanding of your actual ICP  
@@ -222,32 +258,38 @@ You use this list as a foundation for lead search or account-based sales
 
 ### **Market and segment analysis**
 
-## Who it's for  
+**Who it's for**
+  
 Founders, leadership, strategy, growth teams.
 
-## Problem  
+**Problem**
+  
 Market decisions are often made intuitively without real data:
 
 * how many companies exist in a segment  
 * where they are located  
 * which segments are worth focusing on
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to explore markets through real companies and their data, not abstract reports.
 
-## How it works  
+**How it works**
+  
 You define segment parameters (industry, size, region, etc.)  
 You get a list of companies in that segment  
 You compare different segments by adjusting criteria  
 You identify where most potential customers are and which segments have the highest potential
 
-## Input data
+**Input data**
+
 
 * segment parameters  
 * geography  
 * company attributes
 
-## Outcome
+**Outcome**
+
 
 * realistic view of market size and structure  
 * data-driven strategic decisions  
@@ -257,32 +299,38 @@ You identify where most potential customers are and which segments have the high
 
 ### **Identifying new accounts for expansion**
 
-## Who it's for  
+**Who it's for**
+  
 Sales leadership, growth teams, business development.
 
-## Problem  
+**Problem**
+  
 When entering new markets or verticals, it's hard to quickly understand:
 
 * which companies to target  
 * where to start  
 * how to avoid chaotic account discovery
 
-## What Generect enables  
+**What Generect enables**
+  
 Company Search helps quickly build a list of new accounts for expansion.
 
-## How it works  
+**How it works**
+  
 You define criteria for a new market or vertical  
 Generect finds companies that match these criteria  
 You get a structured list of accounts  
 Sales teams use this list to systematically enter a new segment
 
-## Input data
+**Input data**
+
 
 * new market criteria  
 * company attributes  
 * regions or industries
 
-## Outcome
+**Outcome**
+
 
 * faster entry into new markets  
 * clear list of target accounts without manual research  
@@ -294,31 +342,37 @@ Sales teams use this list to systematically enter a new segment
 
 ### **Verify emails before sending campaigns**
 
-## Who it's for  
+**Who it's for**
+  
 Marketing Ops teams before outbound campaigns, SDR/BDR teams preparing cold outreach, RevOps teams working with CRM and email campaigns.
 
-## Problem  
+**Problem**
+  
 Outbound campaigns often perform poorly because:
 
 * email addresses are outdated, invalid, or incorrect  
 * higher risk of spam placement and domain damage  
 * teams spend time manually verifying emails before campaigns
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to verify email addresses before sending outbound campaigns to filter out invalid and risky contacts, reduce bounce rates, and protect sender reputation.
 
-## How it works  
+**How it works**
+  
 You upload an email or a list of contacts before launching a campaign  
 Generect instantly checks deliverability for each address  
 The system assigns a status (valid / invalid / risky)  
 Invalid and risky emails are excluded or separated
 
-## Input data
+**Input data**
+
 
 * email address or list of emails  
 * segment or company (optional)
 
-## Outcome
+**Outcome**
+
 
 * lower bounce rates  
 * protected sender reputation  
@@ -329,31 +383,37 @@ Invalid and risky emails are excluded or separated
 
 ### **Detect fake, risky, or non-corporate emails**
 
-## Who it's for  
+**Who it's for**
+  
 Agencies and lead generation teams working with large datasets, RevOps and CRM owners responsible for data quality, SDR/BDR teams before cold outreach.
 
-## Problem  
+**Problem**
+  
 Outbound campaigns often include emails that appear valid but are:
 
 * fake or temporary  
 * personal or non-corporate domains  
 * reducing campaign effectiveness
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to detect fake, risky, and non-corporate emails before launching campaigns.
 
-## How it works  
+**How it works**
+  
 You upload emails or a list of contacts  
 Generect analyzes domain type and email patterns  
 The system assigns a status (valid / risky / fake)  
 Fake, risky, and non-corporate emails are filtered out
 
-## Input data
+**Input data**
+
 
 * email address or list of emails  
 * contact list (optional)
 
-## Outcome
+**Outcome**
+
 
 * cleaner, corporate-only email lists  
 * lower bounce and spam risks  
@@ -364,32 +424,38 @@ Fake, risky, and non-corporate emails are filtered out
 
 ### **Process large contact lists in bulk**
 
-## Who it's for  
+**Who it's for**
+  
 Lead generation agencies, teams running large outbound campaigns, sales teams.
 
-## Problem  
+**Problem**
+  
 Working with large contact lists is difficult because:
 
 * no efficient way to validate emails at scale  
 * manual verification takes too long  
 * campaigns are launched with unclean data
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows bulk validation of large email lists to quickly prepare clean, campaign-ready data.
 
-## How it works  
+**How it works**
+  
 You upload a file (CSV or XLSX)  
 Generect processes each email  
 The system assigns a status (valid / invalid / risky)  
 Results are available for review and export  
 Invalid and risky emails can be excluded
 
-## Input data
+**Input data**
+
 
 * file with email list (CSV / XLSX)  
 * contact list or database
 
-## Outcome
+**Outcome**
+
 
 * fast validation at scale  
 * clean, structured email databases  
@@ -401,10 +467,12 @@ Invalid and risky emails can be excluded
 
 ### **Continuous email validation for growing databases**
 
-## Who it's for  
+**Who it's for**
+  
 Sales teams with long deal cycles, companies with large CRM databases, CRM owners.
 
-## Problem  
+**Problem**
+  
 Contact data quickly becomes outdated:
 
 * people change roles or companies  
@@ -412,22 +480,26 @@ Contact data quickly becomes outdated:
 * CRM accumulates outdated contacts  
 * manual checks don't scale
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows ongoing validation of emails in growing databases.
 
-## How it works  
+**How it works**
+  
 You periodically upload updated contact lists  
 Generect checks the current status of each email  
 The system identifies invalid or risky contacts  
 Results are used to update CRM or exclude contacts
 
-## Input data
+**Input data**
+
 
 * email data from CRM or internal database  
 * contact lists or segments  
 * file or export (CSV / XLSX)
 
-## Outcome
+**Outcome**
+
 
 * up-to-date contact data  
 * cleaner CRM  
@@ -440,32 +512,38 @@ Results are used to update CRM or exclude contacts
 
 ### **Finding verified work emails for outbound campaigns**
 
-## Who it's for  
+**Who it's for**
+  
 Marketing teams, sales teams, growth teams.
 
-## Problem  
+**Problem**
+  
 Outbound campaigns fail because:
 
 * emails are outdated or incorrect  
 * bounce rates increase  
 * manual verification takes time
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to find and verify corporate emails before outreach.
 
-## How it works  
+**How it works**
+  
 You upload a list or use existing leads  
 Generect finds emails based on name and domain  
 Emails are validated instantly  
 Risky or invalid emails are filtered out
 
-## Input data
+**Input data**
+
 
 * full name  
 * company or domain  
 * contact list (optional)
 
-## Outcome
+**Outcome**
+
 
 * lower bounce rates  
 * protected sender reputation  
@@ -476,28 +554,34 @@ Risky or invalid emails are filtered out
 
 ### **Completing contact profiles with missing email data**
 
-## Who it's for  
+**Who it's for**
+  
 Sales ops, RevOps, marketing teams.
 
-## Problem  
+**Problem**
+  
 CRM data is incomplete and lacks emails.
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect enriches contact profiles with corporate emails.
 
-## How it works  
+**How it works**
+  
 You select contacts  
 Run email search  
 Emails are validated  
 Profiles are updated
 
-## Input data
+**Input data**
+
 
 * contact profiles  
 * full name  
 * company
 
-## Outcome
+**Outcome**
+
 
 * more usable contacts  
 * less manual work  
@@ -508,27 +592,33 @@ Profiles are updated
 
 ### **Finding direct phone numbers for high-value leads**
 
-## Who it's for  
+**Who it's for**
+  
 Recruiting teams, sales teams working with high-value leads.
 
-## Problem  
+**Problem**
+  
 Email is not always effective. Finding phone numbers manually is slow and unreliable.
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect allows you to find direct phone numbers for faster contact.
 
-## How it works  
+**How it works**
+  
 You work with contacts  
 Generect finds phone numbers  
 Numbers are returned only if available  
 You pay only for successful results
 
-## Input data
+**Input data**
+
 
 * full name  
 * company or LinkedIn
 
-## Outcome
+**Outcome**
+
 
 * faster contact  
 * fewer delays  
@@ -539,28 +629,34 @@ You pay only for successful results
 
 ### **Enabling multi-channel outreach (email \+ phone)**
 
-## Who it's for  
+**Who it's for**
+  
 Sales teams, SDR, recruiters, growth teams.
 
-## Problem  
+**Problem**
+  
 Using only one channel reduces response rates. Teams often lack full contact data.
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect provides both emails and phone numbers for multi-channel outreach.
 
-## How it works  
+**How it works**
+  
 You upload or find contacts  
 Generect finds emails and phone numbers  
 Emails are validated  
 Contacts are ready for outreach
 
-## Input data
+**Input data**
+
 
 * full name  
 * company or domain  
 * LinkedIn (optional)
 
-## Outcome
+**Outcome**
+
 
 * higher response rates  
 * faster contact  
@@ -571,28 +667,34 @@ Contacts are ready for outreach
 
 ### **Finding emails from LinkedIn URL**
 
-## Who it's for  
+**Who it's for**
+  
 Sales teams, SDR, marketing, growth teams using LinkedIn or Sales Navigator.
 
-## Problem  
+**Problem**
+  
 Teams have LinkedIn profiles but no contact data. Manual search is slow and unreliable.
 
-## What Generect enables  
+**What Generect enables**
+  
 Generect converts LinkedIn profiles into verified corporate emails.
 
-## How it works  
+**How it works**
+  
 You add LinkedIn URLs  
 Generect identifies the person and company  
 Email is generated  
 Email is validated  
 Invalid emails are filtered out
 
-## Input data
+**Input data**
+
 
 * LinkedIn URL or list  
 * optional filters
 
-## Outcome
+**Outcome**
+
 
 * LinkedIn profiles converted into verified emails  
 * faster outreach preparation  
