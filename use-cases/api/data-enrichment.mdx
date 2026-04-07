@@ -1,0 +1,154 @@
+---
+title: Data enrichment
+---
+
+### 1\. Reveal full lead profile after Preview (Enrich API)
+
+**Who it's for**
+
+SaaS platforms, AI agents, sales teams who use Preview → Enrich flow.
+
+**Problem**
+
+After browsing leads via Preview, teams need full profiles (linkedin, work history, skills) before outreach. They need a simple way to "unlock" a lead.
+
+**What Generect enables**
+
+One endpoint, multiple input options: lead\_id, LinkedIn URL, email, or name+company. No data found \= no charge.
+
+**How it works**
+
+1. Take lead\_id from Preview results
+2. Call `POST /enrich/database/lead` (cached, 1 credit) or `/enrich/realtime/lead` (fresh, 2 credits)
+3. Get full profile: linkedin\_url, work history, education, skills, company details
+4. If lead not found — 0 credits charged
+
+**Input data**
+
+lead\_id, OR LinkedIn URL, OR email (reverse lookup), OR name \+ company
+
+**Outcome**
+
+- Full lead profile with work history and skills
+- Flexible input — use whatever identifier you have
+- "No Data, No Charge" — zero risk
+
+### 2\. Reverse email lookup — find a person by email (Enrich API)
+
+**Who it's for**
+
+Sales teams, customer success, recruiters who have an email but need full context.
+
+**Problem**
+
+You received an inbound email or have a list of emails — but don't know who these people are, their role, company size, or seniority.
+
+**What Generect enables**
+
+`/enrich/realtime/lead` accepts email as input and returns the full lead profile via reverse lookup.
+
+**How it works**
+
+1. Call `POST /enrich/realtime/lead` with `{ "email": "john@acme.com" }`
+2. Get full profile: name, title, company, LinkedIn, work history
+3. If not found — 0 credits
+
+**Input data**
+
+Email address
+
+**Outcome**
+
+- Full context on any email contact
+- Better lead qualification for inbound
+- Enrich existing email lists with profile data
+
+### 3\. Enrich company data by domain or name (Enrich API)
+
+**Who it's for**
+
+CRM admins, data ops teams, marketing automation builders.
+
+**Problem**
+
+CRM records often have just a company name or domain. Teams need full company data (industry, headcount, LinkedIn page) for segmentation and routing.
+
+**What Generect enables**
+
+`/enrich/database/company` or `/enrich/realtime/company` accepts domain, name, LinkedIn URL, or internal ID — returns full company profile.
+
+**How it works**
+
+1. Pass company domain (e.g., "acme.com (http://acme.com/)") to `POST /enrich/database/company`
+2. Get full profile: industry, headcount, location, LinkedIn URL, website
+3. Update CRM record automatically
+
+**Input data**
+
+Domain, OR company name, OR LinkedIn URL, OR internal id
+
+**Outcome**
+
+- Complete company profiles for CRM enrichment
+- Multiple input options for flexibility
+- Automated data hygiene
+
+### 4\. Find a work email after Preview (Email API)
+
+**Who it's for**
+
+SDR teams, outbound automation, AI sales agents.
+
+**Problem**
+
+You found the right lead via Preview or Search — now you need their email for outreach.
+
+**What Generect enables**
+
+`/email/find` — get email by first\_name \+ last\_name \+ domain. Charged per request in batch.
+
+**How it works**
+
+1. Take first\_name, last\_name, domain from Preview results
+2. Call `POST /email/find` with `{ "first\_name": "John", "last\_name": "Doe", "domain": "acme.com" }`
+3. Get verified email with confidence score
+
+**Input data**
+
+first\_name \+ last\_name \+ domain
+
+**Outcome**
+
+- Verified work email with deliverability check
+- "No Data, No Charge" — pay only for results
+- Confidence score and catch-all detection included
+
+### 5\. Find mobile number for cold calling (Phone API)
+
+**Who it's for**
+
+Inside sales, BDR teams, call centers.
+
+**Problem**
+
+Email outreach has low response rates. Direct phone contact converts better, but finding verified mobile numbers is hard and expensive.
+
+**What Generect enables**
+
+`/phone/find` by lead\_id or name+company. 5 credits if found, 0 if not.
+
+**How it works**
+
+1. Call `POST /phone/find` with lead\_id or name \+ company
+2. Get phone number with type (mobile/office) and country
+3. Not found? No charge.
+
+**Input data**
+
+lead\_id OR first\_name \+ last\_name \+ company domain
+
+**Outcome**
+
+- Verified phone numbers for direct outreach
+- Mobile vs office type detection
+- Zero-risk pricing model

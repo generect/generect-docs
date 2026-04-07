@@ -105,16 +105,21 @@
     {
       "group": "API",
       "pages": [
-        "use-cases/api/introduction",
-        "use-cases/api/lead-search",
-        "use-cases/api/company-search",
-        "use-cases/api/verify-emails",
-        "use-cases/api/find-contacts"
+        "use-cases/api/data-discovery",
+        "use-cases/api/data-enrichment",
+        "use-cases/api/bulk-processing",
+        "use-cases/api/automations-and-integrations",
+        "use-cases/api/account-managment"
       ]
     },
     {
       "group": "MCP",
-      "pages": ["use-cases/mcp/introduction"]
+      "pages": [
+        "use-cases/mcp/target-prospects",
+        "use-cases/mcp/account-sourcing",
+        "use-cases/mcp/email-generation",
+        "use-cases/mcp/profile-lookup"
+      ]
     },
     {
       "group": "API Reference",

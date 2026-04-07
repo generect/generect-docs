@@ -1,0 +1,98 @@
+---
+title: Account managment
+---
+
+### 1\. Real-time credit balance monitoring
+
+**Who it's for**
+
+Platform integrators, finance teams, admins managing API spend.
+
+**Problem**
+
+Teams using API at scale need to monitor credit balance to avoid service interruption or overspend. No visibility \= budget surprises.
+
+**What Generect enables**
+
+`GET /api/v1/accounts/mereturns` current credit balance, monthly usage, and plan details including Preview tier eligibility.
+
+**How it works**
+
+1. Call GET /api/v1/accounts/me 
+2. Check credits.balance and credits.used\_this\_month
+3. Set alerts in your system when balance drops below threshold
+
+**Input data**
+
+API key (authentication)
+
+**Outcome**
+
+- Real-time credit balance visibility
+- Proactive alerts before credits run out
+- Clear plan and tier information
+
+---
+
+### 2\. API usage analytics by operation type
+
+**Who it's for**
+
+Product managers, data ops, finance teams optimizing API costs.
+
+**Problem**
+
+Teams don't know which API operations consume most credits. Can't optimize spend without breakdown.
+
+**What Generect enables**
+
+`GET /api/v1/accounts/usagereturns` credit breakdown by operation type: search (database/realtime), enrich, email find.
+
+**How it works**
+
+1. Call `GET /api/v1/accounts/usage` 
+2. See breakdown: how many credits spent on search vs enrich vs email
+3. Identify most expensive operations
+4. Optimize: switch from realtime to database where freshness isn't critical
+
+**Input data**
+
+API key, period
+
+**Outcome**
+
+- Full cost transparency by operation type
+- Data-driven optimization of API usage
+- Clear ROI per API feature
+
+---
+
+### 3\. Transaction history for financial reporting
+
+**Who it's for**
+
+Finance teams, admins, compliance officers.
+
+**Problem**
+
+Need detailed transaction history for invoicing, auditing, and reconciliation. Current tools don't provide per-operation granularity.
+
+**What Generect enables**
+
+`GET /api/v1/accounts/transactions` returns every credit transaction with timestamp, type, amount, and details.
+
+**How it works**
+
+1. Call `GET /api/v1/accounts/transactions `
+2. Get chronological list of all operations
+3. Export for accounting or reconciliation
+
+**Input data**
+
+API key, optional date range
+
+**Outcome**
+
+- Complete audit trail of all API charges
+- Per-operation detail for accounting
+- Easy reconciliation with billing

@@ -1,0 +1,129 @@
+---
+title: Data discovery
+---
+
+### 1\. SaaS platform displays search results to users at no cost(Preview API)
+
+**Who it's for**
+
+SaaS platforms (Clay, n8n, AI SDR tools), developers building lead discovery features.
+
+**Problem**
+
+SaaS platforms want to show search results to their users, but current API charges for every displayed lead — even before the user decides to buy contact data. This makes it too expensive to build "browse → decide → reveal" flows.
+
+**What Generect enables**
+
+Preview API returns cached lead data (name, title, company, location, seniority, linkedin\_url, domain) with a unique lead\_id — much cheaper than full enrichment. Users browse results and pay only when they reveal contacts via Enrich API.
+
+**How it works**
+
+1. Your app sends ICP filters to `POST /preview/leads`
+2. Generect returns cached data: name, title, company, location, industry, seniority, linkedin\_url, domain
+3. Your users browse and select leads
+4. Call `/enrich/database/lead` with `lead_id` for selected leads
+5. Pay only for enrichment
+
+**Input data**
+
+Job titles, seniorities, locations, company industries, company headcount
+
+**Outcome**
+
+- Cheaper browsing for end users (cached data)
+- Pay only for actionable data (email, phone, full profile)
+- Higher conversion from "browse" to "purchase"
+
+### 3\. Real-time lead search with advanced filters (Search API \- Realtime)
+
+**Who it's for**
+
+Account-based sales teams, recruiters, enterprise sales targeting niche personas.
+
+**Problem**
+
+Cached data may be outdated or lack granular filters. Teams targeting specific personas (e.g., "VP Engineering who changed jobs in last 6 months at Series B startups") need realtime LinkedIn-grade filtering.
+
+**What Generect enables**
+
+`/search/realtime/leads` searches live data with advanced filters: keywords, past companies, schools, years in position, functions.
+
+**How it works**
+
+1. Define precise ICP with advanced filters
+2. Call POST /search/realtime/leads
+3. Get fresh, highly-targeted results (5-60 sec)
+4. Use for personalized outreach
+
+**Input data**
+
+All database filters \+ keywords, personas, past companies, schools, groups, years in position, functions
+
+**Outcome**
+
+- Up-to-date lead data
+- Hyper-targeted lists for ABM campaigns
+- Advanced filters not available in database mode
+
+### 4\. Find companies and their contacts in a single request (Search API)
+
+**Who it's for**
+
+B2B sales teams, partnerships managers, investors doing market mapping.
+
+**Problem**
+
+Teams need both company and decision-maker data in one flow. Currently requires two separate searches and manual matching.
+
+**What Generect enables**
+
+/search/database/company-leads (or realtime) returns companies matching your ICP together with their key contacts in a single request.
+
+**How it works**
+
+1. Define company ICP: industry, headcount, location
+2. Add lead filters: target roles, seniority
+3. Call `POST /search/database/company-leads`
+4. Get matched companies with their relevant contacts
+
+**Input data**
+
+Company filters (industry, headcount, location, type) \+ lead filters (roles, seniority)
+
+**Outcome**
+
+- Company \+ contact data in one call
+- No manual matching needed
+- Faster account-based prospecting
+
+### 5\. Quickly estimate audience size before launching a campaign (Preview API)
+
+**Who it's for**
+
+Marketing teams, growth leads, campaign managers.
+
+**Problem**
+
+Before launching an outbound campaign, teams need to know: "How many leads match this ICP?" Without a free count, they either guess or pay to find out.
+
+**What Generect enables**
+
+POST /preview/leads/count returns the total number of matching leads — always free.
+
+**How it works**
+
+1. Define ICP filters
+2. Call `POST /preview/leads/count`
+3. Get total count instantly, no charge
+4. Adjust filters until the audience size is right
+5. Proceed to search/enrich
+
+**Input data**
+
+Job titles, seniorities, locations, industries, headcount
+
+**Outcome**
+
+- Free audience sizing before any spend
+- Better campaign planning and budget estimation
+- Faster ICP iteration
