@@ -1,0 +1,125 @@
+---
+title: Bulk processing
+---
+
+### 1\. Bulk lead search by ICP from cached database (Search API \- Database)
+
+**Who it's for**
+
+SDR teams, growth hackers, outbound agencies doing high-volume prospecting.
+
+**Problem**
+
+Teams need large lead lists fast and cheap. Realtime search is slow and expensive when freshness isn't critical — they just need volume.
+
+**What Generect enables**
+
+`/search/database/leads` returns full lead data (incl. linkedin\_url, domain) from Generect's cached database — 10x cheaper and near-instant.
+
+**How it works**
+
+1. Define ICP: roles, industries, headcount, locations
+2. Call `POST /search/database/leads`
+3. Get full lead profiles in \<1 sec
+4. Export to CRM or outreach tool
+
+**Input data**
+
+Job titles, seniorities, locations, company industries, company headcount
+
+**Outcome**
+
+- Large lead lists at 0.2-0.1 credit/result
+- Sub-second response time
+- Full data including linkedin\_url and company domain
+
+### 2\. Bulk email find для large lists (Email API)
+
+**Who it's for**
+
+Outbound agencies, growth teams with large lead lists, data ops.
+
+**Problem**
+
+Finding emails one by one for 10K+ leads is too slow. Teams need async bulk processing with job tracking.
+
+**What Generect enables**
+
+`/email/find/bulk` processes thousands of leads asynchronously. Check status via job\_id.
+
+**How it works**
+
+1. Submit list of lead\_ids or name+domain pairs to `POST /email/find/bulk`
+2. Get job\_id
+3. Poll `GET /email/find/bulk/{job_id}` for status
+4. Download results when complete
+
+**Input data**
+
+Array of lead\_id or first\_name \+ last\_name \+ domain
+
+**Outcome**
+
+- Process thousands of leads in one request
+- Async with job tracking 
+- Focus on real, verified emails
+
+### 3\. Email list validation before sending (Email API)
+
+**Who it's for**
+
+Email marketers, outbound teams, anyone sending bulk emails.
+
+**Problem**
+
+Sending to invalid emails kills deliverability and sender reputation. Teams need to validate before sending.
+
+**What Generect enables**
+`/email/validate` checks deliverability, catch-all, disposable, and risk score.
+
+**How it works**
+
+1. Submit email list to `POST /email/validate`
+2. Get per-email status: `VALID`, `RISKY`, `CATCH\_ALL`, `INVALID`
+3. Filter out risky/invalid before sending
+
+**Input data**
+
+Array of email addresses
+
+**Outcome**
+
+- Protect sender reputation
+- Reduce bounce rate
+- Clear risk scoring per email
+
+### 4\. Bulk phone find for teams with large contact lists (Phone API)
+
+**Who it's for**
+
+Call centers, outbound agencies, sales teams scaling phone outreach.
+
+**Problem**
+
+Finding phones one by one doesn't scale. Need async bulk processing for large lists.
+
+**What Generect enables**
+
+`/phone/find/bulk` — submit thousands of leads, get results asynchronously.
+
+**How it works**
+
+1. Submit lead list to `POST /phone/find/bulk`
+2. Get job\_id
+3. Poll for results via `GET /phone/find/bulk/{job_id}`
+4. Pay only per found phone
+
+**Input data**
+
+Array of lead\_id or name \+ company pairs
+
+**Outcome**
+
+- Scale phone prospecting to thousands
+- Async processing with tracking
+- "No Data, No Charge" per result

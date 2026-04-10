@@ -1,0 +1,161 @@
+---
+title: Automations and integrations
+---
+
+### 1\. AI agent automatically processes new leads end-to-end
+
+**Who it's for**
+
+AI agent developers, automation builders, sales ops teams.
+
+**Problem**
+
+Sales teams manually process inbound leads: check if they match ICP, find emails, add to CRM. This takes hours and doesn't scale.
+
+**What Generect enables**
+
+Generect API becomes a data layer for AI agents — agent pulls leads, scores them, gets emails, pushes to CRM without human involvement.
+
+**How it works**
+
+1. Agent triggers on new lead signal (form fill, signup, etc.)
+2. Calls /preview/leads to check ICP match
+3. Calls /email/find for qualified leads only
+4. Pushes enriched contact to CRM via their API
+5. Notifies sales team in Slack
+
+**Input data**
+
+ICP filters, lead\_id, CRM credentials
+
+**Outcome**
+
+- Fully automated lead qualification pipeline
+- No manual research needed
+- Sales team gets only pre-qualified, enriched leads
+
+### 2\. AI agent pre-screens leads before spending credits (Preview API)
+
+**Who it's for**
+
+AI agent developers, automation builders, no-code platforms.
+
+**Problem**
+
+AI agents processing large ICP queries spend credits on every lead — including irrelevant ones. No way to "pre-screen" before committing budget.
+
+**What Generect enables**
+
+Agent calls Preview to get a broad list, applies its own logic (scoring, deduplication, CRM matching), then enriches only the best matches.
+
+**How it works**
+
+1. Agent sends broad ICP to POST /preview/leads
+2. Gets 100+ masked leads for free
+3. Agent scores leads by title \+ seniority \+ industry match
+4. Enriches only top 10-20 via /enrich/database/lead
+
+**Input data**
+
+ICP filters, lead\_id for enrichment
+
+**Outcome**
+
+- 5-10x lower spend per qualified lead
+- Agent autonomy in lead qualification
+- No wasted credits on irrelevant contacts
+
+### 3\. No-code automation: new signup → enrichment → CRM
+
+**Who it's for**
+
+Growth teams, marketers, ops teams using Make, n8n, Zapier.
+
+**Problem**
+
+When a new user signs up, teams manually look them up to understand who they are. Slow, inconsistent, doesn't scale.
+
+**What Generect enables**
+
+Connect Generect to your automation platform via API. New signup triggers enrichment — and full profile lands in CRM automatically.
+
+**How it works**
+
+1. Trigger: new signup in your product
+2. Make/n8n calls `POST /enrich/database/lead` with email
+3. Gets full profile: title, company, seniority, industry
+4. Updates CRM record automatically
+5. Routes to right sales rep based on company size
+
+**Input data**
+
+Email or name \+ company from signup form
+
+**Outcome**
+
+- Every new signup enriched in seconds
+- CRM always up to date
+- Automatic lead routing and scoring
+
+### 4\. Generect as a data source for outreach platforms
+
+**Who it's for**
+
+Outbound agencies, SDR teams using Instantly, Lemlist, Apollo, Smartlead.
+
+**Problem**
+
+Outreach platforms need fresh, verified lead lists. Teams manually export/import data between tools — error-prone and time-consuming.
+
+**What Generect enables**
+
+Build a pipeline: Generect API pulls targeted leads → validates emails → exports directly into your outreach tool via their API.
+
+**How it works**
+
+1. Call `/search/database/leads` with ICP
+2. Bulk validate emails via `/email/validate`
+3. Filter valid contacts
+4. Push to outreach platform via their API
+5. Launch campaign
+
+**Input data**
+
+ICP filters, outreach platform API credentials
+
+**Outcome**
+
+- Fresh, verified leads flowing directly into campaigns
+- No manual CSV exports
+- Higher deliverability from pre-validated emails
+
+### 5\. Enrich CRM contacts with phone numbers for Customer Success
+
+**Who it's for**
+
+Customer success teams, account managers.
+
+**Problem**
+
+Existing CRM contacts lack phone numbers. CS teams need direct lines for renewals and upsells but don't want to pay for numbers that can't be found.
+
+**What Generect enables**
+
+Use existing lead\_id or name+company from CRM to find phone numbers. Only pay for successful lookups.
+
+**How it works**
+
+1. Export contacts from CRM
+2. For each, call /phone/find with available identifiers
+3. Update CRM with found numbers
+4. Zero cost for contacts where phone wasn't found
+
+**Input data**
+
+lead\_id, or first\_name \+ last\_name \+ company
+
+**Outcome**
+
+- Enriched CRM with direct phone numbers
+- Better reach rates for CS calls
+- Cost-effective — no payment for missing data

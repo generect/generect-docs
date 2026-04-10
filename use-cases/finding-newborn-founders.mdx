@@ -1,0 +1,35 @@
+---
+title: 'Finding "Newborn Founders" for a Venture Fund'
+description: 'How a venture capital fund uses Generect to identify new startup founders in real-time'
+---
+
+A venture capital fund specializing in early-stage investments wanted to connect with new startup founders as soon as they transitioned from roles like C-level executives or top engineers in enterprise companies. Timing was crucial, as reaching these founders early ensured an edge in building strong relationships.
+
+## Challenge
+
+The fund had a list of 15,000 target companies, encompassing over 300,000 professionals. They needed to monitor these individuals weekly, identifying those who had recently changed their job title to `"Founder"`.
+
+## Solution with Generect Live API
+
+### Company and Lead Data Retrieval
+
+- Using [/companies/by_icp/](/api-reference/endpoint/companies/get-list-of-companies-by-icp), the fund maintained a fresh list of target companies.
+- With [/leads/by_icp/](/api-reference/endpoint/leads/get-list-of-leads-by-icp), they retrieved profiles of professionals in these companies.
+
+### Weekly Monitoring
+
+- The API dynamically updated data for all 300,000 professionals, tracking changes to job titles in real-time.
+
+### Identifying New Founders
+
+- Whenever a professional updated their title to `"Founder"`, the API flagged them as a high-priority lead.
+
+### Email Validation
+
+- Through [/email_validator/](/api-reference/endpoint/emails/email-validation), email addresses for these new founders were verified, ensuring a seamless outreach process.
+
+## Results
+
+The fund successfully identified and connected with "newborn founders" within days of their career change, allowing them to build relationships early in the startup lifecycle. This automated process saved time, reduced manual effort, and enhanced outreach precision.
+
+This example showcases the power of Generect Live API in solving complex, real-time data challenges for clients across various industries.

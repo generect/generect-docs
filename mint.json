@@ -3,7 +3,7 @@
   "name": "Starter Kit",
   "logo": {
     "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg" 
+    "light": "/logo/light.svg"
   },
   "api": {
     "baseUrl": "https://api.generect.com/",
@@ -15,12 +15,12 @@
   "openapi": "api-reference/openapi.yaml",
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#3a23a6",
-    "light": "#7981c9",
-    "dark": "#3a23a6",
+    "primary": "#2d59c8",
+    "light": "#5b85e6",
+    "dark": "#2d59c8",
     "anchors": {
-      "from": "#3a23a6",
-      "to": "#7981c9"
+      "from": "#2d59c8",
+      "to": "#5b85e6"
     }
   },
   "background": {
@@ -38,18 +38,92 @@
   },
   "tabs": [
     {
+      "name": "Documentation",
+      "url": "docs"
+    },
+    {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Billing & Pricing",
+      "url": "billing"
+    },
+    {
+      "name": "Integrations",
+      "url": "integrations"
+    },
+    {
+      "name": "Use Cases & Best Practices",
+      "url": "use-cases"
     }
   ],
   "anchors": [],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Getting Started",
       "pages": [
-        "api-reference/introduction",
-        "api-reference/limits"
+        "docs/what-is-generect",
+        "docs/create-account",
+        "docs/platform-overview",
+        "docs/how-generect-works",
+        "docs/api-overview",
+        "docs/data-coverage",
+        "docs/cached-databases",
+        "docs/faq"
       ]
+    },
+    {
+      "group": "Product Guides",
+      "pages": [
+        "docs/icp-search",
+        "docs/exclude-lists",
+        "docs/email-finder",
+        "docs/email-validation",
+        "docs/catch-all-validation"
+      ]
+    },
+    {
+      "group": "Billing & Pricing",
+      "pages": [
+        "billing/pay-as-you-go",
+        "billing/managing-billing",
+        "billing/usage-history",
+        "billing/faq"
+      ]
+    },
+    {
+      "group": "SaaS",
+      "pages": [
+        "use-cases/saas/introduction",
+        "use-cases/saas/lead-search",
+        "use-cases/saas/company-search",
+        "use-cases/saas/verify-emails",
+        "use-cases/saas/find-contacts"
+      ]
+    },
+    {
+      "group": "API",
+      "pages": [
+        "use-cases/api/data-discovery",
+        "use-cases/api/data-enrichment",
+        "use-cases/api/bulk-processing",
+        "use-cases/api/automations-and-integrations",
+        "use-cases/api/account-managment"
+      ]
+    },
+    {
+      "group": "MCP",
+      "pages": [
+        "use-cases/mcp/target-prospects",
+        "use-cases/mcp/account-sourcing",
+        "use-cases/mcp/email-generation",
+        "use-cases/mcp/profile-lookup"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": ["api-reference/introduction", "api-reference/limits"]
     },
     {
       "group": "Auth",
@@ -91,13 +165,16 @@
     {
       "group": "MCP",
       "pages": [
-        "api-reference/mcp/about-mcp",
-        "api-reference/mcp/quick-start",
-        "api-reference/mcp/common-problems"
+        "integrations/mcp/about-mcp",
+        "integrations/mcp/remote-mcp",
+        "integrations/mcp/quick-start",
+        "integrations/mcp/common-problems"
       ]
+    },
+    {
+      "group": "OpenAI Agent builder",
+      "pages": ["integrations/agent-builder/agent-builder"]
     }
   ],
-  "footerSocials": {
-
-  }
+  "footerSocials": {}
 }
