@@ -5,7 +5,7 @@ title: "Search for leads"
 
 Parallel requests limit: 50 requests
 
-Recommended timeout: 100 seconds
+Recommended timeout: 180 seconds
 
 # Use Case:
 
@@ -18,20 +18,51 @@ Build a targeted list of prospects for outreach campaigns
   - [List of Supported Locations](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=0).
   - In case of inputting a location which is not listed you will receive a `ValidationError` (free request), with Hint what location you need to edit.
 - Personas rules: (see example request first)
-  - Parent List contains a list of personas (list type).
-  - 1 parameter is Name (string type) - required.
-  - 2 parameter is Function (list of type strings) - required
-    - If words like OR operator.
-    - e.g. To look for all marketing and sales titles you have to create `["marketing", "sales"]` function.
-  - 3 parameter is Seniority (list of type strings) - optional (if not selected, you should pass it as `[ ]` (empty list) )
-    - It works like [Logical_conjunction](https://en.wikipedia.org/wiki/Logical_conjunction): in conjunction with Functions looks for a 1-to-1 match
-      - For example if Seniority passed are `["Head", "Manager"]`.
-    - e.g. To look for such titles: Head of Marketing, Head of Sales, Manager of Marketing, Manager of Sales - you have to create `["marketing", "sales"]` Function and `["Head", "Manager"]` Seniority.
-    - Expands
-      - VP automatically search for `[VP, SVP, EVP, GVP]`
-  - 4 parameter is Prohibit Keywords (list of type strings) - optional (if not selected, you should pass it as `[ ]` (empty list) )
-    - When at least 1 of that keyword appears in the `Job Title` of lead, this lead will be filtered out.
-  - In case of bad input you will receive a `ValidationError` (free request), with Hint what you need to edit.
+  - Top-level `personas` is a list of persona tuples. Each persona is:
+    `[name, functions, seniorities, prohibits, priority?]`
+  - **name** (string, required) — identifier for the persona group. Returned
+    on every matched lead as `linkedin_lead_persona`.
+  - **functions** (list of strings, required) — job-function keywords, OR-combined.
+    - Example: `["marketing", "sales"]` matches a lead whose title contains
+      either "marketing" or "sales".
+    - **Important**: only `functions` are pushed to the LinkedIn pre-filter.
+      `seniorities` and `prohibits` are applied server-side after leads are
+      fetched. A single narrow function (e.g. `["ceo"]`) may miss leads whose
+      actual title is a language-equivalent (`"Geschäftsführer"`,
+      `"Managing Director"`, `"Founder"`, etc.). For best recall pass all
+      equivalents explicitly, e.g.
+      `["ceo", "managing director", "geschäftsführer", "founder", "inhaber", "owner"]`.
+    - Pre-processing before matching: lowercased, diacritics stripped
+      (`unidecode`), stop-words removed (`or`, `and`, `of`, `in`, `at`),
+      `IT` → `information technology`, `DIR` → `director`, common
+      abbreviations auto-expanded (`ceo ↔ chief executive officer`, etc.).
+    - Pass `[]` to skip function matching (any title passes the function check).
+  - **seniorities** (list of strings, optional, default `[]`) — seniority
+    keywords, OR-combined. Applied post-fetch.
+    - Matching is per-entry token containment: every token of a seniority
+      phrase must appear in the lead's job title (tokens split on whitespace).
+      So `"Managing Director"` requires both `"managing"` and `"director"` to
+      be present in the title.
+    - Final persona match is logical AND between functions and seniorities:
+      a lead passes iff at least one function **and** at least one seniority
+      match.
+    - Example: `functions=["marketing", "sales"]` and
+      `seniorities=["Head", "Manager"]` match "Head of Marketing",
+      "Head of Sales", "Manager of Marketing", "Manager of Sales".
+    - Auto-expansions (case-insensitive):
+      - `"vp"` → also matches `SVP`, `EVP`, `GVP`, `AVP`
+      - `"chief"`, `"c-lvl"`, `"cxo"` → also match `Chief Officer`
+      - `"manager+"` → expands to `Manager`, `Director`, `Head`, `VP`, `SVP`,
+        `EVP`, `AVP`, `Chief Officer`
+    - Pass `[]` to skip seniority matching.
+  - **prohibits** (list of strings, optional, default `[]`) — exclusion
+    keywords, OR-combined. If at least one of its tokens appears in the
+    lead's job title, the lead is dropped.
+  - **priority** (integer, optional, default `0`) — ranking used when
+    `limit_by` is smaller than the number of matches. Lower value = higher
+    priority; leads from higher-priority personas are returned first.
+  - In case of bad input you will receive a `ValidationError` (free request),
+    with a hint on what you need to edit.
   - More Persona _Bad Examples and Good Practise_ [you can see here](https://docs.google.com/spreadsheets/d/1pNW018ALP5NIenl7nnke8tqJmMsOZGkVdtt1MO9_yQU/edit#gid=753174520)
 - limit_by rules:
   - Will return only N-strip of first leads that match input criteria
