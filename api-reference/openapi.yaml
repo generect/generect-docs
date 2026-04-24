@@ -1332,6 +1332,11 @@ paths:
                   type: array
                   items:
                     type: string
+                exclude_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: "Optional, list of sales_id values to exclude from results."
                 filter_empty_vars:
                   type: array
                   items:
