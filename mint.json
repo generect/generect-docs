@@ -64,10 +64,12 @@
       "group": "Getting Started",
       "pages": [
         "docs/what-is-generect",
+        "docs/why-is-generect",
         "docs/create-account",
         "docs/platform-overview",
         "docs/how-generect-works",
         "docs/api-overview",
+        "docs/choose-the-right-workflow",
         "docs/data-coverage",
         "docs/cached-databases",
         "docs/faq"
