@@ -17,12 +17,13 @@ description: This page describes common Problems you may encounter when using **
 ---
 
 ## 401 Unauthorized error
-**Cause:** Your API key is invalid or missing (applicable only for local MCP)
+**Cause:** Your API key is invalid or missing.
 
 **Solution:**
 - Make sure you replaced `your-api-key` with your actual key.
-- Do not remove the word `Token` from the value — it should look like: `GENERECT_API_KEY="Token your-real-key"`
-- Ask for a status for this key.
+- For **Local MCP**, set the env var to either `GENERECT_API_KEY="your-real-key"` or `GENERECT_API_KEY="Token your-real-key"` — both are accepted.
+- For **Remote MCP** with a custom `Authorization` header, any of these forms work: `YOUR_API_KEY`, `Bearer YOUR_API_KEY`, `Token YOUR_API_KEY`, or `Bearer Token YOUR_API_KEY`.
+- Verify the key is active in <a href="https://beta.generect.com" target="_blank">beta.generect.com</a>.
 
 ---
 
