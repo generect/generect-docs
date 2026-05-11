@@ -6,7 +6,7 @@
     "light": "/logo/light.svg"
   },
   "api": {
-    "baseUrl": "https://api.generect.com/",
+    "baseUrl": "https://generect.com/api/v1/",
     "auth": {
       "method": "key",
       "name": "Authorization"
@@ -129,16 +129,30 @@
     },
     {
       "group": "Auth",
+      "pages": ["api-reference/authentication"]
+    },
+    {
+      "group": "Accounts",
       "pages": [
-        "api-reference/authentication",
-        "api-reference/endpoint/auth/get-user-me"
+        "api-reference/endpoint/accounts/get-account-me",
+        "api-reference/endpoint/accounts/get-account-usage",
+        "api-reference/endpoint/accounts/get-account-transactions"
       ]
     },
     {
-      "group": "Transactions",
+      "group": "Preview",
       "pages": [
-        "api-reference/endpoint/transactions/get-list-of-transactions",
-        "api-reference/endpoint/transactions/spent-amount-of-transactions"
+        "api-reference/endpoint/preview/preview-leads",
+        "api-reference/endpoint/preview/count-preview-leads"
+      ]
+    },
+    {
+      "group": "Enrich",
+      "pages": [
+        "api-reference/endpoint/enrich/enrich-database-lead",
+        "api-reference/endpoint/enrich/enrich-realtime-lead",
+        "api-reference/endpoint/enrich/enrich-database-company",
+        "api-reference/endpoint/enrich/enrich-realtime-company"
       ]
     },
     {
@@ -161,6 +175,8 @@
       "group": "Emails",
       "pages": [
         "api-reference/endpoint/emails/email-finder",
+        "api-reference/endpoint/emails/email-finder-bulk",
+        "api-reference/endpoint/emails/get-email-finder-bulk",
         "api-reference/endpoint/emails/email-validation"
       ]
     },
