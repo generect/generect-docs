@@ -4,7 +4,7 @@ info:
   description: |-
     Welcome to the Generect API documentation. Here we will help you integrate and use our API.
 
-    API base url: `generect.com/api/v1/`
+    API base url: `https://api.generect.com/api/v1/`
     Protocol: `HTTPS`
 
     # Authentication
@@ -21,7 +21,7 @@ info:
   version: 1.0.0
   contact: {}
 servers:
-  - url: https://generect.com/api/v1
+  - url: https://api.generect.com/api/v1
 paths:
   /api/auth/token/login/:
     post:
@@ -3626,22 +3626,28 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                type: array
+                items:
+                  type: object
               example:
-                data:
-                  - id: lead_abc123xyz
-                    first_name: John
-                    last_name: Doe
-                    title: CEO
-                    company_name: Acme Tech
-                    location: San Francisco, CA
-                    industry: Software
-                    seniority: CXO
-                    headcount_range: 51-200
-                meta:
-                  page: 1
-                  per_page: 25
-                  credits_charged: 0
+                - id: lead_abc123xyz
+                  first_name: John
+                  last_name: Doe
+                  title: CEO
+                  company_name: Acme Tech
+                  location: San Francisco, CA
+                  industry: Software
+                  seniority: CXO
+                  headcount_range: 51-200
+                - id: lead_def456xyz
+                  first_name: Jane
+                  last_name: Smith
+                  title: VP Sales
+                  company_name: Example Corp
+                  location: New York, NY
+                  industry: Software
+                  seniority: VP
+                  headcount_range: 201-500
   /preview/leads/count/:
     post:
       tags:
