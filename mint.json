@@ -137,6 +137,13 @@
       ]
     },
     {
+      "group": "Preview",
+      "pages": [
+        "api-reference/endpoint/preview/preview-leads",
+        "api-reference/endpoint/preview/count-preview-leads"
+      ]
+    },
+    {
       "group": "Search",
       "pages": [
         "api-reference/endpoint/search/database-leads",
