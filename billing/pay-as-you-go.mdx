@@ -27,6 +27,10 @@ Below is a quick overview of common API charges.
 | ----- | ----- | ----- |
 | **Preview leads** `POST /preview/leads/` | Masked lead preview result | **Free** for $2000+/month accounts; otherwise **0.001 credit per result** |
 | **Preview lead count** `POST /preview/leads/count/` | Counting matching preview leads | **Free** |
+| **Database search** `/search/database/*` | Cached search result | **0.1 credit per result** |
+| **Database search count** `/search/database/*/count/` | Counting cached matches | **Free** |
+| **Realtime search** `/search/realtime/*` | Fresh search result | **1 credit per result** |
+| **Realtime search count** `/search/realtime/*/count/` | Counting fresh matches | **1 credit per count request** |
 | **Lead enrichment** `/enrich/*/lead/` | Full lead profile returned | Charged only when a lead is found |
 | **Company enrichment** `/enrich/*/company/` | Full company profile returned | Charged only when a company is found |
 | **Email Finder** `POST /email/find/` | Valid email found by `lead_id` or name + domain | **1 credit per valid email** |

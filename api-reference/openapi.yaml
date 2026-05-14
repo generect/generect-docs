@@ -1294,6 +1294,7 @@ paths:
                     status_code: 401
   /api/linkedin/leads/by_icp/:
     post:
+      deprecated: true
       tags:
         - 3. Leads
       summary: Get List of Leads by ICP
@@ -2068,6 +2069,7 @@ paths:
                     status: No leads match with input criteria
   /api/linkedin/leads/by_icp/get_count/:
     post:
+      deprecated: true
       tags:
         - 3. Leads
       summary: Count leads by ICP
@@ -2589,6 +2591,7 @@ paths:
         - apiKey: []
   /api/linkedin/companies/by_icp/:
     post:
+      deprecated: true
       tags:
         - 4. Companies
       summary: Get List of Companies by ICP
@@ -3300,6 +3303,7 @@ paths:
         - apiKey: []
   /api/linkedin/companies/by_icp/get_count/:
     post:
+      deprecated: true
       tags:
         - 4. Companies
       summary: Count companies by ICP
@@ -4283,7 +4287,347 @@ paths:
                       credits: -25
                       details:
                         results_count: 250
+  /search/database/leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search database leads
+      description: Search cached leads. Database mode is fast and supports the core lead filters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadSearchRequest'
+      responses:
+        '200':
+          description: Full lead search results
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/database/leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count database leads
+      description: Count cached leads matching the provided filters. Database count endpoints are free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadSearchRequest'
+      responses:
+        '200':
+          description: Matching lead count
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/database/companies/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search database companies
+      description: Search cached companies. Database mode is fast and supports the core company filters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanySearchRequest'
+      responses:
+        '200':
+          description: Full company search results
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/database/companies/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count database companies
+      description: Count cached companies matching the provided filters. Database count endpoints are free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanySearchRequest'
+      responses:
+        '200':
+          description: Matching company count
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/database/company-leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search database company leads
+      description: Search cached leads at matching companies.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyLeadSearchRequest'
+      responses:
+        '200':
+          description: Full company-lead search results
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/database/company-leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count database company leads
+      description: Count cached company-lead matches. Database count endpoints are free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyLeadSearchRequest'
+      responses:
+        '200':
+          description: Matching company-lead count
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/realtime/leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search realtime leads
+      description: Search fresh leads with full realtime filters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+      responses:
+        '200':
+          description: Full realtime lead search results
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/realtime/leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count realtime leads
+      description: Count fresh leads matching the provided filters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+      responses:
+        '200':
+          description: Matching realtime lead count
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/realtime/companies/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search realtime companies
+      description: Search fresh companies with full realtime filters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+      responses:
+        '200':
+          description: Full realtime company search results
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/realtime/companies/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count realtime companies
+      description: Count fresh companies matching the provided filters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+      responses:
+        '200':
+          description: Matching realtime company count
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/realtime/company-leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search realtime company leads
+      description: Search fresh leads at matching companies.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
+      responses:
+        '200':
+          description: Full realtime company-lead search results
+          content:
+            application/json:
+              schema:
+                type: object
+  /search/realtime/company-leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count realtime company leads
+      description: Count fresh company-lead matches.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
+      responses:
+        '200':
+          description: Matching realtime company-lead count
+          content:
+            application/json:
+              schema:
+                type: object
 components:
+  schemas:
+    StringList:
+      type: array
+      items:
+        type: string
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          default: 1
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+    LeadSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/Pagination'
+        - type: object
+          properties:
+            job_titles:
+              $ref: '#/components/schemas/StringList'
+            seniorities:
+              $ref: '#/components/schemas/StringList'
+            locations:
+              $ref: '#/components/schemas/StringList'
+            company_industries:
+              $ref: '#/components/schemas/StringList'
+            company_headcount:
+              $ref: '#/components/schemas/StringList'
+          example:
+            job_titles:
+              - CEO
+              - Founder
+            seniorities:
+              - CXO
+            locations:
+              - San Francisco, CA
+            company_industries:
+              - Software
+            company_headcount:
+              - 51-200
+            page: 1
+            per_page: 25
+    RealtimeLeadSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/LeadSearchRequest'
+        - type: object
+          properties:
+            keywords:
+              $ref: '#/components/schemas/StringList'
+            personas:
+              $ref: '#/components/schemas/StringList'
+            past_companies:
+              $ref: '#/components/schemas/StringList'
+            schools:
+              $ref: '#/components/schemas/StringList'
+            groups:
+              $ref: '#/components/schemas/StringList'
+            years_in_position:
+              $ref: '#/components/schemas/StringList'
+            functions:
+              $ref: '#/components/schemas/StringList'
+    CompanySearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/Pagination'
+        - type: object
+          properties:
+            industries:
+              $ref: '#/components/schemas/StringList'
+            headcount:
+              $ref: '#/components/schemas/StringList'
+            locations:
+              $ref: '#/components/schemas/StringList'
+            company_types:
+              $ref: '#/components/schemas/StringList'
+          example:
+            industries:
+              - Software
+            headcount:
+              - 51-200
+            locations:
+              - United States
+            company_types:
+              - Privately Held
+            page: 1
+            per_page: 25
+    RealtimeCompanySearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/CompanySearchRequest'
+        - type: object
+          properties:
+            keywords:
+              $ref: '#/components/schemas/StringList'
+            revenue_range:
+              $ref: '#/components/schemas/StringList'
+    CompanyLeadSearchRequest:
+      type: object
+      properties:
+        lead_filters:
+          $ref: '#/components/schemas/LeadSearchRequest'
+        company_filters:
+          $ref: '#/components/schemas/CompanySearchRequest'
+    RealtimeCompanyLeadSearchRequest:
+      type: object
+      properties:
+        lead_filters:
+          $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+        company_filters:
+          $ref: '#/components/schemas/RealtimeCompanySearchRequest'
   securitySchemes:
     apiKey:
       type: apiKey
@@ -4309,3 +4653,5 @@ tags:
     description: Find and validate email addresses.
   - name: 8. Accounts
     description: Account profile, usage, and transactions.
+  - name: 9. Search
+    description: Database and realtime lead, company, and company-lead search.

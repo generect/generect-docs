@@ -46,6 +46,10 @@
       "url": "api-reference"
     },
     {
+      "name": "API Reference (Old)",
+      "url": "api-reference-old"
+    },
+    {
       "name": "Billing & Pricing",
       "url": "billing"
     },
@@ -124,29 +128,6 @@
       ]
     },
     {
-      "group": "API Reference",
-      "pages": ["api-reference/introduction", "api-reference/limits"]
-    },
-    {
-      "group": "Auth",
-      "pages": ["api-reference/authentication"]
-    },
-    {
-      "group": "Accounts",
-      "pages": [
-        "api-reference/endpoint/accounts/get-account-me",
-        "api-reference/endpoint/accounts/get-account-usage",
-        "api-reference/endpoint/accounts/get-account-transactions"
-      ]
-    },
-    {
-      "group": "Preview",
-      "pages": [
-        "api-reference/endpoint/preview/preview-leads",
-        "api-reference/endpoint/preview/count-preview-leads"
-      ]
-    },
-    {
       "group": "Enrich",
       "pages": [
         "api-reference/endpoint/enrich/enrich-database-lead",
@@ -156,28 +137,37 @@
       ]
     },
     {
-      "group": "Companies",
+      "group": "Search",
       "pages": [
-        "api-reference/endpoint/companies/get-company-by-link",
-        "api-reference/endpoint/companies/get-list-of-companies-by-icp",
-        "api-reference/endpoint/companies/count-companies-by-icp"
+        "api-reference/endpoint/search/database-leads",
+        "api-reference/endpoint/search/count-database-leads",
+        "api-reference/endpoint/search/database-companies",
+        "api-reference/endpoint/search/count-database-companies",
+        "api-reference/endpoint/search/database-company-leads",
+        "api-reference/endpoint/search/count-database-company-leads",
+        "api-reference/endpoint/search/realtime-leads",
+        "api-reference/endpoint/search/count-realtime-leads",
+        "api-reference/endpoint/search/realtime-companies",
+        "api-reference/endpoint/search/count-realtime-companies",
+        "api-reference/endpoint/search/realtime-company-leads",
+        "api-reference/endpoint/search/count-realtime-company-leads"
       ]
     },
     {
-      "group": "Leads",
-      "pages": [
-        "api-reference/endpoint/leads/get-lead-by-link",
-        "api-reference/endpoint/leads/get-list-of-leads-by-icp",
-        "api-reference/endpoint/leads/count-leads-by-icp"
-      ]
-    },
-    {
-      "group": "Emails",
+      "group": "Email",
       "pages": [
         "api-reference/endpoint/emails/email-finder",
         "api-reference/endpoint/emails/email-finder-bulk",
         "api-reference/endpoint/emails/get-email-finder-bulk",
         "api-reference/endpoint/emails/email-validation"
+      ]
+    },
+    {
+      "group": "Account",
+      "pages": [
+        "api-reference/endpoint/accounts/get-account-me",
+        "api-reference/endpoint/accounts/get-account-usage",
+        "api-reference/endpoint/accounts/get-account-transactions"
       ]
     },
     {
