@@ -135,14 +135,16 @@
           "pages": [
             "api-reference/endpoint/enrich/enrich-realtime-company",
             "api-reference/endpoint/enrich/enrich-database-company"
-          ]
+          ],
+          "defaultOpen": false
         },
         {
           "group": "Leads",
           "pages": [
             "api-reference/endpoint/enrich/enrich-realtime-lead",
             "api-reference/endpoint/enrich/enrich-database-lead"
-          ]
+          ],
+          "defaultOpen": false
         }
       ]
     },
@@ -156,7 +158,8 @@
             "api-reference/endpoint/search/database-companies",
             "api-reference/endpoint/search/count-realtime-companies",
             "api-reference/endpoint/search/count-database-companies"
-          ]
+          ],
+          "defaultOpen": false
         },
         {
           "group": "Leads",
@@ -170,9 +173,11 @@
               "pages": [
                 "api-reference/endpoint/preview/preview-leads",
                 "api-reference/endpoint/preview/count-preview-leads"
-              ]
+              ],
+              "defaultOpen": false
             }
-          ]
+          ],
+          "defaultOpen": false
         },
         {
           "group": "Company-Leads",
@@ -181,7 +186,8 @@
             "api-reference/endpoint/search/database-company-leads",
             "api-reference/endpoint/search/count-realtime-company-leads",
             "api-reference/endpoint/search/count-database-company-leads"
-          ]
+          ],
+          "defaultOpen": false
         }
       ]
     },
@@ -195,7 +201,8 @@
             "api-reference/endpoint/emails/email-finder-bulk",
             "api-reference/endpoint/emails/get-email-finder-bulk",
             "api-reference/endpoint/emails/email-validation"
-          ]
+          ],
+          "defaultOpen": false
         },
         {
           "group": "Phone",
@@ -203,7 +210,8 @@
             "api-reference/endpoint/phone/phone-finder",
             "api-reference/endpoint/phone/phone-finder-bulk",
             "api-reference/endpoint/phone/get-phone-finder-bulk"
-          ]
+          ],
+          "defaultOpen": false
         }
       ]
     },
@@ -235,7 +243,9 @@
     },
     {
       "group": "OpenAI Agent builder",
-      "pages": ["integrations/agent-builder/agent-builder"]
+      "pages": [
+        "integrations/agent-builder/agent-builder"
+      ]
     }
   ],
   "footerSocials": {}
