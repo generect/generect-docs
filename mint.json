@@ -130,10 +130,20 @@
     {
       "group": "Enrich",
       "pages": [
-        "api-reference/endpoint/enrich/enrich-database-lead",
-        "api-reference/endpoint/enrich/enrich-realtime-lead",
-        "api-reference/endpoint/enrich/enrich-database-company",
-        "api-reference/endpoint/enrich/enrich-realtime-company"
+        {
+          "group": "Companies",
+          "pages": [
+            "api-reference/endpoint/enrich/enrich-realtime-company",
+            "api-reference/endpoint/enrich/enrich-database-company"
+          ]
+        },
+        {
+          "group": "Leads",
+          "pages": [
+            "api-reference/endpoint/enrich/enrich-realtime-lead",
+            "api-reference/endpoint/enrich/enrich-database-lead"
+          ]
+        }
       ]
     },
     {
@@ -146,18 +156,48 @@
     {
       "group": "Search",
       "pages": [
-        "api-reference/endpoint/search/database-leads",
-        "api-reference/endpoint/search/count-database-leads",
-        "api-reference/endpoint/search/database-companies",
-        "api-reference/endpoint/search/count-database-companies",
-        "api-reference/endpoint/search/database-company-leads",
-        "api-reference/endpoint/search/count-database-company-leads",
-        "api-reference/endpoint/search/realtime-leads",
-        "api-reference/endpoint/search/count-realtime-leads",
-        "api-reference/endpoint/search/realtime-companies",
-        "api-reference/endpoint/search/count-realtime-companies",
-        "api-reference/endpoint/search/realtime-company-leads",
-        "api-reference/endpoint/search/count-realtime-company-leads"
+        {
+          "group": "Companies",
+          "pages": [
+            "api-reference/endpoint/search/realtime-companies",
+            "api-reference/endpoint/search/database-companies",
+            {
+              "group": "Count",
+              "pages": [
+                "api-reference/endpoint/search/count-realtime-companies",
+                "api-reference/endpoint/search/count-database-companies"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Leads",
+          "pages": [
+            "api-reference/endpoint/search/realtime-leads",
+            "api-reference/endpoint/search/database-leads",
+            {
+              "group": "Count",
+              "pages": [
+                "api-reference/endpoint/search/count-realtime-leads",
+                "api-reference/endpoint/search/count-database-leads"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Company-Leads",
+          "pages": [
+            "api-reference/endpoint/search/realtime-company-leads",
+            "api-reference/endpoint/search/database-company-leads",
+            {
+              "group": "Count",
+              "pages": [
+                "api-reference/endpoint/search/count-realtime-company-leads",
+                "api-reference/endpoint/search/count-database-company-leads"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
