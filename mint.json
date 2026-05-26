@@ -147,13 +147,6 @@
       ]
     },
     {
-      "group": "Preview",
-      "pages": [
-        "api-reference/endpoint/preview/preview-leads",
-        "api-reference/endpoint/preview/count-preview-leads"
-      ]
-    },
-    {
       "group": "Search",
       "pages": [
         {
@@ -161,13 +154,8 @@
           "pages": [
             "api-reference/endpoint/search/realtime-companies",
             "api-reference/endpoint/search/database-companies",
-            {
-              "group": "Count",
-              "pages": [
-                "api-reference/endpoint/search/count-realtime-companies",
-                "api-reference/endpoint/search/count-database-companies"
-              ]
-            }
+            "api-reference/endpoint/search/count-realtime-companies",
+            "api-reference/endpoint/search/count-database-companies"
           ]
         },
         {
@@ -175,11 +163,13 @@
           "pages": [
             "api-reference/endpoint/search/realtime-leads",
             "api-reference/endpoint/search/database-leads",
+            "api-reference/endpoint/search/count-realtime-leads",
+            "api-reference/endpoint/search/count-database-leads",
             {
-              "group": "Count",
+              "group": "Preview",
               "pages": [
-                "api-reference/endpoint/search/count-realtime-leads",
-                "api-reference/endpoint/search/count-database-leads"
+                "api-reference/endpoint/preview/preview-leads",
+                "api-reference/endpoint/preview/count-preview-leads"
               ]
             }
           ]
@@ -189,13 +179,8 @@
           "pages": [
             "api-reference/endpoint/search/realtime-company-leads",
             "api-reference/endpoint/search/database-company-leads",
-            {
-              "group": "Count",
-              "pages": [
-                "api-reference/endpoint/search/count-realtime-company-leads",
-                "api-reference/endpoint/search/count-database-company-leads"
-              ]
-            }
+            "api-reference/endpoint/search/count-realtime-company-leads",
+            "api-reference/endpoint/search/count-database-company-leads"
           ]
         }
       ]
