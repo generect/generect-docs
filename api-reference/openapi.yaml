@@ -3561,7 +3561,7 @@ paths:
       tags:
         - 5. Preview
       summary: Preview leads
-      description: Search database leads with masked response data. Preview results include an internal lead ID for later email, phone, or profile reveal and do not include LinkedIn URL, company domain, email, or phone.
+      description: Search database leads with masked response data. Preview results include an internal lead ID for later enrichment and do not include LinkedIn URL, company domain, email, or phone.
       requestBody:
         required: true
         content:
@@ -3569,52 +3569,77 @@ paths:
             schema:
               type: object
               properties:
-                job_titles:
-                  type: array
-                  items:
-                    type: string
-                  example:
-                    - CEO
-                    - Founder
-                seniorities:
-                  type: array
-                  items:
-                    type: string
-                  example:
-                    - CXO
-                    - Founder
-                locations:
-                  type: array
-                  items:
-                    type: string
-                  example:
-                    - San Francisco, CA
-                company_industries:
-                  type: array
-                  items:
-                    type: string
-                  example:
-                    - Software
-                company_headcount:
-                  type: array
-                  items:
-                    type: string
-                  example:
-                    - 51-200
+                company_search_criteria:
+                  type: object
+                  description: Company filters (same as /search/database/companies/).
+                  properties:
+                    industries:
+                      type: array
+                      items:
+                        type: string
+                    headcounts:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                    company_types:
+                      type: array
+                      items:
+                        type: string
+                lead_search_criteria:
+                  type: object
+                  description: Lead filters (same as /search/database/leads/).
+                  properties:
+                    job_titles:
+                      type: array
+                      items:
+                        type: string
+                    seniorities:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                    company_industries:
+                      type: array
+                      items:
+                        type: string
+                    company_headcounts:
+                      type: array
+                      items:
+                        type: string
+                    personas:
+                      type: array
+                      items:
+                        type: array
+                    limit_by:
+                      type: integer
+                    offset_by:
+                      type: integer
             examples:
               Preview leads:
                 value:
-                  job_titles:
-                    - CEO
-                    - Founder
-                  seniorities:
-                    - CXO
-                  locations:
-                    - San Francisco, CA
-                  company_industries:
-                    - Software
-                  company_headcount:
-                    - 51-200
+                  company_search_criteria:
+                    industries:
+                      - Software
+                    headcounts:
+                      - 51-200
+                    locations:
+                      - United States
+                  lead_search_criteria:
+                    job_titles:
+                      - CEO
+                      - Founder
+                    seniorities:
+                      - CXO
+                    locations:
+                      - San Francisco, CA
+                    limit_by: 25
       responses:
         '200':
           description: Masked lead preview results
@@ -3648,7 +3673,7 @@ paths:
       tags:
         - 5. Preview
       summary: Count preview leads
-      description: Count matching database leads for Preview. Count requests are free.
+      description: Count matching database leads for Preview. Count requests are always free.
       requestBody:
         required: true
         content:
@@ -3656,33 +3681,59 @@ paths:
             schema:
               type: object
               properties:
-                job_titles:
-                  type: array
-                  items:
-                    type: string
-                seniorities:
-                  type: array
-                  items:
-                    type: string
-                locations:
-                  type: array
-                  items:
-                    type: string
-                company_industries:
-                  type: array
-                  items:
-                    type: string
-                company_headcount:
-                  type: array
-                  items:
-                    type: string
+                company_search_criteria:
+                  type: object
+                  description: Company filters (same as Preview leads).
+                  properties:
+                    industries:
+                      type: array
+                      items:
+                        type: string
+                    headcounts:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                lead_search_criteria:
+                  type: object
+                  description: Lead filters (same as Preview leads).
+                  properties:
+                    job_titles:
+                      type: array
+                      items:
+                        type: string
+                    seniorities:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                    company_industries:
+                      type: array
+                      items:
+                        type: string
+                    company_headcounts:
+                      type: array
+                      items:
+                        type: string
             examples:
               Count preview leads:
                 value:
-                  job_titles:
-                    - CEO
-                  locations:
-                    - San Francisco, CA
+                  company_search_criteria:
+                    industries:
+                      - Software
+                    locations:
+                      - United States
+                  lead_search_criteria:
+                    job_titles:
+                      - CEO
+                    locations:
+                      - San Francisco, CA
       responses:
         '200':
           description: Matching lead count
@@ -4108,43 +4159,35 @@ paths:
             schema:
               type: object
               properties:
-                leads:
+                items:
                   type: array
-                  description: List of leads to find emails for. Each item is either a lead_id or a name+domain combination.
+                  description: List of leads to find emails for. Each entry requires first_name + last_name + domain.
                   items:
-                    oneOf:
-                      - title: By Lead ID
-                        type: object
-                        required:
-                          - lead_id
-                        properties:
-                          lead_id:
-                            type: string
-                            description: Generect lead identifier.
-                      - title: By Name and Domain
-                        type: object
-                        required:
-                          - first_name
-                          - last_name
-                          - domain
-                        properties:
-                          first_name:
-                            type: string
-                            description: Lead's first name.
-                          last_name:
-                            type: string
-                            description: Lead's last name.
-                          domain:
-                            type: string
-                            description: Company domain.
+                    type: object
+                    required:
+                      - first_name
+                      - last_name
+                      - domain
+                    properties:
+                      first_name:
+                        type: string
+                        description: Lead's first name.
+                      last_name:
+                        type: string
+                        description: Lead's last name.
+                      domain:
+                        type: string
+                        description: Company domain.
             examples:
               Bulk email find:
                 value:
-                  leads:
-                    - lead_id: lead_abc123xyz
+                  items:
+                    - first_name: John
+                      last_name: Doe
+                      domain: acme.com
                     - first_name: Jane
                       last_name: Smith
-                      domain: acme.com
+                      domain: corp.io
       responses:
         '202':
           description: Bulk job accepted
@@ -4319,7 +4362,7 @@ paths:
       tags:
         - 9. Search
       summary: Search database leads
-      description: Search cached leads. Database mode is fast and supports the core lead filters.
+      description: Search cached leads. Database mode returns results in <1 sec at 0.1-0.2 credits per result.
       requestBody:
         required: true
         content:
@@ -4338,7 +4381,7 @@ paths:
       tags:
         - 9. Search
       summary: Count database leads
-      description: Count cached leads matching the provided filters. Database count endpoints are free.
+      description: Count cached leads matching filters. Always free — 0 credits.
       requestBody:
         required: true
         content:
@@ -4357,7 +4400,7 @@ paths:
       tags:
         - 9. Search
       summary: Search database companies
-      description: Search cached companies. Database mode is fast and supports the core company filters.
+      description: Search cached companies. Database mode returns results in <1 sec. 1 credit per company.
       requestBody:
         required: true
         content:
@@ -4376,7 +4419,7 @@ paths:
       tags:
         - 9. Search
       summary: Count database companies
-      description: Count cached companies matching the provided filters. Database count endpoints are free.
+      description: Count cached companies matching filters. Always free — 0 credits.
       requestBody:
         required: true
         content:
@@ -4433,7 +4476,7 @@ paths:
       tags:
         - 9. Search
       summary: Search realtime leads
-      description: Search fresh leads with full realtime filters.
+      description: Search fresh leads with advanced filters (keywords, past companies, schools, groups). Response time 5-60 sec, 1 credit per result.
       requestBody:
         required: true
         content:
@@ -4452,7 +4495,7 @@ paths:
       tags:
         - 9. Search
       summary: Count realtime leads
-      description: Count fresh leads matching the provided filters.
+      description: Count fresh leads matching filters. 1 credit per count request.
       requestBody:
         required: true
         content:
@@ -4471,7 +4514,7 @@ paths:
       tags:
         - 9. Search
       summary: Search realtime companies
-      description: Search fresh companies with full realtime filters.
+      description: Search fresh companies with advanced filters (revenue, department headcount, growth). Response time 5-60 sec, 1 credit per result.
       requestBody:
         required: true
         content:
@@ -4490,7 +4533,7 @@ paths:
       tags:
         - 9. Search
       summary: Count realtime companies
-      description: Count fresh companies matching the provided filters.
+      description: Count fresh companies matching filters. 1 credit per count request.
       requestBody:
         required: true
         content:
@@ -4547,7 +4590,7 @@ paths:
       tags:
         - 10. Phone
       summary: Find phone
-      description: Find a phone number by lead ID or by name and company. Credits are charged only when a phone number is found.
+      description: Find a phone number by lead ID, LinkedIn URL, or by name and company. Credits are charged only when a phone number is found.
       requestBody:
         required: true
         content:
@@ -4563,6 +4606,15 @@ paths:
                       type: string
                       description: Generect lead identifier from Search, Preview, or Enrich.
                       example: lead_abc123xyz
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: LinkedIn profile URL.
+                      example: https://linkedin.com/in/johndoe
                 - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
         '200':
@@ -4584,16 +4636,19 @@ paths:
             schema:
               type: object
               properties:
-                leads:
+                items:
                   type: array
+                  description: List of leads to find phones for. Each entry is either a lead_id, linkedin_url, or name+company.
                   items:
                     oneOf:
-                      - type: object
+                      - title: By Lead ID
+                        type: object
                         required:
                           - lead_id
                         properties:
                           lead_id:
                             type: string
+                            description: Generect lead identifier.
                       - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
         '202':
@@ -4652,13 +4707,14 @@ paths:
               properties:
                 url:
                   type: string
+                  description: Your HTTPS endpoint URL to receive webhook events.
                   example: https://your-app.com/webhook
                 events:
                   type: array
+                  description: Events to subscribe to.
                   items:
                     type: string
                     enum:
-                      - email.find.completed
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
                       - enrich.bulk.completed
@@ -4666,6 +4722,7 @@ paths:
                     - email.find.bulk.completed
                 secret:
                   type: string
+                  description: Secret for HMAC signature verification of incoming webhook payloads.
                   example: your-secret-for-signature
       responses:
         '201':
@@ -4715,23 +4772,108 @@ paths:
                 type: object
 components:
   schemas:
-    StringList:
-      type: array
-      items:
-        type: string
     LeadSearchRequest:
       type: object
       properties:
         job_titles:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: Job title keywords to match (OR logic).
         seniorities:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: Seniority levels to match (OR logic).
         locations:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: Lead locations.
+        exclude_locations:
+          type: array
+          items:
+            type: string
+          description: Locations to exclude from results.
+        company_locations:
+          type: array
+          items:
+            type: string
+          description: Company headquarters locations.
+        exclude_company_locations:
+          type: array
+          items:
+            type: string
+          description: Company locations to exclude.
         company_industries:
-          $ref: '#/components/schemas/StringList'
-        company_headcount:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: Target company industries.
+        exclude_company_industries:
+          type: array
+          items:
+            type: string
+          description: Company industries to exclude.
+        company_headcounts:
+          type: array
+          items:
+            type: string
+          description: 'Company size ranges: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".'
+        exclude_company_headcounts:
+          type: array
+          items:
+            type: string
+          description: Company size ranges to exclude.
+        company_types:
+          type: array
+          items:
+            type: string
+          description: 'Company types: "Public Company", "Privately Held", "Non Profit", "Government Agency", "Educational", "Self Employed", "Partnership", "Self Owned".'
+        company_name:
+          type: string
+          description: Target company name (mutually exclusive with company_link and company_id).
+        company_link:
+          type: string
+          description: LinkedIn company URL (mutually exclusive with company_name and company_id).
+        company_id:
+          type: integer
+          description: LinkedIn company numeric ID (mutually exclusive with company_name and company_link).
+        without_company:
+          type: boolean
+          description: Search by lead criteria only, without targeting a specific company.
+          default: false
+        personas:
+          type: array
+          description: 'List of persona tuples. Each persona: [name, functions, seniorities, prohibits, priority?].'
+          items:
+            type: array
+        exclude_names:
+          type: array
+          items:
+            type: string
+          description: Skip leads by full name.
+        exclude_ids:
+          type: array
+          items:
+            type: string
+          description: Skip leads by Sales Navigator ID.
+        filter_empty_vars:
+          type: array
+          items:
+            type: string
+          description: 'Skip leads where these fields are empty. Options: job_started_on, profile_photo, started_at_position, company_website.'
+        limit_by:
+          type: integer
+          description: Maximum number of leads to return.
+        offset_by:
+          type: integer
+          description: Number of leads to skip (for pagination).
+        strict:
+          type: array
+          items:
+            type: string
+          description: Fields to apply strict matching on (e.g. "company_locations").
       example:
         job_titles:
           - CEO
@@ -4742,56 +4884,182 @@ components:
           - San Francisco, CA
         company_industries:
           - Software
-        company_headcount:
+        company_headcounts:
           - 51-200
+        limit_by: 50
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
         - type: object
           properties:
             keywords:
-              $ref: '#/components/schemas/StringList'
-            personas:
-              $ref: '#/components/schemas/StringList'
-            past_companies:
-              $ref: '#/components/schemas/StringList'
-            schools:
-              $ref: '#/components/schemas/StringList'
-            groups:
-              $ref: '#/components/schemas/StringList'
-            years_in_position:
-              $ref: '#/components/schemas/StringList'
+              type: array
+              items:
+                type: string
+              description: Free-text keywords to search in profiles.
             functions:
-              $ref: '#/components/schemas/StringList'
+              type: array
+              items:
+                type: string
+              description: Job function filters (e.g. "marketing", "engineering").
+            past_company_names:
+              type: array
+              items:
+                type: string
+              description: Filter by previous employers.
+            schools:
+              type: array
+              items:
+                type: integer
+              description: School IDs to filter by.
+            groups:
+              type: array
+              items:
+                type: integer
+              description: LinkedIn group IDs to filter by.
+            years_in_position:
+              type: array
+              items:
+                type: integer
+              description: 'Time in current position: 1 = <1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+            years_in_company:
+              type: array
+              items:
+                type: integer
+              description: 'Time at current company: 1 = <1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+            changed_jobs:
+              type: boolean
+              description: Filter for leads who recently changed jobs.
+              default: false
+            posted_on_linkedin:
+              type: boolean
+              description: Filter for leads who recently posted on LinkedIn.
+              default: false
+            linkedin_filter_link:
+              type: string
+              description: Pre-built LinkedIn or Sales Navigator search URL to extract filters from.
     CompanySearchRequest:
       type: object
       properties:
         industries:
-          $ref: '#/components/schemas/StringList'
-        headcount:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: Target industries.
+        exclude_industries:
+          type: array
+          items:
+            type: string
+          description: Industries to exclude.
+        headcounts:
+          type: array
+          items:
+            type: string
+          description: 'Company size ranges: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".'
         locations:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: Company headquarters locations.
+        exclude_locations:
+          type: array
+          items:
+            type: string
+          description: Locations to exclude.
         company_types:
-          $ref: '#/components/schemas/StringList'
+          type: array
+          items:
+            type: string
+          description: 'Company types: "Public Company", "Privately Held", "Non Profit", "Government Agency", "Educational", etc.'
+        num_of_followers:
+          type: array
+          items:
+            type: string
+          description: 'Follower count ranges: "1-50", "51-100", "101-1000", "1001-5000", "5001+".'
+        keywords:
+          type: array
+          items:
+            type: string
+          description: Free-text keywords (OR logic, max 10, max 40 chars each).
+        technologies:
+          type: array
+          items:
+            type: string
+          description: Technologies used by the company.
+        company_names:
+          type: array
+          items:
+            type: string
+          description: Search by specific company names.
+        exclude_ids:
+          type: array
+          items:
+            type: string
+          description: Exclude companies by LinkedIn ID or URN.
+        exclude_domains:
+          type: array
+          items:
+            type: string
+          description: Exclude companies by domain.
+        limit_by:
+          type: integer
+          description: Maximum number of companies to return (1-1600).
+        offset_by:
+          type: integer
+          description: Number of companies to skip (0-1599, for pagination).
+        strict:
+          type: array
+          items:
+            type: string
+          description: Fields to apply strict matching on (e.g. "company_locations").
       example:
         industries:
           - Software
-        headcount:
+        headcounts:
           - 51-200
         locations:
           - United States
-        company_types:
-          - Privately Held
+        limit_by: 50
     RealtimeCompanySearchRequest:
       allOf:
         - $ref: '#/components/schemas/CompanySearchRequest'
         - type: object
           properties:
-            keywords:
-              $ref: '#/components/schemas/StringList'
-            revenue_range:
-              $ref: '#/components/schemas/StringList'
+            revenues_range:
+              type: object
+              description: 'Revenue filter with min/max (e.g. {"min": 1000000, "max": 50000000}).'
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+            department_headcount:
+              type: object
+              description: 'Filter by department size (e.g. {"name": "engineering", "min": 10, "max": 100}).'
+              properties:
+                name:
+                  type: string
+                min:
+                  type: number
+                max:
+                  type: number
+            headcount_growth:
+              type: object
+              description: 'Filter by headcount growth percentage (e.g. {"min": 5, "max": 50}).'
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+            hiring_on_linkedin:
+              type: boolean
+              description: Filter for companies actively hiring on LinkedIn.
+              default: false
+            linkedins_links:
+              type: array
+              items:
+                type: string
+              description: Filter by specific LinkedIn company URLs.
     CompanyLeadSearchRequest:
       type: object
       properties:
