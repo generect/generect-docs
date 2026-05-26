@@ -186,12 +186,25 @@
       ]
     },
     {
-      "group": "Email",
+      "group": "Contacts",
       "pages": [
-        "api-reference/endpoint/emails/email-finder",
-        "api-reference/endpoint/emails/email-finder-bulk",
-        "api-reference/endpoint/emails/get-email-finder-bulk",
-        "api-reference/endpoint/emails/email-validation"
+        {
+          "group": "Email",
+          "pages": [
+            "api-reference/endpoint/emails/email-finder",
+            "api-reference/endpoint/emails/email-finder-bulk",
+            "api-reference/endpoint/emails/get-email-finder-bulk",
+            "api-reference/endpoint/emails/email-validation"
+          ]
+        },
+        {
+          "group": "Phone",
+          "pages": [
+            "api-reference/endpoint/phone/phone-finder",
+            "api-reference/endpoint/phone/phone-finder-bulk",
+            "api-reference/endpoint/phone/get-phone-finder-bulk"
+          ]
+        }
       ]
     },
     {
@@ -200,14 +213,6 @@
         "api-reference/endpoint/accounts/get-account-me",
         "api-reference/endpoint/accounts/get-account-usage",
         "api-reference/endpoint/accounts/get-account-transactions"
-      ]
-    },
-    {
-      "group": "Phone",
-      "pages": [
-        "api-reference/endpoint/phone/phone-finder",
-        "api-reference/endpoint/phone/phone-finder-bulk",
-        "api-reference/endpoint/phone/get-phone-finder-bulk"
       ]
     },
     {
