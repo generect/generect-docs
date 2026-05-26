@@ -1,11 +1,11 @@
-To authenticate your requests, include your `auth_token` in the `Authorization` header. Here's how you can do it:
+To authenticate requests, include your API token in the `Authorization` header.
+
+You can get your API token from the Generect app settings.
 
 ```python
 headers = {
-  "Authorization": f"Token {auth_token}",
-  ...
+  "Authorization": "Token xxxxxxxxx"
 }
 ```
 
-### Important:
-Ensure you prepend `Token` to your `auth_token` for proper authorization.
+The `Token` prefix is required. A raw token without the prefix will not authenticate.

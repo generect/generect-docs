@@ -178,6 +178,23 @@
       ]
     },
     {
+      "group": "Phone",
+      "pages": [
+        "api-reference/endpoint/phone/phone-finder",
+        "api-reference/endpoint/phone/phone-finder-bulk",
+        "api-reference/endpoint/phone/get-phone-finder-bulk"
+      ]
+    },
+    {
+      "group": "Webhooks",
+      "pages": [
+        "api-reference/endpoint/webhooks/list-webhooks",
+        "api-reference/endpoint/webhooks/create-webhook",
+        "api-reference/endpoint/webhooks/delete-webhook",
+        "api-reference/endpoint/webhooks/test-webhook"
+      ]
+    },
+    {
       "group": "MCP",
       "pages": [
         "integrations/mcp/about-mcp",

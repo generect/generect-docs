@@ -19,7 +19,7 @@ One endpoint, multiple input options: lead\_id, LinkedIn URL, email, or name+com
 **How it works**
 
 1. Take lead\_id from Preview results
-2. Call `POST /enrich/database/lead` (cached, 1 credit) or `/enrich/realtime/lead` (fresh, 2 credits)
+2. Call `POST /enrich/database/lead/` or `POST /enrich/realtime/lead/`
 3. Get full profile: linkedin\_url, work history, education, skills, company details
 4. If lead not found — 0 credits charged
 
@@ -45,11 +45,11 @@ You received an inbound email or have a list of emails — but don't know who th
 
 **What Generect enables**
 
-`/enrich/realtime/lead` accepts email as input and returns the full lead profile via reverse lookup.
+`/enrich/realtime/lead/` accepts email as input and returns the full lead profile via reverse lookup.
 
 **How it works**
 
-1. Call `POST /enrich/realtime/lead` with `{ "email": "john@acme.com" }`
+1. Call `POST /enrich/realtime/lead/` with `{ "email": "john@acme.com" }`
 2. Get full profile: name, title, company, LinkedIn, work history
 3. If not found — 0 credits
 
@@ -75,11 +75,11 @@ CRM records often have just a company name or domain. Teams need full company da
 
 **What Generect enables**
 
-`/enrich/database/company` or `/enrich/realtime/company` accepts domain, name, LinkedIn URL, or internal ID — returns full company profile.
+`/enrich/database/company/` or `/enrich/realtime/company/` accepts domain, name, LinkedIn URL, or internal ID — returns full company profile.
 
 **How it works**
 
-1. Pass company domain (e.g., "acme.com (http://acme.com/)") to `POST /enrich/database/company`
+1. Pass company domain (e.g., `acme.com`) to `POST /enrich/database/company/`
 2. Get full profile: industry, headcount, location, LinkedIn URL, website
 3. Update CRM record automatically
 
@@ -105,17 +105,17 @@ You found the right lead via Preview or Search — now you need their email for 
 
 **What Generect enables**
 
-`/email/find` — get email by first\_name \+ last\_name \+ domain. Charged per request in batch.
+`/email/find/` gets an email by `lead_id` from Preview/Search or by `first_name` + `last_name` + `domain`.
 
 **How it works**
 
-1. Take first\_name, last\_name, domain from Preview results
-2. Call `POST /email/find` with `{ "first\_name": "John", "last\_name": "Doe", "domain": "acme.com" }`
+1. Take the lead ID from Preview/Search results
+2. Call `POST /email/find/` with `{ "lead_id": "lead_abc123xyz" }`
 3. Get verified email with confidence score
 
 **Input data**
 
-first\_name \+ last\_name \+ domain
+`lead_id`, or `first_name` + `last_name` + `domain`
 
 **Outcome**
 
@@ -135,17 +135,17 @@ Email outreach has low response rates. Direct phone contact converts better, but
 
 **What Generect enables**
 
-`/phone/find` by lead\_id or name+company. 5 credits if found, 0 if not.
+`/phone/find/` finds a phone by `lead_id` or by name + company. Credits are charged only when a phone is found.
 
 **How it works**
 
-1. Call `POST /phone/find` with lead\_id or name \+ company
-2. Get phone number with type (mobile/office) and country
+1. Call `POST /phone/find/` with `lead_id` or name + company
+2. Get phone number with type, country, and status
 3. Not found? No charge.
 
 **Input data**
 
-lead\_id OR first\_name \+ last\_name \+ company domain
+`lead_id`, or `first_name` + `last_name` + company
 
 **Outcome**
 

@@ -9,7 +9,9 @@ info:
 
     # Authentication
 
-    Firstly, add a `API Token` to the enviroment variables `auth_token` in `Settings` tab.
+    Get your API token from the Generect app settings and send it in the `Authorization` header with the required `Token` prefix.
+
+    Example: `Authorization: Token xxxxxxxxx`
 
     # Rate limits
 
@@ -17,7 +19,7 @@ info:
 
     # Note
 
-    _Ensure that you are add a "/" to the end of url._
+    _Every endpoint must include the trailing `/`. Requests without the trailing slash may fail._
   version: 1.0.0
   contact: {}
 servers:
@@ -3599,15 +3601,6 @@ paths:
                     type: string
                   example:
                     - 51-200
-                page:
-                  type: integer
-                  minimum: 1
-                  default: 1
-                per_page:
-                  type: integer
-                  minimum: 1
-                  maximum: 100
-                  default: 25
             examples:
               Preview leads:
                 value:
@@ -3622,8 +3615,6 @@ paths:
                     - Software
                   company_headcount:
                     - 51-200
-                  page: 1
-                  per_page: 25
       responses:
         '200':
           description: Masked lead preview results
@@ -4515,53 +4506,206 @@ paths:
             application/json:
               schema:
                 type: object
+  /phone/find/:
+    post:
+      tags:
+        - 10. Phone
+      summary: Find phone
+      description: Find a phone number by lead ID or by name and company. Credits are charged only when a phone number is found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required:
+                    - lead_id
+                  properties:
+                    lead_id:
+                      type: string
+                      example: lead_abc123xyz
+                - $ref: '#/components/schemas/PhoneFindByNameRequest'
+      responses:
+        '200':
+          description: Phone finder result
+          content:
+            application/json:
+              schema:
+                type: object
+  /phone/find/bulk/:
+    post:
+      tags:
+        - 10. Phone
+      summary: Start bulk phone find
+      description: Start an asynchronous bulk phone finder job. Credits are charged per found phone.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                leads:
+                  type: array
+                  items:
+                    oneOf:
+                      - type: object
+                        required:
+                          - lead_id
+                        properties:
+                          lead_id:
+                            type: string
+                      - $ref: '#/components/schemas/PhoneFindByNameRequest'
+      responses:
+        '202':
+          description: Bulk phone job accepted
+          content:
+            application/json:
+              schema:
+                type: object
+  /phone/find/bulk/{job_id}/:
+    get:
+      tags:
+        - 10. Phone
+      summary: Get bulk phone find job
+      description: Retrieve the status and results of a bulk phone finder job.
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: job_123
+      responses:
+        '200':
+          description: Bulk phone job status and results
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhooks/:
+    get:
+      tags:
+        - 11. Webhooks
+      summary: List webhooks
+      description: List registered webhook endpoints.
+      responses:
+        '200':
+          description: Registered webhooks
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - 11. Webhooks
+      summary: Register webhook
+      description: Register a webhook endpoint for async notifications.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - events
+              properties:
+                url:
+                  type: string
+                  example: https://your-app.com/webhook
+                events:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - email.find.completed
+                      - email.find.bulk.completed
+                      - phone.find.bulk.completed
+                      - enrich.bulk.completed
+                  example:
+                    - email.find.bulk.completed
+                secret:
+                  type: string
+                  example: your-secret-for-signature
+      responses:
+        '201':
+          description: Webhook registered
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhooks/{id}/:
+    delete:
+      tags:
+        - 11. Webhooks
+      summary: Delete webhook
+      description: Remove a registered webhook endpoint.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: wh_123
+      responses:
+        '204':
+          description: Webhook removed
+  /webhooks/test/:
+    post:
+      tags:
+        - 11. Webhooks
+      summary: Test webhook
+      description: Send a test event to a registered webhook endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: wh_123
+      responses:
+        '200':
+          description: Test webhook delivery result
+          content:
+            application/json:
+              schema:
+                type: object
 components:
   schemas:
     StringList:
       type: array
       items:
         type: string
-    Pagination:
+    LeadSearchRequest:
       type: object
       properties:
-        page:
-          type: integer
-          minimum: 1
-          default: 1
-        per_page:
-          type: integer
-          minimum: 1
-          maximum: 100
-          default: 25
-    LeadSearchRequest:
-      allOf:
-        - $ref: '#/components/schemas/Pagination'
-        - type: object
-          properties:
-            job_titles:
-              $ref: '#/components/schemas/StringList'
-            seniorities:
-              $ref: '#/components/schemas/StringList'
-            locations:
-              $ref: '#/components/schemas/StringList'
-            company_industries:
-              $ref: '#/components/schemas/StringList'
-            company_headcount:
-              $ref: '#/components/schemas/StringList'
-          example:
-            job_titles:
-              - CEO
-              - Founder
-            seniorities:
-              - CXO
-            locations:
-              - San Francisco, CA
-            company_industries:
-              - Software
-            company_headcount:
-              - 51-200
-            page: 1
-            per_page: 25
+        job_titles:
+          $ref: '#/components/schemas/StringList'
+        seniorities:
+          $ref: '#/components/schemas/StringList'
+        locations:
+          $ref: '#/components/schemas/StringList'
+        company_industries:
+          $ref: '#/components/schemas/StringList'
+        company_headcount:
+          $ref: '#/components/schemas/StringList'
+      example:
+        job_titles:
+          - CEO
+          - Founder
+        seniorities:
+          - CXO
+        locations:
+          - San Francisco, CA
+        company_industries:
+          - Software
+        company_headcount:
+          - 51-200
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
@@ -4582,29 +4726,25 @@ components:
             functions:
               $ref: '#/components/schemas/StringList'
     CompanySearchRequest:
-      allOf:
-        - $ref: '#/components/schemas/Pagination'
-        - type: object
-          properties:
-            industries:
-              $ref: '#/components/schemas/StringList'
-            headcount:
-              $ref: '#/components/schemas/StringList'
-            locations:
-              $ref: '#/components/schemas/StringList'
-            company_types:
-              $ref: '#/components/schemas/StringList'
-          example:
-            industries:
-              - Software
-            headcount:
-              - 51-200
-            locations:
-              - United States
-            company_types:
-              - Privately Held
-            page: 1
-            per_page: 25
+      type: object
+      properties:
+        industries:
+          $ref: '#/components/schemas/StringList'
+        headcount:
+          $ref: '#/components/schemas/StringList'
+        locations:
+          $ref: '#/components/schemas/StringList'
+        company_types:
+          $ref: '#/components/schemas/StringList'
+      example:
+        industries:
+          - Software
+        headcount:
+          - 51-200
+        locations:
+          - United States
+        company_types:
+          - Privately Held
     RealtimeCompanySearchRequest:
       allOf:
         - $ref: '#/components/schemas/CompanySearchRequest'
@@ -4628,12 +4768,31 @@ components:
           $ref: '#/components/schemas/RealtimeLeadSearchRequest'
         company_filters:
           $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+    PhoneFindByNameRequest:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - company
+      properties:
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        company:
+          type: string
+          example: acme.com
+        linkedin_url:
+          type: string
+          example: https://linkedin.com/in/johndoe
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: Authorization
-      description: "Use 'Token <api-key>' as the value"
+      description: "Use the required Token prefix. Example: Authorization: Token xxxxxxxxx"
 security:
   - apiKey: []
 tags:
@@ -4655,3 +4814,7 @@ tags:
     description: Account profile, usage, and transactions.
   - name: 9. Search
     description: Database and realtime lead, company, and company-lead search.
+  - name: 10. Phone
+    description: Find phone numbers for leads.
+  - name: 11. Webhooks
+    description: Register and manage async job notifications.
