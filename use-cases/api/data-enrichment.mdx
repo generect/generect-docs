@@ -14,7 +14,7 @@ After browsing leads via Preview, teams need full profiles (linkedin, work histo
 
 **What Generect enables**
 
-One endpoint, multiple input options: lead\_id, LinkedIn URL, email, or name+company. No data found \= no charge.
+One endpoint, multiple input options: Generect ID, LinkedIn URL, or email. No data found \= no charge.
 
 **How it works**
 
@@ -25,7 +25,7 @@ One endpoint, multiple input options: lead\_id, LinkedIn URL, email, or name+com
 
 **Input data**
 
-lead\_id, OR LinkedIn URL, OR email (reverse lookup), OR name \+ company
+Generect ID, OR LinkedIn URL, OR email (reverse lookup)
 
 **Outcome**
 
@@ -49,7 +49,12 @@ You received an inbound email or have a list of emails — but don't know who th
 
 **How it works**
 
-1. Call `POST /enrich/realtime/lead/` with `{ "email": "john@acme.com" }`
+1. Call `POST /enrich/realtime/lead/` with:
+   ```json
+   {
+     "email": "john@acme.com"
+   }
+   ```
 2. Get full profile: name, title, company, LinkedIn, work history
 3. If not found — 0 credits
 
@@ -110,7 +115,12 @@ You found the right lead via Preview or Search — now you need their email for 
 **How it works**
 
 1. Take the lead ID from Preview/Search results
-2. Call `POST /email/find/` with `{ "lead_id": "lead_abc123xyz" }`
+2. Call `POST /email/find/` with:
+   ```json
+   {
+     "lead_id": "lead_abc123xyz"
+   }
+   ```
 3. Get verified email with confidence score
 
 **Input data**

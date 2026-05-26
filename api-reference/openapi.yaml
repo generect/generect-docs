@@ -3707,44 +3707,38 @@ paths:
           application/json:
             schema:
               oneOf:
-                - type: object
+                - title: By Generect ID
+                  type: object
                   required:
                     - id
                   properties:
                     id:
                       type: string
+                      description: Internal Generect lead identifier returned by Search or Preview.
                       example: lead_abc123xyz
-                - type: object
+                - title: By LinkedIn URL
+                  type: object
                   required:
                     - linkedin_url
                   properties:
                     linkedin_url:
                       type: string
+                      description: >
+                        LinkedIn profile URL. Supported formats:
+                        linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
+                        linkedin.com/sales/lead/{id},NAME_SEARCH,...
                       example: https://linkedin.com/in/johndoe
-                - type: object
+                - title: By Email
+                  type: object
                   required:
                     - email
                   properties:
                     email:
                       type: string
+                      description: Work email address for reverse lookup.
                       example: john@acme.com
-                - type: object
-                  required:
-                    - first_name
-                    - last_name
-                    - company
-                  properties:
-                    first_name:
-                      type: string
-                      example: John
-                    last_name:
-                      type: string
-                      example: Doe
-                    company:
-                      type: string
-                      example: Acme Technologies
             examples:
-              By internal ID:
+              By Generect ID:
                 value:
                   id: lead_abc123xyz
               By LinkedIn URL:
@@ -3753,11 +3747,6 @@ paths:
               By email:
                 value:
                   email: john@acme.com
-              By name and company:
-                value:
-                  first_name: John
-                  last_name: Doe
-                  company: Acme Technologies
       responses:
         '200':
           description: Full lead profile. If no data is found, no credits are charged.
@@ -3792,56 +3781,53 @@ paths:
       tags:
         - 6. Enrich
       summary: Enrich lead in realtime
-      description: Retrieve a fresh lead profile. Supports internal ID, LinkedIn URL, email reverse lookup, or name and company. If no data is found, no credits are charged.
+      description: Retrieve a fresh lead profile. Supports internal ID, LinkedIn URL, or email reverse lookup. If no data is found, no credits are charged.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               oneOf:
-                - type: object
+                - title: By Generect ID
+                  type: object
                   required:
                     - id
                   properties:
                     id:
                       type: string
+                      description: Internal Generect lead identifier returned by Search or Preview.
                       example: lead_abc123xyz
-                - type: object
+                - title: By LinkedIn URL
+                  type: object
                   required:
                     - linkedin_url
                   properties:
                     linkedin_url:
                       type: string
+                      description: >
+                        LinkedIn profile URL. Supported formats:
+                        linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
+                        linkedin.com/sales/lead/{id},NAME_SEARCH,...
                       example: https://linkedin.com/in/johndoe
-                - type: object
+                - title: By Email
+                  type: object
                   required:
                     - email
                   properties:
                     email:
                       type: string
+                      description: Work email address for reverse lookup.
                       example: john@acme.com
-                - type: object
-                  required:
-                    - first_name
-                    - last_name
-                    - company
-                  properties:
-                    first_name:
-                      type: string
-                      example: John
-                    last_name:
-                      type: string
-                      example: Doe
-                    company:
-                      type: string
-                      example: Acme Technologies
             examples:
-              Reverse email lookup:
-                value:
-                  email: john@acme.com
-              By internal ID:
+              By Generect ID:
                 value:
                   id: lead_abc123xyz
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://linkedin.com/in/johndoe
+              By email (reverse lookup):
+                value:
+                  email: john@acme.com
       responses:
         '200':
           description: Fresh full lead profile
@@ -3877,39 +3863,56 @@ paths:
           application/json:
             schema:
               oneOf:
-                - type: object
+                - title: By Generect ID
+                  type: object
                   required:
                     - id
                   properties:
                     id:
                       type: string
+                      description: Internal Generect company identifier returned by Search.
                       example: comp_xyz789
-                - type: object
-                  required:
-                    - domain
-                  properties:
-                    domain:
-                      type: string
-                      example: acme.com
-                - type: object
+                - title: By LinkedIn URL
+                  type: object
                   required:
                     - linkedin_url
                   properties:
                     linkedin_url:
                       type: string
+                      description: >
+                        LinkedIn company page URL. Supported formats:
+                        linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
+                        linkedin.com/sales/company/{id}.
                       example: https://linkedin.com/company/acme
-                - type: object
+                - title: By Domain
+                  type: object
+                  required:
+                    - domain
+                  properties:
+                    domain:
+                      type: string
+                      description: Company website domain without protocol (e.g. acme.com).
+                      example: acme.com
+                - title: By Company Name
+                  type: object
                   required:
                     - name
                   properties:
                     name:
                       type: string
+                      description: Company name for fuzzy matching.
                       example: Acme Technologies
             examples:
+              By Generect ID:
+                value:
+                  id: comp_xyz789
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://linkedin.com/company/acme
               By domain:
                 value:
                   domain: acme.com
-              By name:
+              By company name:
                 value:
                   name: Acme Technologies
       responses:
@@ -3941,38 +3944,58 @@ paths:
           application/json:
             schema:
               oneOf:
-                - type: object
+                - title: By Generect ID
+                  type: object
                   required:
                     - id
                   properties:
                     id:
                       type: string
+                      description: Internal Generect company identifier returned by Search.
                       example: comp_xyz789
-                - type: object
-                  required:
-                    - domain
-                  properties:
-                    domain:
-                      type: string
-                      example: acme.com
-                - type: object
+                - title: By LinkedIn URL
+                  type: object
                   required:
                     - linkedin_url
                   properties:
                     linkedin_url:
                       type: string
+                      description: >
+                        LinkedIn company page URL. Supported formats:
+                        linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
+                        linkedin.com/sales/company/{id}.
                       example: https://linkedin.com/company/acme
-                - type: object
+                - title: By Domain
+                  type: object
+                  required:
+                    - domain
+                  properties:
+                    domain:
+                      type: string
+                      description: Company website domain without protocol (e.g. acme.com).
+                      example: acme.com
+                - title: By Company Name
+                  type: object
                   required:
                     - name
                   properties:
                     name:
                       type: string
+                      description: Company name for fuzzy matching.
                       example: Acme Technologies
             examples:
+              By Generect ID:
+                value:
+                  id: comp_xyz789
               By LinkedIn URL:
                 value:
                   linkedin_url: https://linkedin.com/company/acme
+              By domain:
+                value:
+                  domain: acme.com
+              By company name:
+                value:
+                  name: Acme Technologies
       responses:
         '200':
           description: Fresh full company profile
@@ -4002,14 +4025,17 @@ paths:
           application/json:
             schema:
               oneOf:
-                - type: object
+                - title: By Lead ID
+                  type: object
                   required:
                     - lead_id
                   properties:
                     lead_id:
                       type: string
+                      description: Generect lead identifier from Search, Preview, or Enrich.
                       example: lead_abc123xyz
-                - type: object
+                - title: By Name and Domain
+                  type: object
                   required:
                     - first_name
                     - last_name
@@ -4017,15 +4043,18 @@ paths:
                   properties:
                     first_name:
                       type: string
+                      description: Lead's first name.
                       example: John
                     last_name:
                       type: string
+                      description: Lead's last name.
                       example: Doe
                     domain:
                       type: string
+                      description: Company domain used to generate the email pattern.
                       example: acme.com
             examples:
-              By lead ID:
+              By Lead ID:
                 value:
                   lead_id: lead_abc123xyz
               By name and domain:
@@ -4081,15 +4110,19 @@ paths:
               properties:
                 leads:
                   type: array
+                  description: List of leads to find emails for. Each item is either a lead_id or a name+domain combination.
                   items:
                     oneOf:
-                      - type: object
+                      - title: By Lead ID
+                        type: object
                         required:
                           - lead_id
                         properties:
                           lead_id:
                             type: string
-                      - type: object
+                            description: Generect lead identifier.
+                      - title: By Name and Domain
+                        type: object
                         required:
                           - first_name
                           - last_name
@@ -4097,10 +4130,13 @@ paths:
                         properties:
                           first_name:
                             type: string
+                            description: Lead's first name.
                           last_name:
                             type: string
+                            description: Lead's last name.
                           domain:
                             type: string
+                            description: Company domain.
             examples:
               Bulk email find:
                 value:
@@ -4518,12 +4554,14 @@ paths:
           application/json:
             schema:
               oneOf:
-                - type: object
+                - title: By Lead ID
+                  type: object
                   required:
                     - lead_id
                   properties:
                     lead_id:
                       type: string
+                      description: Generect lead identifier from Search, Preview, or Enrich.
                       example: lead_abc123xyz
                 - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
@@ -4769,6 +4807,7 @@ components:
         company_filters:
           $ref: '#/components/schemas/RealtimeCompanySearchRequest'
     PhoneFindByNameRequest:
+      title: By Name and Company
       type: object
       required:
         - first_name
@@ -4777,15 +4816,19 @@ components:
       properties:
         first_name:
           type: string
+          description: Lead's first name.
           example: John
         last_name:
           type: string
+          description: Lead's last name.
           example: Doe
         company:
           type: string
+          description: Company name or domain where the lead works.
           example: acme.com
         linkedin_url:
           type: string
+          description: Optional LinkedIn profile URL to improve match accuracy.
           example: https://linkedin.com/in/johndoe
   securitySchemes:
     apiKey:
