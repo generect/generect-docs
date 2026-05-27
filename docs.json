@@ -7,10 +7,9 @@
     "light": "/logo/light.svg"
   },
   "api": {
-    "baseUrl": "https://api.generect.com/api/v1/",
-    "auth": {
-      "method": "key",
-      "name": "Authorization"
+    "url": "full",
+    "playground": {
+      "display": "interactive"
     }
   },
   "openapi": "api-reference/openapi.yaml",
