@@ -128,6 +128,19 @@
       ]
     },
     {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/introduction",
+        "api-reference/limits"
+      ]
+    },
+    {
+      "group": "Auth",
+      "pages": [
+        "api-reference/authentication"
+      ]
+    },
+    {
       "group": "Enrich",
       "pages": [
         {
