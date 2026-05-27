@@ -89,6 +89,7 @@
             "pages": [
               {
                 "group": "Companies",
+                "icon": "building",
                 "pages": [
                   "api-reference/endpoint/enrich/enrich-realtime-company",
                   "api-reference/endpoint/enrich/enrich-database-company"
@@ -96,6 +97,7 @@
               },
               {
                 "group": "Leads",
+                "icon": "user",
                 "pages": [
                   "api-reference/endpoint/enrich/enrich-realtime-lead",
                   "api-reference/endpoint/enrich/enrich-database-lead"
@@ -108,6 +110,7 @@
             "pages": [
               {
                 "group": "Companies",
+                "icon": "building",
                 "pages": [
                   "api-reference/endpoint/search/realtime-companies",
                   "api-reference/endpoint/search/database-companies",
@@ -117,6 +120,7 @@
               },
               {
                 "group": "Leads",
+                "icon": "user",
                 "pages": [
                   "api-reference/endpoint/search/realtime-leads",
                   "api-reference/endpoint/search/database-leads",
@@ -124,6 +128,7 @@
                   "api-reference/endpoint/search/count-database-leads",
                   {
                     "group": "Preview",
+                    "icon": "eye",
                     "pages": [
                       "api-reference/endpoint/preview/preview-leads",
                       "api-reference/endpoint/preview/count-preview-leads"
@@ -133,6 +138,7 @@
               },
               {
                 "group": "Company-Leads",
+                "icon": "building-user",
                 "pages": [
                   "api-reference/endpoint/search/realtime-company-leads",
                   "api-reference/endpoint/search/database-company-leads",
@@ -147,6 +153,7 @@
             "pages": [
               {
                 "group": "Email",
+                "icon": "envelope",
                 "pages": [
                   "api-reference/endpoint/emails/email-finder",
                   "api-reference/endpoint/emails/email-finder-bulk",
@@ -156,6 +163,7 @@
               },
               {
                 "group": "Phone",
+                "icon": "phone",
                 "pages": [
                   "api-reference/endpoint/phone/phone-finder",
                   "api-reference/endpoint/phone/phone-finder-bulk",
@@ -166,6 +174,7 @@
           },
           {
             "group": "Account",
+            "icon": "user-gear",
             "pages": [
               "api-reference/endpoint/accounts/get-account-me",
               "api-reference/endpoint/accounts/get-account-usage",
@@ -174,6 +183,7 @@
           },
           {
             "group": "Webhooks",
+            "icon": "bell",
             "pages": [
               "api-reference/endpoint/webhooks/list-webhooks",
               "api-reference/endpoint/webhooks/create-webhook",
