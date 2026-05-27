@@ -1,5 +1,5 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
+  "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Starter Kit",
   "logo": {
@@ -18,241 +18,242 @@
   "colors": {
     "primary": "#2d59c8",
     "light": "#5b85e6",
-    "dark": "#2d59c8",
-    "anchors": {
-      "from": "#2d59c8",
-      "to": "#5b85e6"
-    }
+    "dark": "#2d59c8"
   },
   "background": {
     "style": "gradient"
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:support@generect.com"
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@generect.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Website",
+      "href": "https://generect.com/"
     }
-  ],
-  "topbarCtaButton": {
-    "name": "Website",
-    "url": "https://generect.com/"
   },
-  "tabs": [
-    {
-      "name": "Documentation",
-      "url": "docs"
-    },
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    },
-    {
-      "name": "API Reference (Old)",
-      "url": "api-reference-old"
-    },
-    {
-      "name": "Billing & Pricing",
-      "url": "billing"
-    },
-    {
-      "name": "Integrations",
-      "url": "integrations"
-    },
-    {
-      "name": "Use Cases & Best Practices",
-      "url": "use-cases"
-    }
-  ],
-  "anchors": [],
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": [
-        "docs/what-is-generect",
-        "docs/why-is-generect",
-        "docs/create-account",
-        "docs/platform-overview",
-        "docs/how-generect-works",
-        "docs/api-overview",
-        "docs/choose-the-right-workflow",
-        "docs/data-coverage",
-        "docs/cached-databases",
-        "docs/faq"
-      ]
-    },
-    {
-      "group": "Product Guides",
-      "pages": [
-        "docs/icp-search",
-        "docs/exclude-lists",
-        "docs/email-finder",
-        "docs/email-validation",
-        "docs/catch-all-validation"
-      ]
-    },
-    {
-      "group": "Billing & Pricing",
-      "pages": [
-        "billing/pay-as-you-go",
-        "billing/managing-billing",
-        "billing/usage-history",
-        "billing/faq"
-      ]
-    },
-    {
-      "group": "SaaS",
-      "pages": [
-        "use-cases/saas/introduction",
-        "use-cases/saas/lead-search",
-        "use-cases/saas/company-search",
-        "use-cases/saas/verify-emails",
-        "use-cases/saas/find-contacts"
-      ]
-    },
-    {
-      "group": "API",
-      "pages": [
-        "use-cases/api/data-discovery",
-        "use-cases/api/data-enrichment",
-        "use-cases/api/bulk-processing",
-        "use-cases/api/automations-and-integrations",
-        "use-cases/api/account-managment"
-      ]
-    },
-    {
-      "group": "MCP",
-      "pages": [
-        "use-cases/mcp/target-prospects",
-        "use-cases/mcp/account-sourcing",
-        "use-cases/mcp/email-generation",
-        "use-cases/mcp/profile-lookup"
-      ]
-    },
-    {
-      "group": "API Reference",
-      "pages": [
-        "api-reference/introduction",
-        "api-reference/limits"
-      ]
-    },
-    {
-      "group": "Auth",
-      "pages": [
-        "api-reference/authentication"
-      ]
-    },
-    {
-      "group": "Enrich",
-      "pages": [
-        {
-          "group": "Companies",
-          "pages": [
-            "api-reference/endpoint/enrich/enrich-realtime-company",
-            "api-reference/endpoint/enrich/enrich-database-company"
-          ]
-        },
-        {
-          "group": "Leads",
-          "pages": [
-            "api-reference/endpoint/enrich/enrich-realtime-lead",
-            "api-reference/endpoint/enrich/enrich-database-lead"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Search",
-      "pages": [
-        {
-          "group": "Companies",
-          "pages": [
-            "api-reference/endpoint/search/realtime-companies",
-            "api-reference/endpoint/search/database-companies",
-            "api-reference/endpoint/search/count-realtime-companies",
-            "api-reference/endpoint/search/count-database-companies"
-          ]
-        },
-        {
-          "group": "Leads",
-          "pages": [
-            "api-reference/endpoint/search/realtime-leads",
-            "api-reference/endpoint/search/database-leads",
-            "api-reference/endpoint/search/count-realtime-leads",
-            "api-reference/endpoint/search/count-database-leads",
-            {
-              "group": "Preview",
-              "pages": [
-                "api-reference/endpoint/preview/preview-leads",
-                "api-reference/endpoint/preview/count-preview-leads"
-              ]
-            }
-          ]
-        },
-        {
-          "group": "Company-Leads",
-          "pages": [
-            "api-reference/endpoint/search/realtime-company-leads",
-            "api-reference/endpoint/search/database-company-leads",
-            "api-reference/endpoint/search/count-realtime-company-leads",
-            "api-reference/endpoint/search/count-database-company-leads"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Contacts",
-      "pages": [
-        {
-          "group": "Email",
-          "pages": [
-            "api-reference/endpoint/emails/email-finder",
-            "api-reference/endpoint/emails/email-finder-bulk",
-            "api-reference/endpoint/emails/get-email-finder-bulk",
-            "api-reference/endpoint/emails/email-validation"
-          ]
-        },
-        {
-          "group": "Phone",
-          "pages": [
-            "api-reference/endpoint/phone/phone-finder",
-            "api-reference/endpoint/phone/phone-finder-bulk",
-            "api-reference/endpoint/phone/get-phone-finder-bulk"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Account",
-      "pages": [
-        "api-reference/endpoint/accounts/get-account-me",
-        "api-reference/endpoint/accounts/get-account-usage",
-        "api-reference/endpoint/accounts/get-account-transactions"
-      ]
-    },
-    {
-      "group": "Webhooks",
-      "pages": [
-        "api-reference/endpoint/webhooks/list-webhooks",
-        "api-reference/endpoint/webhooks/create-webhook",
-        "api-reference/endpoint/webhooks/delete-webhook",
-        "api-reference/endpoint/webhooks/test-webhook"
-      ]
-    },
-    {
-      "group": "MCP",
-      "pages": [
-        "integrations/mcp/about-mcp",
-        "integrations/mcp/remote-mcp",
-        "integrations/mcp/quick-start",
-        "integrations/mcp/common-problems"
-      ]
-    },
-    {
-      "group": "OpenAI Agent builder",
-      "pages": [
-        "integrations/agent-builder/agent-builder"
-      ]
-    }
-  ],
-  "footerSocials": {}
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "docs/what-is-generect",
+              "docs/why-is-generect",
+              "docs/create-account",
+              "docs/platform-overview",
+              "docs/how-generect-works",
+              "docs/api-overview",
+              "docs/choose-the-right-workflow",
+              "docs/data-coverage",
+              "docs/cached-databases",
+              "docs/faq"
+            ]
+          },
+          {
+            "group": "Product Guides",
+            "pages": [
+              "docs/icp-search",
+              "docs/exclude-lists",
+              "docs/email-finder",
+              "docs/email-validation",
+              "docs/catch-all-validation"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/introduction",
+              "api-reference/limits"
+            ]
+          },
+          {
+            "group": "Auth",
+            "pages": [
+              "api-reference/authentication"
+            ]
+          },
+          {
+            "group": "Enrich",
+            "pages": [
+              {
+                "group": "Companies",
+                "pages": [
+                  "api-reference/endpoint/enrich/enrich-realtime-company",
+                  "api-reference/endpoint/enrich/enrich-database-company"
+                ]
+              },
+              {
+                "group": "Leads",
+                "pages": [
+                  "api-reference/endpoint/enrich/enrich-realtime-lead",
+                  "api-reference/endpoint/enrich/enrich-database-lead"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Search",
+            "pages": [
+              {
+                "group": "Companies",
+                "pages": [
+                  "api-reference/endpoint/search/realtime-companies",
+                  "api-reference/endpoint/search/database-companies",
+                  "api-reference/endpoint/search/count-realtime-companies",
+                  "api-reference/endpoint/search/count-database-companies"
+                ]
+              },
+              {
+                "group": "Leads",
+                "pages": [
+                  "api-reference/endpoint/search/realtime-leads",
+                  "api-reference/endpoint/search/database-leads",
+                  "api-reference/endpoint/search/count-realtime-leads",
+                  "api-reference/endpoint/search/count-database-leads",
+                  {
+                    "group": "Preview",
+                    "pages": [
+                      "api-reference/endpoint/preview/preview-leads",
+                      "api-reference/endpoint/preview/count-preview-leads"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Company-Leads",
+                "pages": [
+                  "api-reference/endpoint/search/realtime-company-leads",
+                  "api-reference/endpoint/search/database-company-leads",
+                  "api-reference/endpoint/search/count-realtime-company-leads",
+                  "api-reference/endpoint/search/count-database-company-leads"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Contacts",
+            "pages": [
+              {
+                "group": "Email",
+                "pages": [
+                  "api-reference/endpoint/emails/email-finder",
+                  "api-reference/endpoint/emails/email-finder-bulk",
+                  "api-reference/endpoint/emails/get-email-finder-bulk",
+                  "api-reference/endpoint/emails/email-validation"
+                ]
+              },
+              {
+                "group": "Phone",
+                "pages": [
+                  "api-reference/endpoint/phone/phone-finder",
+                  "api-reference/endpoint/phone/phone-finder-bulk",
+                  "api-reference/endpoint/phone/get-phone-finder-bulk"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "api-reference/endpoint/accounts/get-account-me",
+              "api-reference/endpoint/accounts/get-account-usage",
+              "api-reference/endpoint/accounts/get-account-transactions"
+            ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "api-reference/endpoint/webhooks/list-webhooks",
+              "api-reference/endpoint/webhooks/create-webhook",
+              "api-reference/endpoint/webhooks/delete-webhook",
+              "api-reference/endpoint/webhooks/test-webhook"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Billing & Pricing",
+        "groups": [
+          {
+            "group": "Billing & Pricing",
+            "pages": [
+              "billing/pay-as-you-go",
+              "billing/managing-billing",
+              "billing/usage-history",
+              "billing/faq"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "MCP",
+            "pages": [
+              "integrations/mcp/about-mcp",
+              "integrations/mcp/remote-mcp",
+              "integrations/mcp/quick-start",
+              "integrations/mcp/common-problems"
+            ]
+          },
+          {
+            "group": "OpenAI Agent builder",
+            "pages": [
+              "integrations/agent-builder/agent-builder"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Use Cases & Best Practices",
+        "groups": [
+          {
+            "group": "SaaS",
+            "pages": [
+              "use-cases/saas/introduction",
+              "use-cases/saas/lead-search",
+              "use-cases/saas/company-search",
+              "use-cases/saas/verify-emails",
+              "use-cases/saas/find-contacts"
+            ]
+          },
+          {
+            "group": "API",
+            "pages": [
+              "use-cases/api/data-discovery",
+              "use-cases/api/data-enrichment",
+              "use-cases/api/bulk-processing",
+              "use-cases/api/automations-and-integrations",
+              "use-cases/api/account-managment"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "use-cases/mcp/target-prospects",
+              "use-cases/mcp/account-sourcing",
+              "use-cases/mcp/email-generation",
+              "use-cases/mcp/profile-lookup"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {}
+  }
 }
