@@ -265,5 +265,11 @@
   },
   "footer": {
     "socials": {}
+  },
+  "integrations": {
+    "posthog": {
+      "apiKey": "phc_oZ9t9NRDaaMw82GikzAbFGwstRHRyY45U8g5T8sfi6rv",
+      "apiHost": "https://eu.i.posthog.com"
+    }
   }
 }
