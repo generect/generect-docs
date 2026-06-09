@@ -21,38 +21,40 @@ No subscriptions, no hidden fees — just real consumption.
 
 ## Typical Charges
 
-Below is a quick overview of common API charges.
+Across the API the rule is simple: **you are charged 1 credit per billable result** — a search result, a valid email, a found phone, or an enriched record. If nothing is found, nothing is charged. Count, status, webhook, and account endpoints are free; real-time count requests cost 1 credit each.
 
 | API action | What you pay for | Credits charged |
 | ----- | ----- | ----- |
-| **Preview leads** `POST /preview/leads/` | Masked lead preview result | **Free** for $2000+/month accounts; otherwise **0.001 credit per result** |
+| **Preview leads** `POST /preview/leads/` | Masked lead preview result | **Free** |
 | **Preview lead count** `POST /preview/leads/count/` | Counting matching preview leads | **Free** |
-| **Database lead search** `POST /search/database/leads/` | Cached lead result | **0.1 credit per result** |
-| **Database company search** `POST /search/database/companies/` | Cached company result | **0.1 credit per result** |
-| **Database company-lead search** `POST /search/database/company-leads/` | Cached company and lead match | **0.1 credit per result** |
+| **Database lead search** `POST /search/database/leads/` | Cached lead result | **1 credit per result** |
+| **Database company search** `POST /search/database/companies/` | Cached company result | **1 credit per result** |
+| **Database company-lead search** `POST /search/database/company-leads/` | Cached company and lead match | **1 credit per result** |
 | **Database lead count** `POST /search/database/leads/count/` | Counting cached lead matches | **Free** |
 | **Database company count** `POST /search/database/companies/count/` | Counting cached company matches | **Free** |
 | **Database company-lead count** `POST /search/database/company-leads/count/` | Counting cached company-lead matches | **Free** |
 | **Realtime lead search** `POST /search/realtime/leads/` | Fresh lead result | **1 credit per result** |
 | **Realtime company search** `POST /search/realtime/companies/` | Fresh company result | **1 credit per result** |
 | **Realtime company-lead search** `POST /search/realtime/company-leads/` | Fresh company and lead match | **1 credit per result** |
-| **Realtime lead count** `POST /search/realtime/leads/count/` | Counting fresh lead matches | **1 credit per count request** |
-| **Realtime company count** `POST /search/realtime/companies/count/` | Counting fresh company matches | **1 credit per count request** |
-| **Realtime company-lead count** `POST /search/realtime/company-leads/count/` | Counting fresh company-lead matches | **1 credit per count request** |
-| **Database lead enrichment** `POST /enrich/database/lead/` | Full cached lead profile returned | Charged only when a lead is found |
-| **Realtime lead enrichment** `POST /enrich/realtime/lead/` | Full fresh lead profile returned | Charged only when a lead is found |
-| **Database company enrichment** `POST /enrich/database/company/` | Full cached company profile returned | Charged only when a company is found |
-| **Realtime company enrichment** `POST /enrich/realtime/company/` | Full fresh company profile returned | Charged only when a company is found |
-| **Email Finder** `POST /email/find/` | Valid email found by `lead_id` or name + domain | **1 credit per valid email** |
+| **Realtime lead count** `POST /search/realtime/leads/count/` | Counting fresh lead matches | **1 credit per request** |
+| **Realtime company count** `POST /search/realtime/companies/count/` | Counting fresh company matches | **1 credit per request** |
+| **Database lead enrichment** `POST /enrich/database/lead/` | Full cached lead profile returned | **1 credit per result** (only when a lead is found) |
+| **Realtime lead enrichment** `POST /enrich/realtime/lead/` | Full fresh lead profile returned | **1 credit per result** (only when a lead is found) |
+| **Database company enrichment** `POST /enrich/database/company/` | Full cached company profile returned | **1 credit per result** (only when a company is found) |
+| **Realtime company enrichment** `POST /enrich/realtime/company/` | Full fresh company profile returned | **1 credit per result** (only when a company is found) |
+| **Email Finder** `POST /email/find/` | Valid email found by `lead_id`, `linkedin_url`, or name + domain | **1 credit per valid email** |
 | **Bulk Email Finder** `POST /email/find/bulk/` | Valid email found in a bulk job | **1 credit per valid email** |
-| **Email Validation** `POST /email/validate/` | Email validation request | **1 credit per validation** |
-| **Phone Finder** `POST /phone/find/` | Phone number found | **5 credits per found phone** |
-| **Bulk Phone Finder** `POST /phone/find/bulk/` | Phone number found in a bulk job | Charged only for found phones |
+| **Bulk Email Finder status** `GET /email/find/bulk/{job_id}/` | Checking bulk email job status | **Free** |
+| **Email Validation** `POST /email/validate/` | Email validation | **1 credit per email** |
+| **Phone Finder** `POST /phone/find/` | Phone number found | **1 credit per found phone** |
+| **Bulk Phone Finder** `POST /phone/find/bulk/` | Phone number found in a bulk job | **1 credit per found phone** |
 | **Bulk Phone Finder status** `GET /phone/find/bulk/{job_id}/` | Checking bulk phone job status | **Free** |
 | **List webhooks** `GET /webhooks/` | Registered webhook lookup | **Free** |
 | **Register webhook** `POST /webhooks/` | Webhook registration | **Free** |
+| **Retrieve webhook** `GET /webhooks/{id}/` | Single webhook lookup | **Free** |
+| **Update webhook** `PUT` / `PATCH /webhooks/{id}/` | Webhook update | **Free** |
 | **Delete webhook** `DELETE /webhooks/{id}/` | Webhook removal | **Free** |
-| **Test webhook** `POST /webhooks/test/` | Test webhook delivery | **Free** |
+| **Test webhook** `POST /webhooks/{id}/test/` | Test webhook delivery | **Free** |
 | **Account profile** `GET /accounts/me/` | Profile, credit balance, and Preview tier lookup | **Free** |
 | **Account usage** `GET /accounts/usage/` | Credit usage breakdown | **Free** |
 | **Account transactions** `GET /accounts/transactions/` | Transaction history lookup | **Free** |

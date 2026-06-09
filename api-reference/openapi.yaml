@@ -3641,33 +3641,60 @@ paths:
                       - San Francisco, CA
                     limit_by: 25
       responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Account is not enabled for the Preview endpoint.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: You are not authorized to use this endpoint.
         '200':
           description: Masked lead preview results
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
+                type: object
               example:
-                - id: lead_abc123xyz
-                  first_name: John
-                  last_name: Doe
-                  title: CEO
-                  company_name: Acme Tech
-                  location: San Francisco, CA
-                  industry: Software
-                  seniority: CXO
-                  headcount_range: 51-200
-                - id: lead_def456xyz
-                  first_name: Jane
-                  last_name: Smith
-                  title: VP Sales
-                  company_name: Example Corp
-                  location: New York, NY
-                  industry: Software
-                  seniority: VP
-                  headcount_range: 201-500
+                data:
+                  leads:
+                    - id: lead_abc123xyz
+                      first_name: John
+                      last_name: Doe
+                      title: CEO
+                      company_name: Acme Tech
+                      location: San Francisco, CA
+                      industry: Software
+                      seniority: CXO
+                      headcount_range: 51-200
+                    - id: lead_def456xyz
+                      first_name: Jane
+                      last_name: Smith
+                      title: VP Sales
+                      company_name: Example Corp
+                      location: New York, NY
+                      industry: Software
+                      seniority: VP
+                      headcount_range: 201-500
+                meta:
+                  credits_charged: 0
   /preview/leads/count/:
     post:
       tags:
@@ -3735,6 +3762,31 @@ paths:
                     locations:
                       - San Francisco, CA
       responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Account is not enabled for the Preview endpoint.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: You are not authorized to use this endpoint.
         '200':
           description: Matching lead count
           content:
@@ -3799,6 +3851,29 @@ paths:
                 value:
                   email: john@acme.com
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, linkedin_url, email is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full lead profile. If no data is found, no credits are charged.
           content:
@@ -3880,6 +3955,29 @@ paths:
                 value:
                   email: john@acme.com
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, linkedin_url, email is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Fresh full lead profile
           content:
@@ -3967,6 +4065,29 @@ paths:
                 value:
                   name: Acme Technologies
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full company profile
           content:
@@ -4048,6 +4169,29 @@ paths:
                 value:
                   name: Acme Technologies
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Fresh full company profile
           content:
@@ -4069,7 +4213,7 @@ paths:
       tags:
         - 7. Email
       summary: Find email
-      description: Find a verified work email by lead ID or by name and domain. Credits are charged only when a valid email is found.
+      description: Find a verified work email by lead ID, LinkedIn URL, or by name and domain. Credits are charged only when a valid email is found.
       requestBody:
         required: true
         content:
@@ -4085,6 +4229,15 @@ paths:
                       type: string
                       description: Generect lead identifier from Search, Preview, or Enrich.
                       example: lead_abc123xyz
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: Lead's LinkedIn profile URL.
+                      example: https://linkedin.com/in/johndoe
                 - title: By Name and Domain
                   type: object
                   required:
@@ -4108,12 +4261,36 @@ paths:
               By Lead ID:
                 value:
                   lead_id: lead_abc123xyz
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://linkedin.com/in/johndoe
               By name and domain:
                 value:
                   first_name: John
                   last_name: Doe
                   domain: acme.com
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+domain."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Email result
           content:
@@ -4158,37 +4335,78 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - leads
               properties:
-                items:
+                leads:
                   type: array
-                  description: List of leads to find emails for. Each entry requires first_name + last_name + domain.
+                  description: >-
+                    Leads to find emails for. Each entry is one of: {lead_id},
+                    {linkedin_url}, or {first_name, last_name, domain}.
                   items:
-                    type: object
-                    required:
-                      - first_name
-                      - last_name
-                      - domain
-                    properties:
-                      first_name:
-                        type: string
-                        description: Lead's first name.
-                      last_name:
-                        type: string
-                        description: Lead's last name.
-                      domain:
-                        type: string
-                        description: Company domain.
+                    oneOf:
+                      - title: By Lead ID
+                        type: object
+                        required:
+                          - lead_id
+                        properties:
+                          lead_id:
+                            type: string
+                            example: lead_abc123xyz
+                      - title: By LinkedIn URL
+                        type: object
+                        required:
+                          - linkedin_url
+                        properties:
+                          linkedin_url:
+                            type: string
+                            example: https://linkedin.com/in/johndoe
+                      - title: By Name and Domain
+                        type: object
+                        required:
+                          - first_name
+                          - last_name
+                          - domain
+                        properties:
+                          first_name:
+                            type: string
+                            description: Lead's first name.
+                          last_name:
+                            type: string
+                            description: Lead's last name.
+                          domain:
+                            type: string
+                            description: Company domain.
             examples:
               Bulk email find:
                 value:
-                  items:
-                    - first_name: John
-                      last_name: Doe
-                      domain: acme.com
+                  leads:
+                    - lead_id: lead_abc123xyz
                     - first_name: Jane
                       last_name: Smith
                       domain: corp.io
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '202':
           description: Bulk job accepted
           content:
@@ -4196,9 +4414,14 @@ paths:
               schema:
                 type: object
               example:
-                data:
+                data: null
+                meta:
                   job_id: job_123
                   status: pending
+                  total: 2
+                  processed: 0
+                  credits_charged: 0
+                  error: null
   /email/find/bulk/{job_id}/:
     get:
       tags:
@@ -4213,6 +4436,21 @@ paths:
             type: string
           example: job_123
       responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
         '200':
           description: Bulk job status and results
           content:
@@ -4221,11 +4459,17 @@ paths:
                 type: object
               example:
                 data:
+                  - lead_id: lead_abc123xyz
+                    email:
+                      address: john.doe@acme.com
+                      status: VALID
+                meta:
                   job_id: job_123
                   status: completed
-                  results: []
-                meta:
+                  total: 2
+                  processed: 2
                   credits_charged: 12
+                  error: null
   /email/validate/:
     post:
       tags:
@@ -4250,6 +4494,27 @@ paths:
                   - john@acme.com
                   - jane@corp.io
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"emails": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Validation results
           content:
@@ -4274,6 +4539,10 @@ paths:
       summary: Get account profile
       description: Retrieve the current account profile, credit balance, monthly usage, and Preview tier eligibility.
       responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Account profile
           content:
@@ -4285,7 +4554,6 @@ paths:
                   id: user_123
                   email: user@company.com
                   name: John Doe
-                  company: Acme Inc
                   plan: Pro
                   credits:
                     balance: 5000
@@ -4299,13 +4567,46 @@ paths:
       summary: Get account usage
       description: Retrieve credit usage statistics and operation breakdown for an account.
       parameters:
+        - name: timezone
+          in: query
+          required: false
+          description: IANA timezone for aggregation.
+          schema:
+            type: string
+            default: UTC
+          example: Europe/Kyiv
         - name: period
+          in: query
+          required: false
+          description: Truncation granularity for the usage series.
+          schema:
+            type: string
+            enum: [day, week, month]
+            default: day
+        - name: start_date
           in: query
           required: false
           schema:
             type: string
+          example: '2024-01-01'
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+          example: '2024-01-31'
+        - name: period_month
+          in: query
+          required: false
+          description: Month label for the response (YYYY-MM).
+          schema:
+            type: string
           example: '2024-01'
       responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Account usage statistics
           content:
@@ -4342,6 +4643,10 @@ paths:
             type: integer
             default: 0
       responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Account transactions
           content:
@@ -4356,13 +4661,14 @@ paths:
                       type: search_database_leads
                       credits: -25
                       details:
-                        results_count: 250
+                        balance_type: leads_by_icp
+                        status: success
   /search/database/leads/:
     post:
       tags:
         - 9. Search
       summary: Search database leads
-      description: Search cached leads. Database mode returns results in <1 sec at 0.1-0.2 credits per result.
+      description: Search cached leads. Database mode returns results in <1 sec at 1 credit per result.
       requestBody:
         required: true
         content:
@@ -4370,12 +4676,45 @@ paths:
             schema:
               $ref: '#/components/schemas/LeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full lead search results
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  leads:
+                    - lead_id: lead_abc123xyz
+                      first_name: John
+                      last_name: Doe
+                      title: CEO
+                  results_count: 1240
+                meta:
+                  credits_charged: 1
   /search/database/leads/count/:
     post:
       tags:
@@ -4389,18 +4728,46 @@ paths:
             schema:
               $ref: '#/components/schemas/LeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Matching lead count
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  results_count: 1240
+                meta:
+                  credits_charged: 0
   /search/database/companies/:
     post:
       tags:
         - 9. Search
       summary: Search database companies
-      description: Search cached companies. Database mode returns results in <1 sec. 1 credit per company.
+      description: Search cached companies. Database mode returns results in <1 sec. 1 credit per result.
       requestBody:
         required: true
         content:
@@ -4408,12 +4775,44 @@ paths:
             schema:
               $ref: '#/components/schemas/CompanySearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full company search results
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  companies:
+                    - linkedin_id: '1035'
+                      name: Microsoft
+                      domain: microsoft.com
+                  results_count: 530
+                meta:
+                  credits_charged: 1
   /search/database/companies/count/:
     post:
       tags:
@@ -4427,12 +4826,40 @@ paths:
             schema:
               $ref: '#/components/schemas/CompanySearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Matching company count
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  results_count: 530
+                meta:
+                  credits_charged: 0
   /search/database/company-leads/:
     post:
       tags:
@@ -4446,12 +4873,44 @@ paths:
             schema:
               $ref: '#/components/schemas/CompanyLeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full company-lead search results
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  leads:
+                    - lead_id: lead_abc123xyz
+                      first_name: John
+                      last_name: Doe
+                  results_count: 320
+                meta:
+                  credits_charged: 1
   /search/database/company-leads/count/:
     post:
       tags:
@@ -4465,12 +4924,42 @@ paths:
             schema:
               $ref: '#/components/schemas/CompanyLeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Matching company-lead count
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  results_count: 320
+                  companies_count: 45
+                  leads_count: 320
+                meta:
+                  credits_charged: 0
   /search/realtime/leads/:
     post:
       tags:
@@ -4484,18 +4973,51 @@ paths:
             schema:
               $ref: '#/components/schemas/RealtimeLeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full realtime lead search results
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  leads:
+                    - lead_id: lead_abc123xyz
+                      first_name: John
+                      last_name: Doe
+                      title: CEO
+                  results_count: 1240
+                meta:
+                  credits_charged: 1
   /search/realtime/leads/count/:
     post:
       tags:
         - 9. Search
       summary: Count realtime leads
-      description: Count fresh leads matching filters. 1 credit per count request.
+      description: Count fresh leads matching filters. 1 credit per request.
       requestBody:
         required: true
         content:
@@ -4503,12 +5025,40 @@ paths:
             schema:
               $ref: '#/components/schemas/RealtimeLeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Matching realtime lead count
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  results_count: 1240
+                meta:
+                  credits_charged: 1
   /search/realtime/companies/:
     post:
       tags:
@@ -4522,18 +5072,50 @@ paths:
             schema:
               $ref: '#/components/schemas/RealtimeCompanySearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full realtime company search results
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  companies:
+                    - linkedin_id: '1035'
+                      name: Microsoft
+                      domain: microsoft.com
+                  results_count: 530
+                meta:
+                  credits_charged: 1
   /search/realtime/companies/count/:
     post:
       tags:
         - 9. Search
       summary: Count realtime companies
-      description: Count fresh companies matching filters. 1 credit per count request.
+      description: Count fresh companies matching filters. 1 credit per request.
       requestBody:
         required: true
         content:
@@ -4541,12 +5123,40 @@ paths:
             schema:
               $ref: '#/components/schemas/RealtimeCompanySearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Matching realtime company count
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  results_count: 530
+                meta:
+                  credits_charged: 1
   /search/realtime/company-leads/:
     post:
       tags:
@@ -4560,31 +5170,44 @@ paths:
             schema:
               $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
         '200':
           description: Full realtime company-lead search results
           content:
             application/json:
               schema:
                 type: object
-  /search/realtime/company-leads/count/:
-    post:
-      tags:
-        - 9. Search
-      summary: Count realtime company leads
-      description: Count fresh company-lead matches.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
-      responses:
-        '200':
-          description: Matching realtime company-lead count
-          content:
-            application/json:
-              schema:
-                type: object
+              example:
+                data:
+                  leads:
+                    - lead_id: lead_abc123xyz
+                      first_name: John
+                      last_name: Doe
+                  results_count: 320
+                meta:
+                  credits_charged: 1
   /phone/find/:
     post:
       tags:
@@ -4617,12 +5240,54 @@ paths:
                       example: https://linkedin.com/in/johndoe
                 - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+company."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Phone finder result
           content:
             application/json:
               schema:
                 type: object
+              examples:
+                Found:
+                  value:
+                    data:
+                      lead_id: lead_abc123xyz
+                      phone:
+                        number: '+14155550123'
+                        status: FOUND
+                        type: mobile
+                        country: US
+                    meta:
+                      credits_charged: 1
+                Not found:
+                  value:
+                    data:
+                      lead_id: lead_abc123xyz
+                      phone:
+                        number: null
+                        status: NOT_FOUND
+                    meta:
+                      credits_charged: 0
   /phone/find/bulk/:
     post:
       tags:
@@ -4635,8 +5300,10 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - leads
               properties:
-                items:
+                leads:
                   type: array
                   description: List of leads to find phones for. Each entry is either a lead_id, linkedin_url, or name+company.
                   items:
@@ -4649,14 +5316,60 @@ paths:
                           lead_id:
                             type: string
                             description: Generect lead identifier.
+                      - title: By LinkedIn URL
+                        type: object
+                        required:
+                          - linkedin_url
+                        properties:
+                          linkedin_url:
+                            type: string
+                            example: https://linkedin.com/in/johndoe
                       - $ref: '#/components/schemas/PhoneFindByNameRequest'
+            examples:
+              Bulk phone find:
+                value:
+                  leads:
+                    - lead_id: lead_abc123xyz
+                    - first_name: John
+                      last_name: Doe
+                      company: acme.com
       responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '202':
           description: Bulk phone job accepted
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data: null
+                meta:
+                  job_id: job_123
+                  status: pending
+                  total: 2
+                  processed: 0
+                  credits_charged: 0
+                  error: null
   /phone/find/bulk/{job_id}/:
     get:
       tags:
@@ -4671,12 +5384,42 @@ paths:
             type: string
           example: job_123
       responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
         '200':
           description: Bulk phone job status and results
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  - lead_id: lead_abc123xyz
+                    phone:
+                      number: '+14155550123'
+                      status: FOUND
+                      type: mobile
+                      country: US
+                meta:
+                  job_id: job_123
+                  status: completed
+                  total: 2
+                  processed: 2
+                  credits_charged: 12
+                  error: null
   /webhooks/:
     get:
       tags:
@@ -4684,6 +5427,10 @@ paths:
       summary: List webhooks
       description: List registered webhook endpoints.
       responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '200':
           description: Registered webhooks
           content:
@@ -4725,6 +5472,22 @@ paths:
                   description: Secret for HMAC signature verification of incoming webhook payloads.
                   example: your-secret-for-signature
       responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.bulk.completed', 'phone.find.bulk.completed']"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '201':
           description: Webhook registered
           content:
@@ -4732,11 +5495,153 @@ paths:
               schema:
                 type: object
   /webhooks/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: wh_123
+    get:
+      tags:
+        - 11. Webhooks
+      summary: Retrieve webhook
+      description: Retrieve a single registered webhook endpoint.
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '200':
+          description: Webhook
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+        - 11. Webhooks
+      summary: Update webhook
+      description: Replace a webhook endpoint's configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - events
+              properties:
+                url:
+                  type: string
+                  example: https://your-app.com/webhook
+                events:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - email.find.bulk.completed
+                      - phone.find.bulk.completed
+                      - enrich.bulk.completed
+                secret:
+                  type: string
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.bulk.completed', 'phone.find.bulk.completed']"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '200':
+          description: Webhook updated
+          content:
+            application/json:
+              schema:
+                type: object
+    patch:
+      tags:
+        - 11. Webhooks
+      summary: Partially update webhook
+      description: Update selected fields of a webhook endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                events:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - email.find.bulk.completed
+                      - phone.find.bulk.completed
+                      - enrich.bulk.completed
+                secret:
+                  type: string
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.bulk.completed', 'phone.find.bulk.completed']"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '200':
+          description: Webhook updated
+          content:
+            application/json:
+              schema:
+                type: object
     delete:
       tags:
         - 11. Webhooks
       summary: Delete webhook
       description: Remove a registered webhook endpoint.
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '204':
+          description: Webhook removed
+  /webhooks/{id}/test/:
+    post:
+      tags:
+        - 11. Webhooks
+      summary: Test webhook
+      description: Send a sample `webhook.test` delivery to this webhook's URL.
       parameters:
         - name: id
           in: path
@@ -4745,33 +5650,41 @@ paths:
             type: string
           example: wh_123
       responses:
-        '204':
-          description: Webhook removed
-  /webhooks/test/:
-    post:
-      tags:
-        - 11. Webhooks
-      summary: Test webhook
-      description: Send a test event to a registered webhook endpoint.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: wh_123
-      responses:
-        '200':
-          description: Test webhook delivery result
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '202':
+          description: Test delivery enqueued
           content:
             application/json:
               schema:
                 type: object
+              example:
+                data:
+                  delivery_id: whd_123
+                  status: pending
+                meta:
+                  event: webhook.test
 components:
   schemas:
+    Error:
+      type: object
+      description: Standard error envelope returned for 4xx/5xx responses.
+      properties:
+        status:
+          type: string
+          example: error
+        status_code:
+          type: integer
+          example: 400
+        detail:
+          description: >-
+            Human-readable message (string) for most errors, or a field-level
+            validation map ({ field: [messages] }) for 400 validation errors.
+          example: Insufficient funds in the account.
     LeadSearchRequest:
       type: object
       properties:
@@ -4779,17 +5692,20 @@ components:
           type: array
           items:
             type: string
-          description: Job title keywords to match (OR logic).
+          description: >-
+            Job titles held by the people you want to find. A lead only needs to match one of the titles you provide — adding more expands your search. Results may also include similar titles (e.g. "marketing manager" can return "content marketing manager"). Combine with seniorities to target both function and level. Examples: "sales development representative", "marketing manager", "software engineer".
         seniorities:
           type: array
           items:
             type: string
-          description: Seniority levels to match (OR logic).
+          description: >-
+            Job seniority levels at the lead's current employer (current position only, not previous roles). A lead needs to match at least one; adding more values expands your search. Allowed values: owner, founder, c_suite, partner, vp, head, director, manager, senior, entry, intern. Combine with job_titles to narrow targeting.
         locations:
           type: array
           items:
             type: string
-          description: Lead locations.
+          description: >-
+            Geographic locations where leads currently live — matches across cities, states/regions and countries. A lead needs to match at least one. To filter by the employer's HQ location, use company_locations. Examples: "San Francisco, California, United States", "Germany", "London".
         exclude_locations:
           type: array
           items:
@@ -4799,7 +5715,8 @@ components:
           type: array
           items:
             type: string
-          description: Company headquarters locations.
+          description: >-
+            Headquarters location of the lead's current employer; a lead is included if their company's HQ matches at least one. Filters by where the company is based — distinct from locations, which is where the lead personally lives.
         exclude_company_locations:
           type: array
           items:
@@ -4809,7 +5726,8 @@ components:
           type: array
           items:
             type: string
-          description: Target company industries.
+          description: >-
+            Industries of the lead's current employer; a lead is included if their company matches at least one. Values follow LinkedIn's industry taxonomy. Examples: "Software Development", "Financial Services", "Information Technology".
         exclude_company_industries:
           type: array
           items:
@@ -4819,7 +5737,8 @@ components:
           type: array
           items:
             type: string
-          description: 'Company size ranges: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".'
+          description: >-
+            Size of the lead's current employer, as employee-count ranges; a lead is included if their company falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+".
         exclude_company_headcounts:
           type: array
           items:
@@ -4896,17 +5815,20 @@ components:
               type: array
               items:
                 type: string
-              description: Free-text keywords to search in profiles.
+              description: >-
+                Free-text keywords searched across lead profiles (headline, current job description, skills, summary); a lead is included if their profile contains at least one. Realtime mode only — database mode does not support free-text search. Examples: "machine learning", "growth marketing", "kubernetes".
             functions:
               type: array
               items:
                 type: string
-              description: Job function filters (e.g. "marketing", "engineering").
+              description: >-
+                Job functions — categorize roles by business area, independent of seniority or title; a lead is included if their function matches at least one. Common values: Sales, Marketing, Engineering, Operations, Finance, HR, Product, Customer Success, Legal, Data. Combine with seniorities for function-by-seniority targeting.
             past_company_names:
               type: array
               items:
                 type: string
-              description: Filter by previous employers.
+              description: >-
+                Filter by companies where the lead previously worked; a lead is included if their work history contains at least one. Useful for alumni outreach (e.g. ex-Google engineers) or targeting people who left a competitor. Examples: "Google", "Meta", "Stripe".
             schools:
               type: array
               items:
@@ -4945,7 +5867,8 @@ components:
           type: array
           items:
             type: string
-          description: Target industries.
+          description: >-
+            Industries of the target companies; a company is included if it matches at least one. Values follow LinkedIn's industry taxonomy. Examples: "Software Development", "Financial Services", "Information Technology".
         exclude_industries:
           type: array
           items:
@@ -4955,12 +5878,14 @@ components:
           type: array
           items:
             type: string
-          description: 'Company size ranges: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".'
+          description: >-
+            Company size, as employee-count ranges; a company is included if it falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+".
         locations:
           type: array
           items:
             type: string
-          description: Company headquarters locations.
+          description: >-
+            Company headquarters locations — matches across cities, states/regions and countries; a company is included if its HQ matches at least one. Examples: "United States", "San Francisco, California, United States", "Germany".
         exclude_locations:
           type: array
           items:
@@ -4980,7 +5905,8 @@ components:
           type: array
           items:
             type: string
-          description: Free-text keywords (OR logic, max 10, max 40 chars each).
+          description: >-
+            Free-text keywords matched across company profiles (name, description, specialties); a company is included if it contains at least one. OR logic, max 10 keywords, up to 40 characters each. Examples: "platform", "marketplace", "developer tools".
         technologies:
           type: array
           items:
@@ -5063,17 +5989,17 @@ components:
     CompanyLeadSearchRequest:
       type: object
       properties:
-        lead_filters:
-          $ref: '#/components/schemas/LeadSearchRequest'
-        company_filters:
+        company_search_criteria:
           $ref: '#/components/schemas/CompanySearchRequest'
+        lead_search_criteria:
+          $ref: '#/components/schemas/LeadSearchRequest'
     RealtimeCompanyLeadSearchRequest:
       type: object
       properties:
-        lead_filters:
-          $ref: '#/components/schemas/RealtimeLeadSearchRequest'
-        company_filters:
+        company_search_criteria:
           $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+        lead_search_criteria:
+          $ref: '#/components/schemas/RealtimeLeadSearchRequest'
     PhoneFindByNameRequest:
       title: By Name and Company
       type: object
@@ -5098,6 +6024,47 @@ components:
           type: string
           description: Optional LinkedIn profile URL to improve match accuracy.
           example: https://linkedin.com/in/johndoe
+  responses:
+    Unauthorized:
+      description: Missing or invalid API token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 401
+            detail: Authentication credentials were not provided.
+    Forbidden:
+      description: Authenticated, but the account/plan is not allowed to use this endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 403
+            detail: You do not have permission to perform this action.
+    NotFound:
+      description: Resource or job not found (or not owned by the caller).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 404
+            detail: Not found.
+    TooManyRequests:
+      description: Rate limit exceeded — retry later.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 429
+            detail: Request was throttled.
   securitySchemes:
     apiKey:
       type: apiKey

@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Starter Kit",
+  "name": "Generect",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -142,7 +142,6 @@
                 "pages": [
                   "api-reference/endpoint/search/realtime-company-leads",
                   "api-reference/endpoint/search/database-company-leads",
-                  "api-reference/endpoint/search/count-realtime-company-leads",
                   "api-reference/endpoint/search/count-database-company-leads"
                 ]
               }
@@ -187,6 +186,8 @@
             "pages": [
               "api-reference/endpoint/webhooks/list-webhooks",
               "api-reference/endpoint/webhooks/create-webhook",
+              "api-reference/endpoint/webhooks/get-webhook",
+              "api-reference/endpoint/webhooks/update-webhook",
               "api-reference/endpoint/webhooks/delete-webhook",
               "api-reference/endpoint/webhooks/test-webhook"
             ]

@@ -7,8 +7,4 @@ openapi: post /enrich/realtime/company/
 Retrieve a fresh company profile by Generect ID, LinkedIn URL, domain, or company name.
 
 ## Pricing
-**$0.04** per result at Tier 0 (base price).
-
-Each real-time enrichment request queries live data sources (LinkedIn, Crunchbase, websites) to return a fresh profile. You are charged only when the requested company or lead is found — if no data is returned, the request is free.
-
-<Tip>Your price per request decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://beta.generect.com/settings/billing)</Tip>
+This endpoint consumes credits per returned result. If no company is found, no credit is charged. See [Pricing](/billing/pay-as-you-go) for credit costs.

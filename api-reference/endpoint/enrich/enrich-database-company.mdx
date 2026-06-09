@@ -7,8 +7,4 @@ openapi: post /enrich/database/company/
 Retrieve a company profile from cached data by Generect ID, LinkedIn URL, domain, or company name.
 
 ## Pricing
-**$0.02** per result at Tier 0 (base price).
-
-Each database enrichment request returns a profile from Generect's cached data. You are charged only when the requested company or lead is found — if no data is returned, the request is free.
-
-<Tip>Your price per request decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://beta.generect.com/settings/billing)</Tip>
+This endpoint consumes credits per returned result. If no company is found, no credit is charged. See [Pricing](/billing/pay-as-you-go) for credit costs.
