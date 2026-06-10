@@ -15,7 +15,7 @@ info:
 
     # Rate limits
 
-    Credits: You can request data depending on your data plan and credit balance. The default is 10000/month. The estimated number of credits to spend is based on the complexity of the query and the number of results. The amount spent can be increased by additional data flags in the queries.
+    You can request data depending on your data plan and account balance (default: 10000/month). Pricing depends on the operation and the number of results returned, and may increase with additional data flags. For exact pricing, see each endpoint's Pricing section or your billing settings: https://beta.generect.com/settings/billing
 
     # Note
 
@@ -3694,7 +3694,7 @@ paths:
                       seniority: VP
                       headcount_range: 201-500
                 meta:
-                  credits_charged: 0
+                  amount_charged: 0
   /preview/leads/count/:
     post:
       tags:
@@ -3797,7 +3797,7 @@ paths:
                 data:
                   count: 1240
                 meta:
-                  credits_charged: 0
+                  amount_charged: 0
   /enrich/database/lead/:
     post:
       tags:
@@ -3875,7 +3875,7 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
         '200':
-          description: Full lead profile. If no data is found, no credits are charged.
+          description: Full lead profile. If no data is found, the request is free.
           content:
             application/json:
               schema:
@@ -3901,13 +3901,13 @@ paths:
                   education: []
                   skills: []
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.02
   /enrich/realtime/lead/:
     post:
       tags:
         - 6. Enrich
       summary: Enrich lead in realtime
-      description: Retrieve a fresh lead profile. Supports internal ID, LinkedIn URL, or email reverse lookup. If no data is found, no credits are charged.
+      description: Retrieve a fresh lead profile. Supports internal ID, LinkedIn URL, or email reverse lookup. If no data is found, the request is free.
       requestBody:
         required: true
         content:
@@ -3999,7 +3999,7 @@ paths:
                   education: []
                   skills: []
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.04
   /enrich/database/company/:
     post:
       tags:
@@ -4103,7 +4103,7 @@ paths:
                   industry: Software
                   headcount: 150
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.02
   /enrich/realtime/company/:
     post:
       tags:
@@ -4207,13 +4207,13 @@ paths:
                   industry: Software
                   headcount: 150
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.04
   /email/find/:
     post:
       tags:
         - 7. Email
       summary: Find email
-      description: Find a verified work email by lead ID, LinkedIn URL, or by name and domain. Credits are charged only when a valid email is found.
+      description: Find a verified work email by lead ID, LinkedIn URL, or by name and domain. Billed only when a valid email is found.
       requestBody:
         required: true
         content:
@@ -4313,7 +4313,7 @@ paths:
                           smtp_check: true
                           is_catch_all: false
                     meta:
-                      credits_charged: 1
+                      amount_charged: 0.02
                 Not found:
                   value:
                     data:
@@ -4322,13 +4322,13 @@ paths:
                         address: null
                         status: NOT_FOUND
                     meta:
-                      credits_charged: 0
+                      amount_charged: 0
   /email/find/bulk/:
     post:
       tags:
         - 7. Email
       summary: Start bulk email find
-      description: Start an asynchronous bulk email find job. Credits are charged per valid email found.
+      description: Start an asynchronous bulk email find job. Billed only for valid emails found.
       requestBody:
         required: true
         content:
@@ -4420,7 +4420,7 @@ paths:
                   status: pending
                   total: 2
                   processed: 0
-                  credits_charged: 0
+                  amount_charged: 0
                   error: null
   /email/find/bulk/{job_id}/:
     get:
@@ -4468,14 +4468,14 @@ paths:
                   status: completed
                   total: 2
                   processed: 2
-                  credits_charged: 12
+                  amount_charged: 0.02
                   error: null
   /email/validate/:
     post:
       tags:
         - 7. Email
       summary: Validate emails
-      description: Validate email deliverability and risk. One credit is charged per validation.
+      description: Validate email deliverability and risk. Billed per email validated.
       requestBody:
         required: true
         content:
@@ -4531,7 +4531,7 @@ paths:
                       is_disposable: false
                       risk_score: 0.1
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.005
   /accounts/me/:
     get:
       tags:
@@ -4668,7 +4668,7 @@ paths:
       tags:
         - 9. Search
       summary: Search database leads
-      description: Search cached leads. Database mode returns results in <1 sec at 1 credit per result.
+      description: Search cached leads. Database mode returns results in <1 sec. Billed per result returned.
       requestBody:
         required: true
         content:
@@ -4714,13 +4714,13 @@ paths:
                       title: CEO
                   results_count: 1240
                 meta:
-                  credits_charged: 1
+                  amount_charged: 24.8
   /search/database/leads/count/:
     post:
       tags:
         - 9. Search
       summary: Count database leads
-      description: Count cached leads matching filters. Always free — 0 credits.
+      description: Count cached leads matching filters. Always free.
       requestBody:
         required: true
         content:
@@ -4761,13 +4761,13 @@ paths:
                 data:
                   results_count: 1240
                 meta:
-                  credits_charged: 0
+                  amount_charged: 0
   /search/database/companies/:
     post:
       tags:
         - 9. Search
       summary: Search database companies
-      description: Search cached companies. Database mode returns results in <1 sec. 1 credit per result.
+      description: Search cached companies. Database mode returns results in <1 sec. Billed per result returned.
       requestBody:
         required: true
         content:
@@ -4812,13 +4812,13 @@ paths:
                       domain: microsoft.com
                   results_count: 530
                 meta:
-                  credits_charged: 1
+                  amount_charged: 10.6
   /search/database/companies/count/:
     post:
       tags:
         - 9. Search
       summary: Count database companies
-      description: Count cached companies matching filters. Always free — 0 credits.
+      description: Count cached companies matching filters. Always free.
       requestBody:
         required: true
         content:
@@ -4859,7 +4859,7 @@ paths:
                 data:
                   results_count: 530
                 meta:
-                  credits_charged: 0
+                  amount_charged: 0
   /search/database/company-leads/:
     post:
       tags:
@@ -4910,7 +4910,7 @@ paths:
                       last_name: Doe
                   results_count: 320
                 meta:
-                  credits_charged: 1
+                  amount_charged: 6.4
   /search/database/company-leads/count/:
     post:
       tags:
@@ -4959,13 +4959,13 @@ paths:
                   companies_count: 45
                   leads_count: 320
                 meta:
-                  credits_charged: 0
+                  amount_charged: 0
   /search/realtime/leads/:
     post:
       tags:
         - 9. Search
       summary: Search realtime leads
-      description: Search fresh leads with advanced filters (keywords, past companies, schools, groups). Response time 5-60 sec, 1 credit per result.
+      description: Search fresh leads with advanced filters (keywords, past companies, schools, groups). Response time 5-60 sec. Billed per result returned.
       requestBody:
         required: true
         content:
@@ -5011,13 +5011,13 @@ paths:
                       title: CEO
                   results_count: 1240
                 meta:
-                  credits_charged: 1
+                  amount_charged: 49.6
   /search/realtime/leads/count/:
     post:
       tags:
         - 9. Search
       summary: Count realtime leads
-      description: Count fresh leads matching filters. 1 credit per request.
+      description: Count fresh leads matching filters. Billed per request.
       requestBody:
         required: true
         content:
@@ -5058,13 +5058,13 @@ paths:
                 data:
                   results_count: 1240
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.04
   /search/realtime/companies/:
     post:
       tags:
         - 9. Search
       summary: Search realtime companies
-      description: Search fresh companies with advanced filters (revenue, department headcount, growth). Response time 5-60 sec, 1 credit per result.
+      description: Search fresh companies with advanced filters (revenue, department headcount, growth). Response time 5-60 sec. Billed per result returned.
       requestBody:
         required: true
         content:
@@ -5109,13 +5109,13 @@ paths:
                       domain: microsoft.com
                   results_count: 530
                 meta:
-                  credits_charged: 1
+                  amount_charged: 21.2
   /search/realtime/companies/count/:
     post:
       tags:
         - 9. Search
       summary: Count realtime companies
-      description: Count fresh companies matching filters. 1 credit per request.
+      description: Count fresh companies matching filters. Billed per request.
       requestBody:
         required: true
         content:
@@ -5156,7 +5156,7 @@ paths:
                 data:
                   results_count: 530
                 meta:
-                  credits_charged: 1
+                  amount_charged: 0.04
   /search/realtime/company-leads/:
     post:
       tags:
@@ -5207,13 +5207,13 @@ paths:
                       last_name: Doe
                   results_count: 320
                 meta:
-                  credits_charged: 1
+                  amount_charged: 12.8
   /phone/find/:
     post:
       tags:
         - 10. Phone
       summary: Find phone
-      description: Find a phone number by lead ID, LinkedIn URL, or by name and company. Credits are charged only when a phone number is found.
+      description: Find a phone number by lead ID, LinkedIn URL, or by name and company. Billed only when a phone number is found.
       requestBody:
         required: true
         content:
@@ -5278,7 +5278,7 @@ paths:
                         type: mobile
                         country: US
                     meta:
-                      credits_charged: 1
+                      amount_charged: 0.4
                 Not found:
                   value:
                     data:
@@ -5287,13 +5287,13 @@ paths:
                         number: null
                         status: NOT_FOUND
                     meta:
-                      credits_charged: 0
+                      amount_charged: 0
   /phone/find/bulk/:
     post:
       tags:
         - 10. Phone
       summary: Start bulk phone find
-      description: Start an asynchronous bulk phone finder job. Credits are charged per found phone.
+      description: Start an asynchronous bulk phone finder job. Billed only for phone numbers found.
       requestBody:
         required: true
         content:
@@ -5368,7 +5368,7 @@ paths:
                   status: pending
                   total: 2
                   processed: 0
-                  credits_charged: 0
+                  amount_charged: 0
                   error: null
   /phone/find/bulk/{job_id}/:
     get:
@@ -5418,7 +5418,7 @@ paths:
                   status: completed
                   total: 2
                   processed: 2
-                  credits_charged: 12
+                  amount_charged: 0.4
                   error: null
   /webhooks/:
     get:
