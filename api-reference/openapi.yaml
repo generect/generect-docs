@@ -5464,7 +5464,6 @@ paths:
                     enum:
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
-                      - enrich.bulk.completed
                   example:
                     - email.find.bulk.completed
                 secret:
@@ -5483,7 +5482,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'phone.find.bulk.completed']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -5545,7 +5544,6 @@ paths:
                     enum:
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
-                      - enrich.bulk.completed
                 secret:
                   type: string
       responses:
@@ -5560,7 +5558,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'phone.find.bulk.completed']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -5594,7 +5592,6 @@ paths:
                     enum:
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
-                      - enrich.bulk.completed
                 secret:
                   type: string
       responses:
@@ -5609,7 +5606,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'phone.find.bulk.completed']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
