@@ -1,0 +1,107 @@
+---
+title: 'Webhooks'
+sidebarTitle: 'Overview'
+description: 'Get notified when async jobs complete — delivery format, signature verification, retries'
+---
+
+Webhooks notify your endpoint when an asynchronous job finishes, so you don't have to poll the bulk status endpoints.
+
+## Events
+
+| Event | Fired when |
+| --- | --- |
+| `email.find.bulk.completed` | A [bulk email finder](/api-reference/endpoint/emails/email-finder-bulk) job finishes (or fails) |
+| `phone.find.bulk.completed` | A [bulk phone finder](/api-reference/endpoint/phone/phone-finder-bulk) job finishes (or fails) |
+
+## Delivery format
+
+Each delivery is an HTTP `POST` to your URL with a JSON body:
+
+```json
+{
+  "event": "email.find.bulk.completed",
+  "timestamp": "2026-06-11T12:00:00.123456",
+  "data": {
+    "job_id": "8f14e45f-...",
+    "status": "completed",
+    "total": 100,
+    "found": 87,
+    "not_found": 13,
+    "amount_charged": 1.74,
+    "error": null
+  }
+}
+```
+
+`data` carries the job summary: counts of found / not-found items, the amount charged in USD, and `error` when `status` is `error`. Fetch the actual results from the bulk status endpoint using `job_id`.
+
+**Headers sent with every delivery:**
+
+| Header | Value |
+| --- | --- |
+| `Content-Type` | `application/json` |
+| `X-Webhook-Event` | The event type, same as `event` in the body |
+| `X-Webhook-Timestamp` | Delivery timestamp, same as `timestamp` in the body |
+| `X-Webhook-Signature` | Base64-encoded HMAC-SHA256 of the raw request body |
+
+## Verifying signatures
+
+Every webhook is signed with your webhook's `secret`. If you don't provide one at registration, a cryptographically strong secret is generated for you — it is returned by the create and get endpoints.
+
+The signature is `base64(HMAC_SHA256(secret, raw_body))`. Always compute it over the **raw request bytes**, before any JSON parsing, and compare in constant time:
+
+<CodeGroup>
+
+```python Python
+import base64
+import hashlib
+import hmac
+
+def verify(secret: str, raw_body: bytes, signature: str) -> bool:
+    digest = hmac.new(secret.encode("utf-8"), raw_body, hashlib.sha256).digest()
+    expected = base64.b64encode(digest).decode("utf-8")
+    return hmac.compare_digest(expected, signature)
+
+# in your handler:
+# verify(secret, request.body, request.headers["X-Webhook-Signature"])
+```
+
+```javascript Node.js
+const crypto = require("crypto");
+
+function verify(secret, rawBody, signature) {
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(rawBody)
+    .digest("base64");
+  return (
+    expected.length === signature.length &&
+    crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))
+  );
+}
+```
+
+</CodeGroup>
+
+<Warning>
+  Reject deliveries with a missing or invalid signature. The signature is your only guarantee the payload came from Generect.
+</Warning>
+
+## Retries and timeouts
+
+| Policy | Value |
+| --- | --- |
+| Response timeout | 30 seconds |
+| Success criteria | Any `2xx` response |
+| Your endpoint returns `4xx` | Delivery marked failed, **no retries** |
+| `5xx` / network error / timeout | Retried with exponential backoff |
+| Attempts | 5 total (1 initial + 4 retries) |
+| Backoff | 10s → 20s → 40s → 80s between attempts |
+
+<Tip>
+  Respond `2xx` immediately and process the payload asynchronously — a handler slower than 30 seconds counts as a failed attempt.
+</Tip>
+
+## Testing
+
+Send a test delivery to any registered webhook with [`POST /webhooks/{id}/test/`](/api-reference/endpoint/webhooks/test-webhook) — it fires a `webhook.test` event through the same delivery pipeline, signature included.

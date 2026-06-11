@@ -185,6 +185,7 @@
             "group": "Webhooks",
             "icon": "bell",
             "pages": [
+              "api-reference/endpoint/webhooks/overview",
               "api-reference/endpoint/webhooks/list-webhooks",
               "api-reference/endpoint/webhooks/create-webhook",
               "api-reference/endpoint/webhooks/get-webhook",
