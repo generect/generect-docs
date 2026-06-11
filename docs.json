@@ -25,6 +25,10 @@
   "navbar": {
     "links": [
       {
+        "label": "Status",
+        "href": "https://status.generect.com"
+      },
+      {
         "label": "Support",
         "href": "mailto:support@generect.com"
       }
