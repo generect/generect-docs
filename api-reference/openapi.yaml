@@ -3671,7 +3671,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/PreviewLeadsResponse'
               example:
                 data:
                   leads:
@@ -3792,7 +3792,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/PreviewCountResponse'
               example:
                 data:
                   count: 1240
@@ -3879,7 +3879,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/EnrichLeadResponse'
               example:
                 data:
                   id: lead_abc123xyz
@@ -3983,7 +3983,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/EnrichLeadResponse'
               example:
                 data:
                   id: lead_abc123xyz
@@ -4093,7 +4093,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
                   id: comp_xyz789
@@ -4197,7 +4197,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
                   id: comp_xyz789
@@ -4296,7 +4296,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/EmailFindResponse'
               examples:
                 Found:
                   value:
@@ -4412,7 +4412,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/BulkSubmitResponse'
               example:
                 data: null
                 meta:
@@ -4456,7 +4456,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/BulkStatusResponse'
               example:
                 data:
                   - lead_id: lead_abc123xyz
@@ -4520,7 +4520,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/EmailValidateResponse'
               example:
                 data:
                   results:
@@ -4548,7 +4548,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/AccountMeResponse'
               example:
                 data:
                   id: user_123
@@ -4612,7 +4612,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/AccountUsageResponse'
               example:
                 data:
                   period: '2024-01'
@@ -4652,7 +4652,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/AccountTransactionsResponse'
               example:
                 data:
                   transactions:
@@ -4704,7 +4704,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchLeadsResponse'
               example:
                 data:
                   leads:
@@ -4756,7 +4756,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCountResponse'
               example:
                 data:
                   results_count: 1240
@@ -4803,7 +4803,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCompaniesResponse'
               example:
                 data:
                   companies:
@@ -4854,7 +4854,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCountResponse'
               example:
                 data:
                   results_count: 530
@@ -4901,7 +4901,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCompanyLeadsResponse'
               example:
                 data:
                   leads:
@@ -4952,7 +4952,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/CompanyLeadsCountResponse'
               example:
                 data:
                   results_count: 320
@@ -5001,7 +5001,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchLeadsResponse'
               example:
                 data:
                   leads:
@@ -5053,7 +5053,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCountResponse'
               example:
                 data:
                   results_count: 1240
@@ -5100,7 +5100,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCompaniesResponse'
               example:
                 data:
                   companies:
@@ -5151,7 +5151,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCountResponse'
               example:
                 data:
                   results_count: 530
@@ -5198,7 +5198,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SearchCompanyLeadsResponse'
               example:
                 data:
                   leads:
@@ -5266,7 +5266,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/PhoneFindResponse'
               examples:
                 Found:
                   value:
@@ -5360,7 +5360,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/BulkSubmitResponse'
               example:
                 data: null
                 meta:
@@ -5404,7 +5404,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/BulkStatusResponse'
               example:
                 data:
                   - lead_id: lead_abc123xyz
@@ -5436,7 +5436,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/WebhookList'
     post:
       tags:
         - 11. Webhooks
@@ -5493,7 +5493,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Webhook'
   /webhooks/{id}/:
     parameters:
       - name: id
@@ -5519,7 +5519,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Webhook'
     put:
       tags:
         - 11. Webhooks
@@ -5572,7 +5572,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Webhook'
     patch:
       tags:
         - 11. Webhooks
@@ -5621,7 +5621,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Webhook'
     delete:
       tags:
         - 11. Webhooks
@@ -5661,7 +5661,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/WebhookTestResponse'
               example:
                 data:
                   delivery_id: whd_123
@@ -6024,6 +6024,384 @@ components:
           type: string
           description: Optional LinkedIn profile URL to improve match accuracy.
           example: https://linkedin.com/in/johndoe
+    Meta:
+      type: object
+      description: Operation metadata returned in every data/meta response.
+      required:
+        - amount_charged
+      properties:
+        amount_charged:
+          type: number
+          description: >-
+            Actual amount charged for this request in USD, computed from your
+            pricing tier. 0 for free operations and for not-found results
+            (No Data — No Charge).
+        status:
+          type: string
+          description: Set to "error" when the operation finished with an error.
+        error:
+          type: string
+          description: Error details; present only when the operation failed.
+        time_cached:
+          type: string
+          format: date-time
+          description: >-
+            When the cached result set was originally collected (returned by
+            database company search when results are served from a previous
+            identical search).
+    BulkJobMeta:
+      type: object
+      description: >-
+        Bulk job state. Poll the bulk status endpoint with job_id or subscribe
+        to the completion webhook.
+      required:
+        - job_id
+        - status
+        - total
+        - processed
+        - amount_charged
+      properties:
+        job_id:
+          type: string
+          description: Job identifier — pass it to the bulk status endpoint.
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - completed
+            - error
+        total:
+          type: integer
+          description: Number of submitted items.
+        processed:
+          type: integer
+          description: Items processed so far.
+        amount_charged:
+          type: number
+          description: USD charged for found results; final when status is completed.
+        error:
+          type: string
+          nullable: true
+          description: Failure reason when status is error.
+    SearchLeadsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Search results.
+          properties:
+            leads:
+              type: array
+              description: Lead profiles — see the example for the full field set.
+              items:
+                type: object
+            results_count:
+              type: integer
+              description: Total number of leads matching the query.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SearchCompaniesResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Search results.
+          properties:
+            companies:
+              type: array
+              description: Company profiles — see the example for the full field set.
+              items:
+                type: object
+            results_count:
+              type: integer
+              description: Total number of companies matching the query.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SearchCompanyLeadsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: >-
+            Search results. Either leads or companies is populated depending on
+            whether lead_search_criteria was provided.
+          properties:
+            companies:
+              type: array
+              items:
+                type: object
+            leads:
+              type: array
+              items:
+                type: object
+            companies_count:
+              type: integer
+            leads_count:
+              type: integer
+            results_count:
+              type: integer
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SearchCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            results_count:
+              type: integer
+              description: Number of records matching the filters.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CompanyLeadsCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            results_count:
+              type: integer
+            companies_count:
+              type: integer
+            leads_count:
+              type: integer
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PreviewLeadsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            leads:
+              type: array
+              description: Masked lead previews — see the example for the field set.
+              items:
+                type: object
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PreviewCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: integer
+              description: Number of preview leads matching the filters.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EnrichLeadResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Full lead profile — see the example for the field set.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EnrichCompanyResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Full company profile — see the example for the field set.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EmailFindResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: >-
+            Found email result (valid_email, catch_all and related fields) —
+            see the example.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EmailValidateResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: One validation result per submitted email — see the example.
+          items:
+            type: object
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PhoneFindResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            lead_id:
+              type: string
+              nullable: true
+              description: Resolved lead identifier, when the input matched a lead.
+            phone:
+              type: object
+              properties:
+                number:
+                  type: string
+                  nullable: true
+                  description: Phone number in E.164 format; null when not found.
+                status:
+                  type: string
+                  enum:
+                    - FOUND
+                    - NOT_FOUND
+                type:
+                  type: string
+                  description: Number type (mobile, fixed_line, voip, ...). Present when found.
+                country:
+                  type: string
+                  description: ISO country code. Present when found.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    BulkSubmitResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Always null — results arrive via the bulk status endpoint.
+        meta:
+          $ref: '#/components/schemas/BulkJobMeta'
+    BulkStatusResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          nullable: true
+          description: Result items once status is completed; null until then.
+          items:
+            type: object
+        meta:
+          $ref: '#/components/schemas/BulkJobMeta'
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Webhook identifier.
+        url:
+          type: string
+          description: Your HTTPS endpoint that receives events.
+        events:
+          type: array
+          items:
+            type: string
+          description: Subscribed event types.
+        secret:
+          type: string
+          description: Secret used for HMAC signature verification.
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    WebhookList:
+      type: array
+      description: Registered webhooks.
+      items:
+        $ref: '#/components/schemas/Webhook'
+    WebhookTestResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            delivery_id:
+              type: string
+              description: Identifier of the test delivery.
+            status:
+              type: string
+              description: Delivery status (pending until your endpoint responds).
+        meta:
+          type: object
+          properties:
+            event:
+              type: string
+              description: Always "webhook.test".
+
+    AccountMeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+            plan:
+              type: string
+            credits:
+              type: object
+              description: Credit balance summary.
+              properties:
+                balance:
+                  type: number
+                  description: Current credit balance.
+                used_this_month:
+                  type: number
+                monthly_limit:
+                  type: number
+            preview_tier:
+              type: boolean
+              description: Whether the account is eligible for the Preview endpoints.
+    AccountUsageResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            period:
+              type: string
+              description: Reporting period the stats cover.
+            total_credits:
+              type: number
+              description: Total credits consumed in the period.
+            breakdown:
+              type: object
+              description: Credits consumed per operation type.
+              additionalProperties:
+                type: number
+    AccountTransactionsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            transactions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  type:
+                    type: string
+                    description: Operation that produced the transaction.
+                  credits:
+                    type: number
+                    description: Credit delta (negative for charges).
+                  details:
+                    type: object
+                    properties:
+                      balance_type:
+                        type: string
+                      status:
+                        type: string
+
   responses:
     Unauthorized:
       description: Missing or invalid API token.
