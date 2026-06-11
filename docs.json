@@ -75,6 +75,7 @@
             "group": "API Reference",
             "pages": [
               "api-reference/introduction",
+              "api-reference/database-vs-realtime",
               "api-reference/limits"
             ]
           },
