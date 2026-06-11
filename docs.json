@@ -13,7 +13,6 @@
       "name": "Authorization"
     }
   },
-  "openapi": "api-reference/openapi.yaml",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#2d59c8",

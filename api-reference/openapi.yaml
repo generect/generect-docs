@@ -4668,7 +4668,7 @@ paths:
       tags:
         - 9. Search
       summary: Search database leads
-      description: Search cached leads. Database mode returns results in <1 sec. Billed per result returned.
+      description: Search cached leads. Database mode returns results in under 1 second. Billed per result returned.
       requestBody:
         required: true
         content:
@@ -4767,7 +4767,7 @@ paths:
       tags:
         - 9. Search
       summary: Search database companies
-      description: Search cached companies. Database mode returns results in <1 sec. Billed per result returned.
+      description: Search cached companies. Database mode returns results in under 1 second. Billed per result returned.
       requestBody:
         required: true
         content:
@@ -5840,12 +5840,12 @@ components:
               type: array
               items:
                 type: integer
-              description: 'Time in current position: 1 = <1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+              description: 'Time in current position: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
             years_in_company:
               type: array
               items:
                 type: integer
-              description: 'Time at current company: 1 = <1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+              description: 'Time at current company: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
             changed_jobs:
               type: boolean
               description: Filter for leads who recently changed jobs.
