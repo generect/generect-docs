@@ -4,7 +4,7 @@ sidebarTitle: 'Overview'
 description: 'Get notified when async jobs complete — delivery format, signature verification, retries'
 ---
 
-Webhooks notify your endpoint when an asynchronous job finishes, so you don't have to poll the bulk status endpoints.
+Webhooks let you register a callback URL once and receive a `POST` with the **full job results** the moment an asynchronous job finishes — no polling. The delivery is self-contained: everything the bulk status endpoint would return is in the payload.
 
 ## Events
 
@@ -28,12 +28,22 @@ Each delivery is an HTTP `POST` to your URL with a JSON body:
     "found": 87,
     "not_found": 13,
     "amount_charged": 1.74,
-    "error": null
+    "error": null,
+    "results": [
+      {
+        "lead_id": "lead_abc123xyz",
+        "email": { "address": "john.doe@acme.com", "status": "VALID" }
+      }
+    ]
   }
 }
 ```
 
-`data` carries the job summary: counts of found / not-found items, the amount charged in USD, and `error` when `status` is `error`. Fetch the actual results from the bulk status endpoint using `job_id`.
+`data` carries both the job **summary** — counts of found / not-found items, the amount charged in USD, and `error` when `status` is `error` — and the full **`results`** array. The `results` items are exactly what the matching bulk status endpoint ([email](/api-reference/endpoint/emails/get-email-finder-bulk) / [phone](/api-reference/endpoint/phone/get-phone-finder-bulk)) returns under its `data` key, so you never have to poll. The bulk status endpoint stays available if you ever need to re-fetch by `job_id` — results are retained for 24 hours.
+
+<Note>
+  `results` is included on both success and failure deliveries. When `status` is `error` it is an empty array and `error` describes what went wrong.
+</Note>
 
 **Headers sent with every delivery:**
 

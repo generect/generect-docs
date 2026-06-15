@@ -51,8 +51,8 @@ Finding emails one by one for 10K+ leads is too slow. Teams need async bulk proc
 
 1. Submit list of `lead_id` values or name+domain pairs to `POST /email/find/bulk/`
 2. Get `job_id`
-3. Poll `GET /email/find/bulk/{job_id}/` for status
-4. Download results when complete
+3. Either poll `GET /email/find/bulk/{job_id}/` for status, **or** [register a webhook](/api-reference/endpoint/webhooks/overview) once and we'll `POST` the full results to your callback URL when the job finishes — no polling
+4. Use the results when complete
 
 **Input data**
 
@@ -111,7 +111,7 @@ Finding phones one by one doesn't scale. Need async bulk processing for large li
 
 1. Submit lead list to `POST /phone/find/bulk/`
 2. Get `job_id`
-3. Poll for results via `GET /phone/find/bulk/{job_id}/`
+3. Either poll `GET /phone/find/bulk/{job_id}/`, **or** [register a webhook](/api-reference/endpoint/webhooks/overview) once and we'll `POST` the full results to your callback URL when the job finishes — no polling
 4. Pay only per found phone
 
 **Input data**
