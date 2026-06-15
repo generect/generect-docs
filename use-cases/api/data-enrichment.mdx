@@ -52,7 +52,7 @@ You received an inbound email or have a list of emails — but don't know who th
 1. Call `POST /enrich/realtime/lead/` with:
    ```json
    {
-     "email": "john@acme.com"
+     "email": "jordan.ellis@microsoft.com"
    }
    ```
 2. Get full profile: name, title, company, LinkedIn, work history
@@ -84,7 +84,7 @@ CRM records often have just a company name or domain. Teams need full company da
 
 **How it works**
 
-1. Pass company domain (e.g., `acme.com`) to `POST /enrich/database/company/`
+1. Pass company domain (e.g., `microsoft.com`) to `POST /enrich/database/company/`
 2. Get full profile: industry, headcount, location, LinkedIn URL, website
 3. Update CRM record automatically
 
@@ -118,7 +118,7 @@ You found the right lead via Preview or Search — now you need their email for 
 2. Call `POST /email/find/` with:
    ```json
    {
-     "lead_id": "lead_abc123xyz"
+     "lead_id": "ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9"
    }
    ```
 3. Get verified email with confidence score

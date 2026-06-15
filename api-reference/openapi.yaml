@@ -3626,7 +3626,7 @@ paths:
                 value:
                   company_search_criteria:
                     industries:
-                      - Software
+                      - Software Development
                     headcounts:
                       - 51-200
                     locations:
@@ -3636,9 +3636,9 @@ paths:
                       - CEO
                       - Founder
                     seniorities:
-                      - CXO
+                      - c_suite
                     locations:
-                      - San Francisco, CA
+                      - United States
                     limit_by: 25
       responses:
         '400':
@@ -3675,22 +3675,22 @@ paths:
               example:
                 data:
                   leads:
-                    - id: lead_abc123xyz
-                      first_name: John
-                      last_name: Doe
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
                       title: CEO
-                      company_name: Acme Tech
+                      company_name: Microsoft
                       location: San Francisco, CA
-                      industry: Software
+                      industry: Software Development
                       seniority: CXO
                       headcount_range: 51-200
-                    - id: lead_def456xyz
-                      first_name: Jane
-                      last_name: Smith
+                    - id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                      first_name: Morgan
+                      last_name: Lee
                       title: VP Sales
-                      company_name: Example Corp
+                      company_name: Salesforce
                       location: New York, NY
-                      industry: Software
+                      industry: Software Development
                       seniority: VP
                       headcount_range: 201-500
                 meta:
@@ -3753,14 +3753,14 @@ paths:
                 value:
                   company_search_criteria:
                     industries:
-                      - Software
+                      - Software Development
                     locations:
                       - United States
                   lead_search_criteria:
                     job_titles:
                       - CEO
                     locations:
-                      - San Francisco, CA
+                      - United States
       responses:
         '400':
           description: Validation error.
@@ -3818,7 +3818,7 @@ paths:
                     id:
                       type: string
                       description: Internal Generect lead identifier returned by Search or Preview.
-                      example: lead_abc123xyz
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -3830,7 +3830,7 @@ paths:
                         LinkedIn profile URL. Supported formats:
                         linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
                         linkedin.com/sales/lead/{id},NAME_SEARCH,...
-                      example: https://linkedin.com/in/johndoe
+                      example: https://www.linkedin.com/in/jordan-ellis
                 - title: By Email
                   type: object
                   required:
@@ -3839,17 +3839,17 @@ paths:
                     email:
                       type: string
                       description: Work email address for reverse lookup.
-                      example: john@acme.com
+                      example: jordan.ellis@microsoft.com
             examples:
               By Generect ID:
                 value:
-                  id: lead_abc123xyz
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
               By LinkedIn URL:
                 value:
-                  linkedin_url: https://linkedin.com/in/johndoe
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
               By email:
                 value:
-                  email: john@acme.com
+                  email: jordan.ellis@microsoft.com
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -3882,20 +3882,20 @@ paths:
                 $ref: '#/components/schemas/EnrichLeadResponse'
               example:
                 data:
-                  id: lead_abc123xyz
-                  first_name: John
-                  last_name: Doe
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  first_name: Jordan
+                  last_name: Ellis
                   title: CEO
-                  headline: CEO at Acme
-                  linkedin_url: https://linkedin.com/in/johndoe
+                  headline: CEO at Microsoft
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
                   location: San Francisco, CA
                   seniority: CXO
                   company:
-                    id: comp_def456
-                    name: Acme Technologies
-                    domain: acmetech.com
-                    linkedin_url: https://linkedin.com/company/acme
-                    industry: Software
+                    id: 1035
+                    name: Microsoft
+                    domain: microsoft.com
+                    linkedin_url: https://www.linkedin.com/company/microsoft/
+                    industry: Software Development
                     headcount: 150
                   work_history: []
                   education: []
@@ -3922,7 +3922,7 @@ paths:
                     id:
                       type: string
                       description: Internal Generect lead identifier returned by Search or Preview.
-                      example: lead_abc123xyz
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -3934,7 +3934,7 @@ paths:
                         LinkedIn profile URL. Supported formats:
                         linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
                         linkedin.com/sales/lead/{id},NAME_SEARCH,...
-                      example: https://linkedin.com/in/johndoe
+                      example: https://www.linkedin.com/in/jordan-ellis
                 - title: By Email
                   type: object
                   required:
@@ -3943,17 +3943,17 @@ paths:
                     email:
                       type: string
                       description: Work email address for reverse lookup.
-                      example: john@acme.com
+                      example: jordan.ellis@microsoft.com
             examples:
               By Generect ID:
                 value:
-                  id: lead_abc123xyz
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
               By LinkedIn URL:
                 value:
-                  linkedin_url: https://linkedin.com/in/johndoe
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
               By email (reverse lookup):
                 value:
-                  email: john@acme.com
+                  email: jordan.ellis@microsoft.com
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -3986,15 +3986,15 @@ paths:
                 $ref: '#/components/schemas/EnrichLeadResponse'
               example:
                 data:
-                  id: lead_abc123xyz
-                  first_name: John
-                  last_name: Doe
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  first_name: Jordan
+                  last_name: Ellis
                   title: CEO
-                  linkedin_url: https://linkedin.com/in/johndoe
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
                   company:
-                    id: comp_def456
-                    name: Acme Technologies
-                    domain: acmetech.com
+                    id: 1035
+                    name: Microsoft
+                    domain: microsoft.com
                   work_history: []
                   education: []
                   skills: []
@@ -4020,7 +4020,7 @@ paths:
                     id:
                       type: string
                       description: Internal Generect company identifier returned by Search.
-                      example: comp_xyz789
+                      example: 1035
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4032,7 +4032,7 @@ paths:
                         LinkedIn company page URL. Supported formats:
                         linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
                         linkedin.com/sales/company/{id}.
-                      example: https://linkedin.com/company/acme
+                      example: https://www.linkedin.com/company/microsoft/
                 - title: By Domain
                   type: object
                   required:
@@ -4040,8 +4040,8 @@ paths:
                   properties:
                     domain:
                       type: string
-                      description: Company website domain without protocol (e.g. acme.com).
-                      example: acme.com
+                      description: Company website domain without protocol (e.g. microsoft.com).
+                      example: microsoft.com
                 - title: By Company Name
                   type: object
                   required:
@@ -4050,20 +4050,20 @@ paths:
                     name:
                       type: string
                       description: Company name for fuzzy matching.
-                      example: Acme Technologies
+                      example: Microsoft
             examples:
               By Generect ID:
                 value:
-                  id: comp_xyz789
+                  id: 1035
               By LinkedIn URL:
                 value:
-                  linkedin_url: https://linkedin.com/company/acme
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
               By domain:
                 value:
-                  domain: acme.com
+                  domain: microsoft.com
               By company name:
                 value:
-                  name: Acme Technologies
+                  name: Microsoft
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4096,11 +4096,11 @@ paths:
                 $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
-                  id: comp_xyz789
-                  name: Acme Technologies
-                  domain: acme.com
-                  linkedin_url: https://linkedin.com/company/acme
-                  industry: Software
+                  id: 1035
+                  name: Microsoft
+                  domain: microsoft.com
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+                  industry: Software Development
                   headcount: 150
                 meta:
                   amount_charged: 0.02
@@ -4124,7 +4124,7 @@ paths:
                     id:
                       type: string
                       description: Internal Generect company identifier returned by Search.
-                      example: comp_xyz789
+                      example: 1035
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4136,7 +4136,7 @@ paths:
                         LinkedIn company page URL. Supported formats:
                         linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
                         linkedin.com/sales/company/{id}.
-                      example: https://linkedin.com/company/acme
+                      example: https://www.linkedin.com/company/microsoft/
                 - title: By Domain
                   type: object
                   required:
@@ -4144,8 +4144,8 @@ paths:
                   properties:
                     domain:
                       type: string
-                      description: Company website domain without protocol (e.g. acme.com).
-                      example: acme.com
+                      description: Company website domain without protocol (e.g. microsoft.com).
+                      example: microsoft.com
                 - title: By Company Name
                   type: object
                   required:
@@ -4154,20 +4154,20 @@ paths:
                     name:
                       type: string
                       description: Company name for fuzzy matching.
-                      example: Acme Technologies
+                      example: Microsoft
             examples:
               By Generect ID:
                 value:
-                  id: comp_xyz789
+                  id: 1035
               By LinkedIn URL:
                 value:
-                  linkedin_url: https://linkedin.com/company/acme
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
               By domain:
                 value:
-                  domain: acme.com
+                  domain: microsoft.com
               By company name:
                 value:
-                  name: Acme Technologies
+                  name: Microsoft
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4200,11 +4200,11 @@ paths:
                 $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
-                  id: comp_xyz789
-                  name: Acme Technologies
-                  domain: acme.com
-                  linkedin_url: https://linkedin.com/company/acme
-                  industry: Software
+                  id: 1035
+                  name: Microsoft
+                  domain: microsoft.com
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+                  industry: Software Development
                   headcount: 150
                 meta:
                   amount_charged: 0.04
@@ -4228,7 +4228,7 @@ paths:
                     lead_id:
                       type: string
                       description: Generect lead identifier from Search, Preview, or Enrich.
-                      example: lead_abc123xyz
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4237,7 +4237,7 @@ paths:
                     linkedin_url:
                       type: string
                       description: Lead's LinkedIn profile URL.
-                      example: https://linkedin.com/in/johndoe
+                      example: https://www.linkedin.com/in/jordan-ellis
                 - title: By Name and Domain
                   type: object
                   required:
@@ -4256,19 +4256,19 @@ paths:
                     domain:
                       type: string
                       description: Company domain used to generate the email pattern.
-                      example: acme.com
+                      example: microsoft.com
             examples:
               By Lead ID:
                 value:
-                  lead_id: lead_abc123xyz
+                  lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
               By LinkedIn URL:
                 value:
-                  linkedin_url: https://linkedin.com/in/johndoe
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
               By name and domain:
                 value:
-                  first_name: John
-                  last_name: Doe
-                  domain: acme.com
+                  first_name: Jordan
+                  last_name: Ellis
+                  domain: microsoft.com
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4301,9 +4301,9 @@ paths:
                 Found:
                   value:
                     data:
-                      lead_id: lead_abc123xyz
+                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       email:
-                        address: john.doe@acme.com
+                        address: jordan.ellis@microsoft.com
                         status: VALID
                         confidence: 0.95
                         type: work
@@ -4317,7 +4317,7 @@ paths:
                 Not found:
                   value:
                     data:
-                      lead_id: lead_abc123xyz
+                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       email:
                         address: null
                         status: NOT_FOUND
@@ -4352,7 +4352,7 @@ paths:
                         properties:
                           lead_id:
                             type: string
-                            example: lead_abc123xyz
+                            example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       - title: By LinkedIn URL
                         type: object
                         required:
@@ -4360,7 +4360,7 @@ paths:
                         properties:
                           linkedin_url:
                             type: string
-                            example: https://linkedin.com/in/johndoe
+                            example: https://www.linkedin.com/in/jordan-ellis
                       - title: By Name and Domain
                         type: object
                         required:
@@ -4381,10 +4381,10 @@ paths:
               Bulk email find:
                 value:
                   leads:
-                    - lead_id: lead_abc123xyz
-                    - first_name: Jane
-                      last_name: Smith
-                      domain: corp.io
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - first_name: Morgan
+                      last_name: Lee
+                      domain: salesforce.com
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4416,7 +4416,7 @@ paths:
               example:
                 data: null
                 meta:
-                  job_id: job_123
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: pending
                   total: 2
                   processed: 0
@@ -4434,7 +4434,7 @@ paths:
           required: true
           schema:
             type: string
-          example: job_123
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
       responses:
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -4459,12 +4459,12 @@ paths:
                 $ref: '#/components/schemas/BulkStatusResponse'
               example:
                 data:
-                  - lead_id: lead_abc123xyz
+                  - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                     email:
-                      address: john.doe@acme.com
+                      address: jordan.ellis@microsoft.com
                       status: VALID
                 meta:
-                  job_id: job_123
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
                   total: 2
                   processed: 2
@@ -4491,8 +4491,8 @@ paths:
                     type: string
               example:
                 emails:
-                  - john@acme.com
-                  - jane@corp.io
+                  - jordan.ellis@microsoft.com
+                  - morgan.lee@salesforce.com
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4524,7 +4524,7 @@ paths:
               example:
                 data:
                   results:
-                    - email: john@acme.com
+                    - email: jordan.ellis@microsoft.com
                       status: VALID
                       is_deliverable: true
                       is_catch_all: false
@@ -4551,9 +4551,9 @@ paths:
                 $ref: '#/components/schemas/AccountMeResponse'
               example:
                 data:
-                  id: user_123
-                  email: user@company.com
-                  name: John Doe
+                  id: a1b2c3d4-e5f6-4789-a0b1-c2d3e4f5a6b7
+                  email: jordan.ellis@microsoft.com
+                  name: Jordan Ellis
                   plan: Pro
                   credits:
                     balance: 5000
@@ -4588,20 +4588,20 @@ paths:
           required: false
           schema:
             type: string
-          example: '2024-01-01'
+          example: '2026-05-01'
         - name: end_date
           in: query
           required: false
           schema:
             type: string
-          example: '2024-01-31'
+          example: '2026-05-31'
         - name: period_month
           in: query
           required: false
           description: Month label for the response (YYYY-MM).
           schema:
             type: string
-          example: '2024-01'
+          example: '2026-05'
       responses:
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -4615,7 +4615,7 @@ paths:
                 $ref: '#/components/schemas/AccountUsageResponse'
               example:
                 data:
-                  period: '2024-01'
+                  period: '2026-05'
                   total_credits: 1234
                   breakdown:
                     search_database: 500
@@ -4656,8 +4656,8 @@ paths:
               example:
                 data:
                   transactions:
-                    - id: txn_123
-                      timestamp: '2024-01-15T10:30:00Z'
+                    - id: f0e1d2c3-b4a5-4697-8c9d-0e1f2a3b4c5d
+                      timestamp: '2026-05-15T10:30:00Z'
                       type: search_database_leads
                       credits: -25
                       details:
@@ -4708,9 +4708,9 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: lead_abc123xyz
-                      first_name: John
-                      last_name: Doe
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
                       title: CEO
                   results_count: 1240
                 meta:
@@ -4905,9 +4905,9 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: lead_abc123xyz
-                      first_name: John
-                      last_name: Doe
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
                   results_count: 320
                 meta:
                   amount_charged: 6.4
@@ -5005,9 +5005,9 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: lead_abc123xyz
-                      first_name: John
-                      last_name: Doe
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
                       title: CEO
                   results_count: 1240
                 meta:
@@ -5202,9 +5202,9 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: lead_abc123xyz
-                      first_name: John
-                      last_name: Doe
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
                   results_count: 320
                 meta:
                   amount_charged: 12.8
@@ -5228,7 +5228,7 @@ paths:
                     lead_id:
                       type: string
                       description: Generect lead identifier from Search, Preview, or Enrich.
-                      example: lead_abc123xyz
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -5237,7 +5237,7 @@ paths:
                     linkedin_url:
                       type: string
                       description: LinkedIn profile URL.
-                      example: https://linkedin.com/in/johndoe
+                      example: https://www.linkedin.com/in/jordan-ellis
                 - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
         '400':
@@ -5271,7 +5271,7 @@ paths:
                 Found:
                   value:
                     data:
-                      lead_id: lead_abc123xyz
+                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       phone:
                         number: '+14155550123'
                         status: FOUND
@@ -5282,7 +5282,7 @@ paths:
                 Not found:
                   value:
                     data:
-                      lead_id: lead_abc123xyz
+                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       phone:
                         number: null
                         status: NOT_FOUND
@@ -5323,16 +5323,16 @@ paths:
                         properties:
                           linkedin_url:
                             type: string
-                            example: https://linkedin.com/in/johndoe
+                            example: https://www.linkedin.com/in/jordan-ellis
                       - $ref: '#/components/schemas/PhoneFindByNameRequest'
             examples:
               Bulk phone find:
                 value:
                   leads:
-                    - lead_id: lead_abc123xyz
-                    - first_name: John
-                      last_name: Doe
-                      company: acme.com
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - first_name: Jordan
+                      last_name: Ellis
+                      company: microsoft.com
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -5364,7 +5364,7 @@ paths:
               example:
                 data: null
                 meta:
-                  job_id: job_123
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: pending
                   total: 2
                   processed: 0
@@ -5382,7 +5382,7 @@ paths:
           required: true
           schema:
             type: string
-          example: job_123
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
       responses:
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -5407,14 +5407,14 @@ paths:
                 $ref: '#/components/schemas/BulkStatusResponse'
               example:
                 data:
-                  - lead_id: lead_abc123xyz
+                  - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                     phone:
                       number: '+14155550123'
                       status: FOUND
                       type: mobile
                       country: US
                 meta:
-                  job_id: job_123
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
                   total: 2
                   processed: 2
@@ -5661,7 +5661,7 @@ paths:
                 $ref: '#/components/schemas/WebhookTestResponse'
               example:
                 data:
-                  delivery_id: whd_123
+                  delivery_id: d4e5f6a7-8b9c-40d1-a2e3-f4a5b6c7d8e9
                   status: pending
                 meta:
                   event: webhook.test
@@ -5735,7 +5735,7 @@ components:
           items:
             type: string
           description: >-
-            Size of the lead's current employer, as employee-count ranges; a lead is included if their company falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+".
+            Size of the lead's current employer, as employee-count ranges; a lead is included if their company falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".
         exclude_company_headcounts:
           type: array
           items:
@@ -5795,13 +5795,14 @@ components:
           - CEO
           - Founder
         seniorities:
-          - CXO
+          - c_suite
         locations:
-          - San Francisco, CA
+          - United States
         company_industries:
-          - Software
+          - Software Development
         company_headcounts:
           - 51-200
+        without_company: true
         limit_by: 50
     RealtimeLeadSearchRequest:
       allOf:
@@ -5876,7 +5877,7 @@ components:
           items:
             type: string
           description: >-
-            Company size, as employee-count ranges; a company is included if it falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+".
+            Company size, as employee-count ranges; a company is included if it falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".
         locations:
           type: array
           items:
@@ -5937,7 +5938,7 @@ components:
           description: Fields to apply strict matching on (e.g. "company_locations").
       example:
         industries:
-          - Software
+          - Software Development
         headcounts:
           - 51-200
         locations:
@@ -5990,6 +5991,21 @@ components:
           $ref: '#/components/schemas/CompanySearchRequest'
         lead_search_criteria:
           $ref: '#/components/schemas/LeadSearchRequest'
+      example:
+        company_search_criteria:
+          industries:
+            - Software Development
+          headcounts:
+            - 51-200
+          locations:
+            - United States
+        lead_search_criteria:
+          job_titles:
+            - CEO
+          seniorities:
+            - c_suite
+          locations:
+            - United States
     RealtimeCompanyLeadSearchRequest:
       type: object
       properties:
@@ -5997,6 +6013,21 @@ components:
           $ref: '#/components/schemas/RealtimeCompanySearchRequest'
         lead_search_criteria:
           $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+      example:
+        company_search_criteria:
+          industries:
+            - Software Development
+          headcounts:
+            - 51-200
+          locations:
+            - United States
+        lead_search_criteria:
+          job_titles:
+            - CEO
+          seniorities:
+            - c_suite
+          locations:
+            - United States
     PhoneFindByNameRequest:
       title: By Name and Company
       type: object
@@ -6016,11 +6047,11 @@ components:
         company:
           type: string
           description: Company name or domain where the lead works.
-          example: acme.com
+          example: microsoft.com
         linkedin_url:
           type: string
           description: Optional LinkedIn profile URL to improve match accuracy.
-          example: https://linkedin.com/in/johndoe
+          example: https://www.linkedin.com/in/jordan-ellis
     Meta:
       type: object
       description: Operation metadata returned in every data/meta response.
