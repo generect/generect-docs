@@ -5755,10 +5755,6 @@ components:
         company_id:
           type: integer
           description: LinkedIn company numeric ID (mutually exclusive with company_name and company_link).
-        without_company:
-          type: boolean
-          description: Search by lead criteria only, without targeting a specific company.
-          default: false
         personas:
           type: array
           description: 'List of persona tuples. Each persona: [name, functions, seniorities, prohibits, priority?].'
@@ -5802,7 +5798,6 @@ components:
           - Software Development
         company_headcounts:
           - 51-200
-        without_company: true
         limit_by: 50
     RealtimeLeadSearchRequest:
       allOf:
