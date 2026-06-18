@@ -1,0 +1,59 @@
+---
+title: 'Migration Guide'
+icon: 'right-left'
+description: 'Moving from Apollo, Hunter, or ZoomInfo to the Generect API'
+---
+
+Already integrated with another data provider? Most concepts map directly onto Generect endpoints. Start here, then open the matching endpoint reference for request and response details.
+
+## Before you map endpoints
+
+A few things work differently on Generect — knowing them up front makes the mapping obvious:
+
+- **Authentication** uses an `Authorization: Token <your_token>` header (the `Token` prefix is required). See [Authentication](/api-reference/authentication).
+- **Pricing is pay-as-you-go credits**, not seats or monthly contact caps. You are billed per returned result, and [no data is never charged](/billing/pay-as-you-go).
+- **Every search and enrich endpoint has two modes** — `database` (cached, sub-second, cheaper) and `realtime` (live lookup, freshest, costs more). You choose per call by swapping `database` ↔ `realtime` in the path. See [Database vs Real-time](/api-reference/database-vs-realtime).
+- **Counts are free in database mode** and billable in real-time mode — size an audience with a free count before paying for results.
+
+## From Apollo
+
+| Apollo | Generect |
+| --- | --- |
+| People Search (`mixed_people/search`) | [`POST /search/{database\|realtime}/leads/`](/api-reference/endpoint/search/database-leads) |
+| People Enrichment / Bulk Match (`people/match`) | [`POST /enrich/{database\|realtime}/lead/`](/api-reference/endpoint/enrich/enrich-database-lead) |
+| Organization Search | [`POST /search/{database\|realtime}/companies/`](/api-reference/endpoint/search/database-companies) |
+| Organization Enrichment (`organizations/enrich`) | [`POST /enrich/{database\|realtime}/company/`](/api-reference/endpoint/enrich/enrich-database-company) |
+| Email reveal (bundled into enrichment) | [`POST /email/find/`](/api-reference/endpoint/emails/email-finder) |
+
+## From Hunter
+
+| Hunter | Generect |
+| --- | --- |
+| Email Finder | [`POST /email/find/`](/api-reference/endpoint/emails/email-finder) |
+| Bulk Email Finder | [`POST /email/find/bulk/`](/api-reference/endpoint/emails/email-finder-bulk) |
+| Email Verifier | [`POST /email/validate/`](/api-reference/endpoint/emails/email-validation) |
+| Domain Search (people at a company) | [`POST /search/{database\|realtime}/company-leads/`](/api-reference/endpoint/search/database-company-leads), then `POST /email/find/` |
+| Company / Person Enrichment | [`POST /enrich/{database\|realtime}/company/`](/api-reference/endpoint/enrich/enrich-database-company) · [`/lead/`](/api-reference/endpoint/enrich/enrich-database-lead) |
+
+## From ZoomInfo
+
+| ZoomInfo | Generect |
+| --- | --- |
+| Contact Search | [`POST /search/{database\|realtime}/leads/`](/api-reference/endpoint/search/database-leads) |
+| Contact Enrich | [`POST /enrich/{database\|realtime}/lead/`](/api-reference/endpoint/enrich/enrich-database-lead) |
+| Company Search | [`POST /search/{database\|realtime}/companies/`](/api-reference/endpoint/search/database-companies) |
+| Company Enrich | [`POST /enrich/{database\|realtime}/company/`](/api-reference/endpoint/enrich/enrich-database-company) |
+| Phone append | [`POST /phone/find/`](/api-reference/endpoint/phone/phone-finder) |
+
+<Tip>
+  Records carry a stable `id` across Preview, Search, and Enrich. Find leads with a cheap [Preview](/api-reference/endpoint/preview/preview-leads) or database search, then pass the `id` into Enrich or Email Finder instead of re-sending name and company.
+</Tip>
+
+## A typical migration path
+
+1. Swap your auth to the `Authorization: Token` header.
+2. Replace your search call with `database` mode first — it's the cheapest, fastest equivalent — and only move specific calls to `realtime` when you need live freshness or [advanced filters](/api-reference/database-vs-realtime).
+3. Replace enrichment and email/phone lookups with the endpoints above, and remove any "charged on no-match" handling — Generect doesn't bill empty results.
+4. Read [Limits](/api-reference/limits) and [Errors](/api-reference/errors) before going to production.
+
+Need a mapping for a provider not listed here? Contact [support@generect.com](mailto:support@generect.com).
