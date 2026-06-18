@@ -1,0 +1,59 @@
+---
+title: 'Errors'
+icon: 'triangle-exclamation'
+description: 'HTTP status codes, error response format, and how to handle failures'
+---
+
+Every error response uses the same JSON envelope, so you can handle failures with one code path.
+
+## Error response format
+
+```json
+{
+  "status": "error",
+  "status_code": 400,
+  "detail": "Human-readable description of what went wrong"
+}
+```
+
+- `status` — always `"error"` for a failed request.
+- `status_code` — mirrors the HTTP status code.
+- `detail` — a message string, or, for validation failures, an object keyed by the invalid field.
+
+A validation error looks like this:
+
+```json
+{
+  "status": "error",
+  "status_code": 400,
+  "detail": { "company_id": "exactly one of company_id, company_link, company_name is required" }
+}
+```
+
+## Status codes
+
+| Code | Meaning | When it happens |
+| --- | --- | --- |
+| `400` | Bad Request | Missing or invalid parameters, an unsupported filter for the chosen mode, a malformed LinkedIn URL, or a lookup that matched no record. |
+| `401` | Unauthorized | Missing `Authorization` header or an invalid token. See [Authentication](/api-reference/authentication). |
+| `402` | Payment Required | Not enough balance to run the operation (`"Insufficient funds in the account."`). Top up in your [billing settings](https://beta.generect.com/settings/billing). |
+| `403` | Forbidden | Your account or API key is not entitled to this endpoint. |
+| `404` | Not Found | The requested resource does not exist — for example, a lead that can't be found by the provided email. |
+| `429` | Too Many Requests | You exceeded a per-operation [rate or parallel-request limit](/api-reference/limits). Back off and retry. |
+| `500` | Server Error | Something failed on our side. Safe to retry with backoff; if it persists, contact [support](mailto:support@generect.com). |
+
+## No data is never billed
+
+A "not found" result — an enrichment, email, or phone lookup that returns no match — is **not charged**. Any credits reserved for the call are released automatically, so treat a not-found response as a normal, free outcome rather than a billing event. See [Pay-as-you-go](/billing/pay-as-you-go).
+
+## Handling retries
+
+`429` and `5xx` responses are transient. Retry them with **exponential backoff** (for example 1s, 2s, 4s, 8s) instead of retrying immediately in a tight loop.
+
+<Tip>
+  Real-time operations can legitimately take up to a minute. Set client timeouts to match the [recommended timeouts](/api-reference/limits) before treating a slow response as a failure.
+</Tip>
+
+<Info>
+  A `4xx` response (other than `429`) means the request itself needs to change — fix the input and resend; retrying the same request unchanged will return the same error.
+</Info>
