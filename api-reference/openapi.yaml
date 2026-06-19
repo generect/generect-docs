@@ -4620,25 +4620,17 @@ paths:
                   value:
                     data:
                       lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                      email:
-                        address: jordan.ellis@microsoft.com
-                        status: VALID
-                        confidence: 0.95
-                        type: work
-                        pattern: first.last
-                        verification:
-                          mx_valid: true
-                          smtp_check: true
-                          is_catch_all: false
+                      valid_email: jordan.ellis@microsoft.com
+                      result: valid
+                      catch_all: false
+                      source: generect
                     meta:
                       amount_charged: 0.02
                 Not found:
                   value:
                     data:
                       lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                      email:
-                        address: null
-                        status: NOT_FOUND
+                      valid_email: null
                     meta:
                       amount_charged: 0
   /email/find/bulk/:
@@ -4779,9 +4771,12 @@ paths:
               example:
                 data:
                   - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                    email:
-                      address: jordan.ellis@microsoft.com
-                      status: VALID
+                    valid_email: jordan.ellis@microsoft.com
+                    result: valid
+                    catch_all: false
+                    source: generect
+                  - lead_id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                    valid_email: null
                 meta:
                   job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
@@ -6655,9 +6650,30 @@ components:
       properties:
         data:
           type: object
-          description: >-
-            Found email result (valid_email, catch_all and related fields) —
-            see the example.
+          description: The email finder result. valid_email is null when no email is found.
+          properties:
+            lead_id:
+              type: string
+              description: Echoed back when the request was made by lead_id.
+            valid_email:
+              type: string
+              nullable: true
+              description: The found verified email, or null if none was found.
+            result:
+              type: string
+              description: 'Outcome: valid, invalid, or unknown.'
+            catch_all:
+              type: boolean
+              description: True if the domain is catch-all.
+            source:
+              type: string
+              description: Where the email was resolved (e.g. generect, findymail, FORMAT).
+            email_format:
+              type: string
+              description: Detected address pattern for the domain.
+            mx_domain:
+              type: string
+              description: Mail exchanger domain.
         meta:
           $ref: '#/components/schemas/Meta'
     EmailValidateResponse:
