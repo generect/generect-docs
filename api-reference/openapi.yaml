@@ -4619,7 +4619,6 @@ paths:
                 Found:
                   value:
                     data:
-                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       valid_email: jordan.ellis@microsoft.com
                       result: valid
                       catch_all: false
@@ -4629,7 +4628,6 @@ paths:
                 Not found:
                   value:
                     data:
-                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       valid_email: null
                     meta:
                       amount_charged: 0
@@ -4775,8 +4773,7 @@ paths:
                     result: valid
                     catch_all: false
                     source: generect
-                  - lead_id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
-                    valid_email: null
+                  - valid_email: null
                 meta:
                   job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
