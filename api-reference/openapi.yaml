@@ -4523,15 +4523,18 @@ paths:
                 $ref: '#/components/schemas/EmailValidateResponse'
               example:
                 data:
-                  results:
-                    - email: jordan.ellis@microsoft.com
-                      status: VALID
-                      is_deliverable: true
-                      is_catch_all: false
-                      is_disposable: false
-                      risk_score: 0.1
+                  - email: jordan.ellis@microsoft.com
+                    result: valid
+                    exist: "yes"
+                    catch_all: false
+                    error: null
+                  - email: morgan.lee@salesforce.com
+                    result: valid
+                    exist: "yes"
+                    catch_all: false
+                    error: null
                 meta:
-                  amount_charged: 0.005
+                  amount_charged: 0.01
   /accounts/me/:
     get:
       tags:
@@ -6246,9 +6249,26 @@ components:
       properties:
         data:
           type: array
-          description: One validation result per submitted email — see the example.
+          description: One validation result per submitted email, in input order.
           items:
             type: object
+            properties:
+              email:
+                type: string
+                description: The validated email address.
+              result:
+                type: string
+                description: 'Validation outcome: valid, invalid, catch_all, or unknown.'
+              exist:
+                type: string
+                description: Whether the mailbox exists (e.g. "yes", "no").
+              catch_all:
+                type: boolean
+                description: True if the domain accepts mail for any address (catch-all).
+              error:
+                type: string
+                nullable: true
+                description: Reason the address could not be validated; null on success.
         meta:
           $ref: '#/components/schemas/Meta'
     PhoneFindResponse:
