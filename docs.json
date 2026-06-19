@@ -102,7 +102,10 @@
                 "icon": "building",
                 "pages": [
                   "api-reference/endpoint/enrich/enrich-realtime-company",
-                  "api-reference/endpoint/enrich/enrich-database-company"
+                  "api-reference/endpoint/enrich/enrich-database-company",
+                  "api-reference/endpoint/enrich/enrich-realtime-companies-bulk",
+                  "api-reference/endpoint/enrich/enrich-database-companies-bulk",
+                  "api-reference/endpoint/enrich/get-companies-bulk"
                 ]
               },
               {
@@ -110,7 +113,10 @@
                 "icon": "user",
                 "pages": [
                   "api-reference/endpoint/enrich/enrich-realtime-lead",
-                  "api-reference/endpoint/enrich/enrich-database-lead"
+                  "api-reference/endpoint/enrich/enrich-database-lead",
+                  "api-reference/endpoint/enrich/enrich-realtime-leads-bulk",
+                  "api-reference/endpoint/enrich/enrich-database-leads-bulk",
+                  "api-reference/endpoint/enrich/get-leads-bulk"
                 ]
               }
             ]

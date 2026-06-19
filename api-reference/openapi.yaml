@@ -4208,6 +4208,315 @@ paths:
                   headcount: 150
                 meta:
                   amount_charged: 0.04
+  /enrich/database/leads/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk lead enrich (database)
+      description: Start an asynchronous bulk lead enrich job from cached data. Billed per enriched lead; if a lead is not found, no credit is charged. Max 50 leads per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/realtime/leads/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk lead enrich (realtime)
+      description: Start an asynchronous bulk lead enrich job with live data. Billed per enriched lead; if a lead is not found, no credit is charged. Max 50 leads per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/leads/bulk/{job_id}/:
+    get:
+      tags:
+        - 6. Enrich
+      summary: Get bulk lead enrich job
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
+        '200':
+          description: Bulk job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkStatusResponse'
+              example:
+                data:
+                  - input:
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                    lead:
+                      id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
+                      title: VP of Marketing
+                      company:
+                        name: Microsoft
+                        domain: microsoft.com
+                  - input:
+                      id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                    lead: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: completed
+                  total: 2
+                  processed: 2
+                  amount_charged: 0.04
+                  error: null
+  /enrich/database/companies/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk company enrich (database)
+      description: Start an asynchronous bulk company enrich job from cached data. Billed per enriched company; if a company is not found, no credit is charged. Max 50 companies per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/realtime/companies/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk company enrich (realtime)
+      description: Start an asynchronous bulk company enrich job with live data. Billed per enriched company; if a company is not found, no credit is charged. Max 50 companies per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/companies/bulk/{job_id}/:
+    get:
+      tags:
+        - 6. Enrich
+      summary: Get bulk company enrich job
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
+        '200':
+          description: Bulk job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkStatusResponse'
+              example:
+                data:
+                  - input:
+                      domain: microsoft.com
+                    company:
+                      id: "1035"
+                      name: Microsoft
+                      domain: microsoft.com
+                      industry: Software Development
+                  - input:
+                      linkedin_url: https://www.linkedin.com/company/microsoft/
+                    company:
+                      id: "1035"
+                      name: Microsoft
+                      domain: microsoft.com
+                      industry: Software Development
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: completed
+                  total: 2
+                  processed: 2
+                  amount_charged: 0.04
+                  error: null
   /email/find/:
     post:
       tags:
@@ -4340,8 +4649,9 @@ paths:
               properties:
                 leads:
                   type: array
+                  maxItems: 50
                   description: >-
-                    Leads to find emails for. Each entry is one of: {lead_id},
+                    Leads to find emails for (max 50 per request). Each entry is one of: {lead_id},
                     {linkedin_url}, or {first_name, last_name, domain}.
                   items:
                     oneOf:
@@ -5308,7 +5618,8 @@ paths:
               properties:
                 leads:
                   type: array
-                  description: List of leads to find phones for. Each entry is either a lead_id, linkedin_url, or name+company.
+                  maxItems: 50
+                  description: List of leads to find phones for (max 50 per request). Each entry is either a lead_id, linkedin_url, or name+company.
                   items:
                     oneOf:
                       - title: By Lead ID
@@ -5467,6 +5778,8 @@ paths:
                     enum:
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
+                      - enrich.lead.bulk.completed
+                      - enrich.company.bulk.completed
                   example:
                     - email.find.bulk.completed
                 secret:
@@ -5485,7 +5798,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -5547,6 +5860,8 @@ paths:
                     enum:
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
+                      - enrich.lead.bulk.completed
+                      - enrich.company.bulk.completed
                 secret:
                   type: string
       responses:
@@ -5561,7 +5876,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -5595,6 +5910,8 @@ paths:
                     enum:
                       - email.find.bulk.completed
                       - phone.find.bulk.completed
+                      - enrich.lead.bulk.completed
+                      - enrich.company.bulk.completed
                 secret:
                   type: string
       responses:
@@ -5609,7 +5926,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -5670,6 +5987,96 @@ paths:
                   event: webhook.test
 components:
   schemas:
+    LeadBulkEnrichRequest:
+      type: object
+      required:
+        - leads
+      properties:
+        leads:
+          type: array
+          maxItems: 50
+          description: >-
+            Leads to enrich (max 50 per request). Each entry provides exactly
+            one identifier: id, linkedin_url, or email.
+          items:
+            oneOf:
+              - title: By Lead ID
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+              - title: By LinkedIn URL
+                type: object
+                required:
+                  - linkedin_url
+                properties:
+                  linkedin_url:
+                    type: string
+                    example: https://www.linkedin.com/in/jordan-ellis
+              - title: By Email
+                type: object
+                required:
+                  - email
+                properties:
+                  email:
+                    type: string
+                    example: jordan.ellis@microsoft.com
+      example:
+        leads:
+          - linkedin_url: https://www.linkedin.com/in/jordan-ellis
+          - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+    CompanyBulkEnrichRequest:
+      type: object
+      required:
+        - companies
+      properties:
+        companies:
+          type: array
+          maxItems: 50
+          description: >-
+            Companies to enrich (max 50 per request). Each entry provides
+            exactly one identifier: id, domain, linkedin_url, or name.
+          items:
+            oneOf:
+              - title: By LinkedIn URL
+                type: object
+                required:
+                  - linkedin_url
+                properties:
+                  linkedin_url:
+                    type: string
+                    example: https://www.linkedin.com/company/microsoft/
+              - title: By Domain
+                type: object
+                required:
+                  - domain
+                properties:
+                  domain:
+                    type: string
+                    example: microsoft.com
+              - title: By Company ID
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    example: "1035"
+              - title: By Name
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    example: Microsoft
+      example:
+        companies:
+          - domain: microsoft.com
+          - linkedin_url: https://www.linkedin.com/company/microsoft/
     Error:
       type: object
       description: Standard error envelope returned for 4xx/5xx responses.
