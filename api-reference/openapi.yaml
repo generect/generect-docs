@@ -4348,10 +4348,21 @@ paths:
                       id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
                       first_name: Jordan
                       last_name: Ellis
-                      title: VP of Marketing
+                      title: CEO
+                      headline: CEO at Microsoft
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                      location: San Francisco, CA
+                      seniority: CXO
                       company:
+                        id: 1035
                         name: Microsoft
                         domain: microsoft.com
+                        linkedin_url: https://www.linkedin.com/company/microsoft/
+                        industry: Software Development
+                        headcount: 150
+                      work_history: []
+                      education: []
+                      skills: []
                   - input:
                       id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
                     lead: null
@@ -4499,17 +4510,15 @@ paths:
                   - input:
                       domain: microsoft.com
                     company:
-                      id: "1035"
+                      id: 1035
                       name: Microsoft
                       domain: microsoft.com
-                      industry: Software Development
-                  - input:
                       linkedin_url: https://www.linkedin.com/company/microsoft/
-                    company:
-                      id: "1035"
-                      name: Microsoft
-                      domain: microsoft.com
                       industry: Software Development
+                      headcount: 150
+                  - input:
+                      id: "999999999"
+                    company: null
                 meta:
                   job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
