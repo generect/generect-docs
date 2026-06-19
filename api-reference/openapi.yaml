@@ -5728,6 +5728,10 @@ paths:
                       status: FOUND
                       type: mobile
                       country: US
+                  - lead_id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                    phone:
+                      number: null
+                      status: NOT_FOUND
                 meta:
                   job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
