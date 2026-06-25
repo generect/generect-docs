@@ -4341,28 +4341,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/BulkStatusResponse'
               example:
+                # Each item echoes its input verbatim (preserving order) and the
+                # enriched lead, or lead: null when nothing was found. The lead
+                # object is the same shape a database lead search returns
+                # (languages/certifications/educations appear only on the
+                # matching plan).
                 data:
                   - input:
                       linkedin_url: https://www.linkedin.com/in/jordan-ellis
                     lead:
                       id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
                       first_name: Jordan
                       last_name: Ellis
-                      title: CEO
+                      full_name: Jordan Ellis
                       headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      company_name: Microsoft
+                      company_industry: Software Development
+                      linkedin_company_id: '1035'
                       linkedin_url: https://www.linkedin.com/in/jordan-ellis
-                      location: San Francisco, CA
-                      seniority: CXO
-                      company:
-                        id: 1035
-                        name: Microsoft
-                        domain: microsoft.com
-                        linkedin_url: https://www.linkedin.com/company/microsoft/
-                        industry: Software Development
-                        headcount: 150
-                      work_history: []
-                      education: []
-                      skills: []
+                      location: San Francisco, California, United States
+                      location_country: United States
+                      gender: male
+                      is_premium: true
+                      jobs:
+                        - company_name: Microsoft
+                          job_title: Chief Executive Officer
+                          job_started_on: '2014-02-01'
+                          job_still_working: true
+                      educations: []
+                      languages: []
+                      source: lead_by_link
                   - input:
                       id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
                     lead: null
@@ -4371,6 +4381,8 @@ paths:
                   status: completed
                   total: 2
                   processed: 2
+                  found: 1
+                  not_found: 1
                   amount_charged: 0.04
                   error: null
   /enrich/database/companies/bulk/:
@@ -4506,16 +4518,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/BulkStatusResponse'
               example:
+                # Each item echoes its input verbatim (preserving order) and the
+                # enriched company, or company: null when nothing was found. The
+                # company object is the same shape a database company search
+                # returns (headcount_exact appears only on the matching plan).
                 data:
                   - input:
                       domain: microsoft.com
                     company:
-                      id: 1035
+                      id: '1035'
                       name: Microsoft
                       domain: microsoft.com
-                      linkedin_url: https://www.linkedin.com/company/microsoft/
+                      website: https://www.microsoft.com
+                      linkedin_id: '1035'
+                      linkedin_link: https://www.linkedin.com/company/microsoft/
                       industry: Software Development
-                      headcount: 150
+                      headcount_range: '10 000+'
+                      headcount_exact: 228000
+                      company_type: Public Company
+                      founded_year: 1975
+                      location: Redmond, Washington, United States
+                      hq_country: United States
+                      hq_city: Redmond
                   - input:
                       id: "999999999"
                     company: null
@@ -4524,6 +4548,8 @@ paths:
                   status: completed
                   total: 2
                   processed: 2
+                  found: 1
+                  not_found: 1
                   amount_charged: 0.04
                   error: null
   /email/find/:
@@ -6515,6 +6541,12 @@ components:
         processed:
           type: integer
           description: Items processed so far.
+        found:
+          type: integer
+          description: Items that resolved to a result (present on status/webhook once completed).
+        not_found:
+          type: integer
+          description: Items with no result — not charged (No Data, No Charge).
         amount_charged:
           type: number
           description: USD charged for found results; final when status is completed.
