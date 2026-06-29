@@ -26,4 +26,14 @@ You can request data depending on your data plan and account balance (default: `
 
 - [Lead enrichment](/api-reference/endpoint/enrich/enrich-realtime-lead): 100 seconds
 
+## Which endpoints are rate-limited
+
+The parallel-request limits above apply to **search** and **enrich** endpoints. **Email Finder, Email Validation, Phone Finder, Preview, bulk jobs, count endpoints, and account/webhook endpoints have no parallel-request cap** — they are bounded only by your balance and, for bulk jobs, the [50-item limit per request](/use-cases/api/bulk-processing).
+
+Limits are enforced per **API token + source IP**, per operation type. Exceeding one returns HTTP `429` — see [Errors](/api-reference/errors) — so retry with **exponential backoff**.
+
+## Capacity limits on live data
+
+Real-time single-lead enrichment and real-time search can also return `429` during exceptionally high live-source load — a temporary capacity guard, separate from the parallel limits above. Handle it the same way: back off and retry.
+
 <Info>Limits apply per operation type and cover both database and realtime modes. They can be increased upon request.</Info>
