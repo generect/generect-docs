@@ -16,7 +16,7 @@
     "light": "/logo/light.svg"
   },
   "api": {
-    "baseUrl": "https://api.generect.com/api/v1/",
+    "baseUrl": "https://api.generect.com",
     "auth": {
       "method": "key",
       "name": "Authorization"
