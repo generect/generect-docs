@@ -1,0 +1,72 @@
+---
+title: 'Pricing'
+icon: 'tags'
+description: 'What each API operation costs, and how billing is calculated'
+---
+
+Your account balance is held in **US dollars**. Every billable result deducts a small dollar amount from that balance. Throughout the docs you may see the word *credit* — read it as **one billable result**, priced in USD as shown below.
+
+## Standard prices
+
+These are the **starting** per-result prices (before any volume discount — see [Spend & Save tiers](/billing/managing-billing)). Your effective price only goes **down** as your lifetime spend grows; your current rate is always shown in your [billing settings](https://beta.generect.com/settings/billing).
+
+| Operation | Endpoints | Price (USD) | Billed |
+| --- | --- | --- | --- |
+| Real-time search & enrich | `POST /search/realtime/*`, `POST /enrich/realtime/*` | **$0.02** | per returned result |
+| Database (cached) search & enrich | `POST /search/database/*`, `POST /enrich/database/*` | **$0.0067** | per returned result |
+| Email Finder | `POST /email/find/` (+ `/bulk/`) | **$0.02** | per **valid** email found |
+| Email Validation | `POST /email/validate/` | **$0.005** | per email checked |
+| Preview | `POST /preview/leads/` | **$0.002** | per returned result |
+| Phone Finder | `POST /phone/find/` (+ `/bulk/`) | **$0.40** | per **found** phone |
+
+<Info>Prices above are the Tier 0 (standard) rate. The more you spend over the lifetime of your account, the higher your discount tier and the lower every price becomes — automatically. See [Spend & Save tiers](/billing/managing-billing).</Info>
+
+## How a charge is calculated
+
+```
+amount charged (USD) = billable results × operation price × your tier multiplier
+```
+
+Every API response reports exactly what it cost in `meta.amount_charged` (USD), so you never have to guess after the fact.
+
+```json
+{
+  "data": [ ... ],
+  "meta": { "amount_charged": 0.0402 }
+}
+```
+
+## What's free
+
+- **Database (cached) count** endpoints (`POST /search/database/*/count/`) — a cached count, no charge.
+- **Account, status, and webhook** endpoints.
+- **Not-found results** on enrich, phone, and email find (see below).
+
+<Warning>**Real-time count** endpoints (`POST /search/realtime/*/count/`) are **not** free — each costs $0.02, because they hit live sources. Use the free database count to size an audience before paying.</Warning>
+
+## No Data, No Charge — exactly where it applies
+
+You are not billed for results we don't return:
+
+| Operation | If nothing is found |
+| --- | --- |
+| Enrich lead / company | **Not charged** — the reserved amount is refunded automatically |
+| Search (database or real-time) | Billed **per returned row** — zero rows costs $0 |
+| Email Finder | Charged **only for valid emails found** |
+| Phone Finder | Charged **only for phones found** |
+| Email Validation | Charged **per email checked** — a verdict (valid, risky, catch-all, invalid) is the result you paid for |
+| Real-time count | Flat $0.02 per request (even if the count is 0) |
+
+<Note>Email Validation is the one case where every submitted address is billed: validation *is* the deliverable, so each checked email costs $0.005 regardless of its verdict.</Note>
+
+## Worked example
+
+You enrich 100 leads in real time; 92 are found, 8 are not.
+
+- 92 × $0.02 = **$1.84** charged
+- 8 not-found → **$0.00** (refunded)
+- `meta.amount_charged` returns `1.84`
+
+## Keeping a positive balance
+
+API usage requires a positive balance. If it reaches $0, requests stop until you top up. Enable [Auto Top-Up](/billing/managing-billing) so production traffic never halts. New accounts start with free credit to try the API — your current balance is shown in your [billing settings](https://beta.generect.com/settings/billing).
