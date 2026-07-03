@@ -3,7 +3,13 @@
   "theme": "mint",
   "name": "Generect",
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "download-spec"]
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "download-spec"
+    ]
   },
   "logo": {
     "dark": "/logo/dark.svg",
@@ -217,6 +223,7 @@
             "group": "Billing & Pricing",
             "pages": [
               "billing/pay-as-you-go",
+              "billing/pricing",
               "billing/managing-billing",
               "billing/usage-history",
               "billing/faq"
