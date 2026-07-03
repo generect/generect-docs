@@ -1,26 +1,25 @@
 ---
 title: 'Cached Databases'
-description: 'Understanding pre-generated datasets for faster, cheaper searches'
+description: 'How Generect''s own database powers instant, cheaper searches'
 ---
 
 ## What it is
 
-Cached Databases are pre-generated datasets created based on popular or frequently repeated search patterns from our users. These datasets are refreshed automatically, which allows you to receive results instantly and at a lower cost compared to running a live search.
+The cached database is Generect's own continuously growing dataset of lead and company profiles, accumulated and refreshed by the live searches running across the platform. Searching it returns results instantly and at a lower cost than a live search, because no new data collection happens at request time.
 
 ## When to use it
 
 - when you need a large list of contacts or companies quickly, without waiting
-- when your query is standard and doesn't require unique or complex filters
-- when you want to reduce costs, as cached datasets are cheaper than Live Search
+- when your query uses standard filters (titles, seniority, location, industry, headcount)
+- when you want to reduce costs — database results are cheaper than Live Search
+- lead records in the database are kept no older than 12 months — fine for most list-building
 
-**How it works**
+## How it works
 
-
-- When you run an ICP search, Generect first checks whether relevant cached data already exists.
-- If cached data is available, it is returned immediately. This is faster and more cost-efficient because the dataset was generated earlier.
-- If the returned data is not sufficient or you need fresher results (for example, updated today rather than a week ago), you can run Live Search, which generates up-to-date results in real time for an additional cost.
-- If no cached data exists for the ICP you specified, the system automatically switches to Live Search and fetches new real-time results.
+- You choose the mode explicitly: in the API these are the `database` endpoints, while `realtime` endpoints run a live search ([full comparison](/api-reference/database-vs-realtime)).
+- A database search only returns what is already in the dataset. If nothing matches, you get 0 results and pay nothing — it never silently switches to a live search.
+- Need fresher data or deeper filters? Run the same request against the realtime endpoint — it collects up-to-the-moment results for a higher price.
 
 <Tip>
-  Cached databases are perfect for large-scale workflows where data freshness is less critical than speed and cost efficiency
+  Cached databases are perfect for large-scale workflows where data freshness is less critical than speed and cost efficiency.
 </Tip>

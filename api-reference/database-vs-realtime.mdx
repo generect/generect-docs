@@ -1,0 +1,52 @@
+---
+title: 'Database vs Real-time'
+icon: 'scale-balanced'
+description: 'Two search modes, one API — how to pick the right one'
+---
+
+Every search and enrich operation comes in two modes that share the same request and response shape — switch between them by swapping `database` ↔ `realtime` in the path:
+
+```
+POST /search/database/leads/      POST /search/realtime/leads/
+POST /enrich/database/company/    POST /enrich/realtime/company/
+```
+
+## Decision matrix
+
+| | **Database** | **Real-time** |
+| --- | --- | --- |
+| Data source | Generect's continuously growing database | Live LinkedIn lookup at request time |
+| Response time | Under 1 second | 5–60 seconds |
+| Price | Lower | Higher |
+| Lead freshness | Updated within the last 12 months | As of the moment of the request |
+| Filters | Core set (see below) | Full set — keywords, past companies, schools, groups, live signals |
+| Count endpoints | Free, instant | Billable, per request |
+| Nothing found | 0 results, $0 — **no hidden live fallback** | No Data — No Charge |
+
+<Tip>
+  Start with database mode: it answers instantly and costs less. Switch the same request to realtime when you need data fresh as of today or filters database mode doesn't support.
+</Tip>
+
+## When to use which
+
+**Use database when:**
+- you process volume and care about cost and speed (list building, scoring, backfills)
+- last-year freshness is acceptable for your workflow
+- you want free counts to size an audience before paying for results
+
+**Use real-time when:**
+- the record must be current right now (job changes, new role verification)
+- you need advanced targeting: `keywords`, `past_company_names`, `schools`, `groups`, `functions`
+- you need live signals (`changed_jobs`, `posted_on_linkedin`, `mentioned_in_news`) or `search_emails`
+
+## Filters supported in database mode
+
+**Leads:** `job_titles`, `seniorities`, `locations`, `exclude_locations`, `company_locations`, `exclude_company_locations`, `company_industries`, `exclude_company_industries`, `company_headcounts`, `exclude_company_headcounts`, `company_types` — plus targeting a single company via `company_id`, `company_link`, or `company_name`.
+
+**Companies:** `industries`, `exclude_industries`, `headcounts`, `locations`, `exclude_locations`, `company_types`.
+
+Anything outside this set is rejected with `400` and a message pointing to the realtime endpoint, so a filter is never silently ignored. At least one search filter is always required.
+
+## Billing
+
+Both modes charge per returned result at their own rate — real-time costs more than database. If nothing is found, nothing is charged. Exact prices for your account are in your [billing settings](https://beta.generect.com/settings/billing).

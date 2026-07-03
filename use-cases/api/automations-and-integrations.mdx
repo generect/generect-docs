@@ -19,8 +19,8 @@ Generect API becomes a data layer for AI agents — agent pulls leads, scores th
 **How it works**
 
 1. Agent triggers on new lead signal (form fill, signup, etc.)
-2. Calls /preview/leads to check ICP match
-3. Calls /email/find for qualified leads only
+2. Calls `POST /preview/leads/` to check ICP match
+3. Calls `POST /email/find/` for qualified leads only
 4. Pushes enriched contact to CRM via their API
 5. Notifies sales team in Slack
 
@@ -50,10 +50,10 @@ Agent calls Preview to get a broad list, applies its own logic (scoring, dedupli
 
 **How it works**
 
-1. Agent sends broad ICP to POST /preview/leads
+1. Agent sends broad ICP to `POST /preview/leads/`
 2. Gets 100+ masked leads for free
 3. Agent scores leads by title \+ seniority \+ industry match
-4. Enriches only top 10-20 via /enrich/database/lead
+4. Enriches only top 10-20 via `POST /enrich/database/lead/`
 
 **Input data**
 
@@ -82,14 +82,14 @@ Connect Generect to your automation platform via API. New signup triggers enrich
 **How it works**
 
 1. Trigger: new signup in your product
-2. Make/n8n calls `POST /enrich/database/lead` with email
+2. Make/n8n calls `POST /enrich/database/lead/` with email
 3. Gets full profile: title, company, seniority, industry
 4. Updates CRM record automatically
 5. Routes to right sales rep based on company size
 
 **Input data**
 
-Email or name \+ company from signup form
+Email from signup form
 
 **Outcome**
 
@@ -113,8 +113,8 @@ Build a pipeline: Generect API pulls targeted leads → validates emails → exp
 
 **How it works**
 
-1. Call `/search/database/leads` with ICP
-2. Bulk validate emails via `/email/validate`
+1. Call `POST /search/database/leads/` with ICP
+2. Bulk validate emails via `POST /email/validate/`
 3. Filter valid contacts
 4. Push to outreach platform via their API
 5. Launch campaign
@@ -141,21 +141,52 @@ Existing CRM contacts lack phone numbers. CS teams need direct lines for renewal
 
 **What Generect enables**
 
-Use existing lead\_id or name+company from CRM to find phone numbers. Only pay for successful lookups.
+Use existing `lead_id` or name + company from CRM to find phone numbers. Only pay for successful lookups.
 
 **How it works**
 
 1. Export contacts from CRM
-2. For each, call /phone/find with available identifiers
+2. For each contact, call `POST /phone/find/` with available identifiers
 3. Update CRM with found numbers
-4. Zero cost for contacts where phone wasn't found
+4. Zero cost for contacts where phone was not found
 
 **Input data**
 
-lead\_id, or first\_name \+ last\_name \+ company
+`lead_id`, or `first_name` + `last_name` + company
 
 **Outcome**
 
 - Enriched CRM with direct phone numbers
 - Better reach rates for CS calls
 - Cost-effective — no payment for missing data
+
+### 6\. Get notified when async jobs complete (Webhooks API)
+
+**Who it's for**
+
+Data ops teams, SaaS platforms, automation builders, and backend teams running bulk jobs.
+
+**Problem**
+
+Polling every bulk job wastes requests and adds delay. Teams need their systems to react as soon as a bulk job finishes.
+
+**What Generect enables**
+
+Register a webhook endpoint and receive async notifications when bulk email, bulk phone, or enrich jobs complete.
+
+**How it works**
+
+1. Register your endpoint with `POST /webhooks/`
+2. Subscribe to events such as `email.find.bulk.completed` or `phone.find.bulk.completed`
+3. Verify incoming requests with the webhook signature
+4. Process completed job results in your system
+
+**Input data**
+
+Webhook URL, event list, and signing secret
+
+**Outcome**
+
+- No polling loops for async jobs
+- Faster downstream automations
+- Secure delivery with request signatures

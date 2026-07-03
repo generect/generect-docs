@@ -4,24 +4,26 @@ info:
   description: |-
     Welcome to the Generect API documentation. Here we will help you integrate and use our API.
 
-    API base url: `api.generect.com`  
+    API base url: `https://api.generect.com/api/v1/`
     Protocol: `HTTPS`
 
     # Authentication
 
-    Firstly, add a `API Token` to the enviroment variables `auth_token` in `Settings` tab.
+    Get your API token from the Generect app settings and send it in the `Authorization` header with the required `Token` prefix.
+
+    Example: `Authorization: Token xxxxxxxxx`
 
     # Rate limits
 
-    Credits: You can request data depending on your data plan and credit balance. The default is 10000/month. The estimated number of credits to spend is based on the complexity of the query and the number of results. The amount spent can be increased by additional data flags in the queries.
+    You can request data depending on your data plan and account balance (default: 10000/month). Pricing depends on the operation and the number of results returned, and may increase with additional data flags. For exact pricing, see each endpoint's Pricing section or your billing settings: https://beta.generect.com/settings/billing
 
     # Note
 
-    _Ensure that you are add a "/" to the end of url._
+    _Every endpoint must include the trailing `/`. Requests without the trailing slash may fail._
   version: 1.0.0
   contact: {}
 servers:
-  - url: https://api.generect.com
+  - url: https://api.generect.com/api/v1
 paths:
   /api/auth/token/login/:
     post:
@@ -1294,6 +1296,7 @@ paths:
                     status_code: 401
   /api/linkedin/leads/by_icp/:
     post:
+      deprecated: true
       tags:
         - 3. Leads
       summary: Get List of Leads by ICP
@@ -2068,6 +2071,7 @@ paths:
                     status: No leads match with input criteria
   /api/linkedin/leads/by_icp/get_count/:
     post:
+      deprecated: true
       tags:
         - 3. Leads
       summary: Count leads by ICP
@@ -2589,6 +2593,7 @@ paths:
         - apiKey: []
   /api/linkedin/companies/by_icp/:
     post:
+      deprecated: true
       tags:
         - 4. Companies
       summary: Get List of Companies by ICP
@@ -3300,6 +3305,7 @@ paths:
         - apiKey: []
   /api/linkedin/companies/by_icp/get_count/:
     post:
+      deprecated: true
       tags:
         - 4. Companies
       summary: Count companies by ICP
@@ -3550,13 +3556,3407 @@ paths:
                   logs:
                     - get mx_record: pphosted.com
                     - check outlook,gmail,onedrive,o365,o365_get_creds
+  /preview/leads/:
+    post:
+      tags:
+        - 5. Preview
+      summary: Preview leads
+      description: Search database leads with masked response data. Preview results include an internal lead ID for later enrichment and do not include LinkedIn URL, company domain, email, or phone.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_search_criteria:
+                  type: object
+                  description: Company filters (same as /search/database/companies/).
+                  properties:
+                    industries:
+                      type: array
+                      items:
+                        type: string
+                    headcounts:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                    company_types:
+                      type: array
+                      items:
+                        type: string
+                lead_search_criteria:
+                  type: object
+                  description: Lead filters (same as /search/database/leads/).
+                  properties:
+                    job_titles:
+                      type: array
+                      items:
+                        type: string
+                    seniorities:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                    company_industries:
+                      type: array
+                      items:
+                        type: string
+                    company_headcounts:
+                      type: array
+                      items:
+                        type: string
+                    personas:
+                      type: array
+                      items:
+                        type: array
+                    limit_by:
+                      type: integer
+                    offset_by:
+                      type: integer
+            examples:
+              Preview leads:
+                value:
+                  company_search_criteria:
+                    industries:
+                      - Software Development
+                    headcounts:
+                      - 51-200
+                    locations:
+                      - United States
+                  lead_search_criteria:
+                    job_titles:
+                      - CEO
+                      - Founder
+                    seniorities:
+                      - c_suite
+                    locations:
+                      - United States
+                    limit_by: 25
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Account is not enabled for the Preview endpoint.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: You are not authorized to use this endpoint.
+        '200':
+          description: Masked lead preview results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewLeadsResponse'
+              example:
+                data:
+                  leads:
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
+                      title: CEO
+                      company_name: Microsoft
+                      location: San Francisco, CA
+                      industry: Software Development
+                      seniority: CXO
+                      headcount_range: 51-200
+                    - id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                      first_name: Morgan
+                      last_name: Lee
+                      title: VP Sales
+                      company_name: Salesforce
+                      location: New York, NY
+                      industry: Software Development
+                      seniority: VP
+                      headcount_range: 201-500
+                meta:
+                  amount_charged: 0
+  /preview/leads/count/:
+    post:
+      tags:
+        - 5. Preview
+      summary: Count preview leads
+      description: Count matching database leads for Preview. Count requests are always free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_search_criteria:
+                  type: object
+                  description: Company filters (same as Preview leads).
+                  properties:
+                    industries:
+                      type: array
+                      items:
+                        type: string
+                    headcounts:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                lead_search_criteria:
+                  type: object
+                  description: Lead filters (same as Preview leads).
+                  properties:
+                    job_titles:
+                      type: array
+                      items:
+                        type: string
+                    seniorities:
+                      type: array
+                      items:
+                        type: string
+                    locations:
+                      type: array
+                      items:
+                        type: string
+                    company_industries:
+                      type: array
+                      items:
+                        type: string
+                    company_headcounts:
+                      type: array
+                      items:
+                        type: string
+            examples:
+              Count preview leads:
+                value:
+                  company_search_criteria:
+                    industries:
+                      - Software Development
+                    locations:
+                      - United States
+                  lead_search_criteria:
+                    job_titles:
+                      - CEO
+                    locations:
+                      - United States
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Account is not enabled for the Preview endpoint.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: You are not authorized to use this endpoint.
+        '200':
+          description: Matching lead count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewCountResponse'
+              example:
+                data:
+                  count: 1240
+                meta:
+                  amount_charged: 0
+  /enrich/database/lead/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Enrich lead from database
+      description: Retrieve a full lead profile from cached data. Provide exactly one identifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: By Generect ID
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: Internal Generect lead identifier returned by Search or Preview.
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: >
+                        LinkedIn profile URL. Supported formats:
+                        linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
+                        linkedin.com/sales/lead/{id},NAME_SEARCH,...
+                      example: https://www.linkedin.com/in/jordan-ellis
+                - title: By Email
+                  type: object
+                  required:
+                    - email
+                  properties:
+                    email:
+                      type: string
+                      description: Work email address for reverse lookup.
+                      example: jordan.ellis@microsoft.com
+            examples:
+              By Generect ID:
+                value:
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+              By email:
+                value:
+                  email: jordan.ellis@microsoft.com
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, linkedin_url, email is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full lead profile. If no data is found, the request is free.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichLeadResponse'
+              example:
+                data:
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  first_name: Jordan
+                  last_name: Ellis
+                  title: CEO
+                  headline: CEO at Microsoft
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                  location: San Francisco, CA
+                  seniority: CXO
+                  company:
+                    id: 1035
+                    name: Microsoft
+                    domain: microsoft.com
+                    linkedin_url: https://www.linkedin.com/company/microsoft/
+                    industry: Software Development
+                    headcount: 150
+                  work_history: []
+                  education: []
+                  skills: []
+                meta:
+                  amount_charged: 0.02
+  /enrich/realtime/lead/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Enrich lead in realtime
+      description: Retrieve a fresh lead profile. Supports internal ID, LinkedIn URL, or email reverse lookup. If no data is found, the request is free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: By Generect ID
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: Internal Generect lead identifier returned by Search or Preview.
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: >
+                        LinkedIn profile URL. Supported formats:
+                        linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
+                        linkedin.com/sales/lead/{id},NAME_SEARCH,...
+                      example: https://www.linkedin.com/in/jordan-ellis
+                - title: By Email
+                  type: object
+                  required:
+                    - email
+                  properties:
+                    email:
+                      type: string
+                      description: Work email address for reverse lookup.
+                      example: jordan.ellis@microsoft.com
+            examples:
+              By Generect ID:
+                value:
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+              By email (reverse lookup):
+                value:
+                  email: jordan.ellis@microsoft.com
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, linkedin_url, email is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Fresh full lead profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichLeadResponse'
+              example:
+                data:
+                  id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  first_name: Jordan
+                  last_name: Ellis
+                  title: CEO
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                  company:
+                    id: 1035
+                    name: Microsoft
+                    domain: microsoft.com
+                  work_history: []
+                  education: []
+                  skills: []
+                meta:
+                  amount_charged: 0.04
+  /enrich/database/company/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Enrich company from database
+      description: Retrieve a company profile from cached data. Provide exactly one identifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: By Generect ID
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: Internal Generect company identifier returned by Search.
+                      example: 1035
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: >
+                        LinkedIn company page URL. Supported formats:
+                        linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
+                        linkedin.com/sales/company/{id}.
+                      example: https://www.linkedin.com/company/microsoft/
+                - title: By Domain
+                  type: object
+                  required:
+                    - domain
+                  properties:
+                    domain:
+                      type: string
+                      description: Company website domain without protocol (e.g. microsoft.com).
+                      example: microsoft.com
+                - title: By Company Name
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      description: Company name for fuzzy matching.
+                      example: Microsoft
+            examples:
+              By Generect ID:
+                value:
+                  id: 1035
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+              By domain:
+                value:
+                  domain: microsoft.com
+              By company name:
+                value:
+                  name: Microsoft
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full company profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichCompanyResponse'
+              example:
+                data:
+                  id: 1035
+                  name: Microsoft
+                  domain: microsoft.com
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+                  industry: Software Development
+                  headcount: 150
+                meta:
+                  amount_charged: 0.02
+  /enrich/realtime/company/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Enrich company in realtime
+      description: Retrieve a fresh company profile. Provide exactly one identifier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: By Generect ID
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: Internal Generect company identifier returned by Search.
+                      example: 1035
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: >
+                        LinkedIn company page URL. Supported formats:
+                        linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
+                        linkedin.com/sales/company/{id}.
+                      example: https://www.linkedin.com/company/microsoft/
+                - title: By Domain
+                  type: object
+                  required:
+                    - domain
+                  properties:
+                    domain:
+                      type: string
+                      description: Company website domain without protocol (e.g. microsoft.com).
+                      example: microsoft.com
+                - title: By Company Name
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      description: Company name for fuzzy matching.
+                      example: Microsoft
+            examples:
+              By Generect ID:
+                value:
+                  id: 1035
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+              By domain:
+                value:
+                  domain: microsoft.com
+              By company name:
+                value:
+                  name: Microsoft
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Fresh full company profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichCompanyResponse'
+              example:
+                data:
+                  id: 1035
+                  name: Microsoft
+                  domain: microsoft.com
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+                  industry: Software Development
+                  headcount: 150
+                meta:
+                  amount_charged: 0.04
+  /enrich/database/leads/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk lead enrich (database)
+      description: Start an asynchronous bulk lead enrich job from cached data. Billed per enriched lead; if a lead is not found, no credit is charged. Max 50 leads per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/realtime/leads/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk lead enrich (realtime)
+      description: Start an asynchronous bulk lead enrich job with live data. Billed per enriched lead; if a lead is not found, no credit is charged. Max 50 leads per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/leads/bulk/{job_id}/:
+    get:
+      tags:
+        - 6. Enrich
+      summary: Get bulk lead enrich job
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
+        '200':
+          description: Bulk job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkStatusResponse'
+              example:
+                # Each item echoes its input verbatim (preserving order) and the
+                # enriched lead, or lead: null when nothing was found. The lead
+                # object is the same shape a database lead search returns
+                # (languages/certifications/educations appear only on the
+                # matching plan).
+                data:
+                  - input:
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                    lead:
+                      id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      first_name: Jordan
+                      last_name: Ellis
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      company_name: Microsoft
+                      company_industry: Software Development
+                      linkedin_company_id: '1035'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                      location: San Francisco, California, United States
+                      location_country: United States
+                      gender: male
+                      is_premium: true
+                      jobs:
+                        - company_name: Microsoft
+                          job_title: Chief Executive Officer
+                          job_started_on: '2014-02-01'
+                          job_still_working: true
+                      educations: []
+                      languages: []
+                      source: lead_by_link
+                  - input:
+                      id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                    lead: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: completed
+                  total: 2
+                  processed: 2
+                  found: 1
+                  not_found: 1
+                  amount_charged: 0.04
+                  error: null
+  /enrich/database/companies/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk company enrich (database)
+      description: Start an asynchronous bulk company enrich job from cached data. Billed per enriched company; if a company is not found, no credit is charged. Max 50 companies per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/realtime/companies/bulk/:
+    post:
+      tags:
+        - 6. Enrich
+      summary: Start bulk company enrich (realtime)
+      description: Start an asynchronous bulk company enrich job with live data. Billed per enriched company; if a company is not found, no credit is charged. Max 50 companies per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyBulkEnrichRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /enrich/companies/bulk/{job_id}/:
+    get:
+      tags:
+        - 6. Enrich
+      summary: Get bulk company enrich job
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
+        '200':
+          description: Bulk job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkStatusResponse'
+              example:
+                # Each item echoes its input verbatim (preserving order) and the
+                # enriched company, or company: null when nothing was found. The
+                # company object is the same shape a database company search
+                # returns (headcount_exact appears only on the matching plan).
+                data:
+                  - input:
+                      domain: microsoft.com
+                    company:
+                      id: '1035'
+                      name: Microsoft
+                      domain: microsoft.com
+                      website: https://www.microsoft.com
+                      linkedin_id: '1035'
+                      linkedin_link: https://www.linkedin.com/company/microsoft/
+                      industry: Software Development
+                      headcount_range: '10 000+'
+                      headcount_exact: 228000
+                      company_type: Public Company
+                      founded_year: 1975
+                      location: Redmond, Washington, United States
+                      hq_country: United States
+                      hq_city: Redmond
+                  - input:
+                      id: "999999999"
+                    company: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: completed
+                  total: 2
+                  processed: 2
+                  found: 1
+                  not_found: 1
+                  amount_charged: 0.04
+                  error: null
+  /email/find/:
+    post:
+      tags:
+        - 7. Email
+      summary: Find email
+      description: Find a verified work email by lead ID, LinkedIn URL, or by name and domain. Billed only when a valid email is found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: By Lead ID
+                  type: object
+                  required:
+                    - lead_id
+                  properties:
+                    lead_id:
+                      type: string
+                      description: Generect lead identifier from Search, Preview, or Enrich.
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: Lead's LinkedIn profile URL.
+                      example: https://www.linkedin.com/in/jordan-ellis
+                - title: By Name and Domain
+                  type: object
+                  required:
+                    - first_name
+                    - last_name
+                    - domain
+                  properties:
+                    first_name:
+                      type: string
+                      description: Lead's first name.
+                      example: John
+                    last_name:
+                      type: string
+                      description: Lead's last name.
+                      example: Doe
+                    domain:
+                      type: string
+                      description: Company domain used to generate the email pattern.
+                      example: microsoft.com
+            examples:
+              By Lead ID:
+                value:
+                  lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+              By LinkedIn URL:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+              By name and domain:
+                value:
+                  first_name: Jordan
+                  last_name: Ellis
+                  domain: microsoft.com
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+domain."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Email result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailFindResponse'
+              examples:
+                Found:
+                  value:
+                    data:
+                      valid_email: jordan.ellis@microsoft.com
+                      result: valid
+                      catch_all: false
+                      source: generect
+                    meta:
+                      amount_charged: 0.02
+                Not found:
+                  value:
+                    data:
+                      valid_email: null
+                    meta:
+                      amount_charged: 0
+  /email/find/bulk/:
+    post:
+      tags:
+        - 7. Email
+      summary: Start bulk email find
+      description: Start an asynchronous bulk email find job. Billed only for valid emails found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - leads
+              properties:
+                leads:
+                  type: array
+                  maxItems: 50
+                  description: >-
+                    Leads to find emails for (max 50 per request). Each entry is one of: {lead_id},
+                    {linkedin_url}, or {first_name, last_name, domain}.
+                  items:
+                    oneOf:
+                      - title: By Lead ID
+                        type: object
+                        required:
+                          - lead_id
+                        properties:
+                          lead_id:
+                            type: string
+                            example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      - title: By LinkedIn URL
+                        type: object
+                        required:
+                          - linkedin_url
+                        properties:
+                          linkedin_url:
+                            type: string
+                            example: https://www.linkedin.com/in/jordan-ellis
+                      - title: By Name and Domain
+                        type: object
+                        required:
+                          - first_name
+                          - last_name
+                          - domain
+                        properties:
+                          first_name:
+                            type: string
+                            description: Lead's first name.
+                          last_name:
+                            type: string
+                            description: Lead's last name.
+                          domain:
+                            type: string
+                            description: Company domain.
+            examples:
+              Bulk email find:
+                value:
+                  leads:
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - first_name: Morgan
+                      last_name: Lee
+                      domain: salesforce.com
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /email/find/bulk/{job_id}/:
+    get:
+      tags:
+        - 7. Email
+      summary: Get bulk email find job
+      description: Retrieve the status and results of a bulk email find job.
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
+        '200':
+          description: Bulk job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkStatusResponse'
+              example:
+                data:
+                  - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    valid_email: jordan.ellis@microsoft.com
+                    result: valid
+                    catch_all: false
+                    source: generect
+                  - valid_email: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: completed
+                  total: 2
+                  processed: 2
+                  amount_charged: 0.02
+                  error: null
+  /email/validate/:
+    post:
+      tags:
+        - 7. Email
+      summary: Validate emails
+      description: Validate email deliverability and risk. Billed per email validated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - emails
+              properties:
+                emails:
+                  type: array
+                  items:
+                    type: string
+              example:
+                emails:
+                  - jordan.ellis@microsoft.com
+                  - morgan.lee@salesforce.com
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"emails": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Validation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailValidateResponse'
+              example:
+                data:
+                  - email: jordan.ellis@microsoft.com
+                    result: valid
+                    exist: "yes"
+                    catch_all: false
+                    error: null
+                  - email: morgan.lee@salesforce.com
+                    result: valid
+                    exist: "yes"
+                    catch_all: false
+                    error: null
+                meta:
+                  amount_charged: 0.01
+  /accounts/me/:
+    get:
+      tags:
+        - 8. Accounts
+      summary: Get account profile
+      description: Retrieve the current account profile, credit balance, monthly usage, and Preview tier eligibility.
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Account profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountMeResponse'
+              example:
+                data:
+                  id: a1b2c3d4-e5f6-4789-a0b1-c2d3e4f5a6b7
+                  email: jordan.ellis@microsoft.com
+                  name: Jordan Ellis
+                  plan: Pro
+                  credits:
+                    balance: 5000
+                    used_this_month: 1234
+                    monthly_limit: 10000
+                  preview_tier: true
+  /accounts/usage/:
+    get:
+      tags:
+        - 8. Accounts
+      summary: Get account usage
+      description: Retrieve credit usage statistics and operation breakdown for an account.
+      parameters:
+        - name: timezone
+          in: query
+          required: false
+          description: IANA timezone for aggregation.
+          schema:
+            type: string
+            default: UTC
+          example: Europe/Kyiv
+        - name: period
+          in: query
+          required: false
+          description: Truncation granularity for the usage series.
+          schema:
+            type: string
+            enum: [day, week, month]
+            default: day
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+          example: '2026-05-01'
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+          example: '2026-05-31'
+        - name: period_month
+          in: query
+          required: false
+          description: Month label for the response (YYYY-MM).
+          schema:
+            type: string
+          example: '2026-05'
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Account usage statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountUsageResponse'
+              example:
+                data:
+                  period: '2026-05'
+                  total_credits: 1234
+                  breakdown:
+                    search_database: 500
+                    search_realtime: 200
+                    enrich_database: 300
+                    enrich_realtime: 100
+                    email_find: 134
+  /accounts/transactions/:
+    get:
+      tags:
+        - 8. Accounts
+      summary: Get account transactions
+      description: Retrieve account credit transaction history.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Account transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTransactionsResponse'
+              example:
+                data:
+                  transactions:
+                    - id: f0e1d2c3-b4a5-4697-8c9d-0e1f2a3b4c5d
+                      timestamp: '2026-05-15T10:30:00Z'
+                      type: search_database_leads
+                      credits: -25
+                      details:
+                        balance_type: leads_by_icp
+                        status: success
+  /search/database/leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search database leads
+      description: Search cached leads. Database mode returns results in under 1 second. Billed per result returned.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full lead search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchLeadsResponse'
+              example:
+                data:
+                  leads:
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
+                      title: CEO
+                  results_count: 1240
+                meta:
+                  amount_charged: 24.8
+  /search/database/leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count database leads
+      description: Count cached leads matching filters. Always free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Matching lead count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCountResponse'
+              example:
+                data:
+                  results_count: 1240
+                meta:
+                  amount_charged: 0
+  /search/database/companies/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search database companies
+      description: Search cached companies. Database mode returns results in under 1 second. Billed per result returned.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanySearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full company search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCompaniesResponse'
+              example:
+                data:
+                  companies:
+                    - linkedin_id: '1035'
+                      name: Microsoft
+                      domain: microsoft.com
+                  results_count: 530
+                meta:
+                  amount_charged: 10.6
+  /search/database/companies/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count database companies
+      description: Count cached companies matching filters. Always free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanySearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Matching company count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCountResponse'
+              example:
+                data:
+                  results_count: 530
+                meta:
+                  amount_charged: 0
+  /search/database/company-leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search database company leads
+      description: Search cached leads at matching companies.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyLeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full company-lead search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCompanyLeadsResponse'
+              example:
+                data:
+                  leads:
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
+                  results_count: 320
+                meta:
+                  amount_charged: 6.4
+  /search/database/company-leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count database company leads
+      description: Count cached company-lead matches. Database count endpoints are free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyLeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Matching company-lead count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyLeadsCountResponse'
+              example:
+                data:
+                  results_count: 320
+                  companies_count: 45
+                  leads_count: 320
+                meta:
+                  amount_charged: 0
+  /search/realtime/leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search realtime leads
+      description: Search fresh leads with advanced filters (keywords, past companies, schools, groups). Response time 5-60 sec. Billed per result returned.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full realtime lead search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchLeadsResponse'
+              example:
+                data:
+                  leads:
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
+                      title: CEO
+                  results_count: 1240
+                meta:
+                  amount_charged: 49.6
+  /search/realtime/leads/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count realtime leads
+      description: Count fresh leads matching filters. Billed per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Matching realtime lead count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCountResponse'
+              example:
+                data:
+                  results_count: 1240
+                meta:
+                  amount_charged: 0.04
+  /search/realtime/companies/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search realtime companies
+      description: Search fresh companies with advanced filters (revenue, department headcount, growth). Response time 5-60 sec. Billed per result returned.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full realtime company search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCompaniesResponse'
+              example:
+                data:
+                  companies:
+                    - linkedin_id: '1035'
+                      name: Microsoft
+                      domain: microsoft.com
+                  results_count: 530
+                meta:
+                  amount_charged: 21.2
+  /search/realtime/companies/count/:
+    post:
+      tags:
+        - 9. Search
+      summary: Count realtime companies
+      description: Count fresh companies matching filters. Billed per request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Matching realtime company count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCountResponse'
+              example:
+                data:
+                  results_count: 530
+                meta:
+                  amount_charged: 0.04
+  /search/realtime/company-leads/:
+    post:
+      tags:
+        - 9. Search
+      summary: Search realtime company leads
+      description: Search fresh leads at matching companies.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Full realtime company-lead search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchCompanyLeadsResponse'
+              example:
+                data:
+                  leads:
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      first_name: Jordan
+                      last_name: Ellis
+                  results_count: 320
+                meta:
+                  amount_charged: 12.8
+  /phone/find/:
+    post:
+      tags:
+        - 10. Phone
+      summary: Find phone
+      description: Find a phone number by lead ID, LinkedIn URL, or by name and company. Billed only when a phone number is found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: By Lead ID
+                  type: object
+                  required:
+                    - lead_id
+                  properties:
+                    lead_id:
+                      type: string
+                      description: Generect lead identifier from Search, Preview, or Enrich.
+                      example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                - title: By LinkedIn URL
+                  type: object
+                  required:
+                    - linkedin_url
+                  properties:
+                    linkedin_url:
+                      type: string
+                      description: LinkedIn profile URL.
+                      example: https://www.linkedin.com/in/jordan-ellis
+                - $ref: '#/components/schemas/PhoneFindByNameRequest'
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+company."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Phone finder result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneFindResponse'
+              examples:
+                Found:
+                  value:
+                    data:
+                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      phone:
+                        number: '+14155550123'
+                        status: FOUND
+                        type: mobile
+                        country: US
+                    meta:
+                      amount_charged: 0.4
+                Not found:
+                  value:
+                    data:
+                      lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      phone:
+                        number: null
+                        status: NOT_FOUND
+                    meta:
+                      amount_charged: 0
+  /phone/find/bulk/:
+    post:
+      tags:
+        - 10. Phone
+      summary: Start bulk phone find
+      description: Start an asynchronous bulk phone finder job. Billed only for phone numbers found.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - leads
+              properties:
+                leads:
+                  type: array
+                  maxItems: 50
+                  description: List of leads to find phones for (max 50 per request). Each entry is either a lead_id, linkedin_url, or name+company.
+                  items:
+                    oneOf:
+                      - title: By Lead ID
+                        type: object
+                        required:
+                          - lead_id
+                        properties:
+                          lead_id:
+                            type: string
+                            description: Generect lead identifier.
+                      - title: By LinkedIn URL
+                        type: object
+                        required:
+                          - linkedin_url
+                        properties:
+                          linkedin_url:
+                            type: string
+                            example: https://www.linkedin.com/in/jordan-ellis
+                      - $ref: '#/components/schemas/PhoneFindByNameRequest'
+            examples:
+              Bulk phone find:
+                value:
+                  leads:
+                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - first_name: Jordan
+                      last_name: Ellis
+                      company: microsoft.com
+      responses:
+        '400':
+          description: Validation error or insufficient balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"leads": ["This field is required."]}
+                Insufficient funds:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Insufficient funds in the account.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '202':
+          description: Bulk phone job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkSubmitResponse'
+              example:
+                data: null
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: pending
+                  total: 2
+                  processed: 0
+                  amount_charged: 0
+                  error: null
+  /phone/find/bulk/{job_id}/:
+    get:
+      tags:
+        - 10. Phone
+      summary: Get bulk phone find job
+      description: Retrieve the status and results of a bulk phone finder job.
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Job not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+              example:
+                detail: Job not found
+        '200':
+          description: Bulk phone job status and results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkStatusResponse'
+              example:
+                data:
+                  - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    phone:
+                      number: '+14155550123'
+                      status: FOUND
+                      type: mobile
+                      country: US
+                  - lead_id: ACwAAAFp2r4Bd1eF3gH5iJ7kL9mN0pQ2rS4tU6v
+                    phone:
+                      number: null
+                      status: NOT_FOUND
+                meta:
+                  job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                  status: completed
+                  total: 2
+                  processed: 2
+                  amount_charged: 0.4
+                  error: null
+  /webhooks/:
+    get:
+      tags:
+        - 11. Webhooks
+      summary: List webhooks
+      description: List registered webhook endpoints.
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Registered webhooks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookList'
+    post:
+      tags:
+        - 11. Webhooks
+      summary: Register webhook
+      description: Register a webhook endpoint for async notifications.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - events
+              properties:
+                url:
+                  type: string
+                  description: Your HTTPS endpoint URL to receive webhook events.
+                  example: https://your-app.com/webhook
+                events:
+                  type: array
+                  description: Events to subscribe to.
+                  items:
+                    type: string
+                    enum:
+                      - email.find.bulk.completed
+                      - phone.find.bulk.completed
+                      - enrich.lead.bulk.completed
+                      - enrich.company.bulk.completed
+                  example:
+                    - email.find.bulk.completed
+                secret:
+                  type: string
+                  description: Secret for HMAC signature verification of incoming webhook payloads.
+                  example: your-secret-for-signature
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '201':
+          description: Webhook registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+  /webhooks/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: wh_123
+    get:
+      tags:
+        - 11. Webhooks
+      summary: Retrieve webhook
+      description: Retrieve a single registered webhook endpoint.
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '200':
+          description: Webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+    put:
+      tags:
+        - 11. Webhooks
+      summary: Update webhook
+      description: Replace a webhook endpoint's configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - events
+              properties:
+                url:
+                  type: string
+                  example: https://your-app.com/webhook
+                events:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - email.find.bulk.completed
+                      - phone.find.bulk.completed
+                      - enrich.lead.bulk.completed
+                      - enrich.company.bulk.completed
+                secret:
+                  type: string
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '200':
+          description: Webhook updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+    patch:
+      tags:
+        - 11. Webhooks
+      summary: Partially update webhook
+      description: Update selected fields of a webhook endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                events:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - email.find.bulk.completed
+                      - phone.find.bulk.completed
+                      - enrich.lead.bulk.completed
+                      - enrich.company.bulk.completed
+                secret:
+                  type: string
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Validation error:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '200':
+          description: Webhook updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+    delete:
+      tags:
+        - 11. Webhooks
+      summary: Delete webhook
+      description: Remove a registered webhook endpoint.
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '204':
+          description: Webhook removed
+  /webhooks/{id}/test/:
+    post:
+      tags:
+        - 11. Webhooks
+      summary: Test webhook
+      description: Send a sample `webhook.test` delivery to this webhook's URL.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: wh_123
+      responses:
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '202':
+          description: Test delivery enqueued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookTestResponse'
+              example:
+                data:
+                  delivery_id: d4e5f6a7-8b9c-40d1-a2e3-f4a5b6c7d8e9
+                  status: pending
+                meta:
+                  event: webhook.test
 components:
+  schemas:
+    LeadBulkEnrichRequest:
+      type: object
+      required:
+        - leads
+      properties:
+        leads:
+          type: array
+          maxItems: 50
+          description: >-
+            Leads to enrich (max 50 per request). Each entry provides exactly
+            one identifier: id, linkedin_url, or email.
+          items:
+            oneOf:
+              - title: By Lead ID
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+              - title: By LinkedIn URL
+                type: object
+                required:
+                  - linkedin_url
+                properties:
+                  linkedin_url:
+                    type: string
+                    example: https://www.linkedin.com/in/jordan-ellis
+              - title: By Email
+                type: object
+                required:
+                  - email
+                properties:
+                  email:
+                    type: string
+                    example: jordan.ellis@microsoft.com
+      example:
+        leads:
+          - linkedin_url: https://www.linkedin.com/in/jordan-ellis
+          - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+    CompanyBulkEnrichRequest:
+      type: object
+      required:
+        - companies
+      properties:
+        companies:
+          type: array
+          maxItems: 50
+          description: >-
+            Companies to enrich (max 50 per request). Each entry provides
+            exactly one identifier: id, domain, linkedin_url, or name.
+          items:
+            oneOf:
+              - title: By LinkedIn URL
+                type: object
+                required:
+                  - linkedin_url
+                properties:
+                  linkedin_url:
+                    type: string
+                    example: https://www.linkedin.com/company/microsoft/
+              - title: By Domain
+                type: object
+                required:
+                  - domain
+                properties:
+                  domain:
+                    type: string
+                    example: microsoft.com
+              - title: By Company ID
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    example: "1035"
+              - title: By Name
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    example: Microsoft
+      example:
+        companies:
+          - domain: microsoft.com
+          - linkedin_url: https://www.linkedin.com/company/microsoft/
+    Error:
+      type: object
+      description: Standard error envelope returned for 4xx/5xx responses.
+      properties:
+        status:
+          type: string
+          example: error
+        status_code:
+          type: integer
+          example: 400
+        detail:
+          description: >-
+            Human-readable message (string) for most errors, or a field-level
+            validation map ({ field: [messages] }) for 400 validation errors.
+          example: Insufficient funds in the account.
+    LeadSearchRequest:
+      type: object
+      properties:
+        job_titles:
+          type: array
+          items:
+            type: string
+          description: >-
+            Job titles held by the people you want to find. A lead only needs to match one of the titles you provide — adding more expands your search. Results may also include similar titles (e.g. "marketing manager" can return "content marketing manager"). Combine with seniorities to target both function and level. Examples: "sales development representative", "marketing manager", "software engineer".
+        seniorities:
+          type: array
+          items:
+            type: string
+          description: >-
+            Job seniority levels at the lead's current employer (current position only, not previous roles). A lead needs to match at least one; adding more values expands your search. Allowed values: owner, founder, c_suite, partner, vp, head, director, manager, senior, entry, intern. Combine with job_titles to narrow targeting.
+        locations:
+          type: array
+          items:
+            type: string
+          description: >-
+            Geographic locations where leads currently live — matches across cities, states/regions and countries. A lead needs to match at least one. To filter by the employer's HQ location, use company_locations. Examples: "San Francisco, California, United States", "Germany", "London".
+        exclude_locations:
+          type: array
+          items:
+            type: string
+          description: Locations to exclude from results.
+        company_locations:
+          type: array
+          items:
+            type: string
+          description: >-
+            Headquarters location of the lead's current employer; a lead is included if their company's HQ matches at least one. Filters by where the company is based — distinct from locations, which is where the lead personally lives.
+        exclude_company_locations:
+          type: array
+          items:
+            type: string
+          description: Company locations to exclude.
+        company_industries:
+          type: array
+          items:
+            type: string
+          description: >-
+            Industries of the lead's current employer; a lead is included if their company matches at least one. Values follow LinkedIn's industry taxonomy. Examples: "Software Development", "Financial Services", "Information Technology".
+        exclude_company_industries:
+          type: array
+          items:
+            type: string
+          description: Company industries to exclude.
+        company_headcounts:
+          type: array
+          items:
+            type: string
+          description: >-
+            Size of the lead's current employer, as employee-count ranges; a lead is included if their company falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".
+        exclude_company_headcounts:
+          type: array
+          items:
+            type: string
+          description: Company size ranges to exclude.
+        company_types:
+          type: array
+          items:
+            type: string
+          description: 'Company types: "Public Company", "Privately Held", "Non Profit", "Government Agency", "Educational", "Self Employed", "Partnership", "Self Owned".'
+        company_name:
+          type: string
+          description: Target company name (mutually exclusive with company_link and company_id).
+        company_link:
+          type: string
+          description: LinkedIn company URL (mutually exclusive with company_name and company_id).
+        company_id:
+          type: integer
+          description: LinkedIn company numeric ID (mutually exclusive with company_name and company_link).
+        personas:
+          type: array
+          description: 'List of persona tuples. Each persona: [name, functions, seniorities, prohibits, priority?].'
+          items:
+            type: array
+        exclude_names:
+          type: array
+          items:
+            type: string
+          description: Skip leads by full name.
+        exclude_ids:
+          type: array
+          items:
+            type: string
+          description: Skip leads by Sales Navigator ID.
+        filter_empty_vars:
+          type: array
+          items:
+            type: string
+          description: 'Skip leads where these fields are empty. Options: job_started_on, profile_photo, started_at_position, company_website.'
+        limit_by:
+          type: integer
+          description: Maximum number of leads to return.
+        offset_by:
+          type: integer
+          description: Number of leads to skip (for pagination).
+        strict:
+          type: array
+          items:
+            type: string
+          description: Fields to apply strict matching on (e.g. "company_locations").
+      example:
+        job_titles:
+          - CEO
+          - Founder
+        seniorities:
+          - c_suite
+        locations:
+          - United States
+        company_industries:
+          - Software Development
+        company_headcounts:
+          - 51-200
+        limit_by: 50
+    RealtimeLeadSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/LeadSearchRequest'
+        - type: object
+          properties:
+            keywords:
+              type: array
+              items:
+                type: string
+              description: >-
+                Free-text keywords searched across lead profiles (headline, current job description, skills, summary); a lead is included if their profile contains at least one. Realtime mode only — database mode does not support free-text search. Examples: "machine learning", "growth marketing", "kubernetes".
+            functions:
+              type: array
+              items:
+                type: string
+              description: >-
+                Job functions — categorize roles by business area, independent of seniority or title; a lead is included if their function matches at least one. Common values: Sales, Marketing, Engineering, Operations, Finance, HR, Product, Customer Success, Legal, Data. Combine with seniorities for function-by-seniority targeting.
+            past_company_names:
+              type: array
+              items:
+                type: string
+              description: >-
+                Filter by companies where the lead previously worked; a lead is included if their work history contains at least one. Useful for alumni outreach (e.g. ex-Google engineers) or targeting people who left a competitor. Examples: "Google", "Meta", "Stripe".
+            schools:
+              type: array
+              items:
+                type: integer
+              description: School IDs to filter by.
+            groups:
+              type: array
+              items:
+                type: integer
+              description: LinkedIn group IDs to filter by.
+            years_in_position:
+              type: array
+              items:
+                type: integer
+              description: 'Time in current position: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+            years_in_company:
+              type: array
+              items:
+                type: integer
+              description: 'Time at current company: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+            changed_jobs:
+              type: boolean
+              description: Filter for leads who recently changed jobs.
+              default: false
+            posted_on_linkedin:
+              type: boolean
+              description: Filter for leads who recently posted on LinkedIn.
+              default: false
+            linkedin_filter_link:
+              type: string
+              description: Pre-built LinkedIn or Sales Navigator search URL to extract filters from.
+    CompanySearchRequest:
+      type: object
+      properties:
+        industries:
+          type: array
+          items:
+            type: string
+          description: >-
+            Industries of the target companies; a company is included if it matches at least one. Values follow LinkedIn's industry taxonomy. Examples: "Software Development", "Financial Services", "Information Technology".
+        exclude_industries:
+          type: array
+          items:
+            type: string
+          description: Industries to exclude.
+        headcounts:
+          type: array
+          items:
+            type: string
+          description: >-
+            Company size, as employee-count ranges; a company is included if it falls into at least one. Allowed values: "1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10 000+".
+        locations:
+          type: array
+          items:
+            type: string
+          description: >-
+            Company headquarters locations — matches across cities, states/regions and countries; a company is included if its HQ matches at least one. Examples: "United States", "San Francisco, California, United States", "Germany".
+        exclude_locations:
+          type: array
+          items:
+            type: string
+          description: Locations to exclude.
+        company_types:
+          type: array
+          items:
+            type: string
+          description: 'Company types: "Public Company", "Privately Held", "Non Profit", "Government Agency", "Educational", etc.'
+        num_of_followers:
+          type: array
+          items:
+            type: string
+          description: 'Follower count ranges: "1-50", "51-100", "101-1000", "1001-5000", "5001+".'
+        keywords:
+          type: array
+          items:
+            type: string
+          description: >-
+            Free-text keywords matched across company profiles (name, description, specialties); a company is included if it contains at least one. OR logic, max 10 keywords, up to 40 characters each. Examples: "platform", "marketplace", "developer tools".
+        technologies:
+          type: array
+          items:
+            type: string
+          description: Technologies used by the company.
+        company_names:
+          type: array
+          items:
+            type: string
+          description: Search by specific company names.
+        exclude_ids:
+          type: array
+          items:
+            type: string
+          description: Exclude companies by LinkedIn ID or URN.
+        exclude_domains:
+          type: array
+          items:
+            type: string
+          description: Exclude companies by domain.
+        limit_by:
+          type: integer
+          description: Maximum number of companies to return (1-1600).
+        offset_by:
+          type: integer
+          description: Number of companies to skip (0-1599, for pagination).
+        strict:
+          type: array
+          items:
+            type: string
+          description: Fields to apply strict matching on (e.g. "company_locations").
+      example:
+        industries:
+          - Software Development
+        headcounts:
+          - 51-200
+        locations:
+          - United States
+        limit_by: 50
+    RealtimeCompanySearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/CompanySearchRequest'
+        - type: object
+          properties:
+            revenues_range:
+              type: object
+              description: 'Revenue filter with min/max (e.g. {"min": 1000000, "max": 50000000}).'
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+            department_headcount:
+              type: object
+              description: 'Filter by department size (e.g. {"name": "engineering", "min": 10, "max": 100}).'
+              properties:
+                name:
+                  type: string
+                min:
+                  type: number
+                max:
+                  type: number
+            headcount_growth:
+              type: object
+              description: 'Filter by headcount growth percentage (e.g. {"min": 5, "max": 50}).'
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+            hiring_on_linkedin:
+              type: boolean
+              description: Filter for companies actively hiring on LinkedIn.
+              default: false
+            linkedins_links:
+              type: array
+              items:
+                type: string
+              description: Filter by specific LinkedIn company URLs.
+    CompanyLeadSearchRequest:
+      type: object
+      properties:
+        company_search_criteria:
+          $ref: '#/components/schemas/CompanySearchRequest'
+        lead_search_criteria:
+          $ref: '#/components/schemas/LeadSearchRequest'
+      example:
+        company_search_criteria:
+          industries:
+            - Software Development
+          headcounts:
+            - 51-200
+          locations:
+            - United States
+        lead_search_criteria:
+          job_titles:
+            - CEO
+          seniorities:
+            - c_suite
+          locations:
+            - United States
+    RealtimeCompanyLeadSearchRequest:
+      type: object
+      properties:
+        company_search_criteria:
+          $ref: '#/components/schemas/RealtimeCompanySearchRequest'
+        lead_search_criteria:
+          $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+      example:
+        company_search_criteria:
+          industries:
+            - Software Development
+          headcounts:
+            - 51-200
+          locations:
+            - United States
+        lead_search_criteria:
+          job_titles:
+            - CEO
+          seniorities:
+            - c_suite
+          locations:
+            - United States
+    PhoneFindByNameRequest:
+      title: By Name and Company
+      type: object
+      required:
+        - first_name
+        - last_name
+        - company
+      properties:
+        first_name:
+          type: string
+          description: Lead's first name.
+          example: John
+        last_name:
+          type: string
+          description: Lead's last name.
+          example: Doe
+        company:
+          type: string
+          description: Company name or domain where the lead works.
+          example: microsoft.com
+        linkedin_url:
+          type: string
+          description: Optional LinkedIn profile URL to improve match accuracy.
+          example: https://www.linkedin.com/in/jordan-ellis
+    Meta:
+      type: object
+      description: Operation metadata returned in every data/meta response.
+      required:
+        - amount_charged
+      properties:
+        amount_charged:
+          type: number
+          description: >-
+            Actual amount charged for this request in USD, computed from your
+            pricing tier. 0 for free operations and for not-found results
+            (No Data — No Charge).
+        status:
+          type: string
+          description: Set to "error" when the operation finished with an error.
+        error:
+          type: string
+          description: Error details; present only when the operation failed.
+        time_cached:
+          type: string
+          format: date-time
+          description: >-
+            When the cached result set was originally collected (returned by
+            database company search when results are served from a previous
+            identical search).
+    BulkJobMeta:
+      type: object
+      description: >-
+        Bulk job state. Poll the bulk status endpoint with job_id or subscribe
+        to the completion webhook.
+      required:
+        - job_id
+        - status
+        - total
+        - processed
+        - amount_charged
+      properties:
+        job_id:
+          type: string
+          description: Job identifier — pass it to the bulk status endpoint.
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - completed
+            - error
+        total:
+          type: integer
+          description: Number of submitted items.
+        processed:
+          type: integer
+          description: Items processed so far.
+        found:
+          type: integer
+          description: Items that resolved to a result (present on status/webhook once completed).
+        not_found:
+          type: integer
+          description: Items with no result — not charged (No Data, No Charge).
+        amount_charged:
+          type: number
+          description: USD charged for found results; final when status is completed.
+        error:
+          type: string
+          nullable: true
+          description: Failure reason when status is error.
+    SearchLeadsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Search results.
+          properties:
+            leads:
+              type: array
+              description: Lead profiles — see the example for the full field set.
+              items:
+                type: object
+            results_count:
+              type: integer
+              description: Total number of leads matching the query.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SearchCompaniesResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Search results.
+          properties:
+            companies:
+              type: array
+              description: Company profiles — see the example for the full field set.
+              items:
+                type: object
+            results_count:
+              type: integer
+              description: Total number of companies matching the query.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SearchCompanyLeadsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: >-
+            Search results. Either leads or companies is populated depending on
+            whether lead_search_criteria was provided.
+          properties:
+            companies:
+              type: array
+              items:
+                type: object
+            leads:
+              type: array
+              items:
+                type: object
+            companies_count:
+              type: integer
+            leads_count:
+              type: integer
+            results_count:
+              type: integer
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SearchCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            results_count:
+              type: integer
+              description: Number of records matching the filters.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CompanyLeadsCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            results_count:
+              type: integer
+            companies_count:
+              type: integer
+            leads_count:
+              type: integer
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PreviewLeadsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            leads:
+              type: array
+              description: Masked lead previews — see the example for the field set.
+              items:
+                type: object
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PreviewCountResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: integer
+              description: Number of preview leads matching the filters.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EnrichLeadResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Full lead profile — see the example for the field set.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EnrichCompanyResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Full company profile — see the example for the field set.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EmailFindResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: The email finder result. valid_email is null when no email is found.
+          properties:
+            lead_id:
+              type: string
+              description: Echoed back when the request was made by lead_id.
+            valid_email:
+              type: string
+              nullable: true
+              description: The found verified email, or null if none was found.
+            result:
+              type: string
+              description: 'Outcome: valid, invalid, or unknown.'
+            catch_all:
+              type: boolean
+              description: True if the domain is catch-all.
+            source:
+              type: string
+              description: Where the email was resolved (e.g. generect, findymail, FORMAT).
+            email_format:
+              type: string
+              description: Detected address pattern for the domain.
+            mx_domain:
+              type: string
+              description: Mail exchanger domain.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EmailValidateResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: One validation result per submitted email, in input order.
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                description: The validated email address.
+              result:
+                type: string
+                description: 'Validation outcome: valid, invalid, catch_all, or unknown.'
+              exist:
+                type: string
+                description: Whether the mailbox exists (e.g. "yes", "no").
+              catch_all:
+                type: boolean
+                description: True if the domain accepts mail for any address (catch-all).
+              error:
+                type: string
+                nullable: true
+                description: Reason the address could not be validated; null on success.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PhoneFindResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            lead_id:
+              type: string
+              nullable: true
+              description: Resolved lead identifier, when the input matched a lead.
+            phone:
+              type: object
+              properties:
+                number:
+                  type: string
+                  nullable: true
+                  description: Phone number in E.164 format; null when not found.
+                status:
+                  type: string
+                  enum:
+                    - FOUND
+                    - NOT_FOUND
+                type:
+                  type: string
+                  description: Number type (mobile, fixed_line, voip, ...). Present when found.
+                country:
+                  type: string
+                  description: ISO country code. Present when found.
+        meta:
+          $ref: '#/components/schemas/Meta'
+    BulkSubmitResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+          description: Always null — results arrive via the bulk status endpoint.
+        meta:
+          $ref: '#/components/schemas/BulkJobMeta'
+    BulkStatusResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          nullable: true
+          description: Result items once status is completed; null until then.
+          items:
+            type: object
+        meta:
+          $ref: '#/components/schemas/BulkJobMeta'
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Webhook identifier.
+        url:
+          type: string
+          description: Your HTTPS endpoint that receives events.
+        events:
+          type: array
+          items:
+            type: string
+          description: Subscribed event types.
+        secret:
+          type: string
+          description: Secret used for HMAC signature verification.
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    WebhookList:
+      type: array
+      description: Registered webhooks.
+      items:
+        $ref: '#/components/schemas/Webhook'
+    WebhookTestResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            delivery_id:
+              type: string
+              description: Identifier of the test delivery.
+            status:
+              type: string
+              description: Delivery status (pending until your endpoint responds).
+        meta:
+          type: object
+          properties:
+            event:
+              type: string
+              description: Always "webhook.test".
+
+    AccountMeResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+            plan:
+              type: string
+            credits:
+              type: object
+              description: Credit balance summary.
+              properties:
+                balance:
+                  type: number
+                  description: Current credit balance.
+                used_this_month:
+                  type: number
+                monthly_limit:
+                  type: number
+            preview_tier:
+              type: boolean
+              description: Whether the account is eligible for the Preview endpoints.
+    AccountUsageResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            period:
+              type: string
+              description: Reporting period the stats cover.
+            total_credits:
+              type: number
+              description: Total credits consumed in the period.
+            breakdown:
+              type: object
+              description: Credits consumed per operation type.
+              additionalProperties:
+                type: number
+    AccountTransactionsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            transactions:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  type:
+                    type: string
+                    description: Operation that produced the transaction.
+                  credits:
+                    type: number
+                    description: Credit delta (negative for charges).
+                  details:
+                    type: object
+                    properties:
+                      balance_type:
+                        type: string
+                      status:
+                        type: string
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid API token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 401
+            detail: Authentication credentials were not provided.
+    Forbidden:
+      description: Authenticated, but the account/plan is not allowed to use this endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 403
+            detail: You do not have permission to perform this action.
+    NotFound:
+      description: Resource or job not found (or not owned by the caller).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 404
+            detail: Not found.
+    TooManyRequests:
+      description: Rate limit exceeded — retry later.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 429
+            detail: Request was throttled.
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: Authorization
-      description: "Use 'Token <api-key>' as the value"
+      description: "Use the required Token prefix. Example: Authorization: Token xxxxxxxxx"
 security:
   - apiKey: []
 tags:
@@ -3568,3 +6968,17 @@ tags:
     description: Fetch information about leads by _link/name/ICP_.
   - name: 4. Companies
     description: Fetch information about companies by link/name/ICP.
+  - name: 5. Preview
+    description: Search masked database leads for preview and reveal workflows.
+  - name: 6. Enrich
+    description: Enrich leads and companies by internal or external identifiers.
+  - name: 7. Email
+    description: Find and validate email addresses.
+  - name: 8. Accounts
+    description: Account profile, usage, and transactions.
+  - name: 9. Search
+    description: Database and realtime lead, company, and company-lead search.
+  - name: 10. Phone
+    description: Find phone numbers for leads.
+  - name: 11. Webhooks
+    description: Register and manage async job notifications.

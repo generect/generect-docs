@@ -1,0 +1,123 @@
+---
+title: 'Webhooks'
+sidebarTitle: 'Overview'
+description: 'Get notified when async jobs complete — delivery format, signature verification, retries'
+---
+
+Webhooks let you register a callback URL once and receive a `POST` with the **full job results** the moment an asynchronous job finishes — no polling. The delivery is self-contained: everything the bulk status endpoint would return is in the payload.
+
+## Events
+
+| Event | Fired when |
+| --- | --- |
+| `email.find.bulk.completed` | A [bulk email finder](/api-reference/endpoint/emails/email-finder-bulk) job finishes (or fails) |
+| `phone.find.bulk.completed` | A [bulk phone finder](/api-reference/endpoint/phone/phone-finder-bulk) job finishes (or fails) |
+| `enrich.lead.bulk.completed` | A [bulk lead enrich](/api-reference/endpoint/enrich/enrich-database-leads-bulk) job finishes (or fails) |
+| `enrich.company.bulk.completed` | A [bulk company enrich](/api-reference/endpoint/enrich/enrich-database-companies-bulk) job finishes (or fails) |
+
+## Delivery format
+
+Each delivery is an HTTP `POST` to your URL with a JSON body:
+
+```json
+{
+  "event": "email.find.bulk.completed",
+  "timestamp": "2026-06-11T12:00:00.123456",
+  "data": [
+    {
+      "lead_id": "ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9",
+      "valid_email": "jordan.ellis@microsoft.com",
+      "result": "valid",
+      "catch_all": false,
+      "source": "generect"
+    }
+  ],
+  "meta": {
+    "job_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "status": "completed",
+    "total": 100,
+    "processed": 100,
+    "found": 87,
+    "not_found": 13,
+    "amount_charged": 1.74,
+    "error": null
+  }
+}
+```
+
+The payload uses the same `data` / `meta` envelope as every other endpoint, plus the webhook's own `event` and `timestamp` on top. `data` is the **results** array — exactly what the matching bulk status endpoint ([email](/api-reference/endpoint/emails/get-email-finder-bulk) / [phone](/api-reference/endpoint/phone/get-phone-finder-bulk)) returns under its `data` key, so you never have to poll. `meta` is the job **summary**: `job_id`, `status`, counts (`total` / `processed` / `found` / `not_found`), `amount_charged` in USD, and `error` when `status` is `error`. The bulk status endpoint stays available to re-fetch by `job_id` — results are retained for 24 hours.
+
+<Note>
+  `data` is present on both success and failure deliveries. When `status` is `error` it is an empty array and `meta.error` describes what went wrong.
+</Note>
+
+**Headers sent with every delivery:**
+
+| Header | Value |
+| --- | --- |
+| `Content-Type` | `application/json` |
+| `X-Webhook-Event` | The event type, same as `event` in the body |
+| `X-Webhook-Timestamp` | Delivery timestamp, same as `timestamp` in the body |
+| `X-Webhook-Signature` | Base64-encoded HMAC-SHA256 of the raw request body |
+
+## Verifying signatures
+
+Every webhook is signed with your webhook's `secret`. If you don't provide one at registration, a cryptographically strong secret is generated for you — it is returned by the create and get endpoints.
+
+The signature is `base64(HMAC_SHA256(secret, raw_body))`. Always compute it over the **raw request bytes**, before any JSON parsing, and compare in constant time:
+
+<CodeGroup>
+
+```python Python
+import base64
+import hashlib
+import hmac
+
+def verify(secret: str, raw_body: bytes, signature: str) -> bool:
+    digest = hmac.new(secret.encode("utf-8"), raw_body, hashlib.sha256).digest()
+    expected = base64.b64encode(digest).decode("utf-8")
+    return hmac.compare_digest(expected, signature)
+
+# in your handler:
+# verify(secret, request.body, request.headers["X-Webhook-Signature"])
+```
+
+```javascript Node.js
+const crypto = require("crypto");
+
+function verify(secret, rawBody, signature) {
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(rawBody)
+    .digest("base64");
+  return (
+    expected.length === signature.length &&
+    crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature))
+  );
+}
+```
+
+</CodeGroup>
+
+<Warning>
+  Reject deliveries with a missing or invalid signature. The signature is your only guarantee the payload came from Generect.
+</Warning>
+
+## Retries and timeouts
+
+| Policy | Value |
+| --- | --- |
+| Response timeout | 30 seconds |
+| Success criteria | Any `2xx` response |
+| Your endpoint returns `4xx` | Delivery marked failed, **no retries** |
+| `5xx` / network error / timeout | Retried with exponential backoff |
+| Attempts | 5 total (1 initial + 4 retries) |
+| Backoff | 10s → 20s → 40s → 80s between attempts |
+
+<Tip>
+  Respond `2xx` immediately and process the payload asynchronously — a handler slower than 30 seconds counts as a failed attempt.
+</Tip>
+
+## Testing
+
+Send a test delivery to any registered webhook with [`POST /webhooks/{id}/test/`](/api-reference/endpoint/webhooks/test-webhook) — it fires a `webhook.test` event through the same delivery pipeline, signature included.

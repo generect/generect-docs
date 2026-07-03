@@ -1,10 +1,16 @@
 ---
-openapi: post /api/linkedin/email_finder/
+sidebarTitle: "Single find"
+openapi: post /email/find/
 ---
 
 <Note>
 **Important:** All generated emails are automatically validated and ready for use. No additional email validation is required - the emails returned by this endpoint are already verified for deliverability.
 </Note>
 
-# Use Case:
-Quickly find email addresses for outreach to decision-makers.
+## Use Case:
+Reveal a work email for a lead from Preview, or find a verified email from a name and company domain.
+
+## Pricing
+This is a billable endpoint — you are charged only for each valid email found. If no email is found, the request is free.
+
+<Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://beta.generect.com/settings/billing)</Tip>

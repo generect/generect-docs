@@ -14,12 +14,12 @@ Teams using API at scale need to monitor credit balance to avoid service interru
 
 **What Generect enables**
 
-`GET /api/v1/accounts/mereturns` current credit balance, monthly usage, and plan details including Preview tier eligibility.
+`GET /accounts/me/` returns current credit balance, monthly usage, and plan details including Preview tier eligibility.
 
 **How it works**
 
-1. Call `GET /api/v1/accounts/me `
-2. Check credits.balance and credits.used\_this\_month
+1. Call `GET /accounts/me/`
+2. Check `credits.balance` and `credits.used_this_month`
 3. Set alerts in your system when balance drops below threshold
 
 **Input data**
@@ -46,11 +46,11 @@ Teams don't know which API operations consume most credits. Can't optimize spend
 
 **What Generect enables**
 
-`GET /api/v1/accounts/usagereturns` credit breakdown by operation type: search (database/realtime), enrich, email find.
+`GET /accounts/usage/` returns credit breakdown by operation type: search (database/realtime), enrich, email find.
 
 **How it works**
 
-1. Call `GET /api/v1/accounts/usage` 
+1. Call `GET /accounts/usage/`
 2. See breakdown: how many credits spent on search vs enrich vs email
 3. Identify most expensive operations
 4. Optimize: switch from realtime to database where freshness isn't critical
@@ -79,11 +79,11 @@ Need detailed transaction history for invoicing, auditing, and reconciliation. C
 
 **What Generect enables**
 
-`GET /api/v1/accounts/transactions` returns every credit transaction with timestamp, type, amount, and details.
+`GET /accounts/transactions/` returns every credit transaction with timestamp, type, amount, and details.
 
 **How it works**
 
-1. Call `GET /api/v1/accounts/transactions `
+1. Call `GET /accounts/transactions/`
 2. Get chronological list of all operations
 3. Export for accounting or reconciliation
 

@@ -14,12 +14,12 @@ Teams need large lead lists fast and cheap. Realtime search is slow and expensiv
 
 **What Generect enables**
 
-`/search/database/leads` returns full lead data (incl. linkedin\_url, domain) from Generect's cached database — 10x cheaper and near-instant.
+`/search/database/leads/` returns full lead data, including `linkedin_url` and company domain, from Generect's cached database — 10x cheaper and near-instant.
 
 **How it works**
 
 1. Define ICP: roles, industries, headcount, locations
-2. Call `POST /search/database/leads`
+2. Call `POST /search/database/leads/`
 3. Get full lead profiles in \<1 sec
 4. Export to CRM or outreach tool
 
@@ -45,14 +45,14 @@ Finding emails one by one for 10K+ leads is too slow. Teams need async bulk proc
 
 **What Generect enables**
 
-`/email/find/bulk` processes thousands of leads asynchronously. Check status via job\_id.
+`/email/find/bulk/` processes thousands of leads asynchronously. Check status via `job_id`.
 
 **How it works**
 
-1. Submit list of lead\_ids or name+domain pairs to `POST /email/find/bulk`
-2. Get job\_id
-3. Poll `GET /email/find/bulk/{job_id}` for status
-4. Download results when complete
+1. Submit list of `lead_id` values or name+domain pairs to `POST /email/find/bulk/`
+2. Get `job_id`
+3. Either poll `GET /email/find/bulk/{job_id}/` for status, **or** [register a webhook](/api-reference/endpoint/webhooks/overview) once and we'll `POST` the full results to your callback URL when the job finishes — no polling
+4. Use the results when complete
 
 **Input data**
 
@@ -75,11 +75,11 @@ Email marketers, outbound teams, anyone sending bulk emails.
 Sending to invalid emails kills deliverability and sender reputation. Teams need to validate before sending.
 
 **What Generect enables**
-`/email/validate` checks deliverability, catch-all, disposable, and risk score.
+`/email/validate/` checks deliverability, catch-all, disposable, and risk score.
 
 **How it works**
 
-1. Submit email list to `POST /email/validate`
+1. Submit email list to `POST /email/validate/`
 2. Get per-email status: `VALID`, `RISKY`, `CATCH\_ALL`, `INVALID`
 3. Filter out risky/invalid before sending
 
@@ -105,18 +105,18 @@ Finding phones one by one doesn't scale. Need async bulk processing for large li
 
 **What Generect enables**
 
-`/phone/find/bulk` — submit thousands of leads, get results asynchronously.
+`/phone/find/bulk/` submits thousands of leads and returns results asynchronously.
 
 **How it works**
 
-1. Submit lead list to `POST /phone/find/bulk`
-2. Get job\_id
-3. Poll for results via `GET /phone/find/bulk/{job_id}`
+1. Submit lead list to `POST /phone/find/bulk/`
+2. Get `job_id`
+3. Either poll `GET /phone/find/bulk/{job_id}/`, **or** [register a webhook](/api-reference/endpoint/webhooks/overview) once and we'll `POST` the full results to your callback URL when the job finishes — no polling
 4. Pay only per found phone
 
 **Input data**
 
-Array of lead\_id or name \+ company pairs
+Array of `lead_id` values or name + company pairs
 
 **Outcome**
 
