@@ -11,7 +11,7 @@ Our MCP server provides integration between the **Generect Live API** and any Cl
   - **Local MCP (this page)** — Uses `npx` to run the MCP server locally
 </Note>
 
-The MCP Server is hosted at `https://api.generect.com`. You will use this endpoint on every integration. However, the configuration on different clients has some minor differences.
+The local MCP server runs on your machine via `npx generect-ultimate-mcp` and talks to the Generect API at `https://api.generect.com`. (The hosted remote MCP server lives at `https://mcp.generect.com/mcp` — see [Remote MCP](remote-mcp).) The configuration on different clients has some minor differences.
 
 # Configuration
 
@@ -81,7 +81,7 @@ Here is response of example, where Claude automaticlly analyzed LinkedIn profile
 
 Use this button to add MCP **directly to Cursor IDE**:
 
-<a href="https://cursor.com/en/install-mcp?name=generect-liveapi&config=eyJjb21tYW5kIjoibm9kZSAuL25vZGVfbW9kdWxlcy90c3gvZGlzdC9jbGkubWpzIHNyYy9zZXJ2ZXIudHMiLCJlbnYiOnsiR0VORVJFQ1RfQVBJX0JBU0UiOiJodHRwczovL2FwaS5nZW5lcmVjdC5jb20iLCJHRU5FUkVDVF9BUElfS0VZIjoiVG9rZW4gPGFwaS1rZXk%2BIiwiR0VORVJFQ1RfVElNRU9VVF9NUyI6IjYwMDAwIn19" target="_blank">
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=generect&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImdlbmVyZWN0LXVsdGltYXRlLW1jcEBsYXRlc3QiXSwiZW52Ijp7IkdFTkVSRUNUX0FQSV9CQVNFIjoiaHR0cHM6Ly9hcGkuZ2VuZXJlY3QuY29tIiwiR0VORVJFQ1RfQVBJX0tFWSI6IlRva2VuIDxhcGkta2V5PiIsIkdFTkVSRUNUX1RJTUVPVVRfTVMiOiI2MDAwMCJ9fQ%3D%3D" target="_blank">
 <img
   src="https://cursor.com/deeplink/mcp-install-light.svg"
   alt="Install MCP Server"
@@ -91,7 +91,7 @@ Use this button to add MCP **directly to Cursor IDE**:
 
 </a>
 
-<a href="https://cursor.com/en/install-mcp?name=generect-liveapi&config=eyJjb21tYW5kIjoibm9kZSAuL25vZGVfbW9kdWxlcy90c3gvZGlzdC9jbGkubWpzIHNyYy9zZXJ2ZXIudHMiLCJlbnYiOnsiR0VORVJFQ1RfQVBJX0JBU0UiOiJodHRwczovL2FwaS5nZW5lcmVjdC5jb20iLCJHRU5FUkVDVF9BUElfS0VZIjoiVG9rZW4gPGFwaS1rZXk%2BIiwiR0VORVJFQ1RfVElNRU9VVF9NUyI6IjYwMDAwIn19" target="_blank">
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=generect&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImdlbmVyZWN0LXVsdGltYXRlLW1jcEBsYXRlc3QiXSwiZW52Ijp7IkdFTkVSRUNUX0FQSV9CQVNFIjoiaHR0cHM6Ly9hcGkuZ2VuZXJlY3QuY29tIiwiR0VORVJFQ1RfQVBJX0tFWSI6IlRva2VuIDxhcGkta2V5PiIsIkdFTkVSRUNUX1RJTUVPVVRfTVMiOiI2MDAwMCJ9fQ%3D%3D" target="_blank">
 <img
   src="https://cursor.com/deeplink/mcp-install-dark.svg"
   alt="Install MCP Server"

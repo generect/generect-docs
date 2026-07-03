@@ -4,7 +4,7 @@ info:
   description: |-
     Welcome to the Generect API documentation. Here we will help you integrate and use our API.
 
-    API base url: `https://api.generect.com/api/v1/`
+    API base url: `https://api.generect.com` — every path below is relative to this host. Newer endpoints live under `/api/v1/...`, legacy endpoints under `/api/...`; use each path exactly as documented.
     Protocol: `HTTPS`
 
     # Authentication
@@ -23,7 +23,7 @@ info:
   version: 1.0.0
   contact: {}
 servers:
-  - url: https://api.generect.com/api/v1
+  - url: https://api.generect.com
 paths:
   /api/auth/token/login/:
     post:
@@ -3556,7 +3556,7 @@ paths:
                   logs:
                     - get mx_record: pphosted.com
                     - check outlook,gmail,onedrive,o365,o365_get_creds
-  /preview/leads/:
+  /api/v1/preview/leads/:
     post:
       tags:
         - 5. Preview
@@ -3695,7 +3695,7 @@ paths:
                       headcount_range: 201-500
                 meta:
                   amount_charged: 0
-  /preview/leads/count/:
+  /api/v1/preview/leads/count/:
     post:
       tags:
         - 5. Preview
@@ -3798,7 +3798,7 @@ paths:
                   count: 1240
                 meta:
                   amount_charged: 0
-  /enrich/database/lead/:
+  /api/v1/enrich/database/lead/:
     post:
       tags:
         - 6. Enrich
@@ -3902,7 +3902,7 @@ paths:
                   skills: []
                 meta:
                   amount_charged: 0.02
-  /enrich/realtime/lead/:
+  /api/v1/enrich/realtime/lead/:
     post:
       tags:
         - 6. Enrich
@@ -4000,7 +4000,7 @@ paths:
                   skills: []
                 meta:
                   amount_charged: 0.04
-  /enrich/database/company/:
+  /api/v1/enrich/database/company/:
     post:
       tags:
         - 6. Enrich
@@ -4104,7 +4104,7 @@ paths:
                   headcount: 150
                 meta:
                   amount_charged: 0.02
-  /enrich/realtime/company/:
+  /api/v1/enrich/realtime/company/:
     post:
       tags:
         - 6. Enrich
@@ -4208,7 +4208,7 @@ paths:
                   headcount: 150
                 meta:
                   amount_charged: 0.04
-  /enrich/database/leads/bulk/:
+  /api/v1/enrich/database/leads/bulk/:
     post:
       tags:
         - 6. Enrich
@@ -4257,7 +4257,7 @@ paths:
                   processed: 0
                   amount_charged: 0
                   error: null
-  /enrich/realtime/leads/bulk/:
+  /api/v1/enrich/realtime/leads/bulk/:
     post:
       tags:
         - 6. Enrich
@@ -4306,7 +4306,7 @@ paths:
                   processed: 0
                   amount_charged: 0
                   error: null
-  /enrich/leads/bulk/{job_id}/:
+  /api/v1/enrich/leads/bulk/{job_id}/:
     get:
       tags:
         - 6. Enrich
@@ -4385,7 +4385,7 @@ paths:
                   not_found: 1
                   amount_charged: 0.04
                   error: null
-  /enrich/database/companies/bulk/:
+  /api/v1/enrich/database/companies/bulk/:
     post:
       tags:
         - 6. Enrich
@@ -4434,7 +4434,7 @@ paths:
                   processed: 0
                   amount_charged: 0
                   error: null
-  /enrich/realtime/companies/bulk/:
+  /api/v1/enrich/realtime/companies/bulk/:
     post:
       tags:
         - 6. Enrich
@@ -4483,7 +4483,7 @@ paths:
                   processed: 0
                   amount_charged: 0
                   error: null
-  /enrich/companies/bulk/{job_id}/:
+  /api/v1/enrich/companies/bulk/{job_id}/:
     get:
       tags:
         - 6. Enrich
@@ -4552,7 +4552,7 @@ paths:
                   not_found: 1
                   amount_charged: 0.04
                   error: null
-  /email/find/:
+  /api/v1/email/find/:
     post:
       tags:
         - 7. Email
@@ -4657,7 +4657,7 @@ paths:
                       valid_email: null
                     meta:
                       amount_charged: 0
-  /email/find/bulk/:
+  /api/v1/email/find/bulk/:
     post:
       tags:
         - 7. Email
@@ -4757,7 +4757,7 @@ paths:
                   processed: 0
                   amount_charged: 0
                   error: null
-  /email/find/bulk/{job_id}/:
+  /api/v1/email/find/bulk/{job_id}/:
     get:
       tags:
         - 7. Email
@@ -4807,7 +4807,7 @@ paths:
                   processed: 2
                   amount_charged: 0.02
                   error: null
-  /email/validate/:
+  /api/v1/email/validate/:
     post:
       tags:
         - 7. Email
@@ -4872,7 +4872,7 @@ paths:
                     error: null
                 meta:
                   amount_charged: 0.01
-  /accounts/me/:
+  /api/v1/accounts/me/:
     get:
       tags:
         - 8. Accounts
@@ -4900,7 +4900,7 @@ paths:
                     used_this_month: 1234
                     monthly_limit: 10000
                   preview_tier: true
-  /accounts/usage/:
+  /api/v1/accounts/usage/:
     get:
       tags:
         - 8. Accounts
@@ -4963,7 +4963,7 @@ paths:
                     enrich_database: 300
                     enrich_realtime: 100
                     email_find: 134
-  /accounts/transactions/:
+  /api/v1/accounts/transactions/:
     get:
       tags:
         - 8. Accounts
@@ -5003,7 +5003,7 @@ paths:
                       details:
                         balance_type: leads_by_icp
                         status: success
-  /search/database/leads/:
+  /api/v1/search/database/leads/:
     post:
       tags:
         - 9. Search
@@ -5055,7 +5055,7 @@ paths:
                   results_count: 1240
                 meta:
                   amount_charged: 24.8
-  /search/database/leads/count/:
+  /api/v1/search/database/leads/count/:
     post:
       tags:
         - 9. Search
@@ -5102,7 +5102,7 @@ paths:
                   results_count: 1240
                 meta:
                   amount_charged: 0
-  /search/database/companies/:
+  /api/v1/search/database/companies/:
     post:
       tags:
         - 9. Search
@@ -5153,7 +5153,7 @@ paths:
                   results_count: 530
                 meta:
                   amount_charged: 10.6
-  /search/database/companies/count/:
+  /api/v1/search/database/companies/count/:
     post:
       tags:
         - 9. Search
@@ -5200,7 +5200,7 @@ paths:
                   results_count: 530
                 meta:
                   amount_charged: 0
-  /search/database/company-leads/:
+  /api/v1/search/database/company-leads/:
     post:
       tags:
         - 9. Search
@@ -5251,7 +5251,7 @@ paths:
                   results_count: 320
                 meta:
                   amount_charged: 6.4
-  /search/database/company-leads/count/:
+  /api/v1/search/database/company-leads/count/:
     post:
       tags:
         - 9. Search
@@ -5300,7 +5300,7 @@ paths:
                   leads_count: 320
                 meta:
                   amount_charged: 0
-  /search/realtime/leads/:
+  /api/v1/search/realtime/leads/:
     post:
       tags:
         - 9. Search
@@ -5352,7 +5352,7 @@ paths:
                   results_count: 1240
                 meta:
                   amount_charged: 49.6
-  /search/realtime/leads/count/:
+  /api/v1/search/realtime/leads/count/:
     post:
       tags:
         - 9. Search
@@ -5399,7 +5399,7 @@ paths:
                   results_count: 1240
                 meta:
                   amount_charged: 0.04
-  /search/realtime/companies/:
+  /api/v1/search/realtime/companies/:
     post:
       tags:
         - 9. Search
@@ -5450,7 +5450,7 @@ paths:
                   results_count: 530
                 meta:
                   amount_charged: 21.2
-  /search/realtime/companies/count/:
+  /api/v1/search/realtime/companies/count/:
     post:
       tags:
         - 9. Search
@@ -5497,7 +5497,7 @@ paths:
                   results_count: 530
                 meta:
                   amount_charged: 0.04
-  /search/realtime/company-leads/:
+  /api/v1/search/realtime/company-leads/:
     post:
       tags:
         - 9. Search
@@ -5548,7 +5548,7 @@ paths:
                   results_count: 320
                 meta:
                   amount_charged: 12.8
-  /phone/find/:
+  /api/v1/phone/find/:
     post:
       tags:
         - 10. Phone
@@ -5628,7 +5628,7 @@ paths:
                         status: NOT_FOUND
                     meta:
                       amount_charged: 0
-  /phone/find/bulk/:
+  /api/v1/phone/find/bulk/:
     post:
       tags:
         - 10. Phone
@@ -5711,7 +5711,7 @@ paths:
                   processed: 0
                   amount_charged: 0
                   error: null
-  /phone/find/bulk/{job_id}/:
+  /api/v1/phone/find/bulk/{job_id}/:
     get:
       tags:
         - 10. Phone
@@ -5765,7 +5765,7 @@ paths:
                   processed: 2
                   amount_charged: 0.4
                   error: null
-  /webhooks/:
+  /api/v1/webhooks/:
     get:
       tags:
         - 11. Webhooks
@@ -5840,7 +5840,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Webhook'
-  /webhooks/{id}/:
+  /api/v1/webhooks/{id}/:
     parameters:
       - name: id
         in: path
@@ -5984,7 +5984,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '204':
           description: Webhook removed
-  /webhooks/{id}/test/:
+  /api/v1/webhooks/{id}/test/:
     post:
       tags:
         - 11. Webhooks
