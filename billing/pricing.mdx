@@ -67,26 +67,6 @@ You enrich 100 leads in real time; 92 are found, 8 are not.
 - 8 not-found → **$0.00** (refunded)
 - `meta.amount_charged` returns `1.84`
 
-## When your balance hits $0
-
-The exact sequence, so production behavior is predictable:
-
-1. Credits are **reserved up front** when a request or bulk job is accepted — anything already accepted **runs to completion** and is never interrupted mid-flight.
-2. A submitted bulk job keeps processing even if your balance reaches $0 afterwards — its cost was reserved at submit time.
-3. **New** billable requests are rejected with `402` and `"Insufficient funds in the account."` (standard [error envelope](/api-reference/errors)) until you top up.
-4. Free endpoints (database counts, account, status polling, webhooks) keep working at $0.
-
-Enable [Auto Top-Up](/billing/managing-billing) to make this state unreachable in production.
-
-## Testing without spending
-
-There is no separate sandbox environment — the live API is safe to evaluate for free:
-
-- **Database count** endpoints are free — size any audience at $0.
-- **Preview** returns real (masked) leads at $0.002/result.
-- New accounts start with a **free starter credit**, and not-found results are never billed — a failed experiment costs nothing.
-- Every response tells you what it actually cost (`meta.amount_charged`), so a $1 test budget goes a long way.
-
 ## Keeping a positive balance
 
 API usage requires a positive balance. If it reaches $0, requests stop until you top up. Enable [Auto Top-Up](/billing/managing-billing) so production traffic never halts. New accounts start with free credit to try the API — your current balance is shown in your [billing settings](https://beta.generect.com/settings/billing).

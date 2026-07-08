@@ -32,13 +32,6 @@ The parallel-request limits above apply to **search** and **enrich** endpoints. 
 
 Limits are enforced per **API token + source IP**, per operation type. Exceeding one returns HTTP `429` — see [Errors](/api-reference/errors) — so retry with **exponential backoff**.
 
-## Batch size caps
-
-- **Bulk jobs** (enrich bulk, email find bulk, phone find bulk): up to **50 items** per request; a larger array is rejected with `400`.
-- **`POST /email/validate/`** has no fixed array cap, but it is a synchronous endpoint — response time grows with batch size. Keep batches to **~50 emails** per request and parallelize, matching the bulk-endpoint convention.
-
-Responses do not currently include `X-RateLimit-*` or `Retry-After` headers — on a `429`, apply exponential backoff (see [Errors](/api-reference/errors)).
-
 ## Capacity limits on live data
 
 Real-time single-lead enrichment and real-time search can also return `429` during exceptionally high live-source load — a temporary capacity guard, separate from the parallel limits above. Handle it the same way: back off and retry.

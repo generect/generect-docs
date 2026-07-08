@@ -65,7 +65,6 @@
               "docs/choose-the-right-workflow",
               "docs/data-coverage",
               "docs/cached-databases",
-              "docs/security-compliance",
               "docs/faq"
             ]
           },
@@ -90,7 +89,6 @@
               "api-reference/introduction",
               "api-reference/database-vs-realtime",
               "api-reference/limits",
-              "api-reference/reliability",
               "api-reference/errors",
               "api-reference/migration-guide"
             ]
