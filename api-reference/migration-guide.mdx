@@ -180,7 +180,9 @@ General changes across all endpoints:
     | Method | `POST` | `POST` |
     | Path | `/api/linkedin/leads/by_icp/` | `/api/v1/search/{database\|realtime}/leads/` |
 
-    **Request** — most filters keep their name: `locations`, `personas`, `company_locations`, `company_headcounts`, `company_types`, `limit_by`, `offset_by`, `exclude_names`, `exclude_ids`, `filter_empty_vars`, `company_link`, `company_id`. New: `job_titles`, `seniorities`, `exclude_locations`, `exclude_company_locations`, `exclude_company_industries`, `exclude_company_headcounts`, `strict`, `company_name` — not required for a straight migration, but available if useful.
+    **Request** — most filters keep their name: `locations`, `personas`, `company_locations`, `company_headcounts`, `company_types`, `limit_by`, `offset_by`, `exclude_names`, `exclude_ids`, `filter_empty_vars`, `company_link`, `company_id`.
+    
+    New: `job_titles`, `seniorities`, `exclude_locations`, `exclude_company_locations`, `exclude_company_industries`, `exclude_company_headcounts`, `strict`, `company_name` (any mode) and `keywords`, `functions` (realtime mode only) — not required for a straight migration, but available if useful.
 
     **Request field mapping:**
 
@@ -188,9 +190,10 @@ General changes across all endpoints:
     | --- | --- | --- |
     | `lead_industries` | `company_industries` | Renamed. |
     | `without_company` | — | Removed — omit all company identifiers instead. |
-    | `changed_jobs`, `posted_on_linkedin`, `mentioned_in_news`, `groups`, `schools`, `linkedin_filter_link`, `years_in_company`, `years_in_position`, `past_company_names` | same names | Realtime mode only — no longer accepted in `database` mode. |
+    | `mentioned_in_news` | — | Removed — no v1 equivalent in either mode. |
+    | `changed_jobs`, `posted_on_linkedin`, `groups`, `schools`, `linkedin_filter_link`, `years_in_company`, `years_in_position`, `past_company_names` | same names | Realtime mode only — no longer accepted in `database` mode. |
 
-    **Response:** same shape as [Enrich lead](#enrich) per item, now under `data.leads[]`. `amount` → `meta.amount_charged` (positive now); `status` removed.
+    **Response:** item field names largely match [Enrich lead](#enrich) (`title`, nested `company` object, etc.), but each item's identifier is returned as `lead_id`, not `id`. `amount` → `meta.amount_charged` (positive now); `status` removed.
 
     Full reference: [Search leads](/api-reference/endpoint/search/database-leads) · [Realtime](/api-reference/endpoint/search/realtime-leads)
   </Accordion>
@@ -212,17 +215,17 @@ General changes across all endpoints:
     | Method | `POST` | `POST` |
     | Path | `/api/linkedin/companies/by_icp/` | `/api/v1/search/{database\|realtime}/companies/` |
 
-    **Request** — most filters keep their name: `company_types`, `headcounts`, `industries`, `keywords`, `locations`, `num_of_followers`, `limit_by`, `offset_by`. New: `exclude_industries`, `exclude_locations`, `exclude_ids`, `exclude_domains`, `technologies`, `company_names`, `strict`.
+    **Request** — most filters keep their name: `company_types`, `headcounts`, `industries`, `keywords`, `locations`, `num_of_followers`, `limit_by`, `offset_by`. New: `exclude_industries`, `exclude_locations`, `exclude_ids`, `exclude_domains`, `technologies`, `company_names`, `strict` (any mode) and `revenues_range`, `department_headcount`, `headcount_growth`, `hiring_on_linkedin`, `linkedins_links` (realtime mode only).
 
     **Request field mapping:**
 
     | Old field | New field | Notes |
     | --- | --- | --- |
     | `get_max_companies` | — | Removed, no v1 equivalent. |
-    | `revenues_range` | — | Removed, no v1 equivalent. |
+    | `revenues_range` | `revenues_range` | Same `{min, max}` shape, but now realtime mode only. |
     | `website_blacklist` | — | Removed, no v1 equivalent. |
 
-    **Response:** same shape as [Enrich company](#enrich) per item, now under `data.companies[]`. `amount` → `meta.amount_charged` (positive now); `time_cached` removed.
+    **Response:** item field names largely match [Enrich company](#enrich), but each item's identifier is returned as `linkedin_id`, not `id`. `amount` → `meta.amount_charged` (positive now); `time_cached` removed.
 
     Full reference: [Search companies](/api-reference/endpoint/search/database-companies) · [Realtime](/api-reference/endpoint/search/realtime-companies)
   </Accordion>
@@ -242,7 +245,7 @@ General changes across all endpoints:
 ### Enrich
 
 <AccordionGroup>
-  <Accordion title="9. Enrich company by link">
+  <Accordion title="9. Enrich company by URL">
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
@@ -257,15 +260,16 @@ General changes across all endpoints:
 
     The new endpoint also accepts `id` (Generect internal company ID) or `name` (fuzzy match) — extra options, not required for migration.
 
-    **Response:** same field set as before (company name, domain, website, industry, description, headcount, headcount range, founded year, company type, LinkedIn URL, headquarters/country), now nested under `data`, plus a new `id` field and `meta.amount_charged`.
+    **Response:** the v1 payload is much slimmer than the legacy one — only `name`, `domain`, `industry` carry over unchanged, plus two renames and one new field. Everything else legacy returned (`website`, `description`, `headcount_range`, `founded_year`, `company_type`, `hq_city`, `hq_state`, `hq_country`, and internal fields like `hashtags`, `groups`, `tagline`) is dropped.
 
     | Old field | New field | Notes |
     | --- | --- | --- |
-    | `linkedin_id` | — | Removed — use the new `id` field instead. |
-    | `headcount_exact` | `headcount` | Renamed. |
+    | `name`, `domain`, `industry` | same names | Unchanged. |
     | `linkedin_link` | `linkedin_url` | Renamed. |
-    | `hq_city`, `hq_state`, `hq_country` | `headquarters` | Collapsed into one formatted string, e.g. `"Redmond, WA, US"`. |
-    | — | `id` | New: Generect internal company identifier. |
+    | `headcount_exact` | `headcount` | Renamed. |
+    | `linkedin_id` | — | Removed. |
+    | `website`, `description`, `headcount_range`, `founded_year`, `company_type`, `hq_city`, `hq_state`, `hq_country` | — | Removed — not part of the v1 response. |
+    | — | `id` | New: Generect internal company identifier — not the same value as the old `linkedin_id`. |
 
     **Example — before / after:**
 
@@ -293,24 +297,19 @@ General changes across all endpoints:
     ```json After (v1)
     {
       "data": {
-        "id": "1035",
+        "id": 1035,
         "name": "Microsoft",
         "domain": "microsoft.com",
-        "website": "https://microsoft.com",
         "linkedin_url": "https://www.linkedin.com/company/microsoft/",
         "industry": "Software Development",
-        "headcount": 150,
-        "headcount_range": "51-200",
-        "founded_year": 1975,
-        "company_type": "Public Company",
-        "headquarters": "Redmond, WA, US"
+        "headcount": 150
       },
       "meta": { "amount_charged": 0.04 }
     }
     ```
     </CodeGroup>
 
-    All fields stay top-level inside `data` — unlike the lead endpoint below, nothing here moves into a sub-object. Only the wrapper and the new `id`/`meta.amount_charged` fields are new.
+    All fields stay top-level inside `data` — unlike the lead endpoint below, nothing here moves into a sub-object.
 
     **Note:** there's also a [`/enrich/database/company/`](/api-reference/endpoint/enrich/enrich-database-company) variant (same request shape) that returns cached data instead of a fresh live lookup — cheaper/faster if slightly-stale data is acceptable. `realtime` is the direct successor to the old behavior.
 
@@ -329,20 +328,17 @@ General changes across all endpoints:
     ```
     (unchanged input — LinkedIn profile URL). The new endpoint also accepts `id` (Generect lead ID) or `email` (reverse lookup) as alternative identifiers.
 
-    **Response field mapping:**
+    **Response:** the v1 payload is slimmer than the legacy one — `headline` and `location` are dropped entirely, and only `id`/`name`/`domain` carry over into the new `company` object (`company_industry` is dropped, not nested).
 
     | Old field | New field | Notes |
     | --- | --- | --- |
-    | `first_name` | `data.first_name` | Unchanged. |
-    | `last_name` | `data.last_name` | Unchanged. |
+    | `first_name`, `last_name`, `linkedin_url` | same names | Unchanged. |
     | `job_title` | `data.title` | Renamed. |
-    | `headline` | `data.headline` | Unchanged, when available per profile. |
-    | `linkedin_url` | `data.linkedin_url` | Unchanged. |
-    | `location` | `data.location` | Unchanged. |
     | `company_name` | `data.company.name` | Now nested inside `company` object. |
     | `company_website` | `data.company.domain` | Now nested inside `company` object. |
-    | `company_industry` | `data.company.industry` | Now nested inside `company` object. |
+    | `headline`, `location`, `company_industry` | — | Removed — not part of the v1 response. |
     | — | `data.company.id` | New: Generect internal company ID. |
+    | — | `data.work_history`, `data.education`, `data.skills` | New: arrays, empty unless populated. |
 
     **Example — before / after:**
 
@@ -367,26 +363,24 @@ General changes across all endpoints:
     ```json After (v1)
     {
       "data": {
-        "id": "ACwAAAE9bk0BxY7Qf2mN...",
+        "id": "ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9",
         "first_name": "Jordan",
         "last_name": "Ellis",
         "title": "CEO",
-        "headline": "CEO at Microsoft",
         "linkedin_url": "https://www.linkedin.com/in/jordan-ellis",
-        "location": "Seattle, WA",
         "company": {
           "id": 1035,
           "name": "Microsoft",
-          "domain": "microsoft.com",
-          "industry": "Software Development"
-        }
+          "domain": "microsoft.com"
+        },
+        "work_history": [],
+        "education": [],
+        "skills": []
       },
       "meta": { "amount_charged": 0.04 }
     }
     ```
     </CodeGroup>
-
-    All top-level lead fields stay the same, except the three company fields (`company_name`, `company_website`, `company_industry`) — those moved into `data.company.{name, domain, industry}`, plus a new `company.id` and top-level `meta.amount_charged`.
 
     **Note:** there's also a [`/enrich/database/lead/`](/api-reference/endpoint/enrich/enrich-database-lead) variant (cached data, cheaper) — `realtime` is the direct successor to the old behavior.
 
@@ -515,7 +509,13 @@ General changes across all endpoints:
     ```json After (v1)
     {
       "data": [
-        { "email": "jkennedy@platformscience.com", "result": "valid", "exist": "yes", "catch_all": false, "error": null }
+        { 
+          "email": "jkennedy@platformscience.com", 
+          "result": "valid", 
+          "exist": "yes", 
+          "catch_all": false, 
+          "error": null
+        }
       ],
       "meta": { "amount_charged": 0.01 }
     }
