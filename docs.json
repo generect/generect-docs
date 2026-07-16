@@ -65,6 +65,7 @@
               "docs/choose-the-right-workflow",
               "docs/data-coverage",
               "docs/cached-databases",
+              "docs/security-compliance",
               "docs/faq"
             ]
           },
@@ -87,8 +88,10 @@
             "group": "API Reference",
             "pages": [
               "api-reference/introduction",
+              "api-reference/quickstart",
               "api-reference/database-vs-realtime",
               "api-reference/limits",
+              "api-reference/reliability",
               "api-reference/errors",
               "api-reference/migration-guide"
             ]
