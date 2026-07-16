@@ -49,6 +49,22 @@ A few things work differently on Generect — knowing them up front makes the ma
   Records carry a stable `id` across Preview, Search, and Enrich. Find leads with a cheap [Preview](/api-reference/endpoint/preview/preview-leads) or database search, then pass the `id` into Enrich or Email Finder instead of re-sending name and company.
 </Tip>
 
+## From the legacy Generect API
+
+If you integrated before the v1 namespaces, the old `/api/linkedin/...` routes map 1:1 onto the current API — same token auth, richer responses:
+
+| Legacy | Current |
+| --- | --- |
+| `POST /api/linkedin/leads/by_icp/` | [`POST /search/realtime/leads/`](/api-reference/endpoint/search/realtime-leads) (or `database` mode) |
+| `POST /api/linkedin/leads/by_icp/get_count/` | [`POST /search/{mode}/leads/count/`](/api-reference/endpoint/search/count-database-leads) |
+| `POST /api/linkedin/leads/by_link/` | [`POST /enrich/realtime/lead/`](/api-reference/endpoint/enrich/enrich-realtime-lead) |
+| `POST /api/linkedin/companies/by_icp/` | [`POST /search/{mode}/companies/`](/api-reference/endpoint/search/database-companies) |
+| `POST /api/linkedin/companies/by_link/` | [`POST /enrich/realtime/company/`](/api-reference/endpoint/enrich/enrich-realtime-company) |
+| `POST /api/linkedin/email_finder/` | [`POST /email/find/`](/api-reference/endpoint/emails/email-finder) |
+| `POST /api/linkedin/email_validator/` | [`POST /email/validate/`](/api-reference/endpoint/emails/email-validation) |
+
+The v1 routes add `meta.amount_charged` (real USD per call), bulk variants, and webhooks.
+
 ## A typical migration path
 
 1. Swap your auth to the `Authorization: Token` header.
