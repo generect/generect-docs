@@ -1,7 +1,7 @@
 ---
 title: 'Migration Guide'
 icon: 'right-left'
-description: 'Moving from Apollo, Hunter, or ZoomInfo to the Generect API'
+description: 'Moving from Apollo, Hunter, or ZoomInfo — or from our own legacy endpoints — to the Generect API'
 ---
 
 Already integrated with another data provider? Most concepts map directly onto Generect endpoints. Start here, then open the matching endpoint reference for request and response details.
@@ -49,21 +49,540 @@ A few things work differently on Generect — knowing them up front makes the ma
   Records carry a stable `id` across Preview, Search, and Enrich. Find leads with a cheap [Preview](/api-reference/endpoint/preview/preview-leads) or database search, then pass the `id` into Enrich or Email Finder instead of re-sending name and company.
 </Tip>
 
-## From the legacy Generect API
+## Migrating from our legacy endpoints
 
-If you integrated before the v1 namespaces, the old `/api/linkedin/...` routes map 1:1 onto the current API — same token auth, richer responses:
+This section maps all legacy `api` endpoints to their `api/v1` replacements.
 
-| Legacy | Current |
+- **Base URL** — unchanged: `https://api.generect.com` (only the path structure changed)
+- **Auth** — unchanged: header `Authorization: Token <your_api_token>`
+
+<Warning>
+  The four legacy `by_icp` search endpoints are already marked `deprecated` in the API spec. They still work today, but migrate these first.
+</Warning>
+
+General changes across all endpoints:
+
+1. Old paths were under `/api/...`. New paths are versioned under `/api/v1/...` and grouped by resource (`email`, `enrich`, `search`, `accounts`).
+2. Every new response is wrapped in a top-level object:
+   ```json
+   { "data": { ... }, "meta": { "amount_charged": 0.02 } }
+   ```
+   Previously the payload was returned flat (no `data`/`meta` wrapper). Update your response parsing to read from `response.data` and `response.meta`.
+3. Billing/pricing behavior is unchanged: you're only charged when a valid result is found (`meta.amount_charged = 0` otherwise).
+4. New endpoints accept multiple identifier types in one endpoint (send only ONE per request) instead of separate endpoints per identifier type.
+
+### Auth & Account
+
+<AccordionGroup>
+  <Accordion title="1. Token login — retired, no v1 equivalent">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | *(none)* |
+    | Path | `/api/auth/token/login/` | *(none)* |
+
+    v1 has no login flow — every request authenticates with a static API key from [account settings](https://beta.generect.com/settings/billing), sent as `Authorization: Token <key>`. Drop the login call and store the key directly.
+  </Accordion>
+
+  <Accordion title="2. Get account profile">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `GET` | `GET` |
+    | Path | `/api/auth/users/me/` | `/api/v1/accounts/me/` |
+
+    **Response field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `email` | `data.email` | Unchanged. |
+    | `full_name` | `data.name` | Renamed. |
+    | `subscription` | `data.plan` | Renamed. |
+    | `balance_platform`, `max_credits`, `blocked_balance_platform` | `data.credits.{balance, used_this_month, monthly_limit}` | Dozens of per-operation `balance_*` fields collapse into one `credits` object. |
+    | `balance_leads_by_icp`, `balance_email_finder`, etc. | — | Removed — see [Usage](/api-reference/endpoint/accounts/get-account-usage) instead. |
+    | — | `data.id` | New: stable account identifier. |
+    | — | `data.preview_tier` | New: whether the account is eligible for Preview endpoints. |
+
+    **Example — before / after:**
+
+    <CodeGroup>
+    ```json Before (legacy)
+    {
+      "email": "admin@example.com",
+      "full_name": "",
+      "subscription": "Business",
+      "balance_platform": 8531,
+      "max_credits": 10000,
+      "balance_leads_by_icp": -1719,
+      "balance_email_finder": 0
+    }
+    ```
+
+    ```json After (v1)
+    {
+      "data": {
+        "id": "usr_8f2a1c",
+        "email": "admin@example.com",
+        "name": "",
+        "plan": "Business",
+        "credits": { "balance": 8531, "used_this_month": 1719, "monthly_limit": 10000 },
+        "preview_tier": true
+      }
+    }
+    ```
+    </CodeGroup>
+
+    Full reference: [Get Account](/api-reference/endpoint/accounts/get-account-me)
+  </Accordion>
+
+  <Accordion title="3. List transactions">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `GET` | `GET` |
+    | Path | `/api/auth/transactions/` | `/api/v1/accounts/transactions/` |
+
+    **Response field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `results[].id` | `data.transactions[].id` | Unchanged. |
+    | `results[].created_at` | `data.transactions[].timestamp` | Renamed. |
+    | `results[].amount` | `data.transactions[].credits` | Renamed. |
+    | `results[].balance_type` | `data.transactions[].type` | Renamed. |
+    | `results[].status` | `data.transactions[].details.status` | Nested. |
+    | `results[].updated_at`, `description`, `after_balance` | — | Removed. |
+    | `count`, `limit`, `offset`, `next`, `previous` | — | Pagination params changed — see full reference. |
+
+    Full reference: [List Transactions](/api-reference/endpoint/accounts/get-account-transactions)
+  </Accordion>
+
+  <Accordion title="4. Spent credits → Usage">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `GET` | `GET` |
+    | Path | `/api/auth/transactions/spent_credits/` | `/api/v1/accounts/usage/` |
+
+    **Response field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `spent_credits[date][old_endpoint_path]` | `data.breakdown{operation_type: credits}` | Keyed by operation type instead of a raw legacy path; one `period` per call instead of a full multi-period map. |
+    | `total_spent_credits` | `data.total_credits` | Renamed, now positive. |
+
+    Full reference: [Usage](/api-reference/endpoint/accounts/get-account-usage)
+  </Accordion>
+</AccordionGroup>
+
+### Search (ICP)
+
+<AccordionGroup>
+  <Accordion title="5. Search leads by ICP">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/leads/by_icp/` | `/api/v1/search/{database\|realtime}/leads/` |
+
+    **Request** — most filters keep their name: `locations`, `personas`, `company_locations`, `company_headcounts`, `company_types`, `limit_by`, `offset_by`, `exclude_names`, `exclude_ids`, `filter_empty_vars`, `company_link`, `company_id`.
+    
+    New: `job_titles`, `seniorities`, `exclude_locations`, `exclude_company_locations`, `exclude_company_industries`, `exclude_company_headcounts`, `strict`, `company_name` (any mode) and `keywords`, `functions` (realtime mode only) — not required for a straight migration, but available if useful.
+
+    **Request field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `lead_industries` | `company_industries` | Renamed. |
+    | `without_company` | — | Removed — omit all company identifiers instead. |
+    | `mentioned_in_news` | — | Removed — no v1 equivalent in either mode. |
+    | `changed_jobs`, `posted_on_linkedin`, `groups`, `schools`, `linkedin_filter_link`, `years_in_company`, `years_in_position`, `past_company_names` | same names | Realtime mode only — no longer accepted in `database` mode. |
+
+    **Response:** item field names largely match [Enrich lead](#enrich) (`title`, nested `company` object, etc.), but each item's identifier is returned as `lead_id`, not `id`. `amount` → `meta.amount_charged` (positive now); `status` removed.
+
+    Full reference: [Search leads](/api-reference/endpoint/search/database-leads) · [Realtime](/api-reference/endpoint/search/realtime-leads)
+  </Accordion>
+
+  <Accordion title="6. Count leads by ICP">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/leads/by_icp/get_count/` | `/api/v1/search/{database\|realtime}/leads/count/` |
+
+    Same request filters as Search leads. `results_count`/`status` → `data.results_count`. Database-mode counts are always free; realtime counts are billable.
+
+    Full reference: [Count leads](/api-reference/endpoint/search/count-database-leads) · [Realtime](/api-reference/endpoint/search/count-realtime-leads)
+  </Accordion>
+
+  <Accordion title="7. Search companies by ICP">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/companies/by_icp/` | `/api/v1/search/{database\|realtime}/companies/` |
+
+    **Request** — most filters keep their name: `company_types`, `headcounts`, `industries`, `keywords`, `locations`, `num_of_followers`, `limit_by`, `offset_by`. New: `exclude_industries`, `exclude_locations`, `exclude_ids`, `exclude_domains`, `technologies`, `company_names`, `strict` (any mode) and `revenues_range`, `department_headcount`, `headcount_growth`, `hiring_on_linkedin`, `linkedins_links` (realtime mode only).
+
+    **Request field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `get_max_companies` | — | Removed, no v1 equivalent. |
+    | `revenues_range` | `revenues_range` | Same `{min, max}` shape, but now realtime mode only. |
+    | `website_blacklist` | — | Removed, no v1 equivalent. |
+
+    **Response:** item field names largely match [Enrich company](#enrich), but each item's identifier is returned as `linkedin_id`, not `id`. `amount` → `meta.amount_charged` (positive now); `time_cached` removed.
+
+    Full reference: [Search companies](/api-reference/endpoint/search/database-companies) · [Realtime](/api-reference/endpoint/search/realtime-companies)
+  </Accordion>
+
+  <Accordion title="8. Count companies by ICP">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/companies/by_icp/get_count/` | `/api/v1/search/{database\|realtime}/companies/count/` |
+
+    Same request filters as Search companies. `results_count` → `data.results_count`. Database-mode counts are always free; realtime counts are billable.
+
+    Full reference: [Count companies](/api-reference/endpoint/search/count-database-companies) · [Realtime](/api-reference/endpoint/search/count-realtime-companies)
+  </Accordion>
+</AccordionGroup>
+
+### Enrich
+
+<AccordionGroup>
+  <Accordion title="9. Enrich company by URL">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/companies/by_link/` | `/api/v1/enrich/{database\|realtime}/company/` |
+
+    **Request** — send exactly ONE identifier field (was: LinkedIn company URL / company website):
+
+    | Old input | New field |
+    | --- | --- |
+    | LinkedIn company URL | `linkedin_url` |
+    | Company website | `domain` |
+
+    The new endpoint also accepts `id` (Generect internal company ID) or `name` (fuzzy match) — extra options, not required for migration.
+
+    **Response:** the v1 payload is much slimmer than the legacy one — only `name`, `domain`, `industry` carry over unchanged, plus two renames and one new field. Everything else legacy returned (`website`, `description`, `headcount_range`, `founded_year`, `company_type`, `hq_city`, `hq_state`, `hq_country`, and internal fields like `hashtags`, `groups`, `tagline`) is dropped.
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `name`, `domain`, `industry` | same names | Unchanged. |
+    | `linkedin_link` | `linkedin_url` | Renamed. |
+    | `headcount_exact` | `headcount` | Renamed. |
+    | `linkedin_id` | — | Removed. |
+    | `website`, `description`, `headcount_range`, `founded_year`, `company_type`, `hq_city`, `hq_state`, `hq_country` | — | Removed — not part of the v1 response. |
+    | — | `id` | New: Generect internal company identifier — not the same value as the old `linkedin_id`. |
+
+    **Example — before / after:**
+
+    <CodeGroup>
+    ```json Before (legacy)
+    {
+      "amount": -1,
+      "company": {
+        "name": "Microsoft",
+        "domain": "microsoft.com",
+        "website": "https://microsoft.com",
+        "industry": "Software Development",
+        "headcount_exact": 150,
+        "headcount_range": "51-200",
+        "founded_year": 1975,
+        "company_type": "Public Company",
+        "linkedin_link": "https://www.linkedin.com/company/microsoft/",
+        "hq_city": "Redmond",
+        "hq_state": "WA",
+        "hq_country": "US"
+      }
+    }
+    ```
+
+    ```json After (v1)
+    {
+      "data": {
+        "id": 1035,
+        "name": "Microsoft",
+        "domain": "microsoft.com",
+        "linkedin_url": "https://www.linkedin.com/company/microsoft/",
+        "industry": "Software Development",
+        "headcount": 150
+      },
+      "meta": { "amount_charged": 0.04 }
+    }
+    ```
+    </CodeGroup>
+
+    All fields stay top-level inside `data` — unlike the lead endpoint below, nothing here moves into a sub-object.
+
+    **Note:** there's also a [`/enrich/database/company/`](/api-reference/endpoint/enrich/enrich-database-company) variant (same request shape) that returns cached data instead of a fresh live lookup — cheaper/faster if slightly-stale data is acceptable. `realtime` is the direct successor to the old behavior.
+
+    Full reference: [Enrich company (realtime)](/api-reference/endpoint/enrich/enrich-realtime-company)
+  </Accordion>
+
+  <Accordion title="10. Enrich lead by LinkedIn URL">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/leads/by_link/` | `/api/v1/enrich/{database\|realtime}/lead/` |
+  
+    **Request:**
+    ```json
+    { "linkedin_url": "https://www.linkedin.com/in/jordan-ellis" }
+    ```
+    (unchanged input — LinkedIn profile URL). The new endpoint also accepts `id` (Generect lead ID) or `email` (reverse lookup) as alternative identifiers.
+
+    **Response:** the v1 payload is slimmer than the legacy one — `headline` and `location` are dropped entirely, and only `id`/`name`/`domain` carry over into the new `company` object (`company_industry` is dropped, not nested).
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `first_name`, `last_name`, `linkedin_url` | same names | Unchanged. |
+    | `job_title` | `data.title` | Renamed. |
+    | `company_name` | `data.company.name` | Now nested inside `company` object. |
+    | `company_website` | `data.company.domain` | Now nested inside `company` object. |
+    | `headline`, `location`, `company_industry` | — | Removed — not part of the v1 response. |
+    | — | `data.company.id` | New: Generect internal company ID. |
+    | — | `data.work_history`, `data.education`, `data.skills` | New: arrays, empty unless populated. |
+
+    **Example — before / after:**
+
+    <CodeGroup>
+    ```json Before (legacy)
+    {
+      "amount": -2,
+      "lead": {
+        "first_name": "Jordan",
+        "last_name": "Ellis",
+        "job_title": "CEO",
+        "headline": "CEO at Microsoft",
+        "linkedin_url": "https://www.linkedin.com/in/jordan-ellis",
+        "location": "Seattle, WA",
+        "company_name": "Microsoft",
+        "company_website": "microsoft.com",
+        "company_industry": "Software Development"
+      }
+    }
+    ```
+
+    ```json After (v1)
+    {
+      "data": {
+        "id": "ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9",
+        "first_name": "Jordan",
+        "last_name": "Ellis",
+        "title": "CEO",
+        "linkedin_url": "https://www.linkedin.com/in/jordan-ellis",
+        "company": {
+          "id": 1035,
+          "name": "Microsoft",
+          "domain": "microsoft.com"
+        },
+        "work_history": [],
+        "education": [],
+        "skills": []
+      },
+      "meta": { "amount_charged": 0.04 }
+    }
+    ```
+    </CodeGroup>
+
+    **Note:** there's also a [`/enrich/database/lead/`](/api-reference/endpoint/enrich/enrich-database-lead) variant (cached data, cheaper) — `realtime` is the direct successor to the old behavior.
+
+    Full reference: [Enrich lead (realtime)](/api-reference/endpoint/enrich/enrich-realtime-lead)
+  </Accordion>
+</AccordionGroup>
+
+### Email
+
+<AccordionGroup>
+  <Accordion title="11. Find email by name and domain">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/email_finder/` | `/api/v1/email/find/` |
+
+    **Request** — same 3 fields, unchanged:
+    ```json
+    {
+      "first_name": "Jack",
+      "last_name": "Kennedy",
+      "domain": "platformscience.com"
+    }
+    ```
+    The new endpoint also supports finding an email by `lead_id` or `linkedin_url` instead of name + domain — not required for a straight migration, but available if useful.
+
+    **Response field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `valid_email` | `data.valid_email` | `null` if not found. |
+    | `result` | `data.result` | `"valid"` / `"invalid"` / `"unknown"`. |
+    | `catch_all` | `data.catch_all` | Now a real boolean, not the string `"true"`/`"false"`. |
+    | `email_format` | `data.email_format` | Unchanged. |
+    | `exist` | `data.result` | Merged into `result` — a separate boolean is no longer returned. |
+    | `mx_domain` | `data.mx_domain` | Unchanged. |
+    | `first_name`, `last_name`, `domain` | — | No longer echoed back — you already have them from the request. |
+    | `error`, `logs` | — | Removed. |
+    | — | `meta.amount_charged` | New: cost of this call in USD. |
+
+    **Example — before / after:**
+
+    <CodeGroup>
+    ```json Before (legacy)
+    [{
+      "first_name": "Jack",
+      "last_name": "Kennedy",
+      "domain": "platformscience.com",
+      "result": "valid",
+      "catch_all": "true",
+      "error": null,
+      "valid_email": "jkennedy@platformscience.com",
+      "source": "name2email",
+      "email_format": "flast",
+      "mx_domain": "pphosted.com",
+      "logs": "get mx_record: pphosted.com",
+      "exist": "yes"
+    }]
+    ```
+
+    ```json After (v1)
+    {
+      "data": {
+        "valid_email": "jkennedy@platformscience.com",
+        "result": "valid",
+        "catch_all": false,
+        "source": "name2email",
+        "email_format": "flast",
+        "mx_domain": "pphosted.com"
+      },
+      "meta": { "amount_charged": 0.02 }
+    }
+    ```
+    </CodeGroup>
+
+    **Note:** legacy accepted a batch array in one call; v1 is single-item — use the [bulk endpoint](/api-reference/endpoint/emails/email-finder-bulk) for batches instead of looping.
+
+    Full reference: [Email Finder](/api-reference/endpoint/emails/email-finder)
+  </Accordion>
+
+  <Accordion title="12. Validate emails">
+    |  | Old | New |
+    | --- | --- | --- |
+    | Method | `POST` | `POST` |
+    | Path | `/api/linkedin/email_validator/` | `/api/v1/email/validate/` |
+
+    **Request** — legacy took a bare array of email strings; v1 requires an object wrapper:
+
+    <CodeGroup>
+    ```json Before (legacy)
+    ["jkennedy@platformscience.com"]
+    ```
+
+    ```json After (v1)
+    { "emails": ["jkennedy@platformscience.com"] }
+    ```
+    </CodeGroup>
+
+    **Response field mapping:**
+
+    | Old field | New field | Notes |
+    | --- | --- | --- |
+    | `email` | `data[].email` | Unchanged. |
+    | `result` | `data[].result` | Unchanged. |
+    | `catch_all` | `data[].catch_all` | Unchanged. |
+    | `exist` | `data[].exist` | Unchanged. |
+    | `error` | `data[].error` | Unchanged, `null` on success. |
+    | `source`, `mx_domain`, `logs` | — | Removed. |
+    | — | `meta.amount_charged` | New: cost of this call, billed per email validated. |
+
+    **Example — before / after:**
+
+    <CodeGroup>
+    ```json Before (legacy)
+    [{
+      "result": "valid",
+      "catch_all": "true",
+      "error": null,
+      "source": "name2email",
+      "mx_domain": "pphosted.com",
+      "exist": "yes",
+      "email": "jkennedy@platformscience.com"
+    }]
+    ```
+
+    ```json After (v1)
+    {
+      "data": [
+        { 
+          "email": "jkennedy@platformscience.com", 
+          "result": "valid", 
+          "exist": "yes", 
+          "catch_all": false, 
+          "error": null
+        }
+      ],
+      "meta": { "amount_charged": 0.01 }
+    }
+    ```
+    </CodeGroup>
+
+    Full reference: [Email Validation](/api-reference/endpoint/emails/email-validation)
+  </Accordion>
+</AccordionGroup>
+
+### Quick reference
+
+| # | Old endpoint | New endpoint |
+| --- | --- | --- |
+| 1 | `POST /api/auth/token/login/` | *(retired — use a static API key)* |
+| 2 | `GET /api/auth/users/me/` | [`GET /api/v1/accounts/me/`](/api-reference/endpoint/accounts/get-account-me) |
+| 3 | `GET /api/auth/transactions/` | [`GET /api/v1/accounts/transactions/`](/api-reference/endpoint/accounts/get-account-transactions) |
+| 4 | `GET /api/auth/transactions/spent_credits/` | [`GET /api/v1/accounts/usage/`](/api-reference/endpoint/accounts/get-account-usage) |
+| 5 | `POST /api/linkedin/leads/by_icp/` | [`POST /api/v1/search/{database\|realtime}/leads/`](/api-reference/endpoint/search/database-leads) |
+| 6 | `POST /api/linkedin/leads/by_icp/get_count/` | [`POST /api/v1/search/{database\|realtime}/leads/count/`](/api-reference/endpoint/search/count-database-leads) |
+| 7 | `POST /api/linkedin/companies/by_icp/` | [`POST /api/v1/search/{database\|realtime}/companies/`](/api-reference/endpoint/search/database-companies) |
+| 8 | `POST /api/linkedin/companies/by_icp/get_count/` | [`POST /api/v1/search/{database\|realtime}/companies/count/`](/api-reference/endpoint/search/count-database-companies) |
+| 9 | `POST /api/linkedin/companies/by_link/` | [`POST /api/v1/enrich/{database\|realtime}/company/`](/api-reference/endpoint/enrich/enrich-realtime-company) |
+| 10 | `POST /api/linkedin/leads/by_link/` | [`POST /api/v1/enrich/{database\|realtime}/lead/`](/api-reference/endpoint/enrich/enrich-realtime-lead) |
+| 11 | `POST /api/linkedin/email_finder/` | [`POST /api/v1/email/find/`](/api-reference/endpoint/emails/email-finder) |
+| 12 | `POST /api/linkedin/email_validator/` | [`POST /api/v1/email/validate/`](/api-reference/endpoint/emails/email-validation) |
+
+### Error handling
+
+Every v1 endpoint uses the same [error envelope](/api-reference/errors):
+```json
+{
+  "status": "error",
+  "status_code": "...",
+  "detail": "..."
+}
+```
+
+| Code | Meaning |
 | --- | --- |
-| `POST /api/linkedin/leads/by_icp/` | [`POST /search/realtime/leads/`](/api-reference/endpoint/search/realtime-leads) (or `database` mode) |
-| `POST /api/linkedin/leads/by_icp/get_count/` | [`POST /search/{mode}/leads/count/`](/api-reference/endpoint/search/count-database-leads) |
-| `POST /api/linkedin/leads/by_link/` | [`POST /enrich/realtime/lead/`](/api-reference/endpoint/enrich/enrich-realtime-lead) |
-| `POST /api/linkedin/companies/by_icp/` | [`POST /search/{mode}/companies/`](/api-reference/endpoint/search/database-companies) |
-| `POST /api/linkedin/companies/by_link/` | [`POST /enrich/realtime/company/`](/api-reference/endpoint/enrich/enrich-realtime-company) |
-| `POST /api/linkedin/email_finder/` | [`POST /email/find/`](/api-reference/endpoint/emails/email-finder) |
-| `POST /api/linkedin/email_validator/` | [`POST /email/validate/`](/api-reference/endpoint/emails/email-validation) |
+| `400` | Validation error or insufficient account balance. |
+| `401` | Missing or invalid API token. |
+| `403` | Account/plan doesn't have access to this endpoint. |
+| `429` | Rate limit exceeded. |
 
-The v1 routes add `meta.amount_charged` (real USD per call), bulk variants, and webhooks.
+### Migration checklist
+
+<Steps>
+  <Step title="Get a static API key">
+    If you're still calling `/api/auth/token/login/`, stop — grab a key from [account settings](https://beta.generect.com/settings/billing) and send it as `Authorization: Token <key>` on every request.
+  </Step>
+  <Step title="Swap paths">
+    Replace each legacy path with its `/api/v1/...` equivalent from the [Quick reference](#quick-reference) table above.
+  </Step>
+  <Step title="Update response parsing">
+    Read results from `data` and cost from `meta.amount_charged` instead of a flat payload or a negative root-level `amount`.
+  </Step>
+  <Step title="Update nested field reads">
+    Change flattened reads like `lead.company_name` to `data.company.name` — see each endpoint's field mapping table above.
+  </Step>
+  <Step title="Prioritize the deprecated search endpoints">
+    Migrate the four `by_icp` endpoints first — they're already flagged `deprecated` in the API spec.
+  </Step>
+  <Step title="Test in database mode, then go live">
+    Validate with a free `database` count, then read [Limits](/api-reference/limits) and [Errors](/api-reference/errors) before production.
+  </Step>
+</Steps>
 
 ## A typical migration path
 
