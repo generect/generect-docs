@@ -6385,6 +6385,16 @@ components:
         - $ref: '#/components/schemas/CompanySearchRequest'
         - type: object
           properties:
+            sub_industries:
+              type: boolean
+              default: false
+              description: >-
+                Controls how the `industries` filter maps onto LinkedIn's industry
+                taxonomy. By default (`false`), a selected industry also matches
+                companies in its sub-industries. Set to `true` to match only the
+                industries you specify and exclude their sub-industries, for finer
+                sub-category targeting — for example, "Manufacturing" without
+                "Chemicals". Available on real-time company search only.
             revenues_range:
               type: object
               description: 'Revenue filter with min/max (e.g. {"min": 1000000, "max": 50000000}).'
