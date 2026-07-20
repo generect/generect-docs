@@ -58,10 +58,10 @@ Same filters against [`/search/database/leads/`](/api-reference/endpoint/search/
 resp = requests.post(
     f"{BASE}/search/database/leads/",
     headers=HEADERS,
-    json={"job_titles": ["marketing manager"], "locations": ["Germany"], "per_page": 10},
+    json={"job_titles": ["marketing manager"], "locations": ["Germany"], "limit_by": 10},
 ).json()
 
-leads = resp["data"]
+leads = resp["data"]["leads"]
 print(len(leads), "leads for", resp["meta"]["amount_charged"], "USD")
 ```
 
@@ -69,10 +69,11 @@ print(len(leads), "leads for", resp["meta"]["amount_charged"], "USD")
 const resp = await fetch(`${BASE}/search/database/leads/`, {
   method: "POST",
   headers: HEADERS,
-  body: JSON.stringify({ job_titles: ["marketing manager"], locations: ["Germany"], per_page: 10 }),
+  body: JSON.stringify({ job_titles: ["marketing manager"], locations: ["Germany"], limit_by: 10 }),
 }).then((r) => r.json());
 
-console.log(resp.data.length, "leads for", resp.meta.amount_charged, "USD");
+const leads = resp.data.leads;
+console.log(leads.length, "leads for", resp.meta.amount_charged, "USD");
 ```
 
 </CodeGroup>
@@ -97,7 +98,7 @@ print(email)
 const email = await fetch(`${BASE}/email/find/`, {
   method: "POST",
   headers: HEADERS,
-  body: JSON.stringify({ lead_id: resp.data[0].id }),
+  body: JSON.stringify({ lead_id: leads[0].id }),
 }).then((r) => r.json());
 console.log(email);
 ```
