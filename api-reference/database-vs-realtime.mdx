@@ -43,7 +43,7 @@ POST /enrich/database/company/    POST /enrich/realtime/company/
 
 **Leads:** `job_titles`, `seniorities`, `locations`, `exclude_locations`, `company_locations`, `exclude_company_locations`, `company_industries`, `exclude_company_industries`, `company_headcounts`, `exclude_company_headcounts`, `company_types` — plus targeting a single company via `company_id`, `company_link`, or `company_name`.
 
-**Companies:** `industries`, `exclude_industries`, `headcounts`, `locations`, `exclude_locations`, `company_types`.
+**Companies:** `industries`, `exclude_industries`, `headcounts`, `locations`, `exclude_locations`, `company_types`. The `sub_industries` toggle is also accepted here and behaves the same as in real-time mode (it modifies `industries` rather than counting as a filter on its own).
 
 Anything outside this set is rejected with `400` and a message pointing to the realtime endpoint, so a filter is never silently ignored. At least one search filter is always required.
 
