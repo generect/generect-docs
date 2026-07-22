@@ -6218,10 +6218,14 @@ components:
           description: 'Skip leads where these fields are empty. Options: job_started_on, profile_photo, started_at_position, company_website.'
         limit_by:
           type: integer
-          description: Maximum number of leads to return.
+          description: >-
+            Maximum number of leads to return. For filter-only searches
+            (no company_id/company_link/company_name) the maximum is 2400.
         offset_by:
           type: integer
-          description: Number of leads to skip (for pagination).
+          description: >-
+            Number of leads to skip (for pagination). For filter-only
+            searches the maximum is 2399.
         strict:
           type: array
           items:
