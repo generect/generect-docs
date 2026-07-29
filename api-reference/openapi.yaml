@@ -4890,6 +4890,10 @@ paths:
                       type: string
                       description: Lead's last name.
                       example: Doe
+                    middle_name:
+                      type: string
+                      description: Lead's middle name. Optional; used to widen the pattern set when the company uses middle names.
+                      example: A.
                     domain:
                       type: string
                       description: Company domain used to generate the email pattern.
@@ -4999,6 +5003,9 @@ paths:
                           first_name:
                             type: string
                             description: Lead's first name.
+                          middle_name:
+                            type: string
+                            description: Lead's middle name. Optional.
                           last_name:
                             type: string
                             description: Lead's last name.
