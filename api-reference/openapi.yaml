@@ -6111,6 +6111,11 @@ paths:
                       - phone.find.bulk.completed
                       - enrich.lead.bulk.completed
                       - enrich.company.bulk.completed
+                      - status.incident.created
+                      - status.incident.updated
+                      - status.incident.resolved
+                      - status.maintenance.started
+                      - status.maintenance.completed
                   example:
                     - email.find.bulk.completed
                 secret:
@@ -6129,7 +6134,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed', 'status.incident.created', 'status.incident.resolved', 'status.incident.updated', 'status.maintenance.completed', 'status.maintenance.started']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6193,6 +6198,11 @@ paths:
                       - phone.find.bulk.completed
                       - enrich.lead.bulk.completed
                       - enrich.company.bulk.completed
+                      - status.incident.created
+                      - status.incident.updated
+                      - status.incident.resolved
+                      - status.maintenance.started
+                      - status.maintenance.completed
                 secret:
                   type: string
       responses:
@@ -6207,7 +6217,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed', 'status.incident.created', 'status.incident.resolved', 'status.incident.updated', 'status.maintenance.completed', 'status.maintenance.started']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6243,6 +6253,11 @@ paths:
                       - phone.find.bulk.completed
                       - enrich.lead.bulk.completed
                       - enrich.company.bulk.completed
+                      - status.incident.created
+                      - status.incident.updated
+                      - status.incident.resolved
+                      - status.maintenance.started
+                      - status.maintenance.completed
                 secret:
                   type: string
       responses:
@@ -6257,7 +6272,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed', 'status.incident.created', 'status.incident.resolved', 'status.incident.updated', 'status.maintenance.completed', 'status.maintenance.started']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
