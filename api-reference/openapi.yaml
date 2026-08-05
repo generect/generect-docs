@@ -4976,20 +4976,97 @@ paths:
       tags:
         - 8. Accounts
       summary: Get account transactions
-      description: Retrieve account credit transaction history.
+      description: >-
+        Your billing history: every charge and top-up on the account, newest
+        first.
+
+
+        Filters combine with AND and are applied before paging. Every `__gte` /
+        `__lte` parameter below has a `__gt` / `__lt` twin if you need to
+        exclude the boundary itself, and `amount` also answers to `credits`,
+        the name the response gives it.
+
+
+        One thing to watch: a value we cannot read — a misspelled status, a
+        malformed date — is dropped rather than refused, so you get a `200`
+        with that condition quietly missing. If a filtered call returns more
+        than you expected, check your parameter spelling first.
       parameters:
         - name: limit
           in: query
           required: false
+          description: How many transactions to return.
           schema:
             type: integer
             default: 100
         - name: offset
           in: query
           required: false
+          description: How many to skip, for paging through a long history.
           schema:
             type: integer
             default: 0
+        - name: created_at__gte
+          in: query
+          required: false
+          description: >-
+            Start of the period you want. Pair it with `created_at__lte` to get
+            a single month or billing cycle.
+          schema:
+            type: string
+            format: date-time
+          example: '2026-05-01T00:00:00Z'
+        - name: created_at__lte
+          in: query
+          required: false
+          description: >-
+            End of the period, included. A bare date means midnight, so use
+            `2026-05-31T23:59:59` to keep the last day.
+          schema:
+            type: string
+            format: date-time
+          example: '2026-05-31T23:59:59Z'
+        - name: status
+          in: query
+          required: false
+          description: >-
+            Settled charges are `success`. `pending` is money reserved for a
+            request still in flight, and `error` charges were reversed — leave
+            both out when you reconcile spend.
+          schema:
+            type: string
+            enum: [pending, success, error]
+        - name: amount__lte
+          in: query
+          required: false
+          description: >-
+            Charges at least this large. Charges are negative, so
+            `amount__lte=-10` finds everything that cost 10 or more.
+          schema:
+            type: number
+          example: -10
+        - name: amount__gte
+          in: query
+          required: false
+          description: >-
+            The other side of the same window — use both to isolate a band, or
+            this one alone with a positive value to see only top-ups.
+          schema:
+            type: number
+        - name: after_balance__lte
+          in: query
+          required: false
+          description: >-
+            Transactions that left the balance at or below this figure. Handy
+            for finding the moment an account started running low.
+          schema:
+            type: number
+        - name: after_balance__gte
+          in: query
+          required: false
+          description: Transactions that left the balance at or above this figure.
+          schema:
+            type: number
       responses:
         '401':
           $ref: '#/components/responses/Unauthorized'
@@ -5004,13 +5081,125 @@ paths:
               example:
                 data:
                   transactions:
-                    - id: f0e1d2c3-b4a5-4697-8c9d-0e1f2a3b4c5d
+                    - id: txn_f0e1d2c3-b4a5-4697-8c9d-0e1f2a3b4c5d
                       timestamp: '2026-05-15T10:30:00Z'
                       type: search_database_leads
                       credits: -25
                       details:
                         balance_type: leads_by_icp
                         status: success
+  /api/v1/accounts/tokens/analytics/:
+    get:
+      tags:
+        - 8. Accounts
+      summary: Usage by token
+      description: >-
+        The same usage figures as `/accounts/usage/`, split by API token instead
+        of totalled for the account.
+
+
+        This is for platforms that hand each of their own customers a separate
+        Generect token. You get, per token: how many requests it made, which
+        endpoints it called, and how many of those succeeded or failed — enough
+        to attribute cost to the customer who caused it, or to spot the one
+        client whose integration is retrying in a loop.
+
+
+        You only ever see your own tokens, never another account's. If you do
+        not pass dates, the report covers the last 30 days.
+      parameters:
+        - name: client_id
+          in: query
+          required: false
+          description: >-
+            Restrict the report to the token carrying this client identifier —
+            the value set when the token was created.
+          schema:
+            type: string
+        - name: token
+          in: query
+          required: false
+          description: Restrict the report to one exact token value.
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          required: false
+          description: >-
+            Start of the reporting window. Accepts `YYYY-MM-DD` or a full ISO
+            timestamp. Defaults to 30 days ago.
+          schema:
+            type: string
+          example: '2026-05-01'
+        - name: end_date
+          in: query
+          required: false
+          description: >-
+            End of the reporting window, inclusive. Defaults to now. A date
+            with no time means midnight, so `end_date=2026-05-31` stops at the
+            very start of the 31st and that day's traffic is not counted — pass
+            `2026-05-31T23:59:59` (or the 1st of the next month) to include it.
+          schema:
+            type: string
+          example: '2026-05-31T23:59:59'
+        - name: timezone
+          in: query
+          required: false
+          description: >-
+            IANA timezone used to render the `period` bounds in the response.
+            It does not change which requests are counted: the default window is
+            anchored to the same instant whichever zone you name. An
+            unrecognised name is rejected with 400.
+          schema:
+            type: string
+            default: UTC
+          example: Europe/Kyiv
+      responses:
+        '400':
+          description: Invalid timezone or date format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '200':
+          description: Per-token usage analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTokenAnalyticsResponse'
+              example:
+                data:
+                  period:
+                    start: '2026-05-01T00:00:00'
+                    end: '2026-05-31T23:59:59'
+                  total_requests: 1840
+                  tokens:
+                    - token: 8f14e45fceea167a5a36dedd4bea2543
+                      name: Acme Corp
+                      client_id: acme-corp
+                      is_active: true
+                      created_at: '2026-04-02T09:15:00'
+                      total_requests: 1200
+                      by_endpoint:
+                        /api/v1/search/database/leads/: 900
+                        /api/v1/email/find/: 300
+                      by_status:
+                        2xx: 1180
+                        4xx: 20
+                    - token: c9f0f895fb98ab9159f51fd0297e236d
+                      name: Globex
+                      client_id: globex
+                      is_active: false
+                      created_at: '2026-04-18T14:02:00'
+                      total_requests: 640
+                      by_endpoint:
+                        /api/v1/search/realtime/leads/: 640
+                      by_status:
+                        2xx: 640
   /api/v1/search/database/leads/:
     post:
       tags:
@@ -6239,6 +6428,14 @@ components:
           items:
             type: string
           description: Fields to apply strict matching on (e.g. "company_locations").
+        skip_truncated_names:
+          type: boolean
+          default: false
+          description: >-
+            Drop leads whose first or last name is a single character or
+            empty. LinkedIn abbreviates surnames for members who restrict their
+            profile, so these rows carry a name that cannot be personalised.
+            Applies to both database and realtime search.
       example:
         job_titles:
           - CEO
@@ -6306,6 +6503,46 @@ components:
             linkedin_filter_link:
               type: string
               description: Pre-built LinkedIn or Sales Navigator search URL to extract filters from.
+            include_full_profile:
+              type: boolean
+              default: false
+              description: >-
+                Return the complete lead profile instead of the standard field
+                set — roughly thirty extra fields, including skills, industry
+                and social links. Priced as one lead enrichment per returned
+                lead, charged on top of the search itself, so a request that
+                returns N leads is billed twice: once for the search and once
+                for the profiles. Each returned lead carries `is_full_data` so
+                you can confirm what you received.
+            find_by_emails:
+              type: array
+              items:
+                type: string
+                format: email
+              description: >-
+                Find the people behind these known addresses, up to 500 per
+                request. Every address must share one domain: that domain is
+                used as the company anchor, so the request resolves to leads at
+                that company and cannot be combined with an unanchored search.
+                Realtime only.
+            include_total_count:
+              type: boolean
+              default: false
+              description: >-
+                Include `results_count` in the response; without it the response
+                carries only the page itself. The figure is an estimate, not an
+                exact total. For a search anchored to one company it may come
+                back as the string `"within limit"` rather than a number,
+                meaning the whole match set fits inside the page you asked for —
+                handle both types. A filter-only search reports `results_count`
+                anyway, without this flag.
+            max_profiles_scanned:
+              type: integer
+              description: >-
+                Hard ceiling on how many profiles the search opens while
+                assembling results. Bounds the time and cost of a broad query;
+                a `limit_by` above this value is lowered to it. Unset means no
+                ceiling.
     CompanySearchRequest:
       type: object
       properties:
@@ -6394,6 +6631,19 @@ components:
           items:
             type: string
           description: Fields to apply strict matching on (e.g. "company_locations").
+        apply_domain_blocklist:
+          type: boolean
+          default: true
+          description: >-
+            Apply Generect's blocked-domain list, which removes staffing
+            agencies, directories and similar low-signal records that match
+            broad industry filters. Set to `false` to receive them. On by
+            default on the company search endpoints, in both database and
+            realtime mode; the company-leads endpoints do not apply it. In
+            database search the exclusion happens before `results_count`, so the
+            count always matches what the pages can deliver; in realtime the
+            records are dropped after retrieval, so a page may hold fewer
+            companies than `results_count` implies.
       example:
         industries:
           - Software Development
@@ -6442,6 +6692,15 @@ components:
               items:
                 type: string
               description: Filter by specific LinkedIn company URLs.
+            include_total_count:
+              type: boolean
+              default: false
+              description: >-
+                Include `results_count` — how many companies match the filters
+                in total, beyond the page you asked for — in the response.
+                Without it the response carries only the page itself. The
+                companies counterpart of the lead-search flag of the same name,
+                and likewise an estimate rather than an exact total.
     CompanyLeadSearchRequest:
       type: object
       properties:
@@ -6470,7 +6729,19 @@ components:
         company_search_criteria:
           $ref: '#/components/schemas/RealtimeCompanySearchRequest'
         lead_search_criteria:
-          $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+          allOf:
+            - $ref: '#/components/schemas/RealtimeLeadSearchRequest'
+            - type: object
+              properties:
+                include_emails:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Also look up an email address for every lead this search
+                    returns, instead of running a separate enrichment pass.
+                    Email discovery is billed on top of the search. Supported
+                    only here, on company-leads — the other search endpoints
+                    ignore it, so use `/api/v1/email/find/` with them.
       example:
         company_search_criteria:
           industries:
@@ -6589,8 +6860,14 @@ components:
               items:
                 type: object
             results_count:
-              type: integer
-              description: Total number of leads matching the query.
+              oneOf:
+                - type: integer
+                - type: string
+              description: >-
+                Estimated number of leads matching the query. A company-anchored
+                realtime search may return the string `"within limit"` instead of
+                a number when the whole match set fits in the page you requested,
+                so accept both types.
         meta:
           $ref: '#/components/schemas/Meta'
     SearchCompaniesResponse:
@@ -6931,6 +7208,72 @@ components:
                         type: string
                       status:
                         type: string
+    AccountTokenAnalyticsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            period:
+              type: object
+              description: >-
+                Reporting window the counts were taken over. Timestamps are
+                ISO-8601 but carry no UTC offset when explicit `start_date` /
+                `end_date` were supplied, so parse them leniently rather than as
+                strict RFC 3339.
+              properties:
+                start:
+                  type: string
+                end:
+                  type: string
+            total_requests:
+              type: integer
+              description: Requests across every token in the window.
+            tokens:
+              type: array
+              description: >-
+                One entry per token owned by the account, newest token first.
+                A token with no traffic in the window is still listed, with
+                zero counts.
+              items:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  name:
+                    type: string
+                    nullable: true
+                    description: >-
+                      Label given to the token when it was created. `null` for a
+                      token created without one.
+                  client_id:
+                    type: string
+                    nullable: true
+                    description: End-client identifier attached to the token.
+                  is_active:
+                    type: boolean
+                    description: >-
+                      Whether the token can still authenticate. A revoked
+                      token keeps its historical counts.
+                  created_at:
+                    type: string
+                    nullable: true
+                    description: ISO-8601, without a UTC offset.
+                  total_requests:
+                    type: integer
+                  by_endpoint:
+                    type: object
+                    description: >-
+                      Request count keyed by the path that was called.
+                    additionalProperties:
+                      type: integer
+                  by_status:
+                    type: object
+                    description: >-
+                      Request count keyed by HTTP status class, for example
+                      `2xx`, `4xx` or `5xx`.
+                    additionalProperties:
+                      type: integer
 
   responses:
     Unauthorized:

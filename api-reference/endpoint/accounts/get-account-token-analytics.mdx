@@ -1,0 +1,8 @@
+---
+openapi: get /api/v1/accounts/tokens/analytics/
+---
+
+## Use Case:
+If you resell Generect inside your own product, you probably issue one token per customer. This endpoint tells you what each of those tokens actually did, so you can bill the right customer, see who is close to their limit, and catch a broken integration before it shows up on your invoice.
+
+Ask for a single client with `client_id`, or leave it off to get every token at once. Tokens with no traffic in the period are still listed, at zero — useful for spotting a customer who has stopped using you.

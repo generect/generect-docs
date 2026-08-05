@@ -584,6 +584,27 @@ Every v1 endpoint uses the same [error envelope](/api-reference/errors):
   </Step>
 </Steps>
 
+## Renamed search controls
+
+Several search controls were renamed to say what they do. **The old spellings keep
+working** — the API accepts both and treats them identically, so nothing breaks if
+you do nothing. New integrations should use the names on the right, and existing
+ones can switch whenever convenient.
+
+| Old | New | Why |
+| --- | --- | --- |
+| `get_max_leads`, `get_max_companies` | `include_total_count` | It never returned "more leads" — it adds `results_count` to the response. One name now covers both searches. |
+| `search_emails` | `include_emails` | Was one character away from `emails`, which meant the opposite (addresses you send *in*). |
+| `emails` | `find_by_emails` | Reads as "return emails"; it actually finds the people behind addresses you supply. |
+| `full_data` | `include_full_profile` | Says which data, and matches the `include_*` convention. |
+| `max_investigated_leads` | `max_profiles_scanned` | "Investigated" was internal jargon. |
+| `skip_1_symbol_name` | `skip_truncated_names` | Describes the case (LinkedIn-abbreviated names) rather than a character count. |
+| `website_blacklist` | `apply_domain_blocklist` | A boolean needs a verb — the old noun read as if it took a list. |
+
+If you send both spellings of the same control in one request, the old one wins and
+the new one is ignored, so migrate a control in a single step rather than leaving
+both in place.
+
 ## A typical migration path
 
 1. Swap your auth to the `Authorization: Token` header.

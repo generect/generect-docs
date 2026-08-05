@@ -201,7 +201,8 @@
             "pages": [
               "api-reference/endpoint/accounts/get-account-me",
               "api-reference/endpoint/accounts/get-account-usage",
-              "api-reference/endpoint/accounts/get-account-transactions"
+              "api-reference/endpoint/accounts/get-account-transactions",
+              "api-reference/endpoint/accounts/get-account-token-analytics"
             ]
           },
           {
