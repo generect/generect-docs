@@ -1,0 +1,99 @@
+---
+title: "MCP tools and what they cost"
+description: "Every tool the Generect MCP server exposes, whether it spends credits, and the order to call them in"
+---
+
+The MCP server is a thin, honest wrapper over the Generect API. Two rules make it
+safe to hand to an autonomous agent:
+
+1. **Sizing an audience is free.** You can learn how many people match an ICP, and
+   what pulling them would cost, without spending anything.
+2. **Every response reports what it actually cost.** Each tool returns a `cost`
+   block containing the API's own `meta.amount_charged`, so an agent telling a
+   human what it spent is quoting the biller, not guessing.
+
+<Info>
+  Requires MCP server **0.7.0 or newer**. Remote users
+  (`https://mcp.generect.com/mcp`) are always on the current version. Local users
+  should run `npx generect-ultimate-mcp@latest`.
+</Info>
+
+## Free tools
+
+| Tool | What it gives you |
+|------|-------------------|
+| `count_leads` | How many leads match, plus the cost of the next step at **your** account's rates |
+| `count_companies` | The same, for companies |
+| `get_balance` | Balance, month-to-date usage, and your real per-operation prices |
+| `get_bulk_job` | Status and results of a bulk job (the work was billed at submit time) |
+| `manage_webhooks` | Register, list, update, delete or test a webhook endpoint |
+| `health` | Liveness and credential check — touches no data endpoint, safe for monitors |
+
+## Billable tools
+
+| Tool | Billed |
+|------|--------|
+| `preview_leads` | per returned row — the cheapest way to see real people |
+| `search_leads` | per returned row |
+| `search_companies` | per returned row |
+| `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
+| `enrich_company` | per record found (not found is free) |
+| `generate_email` | per **valid** email found (a miss is free) |
+| `validate_email` | per email **submitted** — every address, whatever the verdict |
+| `find_phone` | per phone found — the most expensive operation |
+| `start_bulk_job` | per record, and the worst case is **reserved at submit time** |
+
+Exact per-operation prices for your account are in
+[billing settings](https://beta.generect.com/settings/billing), and `get_balance`
+returns them too. See [Pricing](/billing/pricing) for the list rates.
+
+## Database or realtime
+
+Every search and enrich exists in two modes — cached `database` (sub-second,
+cheaper, **free counts**, core filters) and live `realtime` (5–60s, pricier,
+billable counts, every filter). See
+[Database vs Real-time](/api-reference/database-vs-realtime).
+
+Tools take a `mode` parameter:
+
+| `mode` | Behaviour |
+|--------|-----------|
+| `auto` (default) | Tries the cheap cached path. Escalates to realtime **only** if the API reports that a filter you passed does not exist there — and says so in the response. |
+| `database` | Never escalates. An unsupported filter comes back as an error, not a larger bill. |
+| `realtime` | Goes straight to the live index. |
+
+Counting is deliberately stricter: a realtime count costs money, so `count_leads`
+and `count_companies` never run one implicitly. If your filters need the live
+index, the tool returns the blocking filter names and the price, and waits for
+you to ask again with `mode: "realtime"`.
+
+## The order to call things in
+
+```text
+count_leads              free   → is this audience big enough to be worth anything?
+preview_leads            cheap  → who is actually in it? keep the ids that fit
+search_leads             per row → pull only the rows you decided to keep
+generate_email           per valid email → contact details for those ids only
+get_balance              free   → report the exact spend back to the user
+```
+
+Records carry a stable `id` across preview, search and enrich, so once a lead is
+in your list you never have to search for them again — pass the `id` to
+`enrich_lead`, `generate_email` or `find_phone` directly.
+
+<Tip>
+  For repeatable or scheduled work, submit up to 50 records with `start_bulk_job`
+  and register a webhook with `manage_webhooks` instead of polling. A submitted
+  job runs to completion even if your balance later hits zero, because its cost
+  was reserved at submit time — so only submit lists that have been approved.
+</Tip>
+
+## When to use the REST API instead
+
+MCP is the right surface when a model is choosing what to fetch. Call the
+[REST API](/api-reference/introduction) directly when you need something MCP
+deliberately does not do:
+
+- pulling more than 100 rows in one request
+- pipelines with no model in the loop (nightly syncs, CRM backfills)
+- your own retry, concurrency and storage policy

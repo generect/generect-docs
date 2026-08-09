@@ -5,6 +5,25 @@ description: This page describes common Problems you may encounter when using **
 
 ---
 
+## The agent spent more credits than I expected
+
+**Cause:** search and enrich are billed **per returned row**, so an agent that
+searches before sizing the audience pays for every row it looks at, including the
+ones it then throws away.
+
+**Solution:**
+- Size the audience with `count_leads` / `count_companies` first — cached counts
+  are **free** and also return the cost of the next step at your account's rates.
+- Look at real people with `preview_leads` before paying for a full search.
+- Keep `mode` on `auto` (the default) or `database`. `realtime` costs more per row,
+  and a realtime *count* is billable.
+- Check `cost.amount_charged_usd` in each response, and `get_balance` before and
+  after a batch, to see exactly what was spent.
+- If you are running an old local install, upgrade: builds before **0.7.0** have
+  no free counting tools and no row cap. See [MCP tools and what they cost](tools).
+
+---
+
 ## MCP Registry not found or connection failed
 
 **Cause**: The client doesn't support MCP Registry, or the registry identifier is incorrect.

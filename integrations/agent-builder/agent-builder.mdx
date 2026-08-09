@@ -2,7 +2,7 @@
 title: "Agent Builder"
 ---
 
-As we already know from [About MCP](/api-reference/mcp/about-mcp) — MCP allows to LLM use API by just asking AI. This approach is especially useful for connecting tools like Generect, which provides live company and lead data, to OpenAI's Agent Builder, which orchestrates multi-step workflows.
+As we already know from [About MCP](/integrations/mcp/about-mcp) — MCP allows to LLM use API by just asking AI. This approach is especially useful for connecting tools like Generect, which provides live company and lead data, to OpenAI's Agent Builder, which orchestrates multi-step workflows.
 
 # What Generect does
 
@@ -14,7 +14,9 @@ What makes it useful:
 - **AI email finder**: Predicts and validates emails with a proprietary system.
 - **Catch-all validation**: Detects risky addresses with far higher accuracy.
 
-API Base URL: https://api.generect.com/
+MCP endpoint (what you connect Agent Builder to): `https://mcp.generect.com/mcp`
+
+REST API base URL (for direct HTTP calls, not for the MCP node): `https://api.generect.com`
 
 ## Why combine Generect \+ OpenAI Agent Builder
 
@@ -59,9 +61,13 @@ In the MCP node settings panel, click the "+ Server" button to add a new server 
 
 This tells Agent Builder which external service you want to connect to.
 
-### Step 3. Enter the Generect API URL
+### Step 3. Enter the Generect MCP URL
 
-In the _Server URL_ field, enter: `https://api.generect.com/`
+In the _Server URL_ field, enter the MCP endpoint:
+
+```
+https://mcp.generect.com/mcp
+```
 
 <img
   src="/media/agent-builder-3.png"
@@ -69,10 +75,11 @@ In the _Server URL_ field, enter: `https://api.generect.com/`
   className="rounded-lg"
 />
 
-<Tip>
-  Make sure the URL ends with a trailing slash / because the connection won't
-  work correctly without it.
-</Tip>
+<Warning>
+  This is the **MCP** endpoint, not the REST API base URL. `https://api.generect.com/`
+  is the REST API and does not speak MCP — an MCP node pointed at it will fail to
+  list any tools.
+</Warning>
 
 ### Step 4. Choose authentication type
 From the authentication dropdown, choose Access Token.
