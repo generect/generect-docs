@@ -243,6 +243,7 @@
             "pages": [
               "integrations/mcp/about-mcp",
               "integrations/mcp/remote-mcp",
+              "integrations/mcp/tools",
               "integrations/mcp/quick-start",
               "integrations/mcp/common-problems"
             ]
