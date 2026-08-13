@@ -8,12 +8,34 @@ Webhooks let you register a callback URL once and receive a `POST` with the **fu
 
 ## Events
 
+### Job events
+
+Scoped to your account — you only receive deliveries for jobs you started.
+
 | Event | Fired when |
 | --- | --- |
 | `email.find.bulk.completed` | A [bulk email finder](/api-reference/endpoint/emails/email-finder-bulk) job finishes (or fails) |
 | `phone.find.bulk.completed` | A [bulk phone finder](/api-reference/endpoint/phone/phone-finder-bulk) job finishes (or fails) |
 | `enrich.lead.bulk.completed` | A [bulk lead enrich](/api-reference/endpoint/enrich/enrich-database-leads-bulk) job finishes (or fails) |
 | `enrich.company.bulk.completed` | A [bulk company enrich](/api-reference/endpoint/enrich/enrich-database-companies-bulk) job finishes (or fails) |
+
+### Status page events
+
+Broadcast events from [status.generect.com](https://status.generect.com) — subscribe to pipe Generect incidents into your own alerting instead of polling the status page.
+
+| Event | Fired when |
+| --- | --- |
+| `status.incident.created` | An incident is opened |
+| `status.incident.updated` | A new update is posted on an open incident |
+| `status.incident.resolved` | An incident is resolved |
+| `status.maintenance.started` | Scheduled maintenance starts |
+| `status.maintenance.completed` | Scheduled maintenance completes |
+
+Incident deliveries carry `data.incident` (slug, title, status, severity, body, affected `components`, `started_at` / `resolved_at`, full `updates` history) and `data.update` with the update that triggered the event. Maintenance deliveries carry `data.maintenance` (slug, title, body, status, `scheduled_start` / `scheduled_end`, affected `components`). `meta.status_page_url` points back to the public page.
+
+<Note>
+  Status page events are not tied to your account activity: every active webhook subscribed to them receives every incident, so a single webhook is enough per organization.
+</Note>
 
 ## Delivery format
 

@@ -6,6 +6,15 @@ openapi: post /api/v1/enrich/realtime/company/
 ## Use Case:
 Retrieve a fresh company profile by Generect ID, LinkedIn URL, domain, or company name.
 
+## Optional sections
+Company activity and audience lists are opt-in — each flag adds +1 credit when the section comes back with data:
+
+| Flag | Adds |
+| --- | --- |
+| `posts` | The company page's recent posts |
+| `people_also_viewed` | Companies LinkedIn lists under "People also viewed" |
+| `people_also_follow` | Companies LinkedIn lists under "People also follow" |
+
 ## Pricing
 This is a billable endpoint — you are charged only when a company is found and returned. If nothing is found, the request is free.
 

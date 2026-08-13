@@ -6,6 +6,9 @@ openapi: post /api/v1/enrich/database/lead/
 ## Use Case:
 Retrieve a full lead profile from cached data by Generect ID, LinkedIn URL, or email (reverse lookup).
 
+## Optional sections
+The same activity flags as [Real-time](/api-reference/endpoint/enrich/enrich-realtime-lead) apply here: `posts`, `comments`, `reactions` and `people_also_viewed` each add +1 credit when the section comes back with data, while `get_full_experience` and `inexact_company` are free.
+
 ## Pricing
 This is a billable endpoint — you are charged only when a lead is found and returned. If nothing is found, the request is free.
 

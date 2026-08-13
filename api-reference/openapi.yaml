@@ -563,6 +563,11 @@ paths:
                 comments:
                   type: boolean
                   example: false
+                  description: Include comments data (+1 credit). Default is false.
+                reactions:
+                  type: boolean
+                  example: false
+                  description: Include reactions (likes) data (+1 credit). Default is false.
                 people_also_viewed:
                   type: boolean
                   example: false
@@ -583,6 +588,7 @@ paths:
               Get Lead by link:
                 value:
                   comments: false
+                  reactions: false
                   inexact_company: false
                   people_also_viewed: false
                   posts: false
@@ -2273,19 +2279,29 @@ paths:
               properties:
                 url:
                   type: string
+                  description: LinkedIn company page URL. Provide exactly one of url or name.
+                name:
+                  type: string
+                  description: Company name or domain to resolve to a LinkedIn page. Provide exactly one of url or name.
+                  example: microsoft.com
+                up_to_the_second_fresh:
+                  type: boolean
+                  description: Use real-time retrieval instead of cached data. Default is false.
                 people_also_viewed:
                   type: boolean
-                  description: Include people also viewed data (+1 credit)
+                  description: Include people also viewed data (+1 credit). Default is false.
                 people_also_follow:
                   type: boolean
+                  description: Include people also follow data (+1 credit). Default is false.
                 posts:
                   type: boolean
-                  description: Include posts data (+1 credit)
-              required:
-              - url
-              - people_also_viewed
-              - people_also_follow
-              - posts
+                  description: Include posts data (+1 credit). Default is false.
+                cached:
+                  type: boolean
+                  description: >-
+                    Only with name. Return the last stored company matching that name or domain
+                    instead of resolving it live; falls through to a live lookup when nothing is
+                    stored. Default is false.
 
             examples:
               Get Company by link:
@@ -2294,6 +2310,7 @@ paths:
                   people_also_viewed: true
                   people_also_follow: false
                   posts: true
+                  cached: false
       responses:
         '200':
           description: '200'
@@ -3827,6 +3844,30 @@ paths:
                       type: string
                       description: Internal Generect lead identifier returned by Search or Preview.
                       example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the profile's "People also viewed" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent posts (+1 credit when data is returned).
+                    comments:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent comments (+1 credit when data is returned).
+                    reactions:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                    get_full_experience:
+                      type: boolean
+                      default: false
+                      description: Return the full work history instead of current positions only. Free.
+                    inexact_company:
+                      type: boolean
+                      default: false
+                      description: Fall back to a fuzzy company match when the exact company cannot be resolved. Free.
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -3839,6 +3880,30 @@ paths:
                         linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
                         linkedin.com/sales/lead/{id},NAME_SEARCH,...
                       example: https://www.linkedin.com/in/jordan-ellis
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the profile's "People also viewed" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent posts (+1 credit when data is returned).
+                    comments:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent comments (+1 credit when data is returned).
+                    reactions:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                    get_full_experience:
+                      type: boolean
+                      default: false
+                      description: Return the full work history instead of current positions only. Free.
+                    inexact_company:
+                      type: boolean
+                      default: false
+                      description: Fall back to a fuzzy company match when the exact company cannot be resolved. Free.
                 - title: By Email
                   type: object
                   required:
@@ -3848,6 +3913,30 @@ paths:
                       type: string
                       description: Work email address for reverse lookup.
                       example: jordan.ellis@microsoft.com
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the profile's "People also viewed" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent posts (+1 credit when data is returned).
+                    comments:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent comments (+1 credit when data is returned).
+                    reactions:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                    get_full_experience:
+                      type: boolean
+                      default: false
+                      description: Return the full work history instead of current positions only. Free.
+                    inexact_company:
+                      type: boolean
+                      default: false
+                      description: Fall back to a fuzzy company match when the exact company cannot be resolved. Free.
             examples:
               By Generect ID:
                 value:
@@ -3858,6 +3947,14 @@ paths:
               By email:
                 value:
                   email: jordan.ellis@microsoft.com
+              With optional sections:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                  posts: true
+                  comments: true
+                  reactions: true
+                  people_also_viewed: true
+                  get_full_experience: true
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -3931,6 +4028,30 @@ paths:
                       type: string
                       description: Internal Generect lead identifier returned by Search or Preview.
                       example: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the profile's "People also viewed" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent posts (+1 credit when data is returned).
+                    comments:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent comments (+1 credit when data is returned).
+                    reactions:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                    get_full_experience:
+                      type: boolean
+                      default: false
+                      description: Return the full work history instead of current positions only. Free.
+                    inexact_company:
+                      type: boolean
+                      default: false
+                      description: Fall back to a fuzzy company match when the exact company cannot be resolved. Free.
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -3943,6 +4064,30 @@ paths:
                         linkedin.com/in/{slug}, linkedin.com/in/{id} (e.g. AAW1Sghsd),
                         linkedin.com/sales/lead/{id},NAME_SEARCH,...
                       example: https://www.linkedin.com/in/jordan-ellis
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the profile's "People also viewed" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent posts (+1 credit when data is returned).
+                    comments:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent comments (+1 credit when data is returned).
+                    reactions:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                    get_full_experience:
+                      type: boolean
+                      default: false
+                      description: Return the full work history instead of current positions only. Free.
+                    inexact_company:
+                      type: boolean
+                      default: false
+                      description: Fall back to a fuzzy company match when the exact company cannot be resolved. Free.
                 - title: By Email
                   type: object
                   required:
@@ -3952,6 +4097,30 @@ paths:
                       type: string
                       description: Work email address for reverse lookup.
                       example: jordan.ellis@microsoft.com
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the profile's "People also viewed" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent posts (+1 credit when data is returned).
+                    comments:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent comments (+1 credit when data is returned).
+                    reactions:
+                      type: boolean
+                      default: false
+                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                    get_full_experience:
+                      type: boolean
+                      default: false
+                      description: Return the full work history instead of current positions only. Free.
+                    inexact_company:
+                      type: boolean
+                      default: false
+                      description: Fall back to a fuzzy company match when the exact company cannot be resolved. Free.
             examples:
               By Generect ID:
                 value:
@@ -3962,6 +4131,14 @@ paths:
               By email (reverse lookup):
                 value:
                   email: jordan.ellis@microsoft.com
+              With optional sections:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                  posts: true
+                  comments: true
+                  reactions: true
+                  people_also_viewed: true
+                  get_full_experience: true
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4029,6 +4206,18 @@ paths:
                       type: string
                       description: Internal Generect company identifier returned by Search.
                       example: 1035
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4041,6 +4230,18 @@ paths:
                         linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
                         linkedin.com/sales/company/{id}.
                       example: https://www.linkedin.com/company/microsoft/
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
                 - title: By Domain
                   type: object
                   required:
@@ -4050,6 +4251,18 @@ paths:
                       type: string
                       description: Company website domain without protocol (e.g. microsoft.com).
                       example: microsoft.com
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
                 - title: By Company Name
                   type: object
                   required:
@@ -4059,6 +4272,18 @@ paths:
                       type: string
                       description: Company name for fuzzy matching.
                       example: Microsoft
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
             examples:
               By Generect ID:
                 value:
@@ -4072,6 +4297,12 @@ paths:
               By company name:
                 value:
                   name: Microsoft
+              With optional sections:
+                value:
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+                  posts: true
+                  people_also_viewed: true
+                  people_also_follow: true
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4133,6 +4364,18 @@ paths:
                       type: string
                       description: Internal Generect company identifier returned by Search.
                       example: 1035
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4145,6 +4388,18 @@ paths:
                         linkedin.com/company/{slug}, linkedin.com/company/{id} (e.g. 12345),
                         linkedin.com/sales/company/{id}.
                       example: https://www.linkedin.com/company/microsoft/
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
                 - title: By Domain
                   type: object
                   required:
@@ -4154,6 +4409,18 @@ paths:
                       type: string
                       description: Company website domain without protocol (e.g. microsoft.com).
                       example: microsoft.com
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
                 - title: By Company Name
                   type: object
                   required:
@@ -4163,6 +4430,18 @@ paths:
                       type: string
                       description: Company name for fuzzy matching.
                       example: Microsoft
+                    people_also_viewed:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also viewed" list (+1 credit when data is returned).
+                    people_also_follow:
+                      type: boolean
+                      default: false
+                      description: Include the company's "People also follow" list (+1 credit when data is returned).
+                    posts:
+                      type: boolean
+                      default: false
+                      description: Include the company's recent posts (+1 credit when data is returned).
             examples:
               By Generect ID:
                 value:
@@ -4176,6 +4455,12 @@ paths:
               By company name:
                 value:
                   name: Microsoft
+              With optional sections:
+                value:
+                  linkedin_url: https://www.linkedin.com/company/microsoft/
+                  posts: true
+                  people_also_viewed: true
+                  people_also_follow: true
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4605,6 +4890,10 @@ paths:
                       type: string
                       description: Lead's last name.
                       example: Doe
+                    middle_name:
+                      type: string
+                      description: Lead's middle name. Optional; used to widen the pattern set when the company uses middle names.
+                      example: A.
                     domain:
                       type: string
                       description: Company domain used to generate the email pattern.
@@ -4714,6 +5003,9 @@ paths:
                           first_name:
                             type: string
                             description: Lead's first name.
+                          middle_name:
+                            type: string
+                            description: Lead's middle name. Optional.
                           last_name:
                             type: string
                             description: Lead's last name.
@@ -6008,6 +6300,11 @@ paths:
                       - phone.find.bulk.completed
                       - enrich.lead.bulk.completed
                       - enrich.company.bulk.completed
+                      - status.incident.created
+                      - status.incident.updated
+                      - status.incident.resolved
+                      - status.maintenance.started
+                      - status.maintenance.completed
                   example:
                     - email.find.bulk.completed
                 secret:
@@ -6026,7 +6323,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed', 'status.incident.created', 'status.incident.resolved', 'status.incident.updated', 'status.maintenance.completed', 'status.maintenance.started']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6090,6 +6387,11 @@ paths:
                       - phone.find.bulk.completed
                       - enrich.lead.bulk.completed
                       - enrich.company.bulk.completed
+                      - status.incident.created
+                      - status.incident.updated
+                      - status.incident.resolved
+                      - status.maintenance.started
+                      - status.maintenance.completed
                 secret:
                   type: string
       responses:
@@ -6104,7 +6406,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed', 'status.incident.created', 'status.incident.resolved', 'status.incident.updated', 'status.maintenance.completed', 'status.maintenance.started']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6140,6 +6442,11 @@ paths:
                       - phone.find.bulk.completed
                       - enrich.lead.bulk.completed
                       - enrich.company.bulk.completed
+                      - status.incident.created
+                      - status.incident.updated
+                      - status.incident.resolved
+                      - status.maintenance.started
+                      - status.maintenance.completed
                 secret:
                   type: string
       responses:
@@ -6154,7 +6461,7 @@ paths:
                   value:
                     status: error
                     status_code: 400
-                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed']"]}
+                    detail: {"events": ["Unsupported events: ['email.find.completed']. Allowed: ['email.find.bulk.completed', 'enrich.company.bulk.completed', 'enrich.lead.bulk.completed', 'phone.find.bulk.completed', 'status.incident.created', 'status.incident.resolved', 'status.incident.updated', 'status.maintenance.completed', 'status.maintenance.started']"]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6393,11 +6700,6 @@ components:
         company_id:
           type: integer
           description: LinkedIn company numeric ID (mutually exclusive with company_name and company_link).
-        personas:
-          type: array
-          description: 'List of persona tuples. Each persona: [name, functions, seniorities, prohibits, priority?].'
-          items:
-            type: array
         exclude_names:
           type: array
           items:
@@ -6454,6 +6756,86 @@ components:
         - $ref: '#/components/schemas/LeadSearchRequest'
         - type: object
           properties:
+            personas:
+              type: array
+              description: 'List of persona tuples. Each persona: [name, functions, seniorities, prohibits, priority?].'
+              items:
+                type: array
+            first_name:
+              type: array
+              items:
+                type: string
+              description: Exact first names to match; a lead is included if their first name matches at least one.
+            last_name:
+              type: array
+              items:
+                type: string
+              description: Exact last names to match; a lead is included if their last name matches at least one.
+            lead_industries:
+              type: array
+              items:
+                type: string
+              description: >-
+                Industries of the lead themselves (their own profile industry), as opposed to
+                company_industries, which filters by the employer's industry.
+            exclude_lead_industries:
+              type: array
+              items:
+                type: string
+              description: Lead industries to exclude.
+            past_job_titles:
+              type: array
+              items:
+                type: string
+              description: Titles the lead held in a previous role; a lead is included if their history matches at least one.
+            exclude_functions:
+              type: array
+              items:
+                type: string
+              description: Job functions to exclude — same value set as functions.
+            past_company_ids:
+              type: array
+              items:
+                type: string
+              description: LinkedIn company IDs the lead previously worked at; ID-based counterpart of past_company_names.
+            exclude_past_company_ids:
+              type: array
+              items:
+                type: string
+              description: Skip leads who previously worked at these LinkedIn company IDs.
+            exclude_current_company_ids:
+              type: array
+              items:
+                type: string
+              description: Skip leads currently working at these LinkedIn company IDs.
+            groups_keywords:
+              type: array
+              items:
+                type: string
+              description: >-
+                Resolve LinkedIn groups by name instead of by numeric ID — each keyword is matched
+                against group names and the matches are added to groups.
+            years_of_experience:
+              type: array
+              items:
+                type: integer
+              description: 'Total years of work experience: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
+            num_of_connections:
+              type: object
+              description: >-
+                Connection-count range applied to the lead's profile. Leads outside the range are
+                dropped from the results.
+              properties:
+                min:
+                  type: integer
+                max:
+                  type: integer
+              example:
+                min: 500
+            mentioned_in_news:
+              type: boolean
+              description: Filter for leads recently mentioned in the news.
+              default: false
             keywords:
               type: array
               items:
@@ -6589,27 +6971,6 @@ components:
           items:
             type: string
           description: 'Company types: "Public Company", "Privately Held", "Non Profit", "Government Agency", "Educational", etc.'
-        num_of_followers:
-          type: array
-          items:
-            type: string
-          description: 'Follower count ranges: "1-50", "51-100", "101-1000", "1001-5000", "5001+".'
-        keywords:
-          type: array
-          items:
-            type: string
-          description: >-
-            Free-text keywords matched across company profiles (name, description, specialties); a company is included if it contains at least one. OR logic, max 10 keywords, up to 40 characters each. Examples: "platform", "marketplace", "developer tools".
-        technologies:
-          type: array
-          items:
-            type: string
-          description: Technologies used by the company.
-        company_names:
-          type: array
-          items:
-            type: string
-          description: Search by specific company names.
         exclude_ids:
           type: array
           items:
@@ -6657,6 +7018,46 @@ components:
         - $ref: '#/components/schemas/CompanySearchRequest'
         - type: object
           properties:
+            keywords:
+              type: array
+              items:
+                type: string
+              description: >-
+                Free-text keywords matched across company profiles (name, description, specialties); a company is included if it contains at least one. OR logic, max 10 keywords, up to 40 characters each. Examples: "platform", "marketplace", "developer tools".
+            technologies:
+              type: array
+              items:
+                type: string
+              description: Technologies used by the company.
+            num_of_followers:
+              type: array
+              items:
+                type: string
+              description: 'Follower count ranges: "1-50", "51-100", "101-1000", "1001-5000", "5001+".'
+            company_names:
+              type: array
+              items:
+                type: string
+              description: Search by specific company names or domains.
+            recent_activities:
+              type: array
+              items:
+                type: string
+                enum:
+                  - Funding events in past 12 months
+                  - Senior leadership changes in last 3 months
+              description: Recent company events to filter on.
+            department_headcount_growth:
+              type: object
+              description: >-
+                Filter by growth of a single department (e.g. {"name": "engineering", "min": 5, "max": 50}).
+              properties:
+                name:
+                  type: string
+                min:
+                  type: number
+                max:
+                  type: number
             revenues_range:
               type: object
               description: 'Revenue filter with min/max (e.g. {"min": 1000000, "max": 50000000}).'

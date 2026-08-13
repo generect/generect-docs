@@ -6,6 +6,20 @@ openapi: post /api/v1/enrich/realtime/lead/
 ## Use Case:
 Retrieve a fresh lead profile, including reverse email lookup, by Generect ID, LinkedIn URL, or email.
 
+## Optional sections
+Recent LinkedIn activity and the "People also viewed" list are opt-in — send the flag to get the section back:
+
+| Flag | Adds | Extra cost |
+| --- | --- | --- |
+| `posts` | The lead's recent posts | +1 credit |
+| `comments` | The lead's recent comments | +1 credit |
+| `reactions` | The lead's recent reactions (likes) | +1 credit |
+| `people_also_viewed` | Profiles LinkedIn lists under "People also viewed" | +1 credit |
+| `get_full_experience` | Past positions on top of the current ones | free |
+| `inexact_company` | Fuzzy company match when the exact company cannot be resolved | free |
+
+<Note>An extra credit is only charged for a section that actually comes back with data. Requesting `posts` on a lead who never posted costs nothing.</Note>
+
 ## Pricing
 This is a billable endpoint — you are charged only when a lead is found and returned. If nothing is found, the request is free.
 

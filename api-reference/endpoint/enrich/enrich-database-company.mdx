@@ -6,6 +6,9 @@ openapi: post /api/v1/enrich/database/company/
 ## Use Case:
 Retrieve a company profile from cached data by Generect ID, LinkedIn URL, domain, or company name.
 
+## Optional sections
+The same flags as [Real-time](/api-reference/endpoint/enrich/enrich-realtime-company) apply here: `posts`, `people_also_viewed` and `people_also_follow` each add +1 credit when the section comes back with data.
+
 ## Pricing
 This is a billable endpoint — you are charged only when a company is found and returned. If nothing is found, the request is free.
 
