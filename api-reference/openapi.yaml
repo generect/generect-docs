@@ -3862,8 +3862,8 @@ paths:
                       description: Include the lead's recent reactions/likes (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
-                      default: false
-                      description: Return the full work history instead of current positions only. Free.
+                      default: true
+                      description: Work history returned in `jobs`. Defaults to the full history — current and past positions alike. Set to false to receive current positions only. Free.
                     inexact_company:
                       type: boolean
                       default: false
@@ -3898,8 +3898,8 @@ paths:
                       description: Include the lead's recent reactions/likes (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
-                      default: false
-                      description: Return the full work history instead of current positions only. Free.
+                      default: true
+                      description: Work history returned in `jobs`. Defaults to the full history — current and past positions alike. Set to false to receive current positions only. Free.
                     inexact_company:
                       type: boolean
                       default: false
@@ -3931,8 +3931,8 @@ paths:
                       description: Include the lead's recent reactions/likes (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
-                      default: false
-                      description: Return the full work history instead of current positions only. Free.
+                      default: true
+                      description: Work history returned in `jobs`. Defaults to the full history — current and past positions alike. Set to false to receive current positions only. Free.
                     inexact_company:
                       type: boolean
                       default: false
@@ -3954,7 +3954,10 @@ paths:
                   comments: true
                   reactions: true
                   people_also_viewed: true
-                  get_full_experience: true
+              Current positions only:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                  get_full_experience: false
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -3992,6 +3995,7 @@ paths:
                   last_name: Ellis
                   title: CEO
                   headline: CEO at Microsoft
+                  has_current_position: true
                   linkedin_url: https://www.linkedin.com/in/jordan-ellis
                   location: San Francisco, CA
                   seniority: CXO
@@ -4046,8 +4050,8 @@ paths:
                       description: Include the lead's recent reactions/likes (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
-                      default: false
-                      description: Return the full work history instead of current positions only. Free.
+                      default: true
+                      description: Work history returned in `jobs`. Defaults to the full history — current and past positions alike. Set to false to receive current positions only. Free.
                     inexact_company:
                       type: boolean
                       default: false
@@ -4082,8 +4086,8 @@ paths:
                       description: Include the lead's recent reactions/likes (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
-                      default: false
-                      description: Return the full work history instead of current positions only. Free.
+                      default: true
+                      description: Work history returned in `jobs`. Defaults to the full history — current and past positions alike. Set to false to receive current positions only. Free.
                     inexact_company:
                       type: boolean
                       default: false
@@ -4115,8 +4119,8 @@ paths:
                       description: Include the lead's recent reactions/likes (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
-                      default: false
-                      description: Return the full work history instead of current positions only. Free.
+                      default: true
+                      description: Work history returned in `jobs`. Defaults to the full history — current and past positions alike. Set to false to receive current positions only. Free.
                     inexact_company:
                       type: boolean
                       default: false
@@ -4138,7 +4142,10 @@ paths:
                   comments: true
                   reactions: true
                   people_also_viewed: true
-                  get_full_experience: true
+              Current positions only:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                  get_full_experience: false
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -4175,6 +4182,7 @@ paths:
                   first_name: Jordan
                   last_name: Ellis
                   title: CEO
+                  has_current_position: true
                   linkedin_url: https://www.linkedin.com/in/jordan-ellis
                   company:
                     id: 1035
