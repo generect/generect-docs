@@ -33,7 +33,7 @@ safe to hand to an autonomous agent:
 
 | Tool | Billed |
 |------|--------|
-| `preview_leads` | per returned row — the cheapest way to see real people |
+| `preview_leads` | \$0.002 per returned row — the cheapest way to see real people |
 | `search_leads` | per returned row |
 | `search_companies` | per returned row |
 | `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
@@ -70,11 +70,11 @@ you to ask again with `mode: "realtime"`.
 ## The order to call things in
 
 ```text
-count_leads              free   → is this audience big enough to be worth anything?
-preview_leads            cheap  → who is actually in it? keep the ids that fit
-search_leads             per row → pull only the rows you decided to keep
+count_leads              free            → is this audience big enough to be worth anything?
+preview_leads            $0.002/row      → who is actually in it? keep the ids that fit
+search_leads             per row         → pull only the rows you decided to keep
 generate_email           per valid email → contact details for those ids only
-get_balance              free   → report the exact spend back to the user
+get_balance              free            → report the exact spend back to the user
 ```
 
 Records carry a stable `id` across preview, search and enrich, so once a lead is

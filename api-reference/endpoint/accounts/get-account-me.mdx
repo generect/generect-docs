@@ -3,4 +3,6 @@ openapi: get /api/v1/accounts/me/
 ---
 
 ## Use Case:
-Retrieve the current account profile, credit balance, monthly usage, and Preview tier eligibility.
+Retrieve the current account profile, credit balance, monthly usage, and whether Preview is currently free for you.
+
+<Note>`preview_tier` is `true` while [`POST /preview/leads/`](/api-reference/endpoint/preview/preview-leads) is free for you — that is, once your total spend in the **current calendar month** reaches \$2,000. It flips back to `false` on the 1st. It is not an access flag: permission to call the Preview endpoints is granted separately.</Note>
