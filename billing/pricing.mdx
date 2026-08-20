@@ -8,18 +8,18 @@ Your account balance is held in **US dollars**. Every billable result deducts a 
 
 ## Standard prices
 
-These are the **starting** per-result prices (before any volume discount — see [Spend & Save tiers](/billing/managing-billing)). Your effective price only goes **down** as your lifetime spend grows; your current rate is always shown in your [billing settings](https://beta.generect.com/settings/billing).
+These are the per-result prices every account starts on (see [Spend & Save tiers](/billing/managing-billing) for the volume discounts). Your effective price never goes **up**; your current rate is always shown in your [billing settings](https://beta.generect.com/settings/billing).
 
 | Operation | Endpoints | Price (USD) | Billed |
 | --- | --- | --- | --- |
-| Real-time search & enrich | `POST /search/realtime/*`, `POST /enrich/realtime/*` | **$0.02** | per returned result |
-| Database (cached) search & enrich | `POST /search/database/*`, `POST /enrich/database/*` | **$0.0067** | per returned result |
+| Real-time search & enrich | `POST /search/realtime/*`, `POST /enrich/realtime/*` | **$0.04** | per returned result |
+| Database (cached) search & enrich | `POST /search/database/*`, `POST /enrich/database/*` | **$0.02** | per returned result |
 | Email Finder | `POST /email/find/` (+ `/bulk/`) | **$0.02** | per **valid** email found |
 | Email Validation | `POST /email/validate/` | **$0.005** | per email checked |
 | Preview | `POST /preview/leads/` | **$0.002** | per returned result |
 | Phone Finder | `POST /phone/find/` (+ `/bulk/`) | **$0.40** | per **found** phone |
 
-<Info>Prices above are the Tier 0 (standard) rate. The more you spend over the lifetime of your account, the higher your discount tier and the lower every price becomes — automatically. See [Spend & Save tiers](/billing/managing-billing).</Info>
+<Info>Prices above are the Tier 0 (standard) rate, and they are what **every API account pays until its lifetime spend reaches \$20,000**. API discounts begin at that threshold and then deepen with each tier; the platform (UI) operations start discounting much earlier, at \$500. Your current rate is always the one in your [billing settings](https://beta.generect.com/settings/billing) — and in `meta.amount_charged` on every response. See [Spend & Save tiers](/billing/managing-billing).</Info>
 
 ## How a charge is calculated
 
@@ -32,7 +32,7 @@ Every API response reports exactly what it cost in `meta.amount_charged` (USD), 
 ```json
 {
   "data": [ ... ],
-  "meta": { "amount_charged": 0.0402 }
+  "meta": { "amount_charged": 0.0400 }
 }
 ```
 
@@ -42,7 +42,7 @@ Every API response reports exactly what it cost in `meta.amount_charged` (USD), 
 - **Account, status, and webhook** endpoints.
 - **Not-found results** on enrich, phone, and email find (see below).
 
-<Warning>**Real-time count** endpoints (`POST /search/realtime/*/count/`) are **not** free — each costs $0.02, because they hit live sources. Use the free database count to size an audience before paying.</Warning>
+<Warning>**Real-time count** endpoints (`POST /search/realtime/*/count/`) are **not** free — each costs $0.04, the real-time rate, because they hit live sources. Use the free database count to size an audience before paying.</Warning>
 
 ## No Data, No Charge — exactly where it applies
 
@@ -55,7 +55,7 @@ You are not billed for results we don't return:
 | Email Finder | Charged **only for valid emails found** |
 | Phone Finder | Charged **only for phones found** |
 | Email Validation | Charged **per email checked** — a verdict (valid, risky, catch-all, invalid) is the result you paid for |
-| Real-time count | Flat $0.02 per request (even if the count is 0) |
+| Real-time count | Flat $0.04 per request (even if the count is 0) |
 
 <Note>Email Validation is the one case where every submitted address is billed: validation *is* the deliverable, so each checked email costs $0.005 regardless of its verdict.</Note>
 
@@ -63,9 +63,9 @@ You are not billed for results we don't return:
 
 You enrich 100 leads in real time; 92 are found, 8 are not.
 
-- 92 × \$0.02 = **\$1.84** charged
+- 92 × \$0.04 = **\$3.68** charged
 - 8 not-found → **$0.00** (refunded)
-- `meta.amount_charged` returns `1.84`
+- `meta.amount_charged` returns `3.68`
 
 ## When your balance hits $0
 
