@@ -99,7 +99,7 @@ General changes across all endpoints:
     | `balance_platform`, `max_credits`, `blocked_balance_platform` | `data.credits.{balance, used_this_month, monthly_limit}` | Dozens of per-operation `balance_*` fields collapse into one `credits` object. |
     | `balance_leads_by_icp`, `balance_email_finder`, etc. | — | Removed — see [Usage](/api-reference/endpoint/accounts/get-account-usage) instead. |
     | — | `data.id` | New: stable account identifier. |
-    | — | `data.preview_tier` | New: whether the account is eligible for Preview endpoints. |
+    | — | `data.preview_tier` | New: `true` while Preview is free for the account — total spend in the current calendar month has reached \$2,000. Not an access flag. |
 
     **Example — before / after:**
 

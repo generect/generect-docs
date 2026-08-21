@@ -16,10 +16,12 @@ These are the per-result prices every account starts on (see [Spend & Save tiers
 | Database (cached) search & enrich | `POST /search/database/*`, `POST /enrich/database/*` | **$0.02** | per returned result |
 | Email Finder | `POST /email/find/` (+ `/bulk/`) | **$0.02** | per **valid** email found |
 | Email Validation | `POST /email/validate/` | **$0.005** | per email checked |
-| Preview | `POST /preview/leads/` | **$0.002** | per returned result |
+| Preview | `POST /preview/leads/` | **\$0.002** | per returned (masked) result — free for the rest of the month once your spend that month reaches \$2,000 |
 | Phone Finder | `POST /phone/find/` (+ `/bulk/`) | **$0.40** | per **found** phone |
 
 <Info>Prices above are the Tier 0 (standard) rate, and they are what **every API account pays until its lifetime spend reaches \$20,000**. API discounts begin at that threshold and then deepen with each tier; the platform (UI) operations start discounting much earlier, at \$500. Your current rate is always the one in your [billing settings](https://beta.generect.com/settings/billing) — and in `meta.amount_charged` on every response. See [Spend & Save tiers](/billing/managing-billing).</Info>
+
+<Note>**Preview** is the one API price that never moves with your tier — it stays at \$0.002 per returned result on every tier. What does move is the monthly free tier: once your account's total spend within the current calendar month reaches \$2,000, `POST /preview/leads/` is free for the rest of that month, and the counter restarts on the 1st (UTC). The `preview_tier` flag on [`GET /accounts/me/`](/api-reference/endpoint/accounts/get-account-me) reports the current state. Preview inside the Generect web app is always free — \$0.002 is the API price.</Note>
 
 ## How a charge is calculated
 
@@ -39,6 +41,8 @@ Every API response reports exactly what it cost in `meta.amount_charged` (USD), 
 ## What's free
 
 - **Database (cached) count** endpoints (`POST /search/database/*/count/`) — a cached count, no charge.
+- **Preview count** (`POST /preview/leads/count/`) — sizing a Preview audience is free, always.
+- **Preview in the Generect web app** — the \$0.002 Preview price applies to API calls only.
 - **Account, status, and webhook** endpoints.
 - **Not-found results** on enrich, phone, and email find (see below).
 
@@ -55,6 +59,7 @@ You are not billed for results we don't return:
 | Email Finder | Charged **only for valid emails found** |
 | Phone Finder | Charged **only for phones found** |
 | Email Validation | Charged **per email checked** — a verdict (valid, risky, catch-all, invalid) is the result you paid for |
+| Preview | Billed **per returned row** — zero rows costs \$0 |
 | Real-time count | Flat $0.04 per request (even if the count is 0) |
 
 <Note>Email Validation is the one case where every submitted address is billed: validation *is* the deliverable, so each checked email costs $0.005 regardless of its verdict.</Note>
@@ -74,7 +79,7 @@ The exact sequence, so production behavior is predictable:
 1. Credits are **reserved up front** when a request or bulk job is accepted — anything already accepted **runs to completion** and is never interrupted mid-flight.
 2. A submitted bulk job keeps processing even if your balance reaches $0 afterwards — its cost was reserved at submit time.
 3. **New** billable requests are rejected with `402` and `"Insufficient funds in the account."` (standard [error envelope](/api-reference/errors)) until you top up.
-4. Free endpoints (database counts, account, status polling, webhooks) keep working at $0.
+4. Free endpoints (database counts, `POST /preview/leads/count/`, account, status polling, webhooks) keep working at \$0.
 
 Enable [Auto Top-Up](/billing/managing-billing) to make this state unreachable in production.
 
@@ -83,7 +88,7 @@ Enable [Auto Top-Up](/billing/managing-billing) to make this state unreachable i
 There is no separate sandbox environment — the live API is safe to evaluate for free:
 
 - **Database count** endpoints are free — size any audience at $0.
-- **Preview** returns real (masked) leads at $0.002/result.
+- **Preview** returns real (masked) leads at \$0.002 per result — and is free for the rest of the calendar month once your spend that month reaches \$2,000.
 - New accounts start with a **free starter credit**, and not-found results are never billed — a failed experiment costs nothing.
 - Every response tells you what it actually cost (`meta.amount_charged`), so a $1 test budget goes a long way.
 

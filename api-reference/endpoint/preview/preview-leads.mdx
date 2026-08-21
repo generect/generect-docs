@@ -7,4 +7,11 @@ openapi: post /api/v1/preview/leads/
 Show masked lead results in SaaS products without exposing paid data such as email, phone, LinkedIn URL, or company domain.
 
 ## Pricing
-This endpoint is free — it does not incur any charges.
+
+**\$0.002 per returned result** — one charge per masked row this endpoint returns, and a search that matches nothing costs \$0. Preview is never discounted by volume: the price is the same on every [Spend & Save tier](/billing/managing-billing).
+
+<Note>
+**Free above \$2,000 a month.** Once your account's total spend within the current calendar month reaches \$2,000, this endpoint costs nothing for the rest of that month. The counter covers every charge on the account, not only Preview, and it restarts on the 1st (UTC) — requests are billable again from then. The `preview_tier` flag on [`GET /accounts/me/`](/api-reference/endpoint/accounts/get-account-me) tells you which side of the threshold you are on.
+</Note>
+
+Always free, whatever your spend: [`POST /preview/leads/count/`](/api-reference/endpoint/preview/count-preview-leads), and Preview inside the Generect web app — \$0.002 is the API price.

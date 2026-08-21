@@ -17,6 +17,8 @@ You can request data depending on your data plan and account balance (default: `
 
 - [Lead enrichment](/api-reference/endpoint/enrich/enrich-realtime-lead) — `POST /enrich/*/lead/`: 500 requests
 
+- [Preview](/api-reference/endpoint/preview/preview-leads) — `POST /preview/leads/` and `POST /preview/leads/count/`: 100 requests
+
 ## Recommended timeouts
 - [Company search](/api-reference/endpoint/search/realtime-companies): 300 seconds
 
@@ -28,7 +30,9 @@ You can request data depending on your data plan and account balance (default: `
 
 ## Which endpoints are rate-limited
 
-The parallel-request limits above apply to **search** and **enrich** endpoints. **Email Finder, Email Validation, Phone Finder, Preview, bulk jobs, count endpoints, and account/webhook endpoints have no parallel-request cap** — they are bounded only by your balance and, for bulk jobs, the [50-item limit per request](/use-cases/api/bulk-processing).
+The parallel-request limits above apply to **search**, **enrich**, and **Preview** endpoints. **Email Finder, Email Validation, Phone Finder, bulk jobs, search count endpoints, and account/webhook endpoints have no parallel-request cap** — they are bounded only by your balance and, for bulk jobs, the [50-item limit per request](/use-cases/api/bulk-processing).
+
+Both Preview endpoints share one 100-request budget, including the free `POST /preview/leads/count/`.
 
 Limits are enforced per **API token + source IP**, per operation type. Exceeding one returns HTTP `429` — see [Errors](/api-reference/errors) — so retry with **exponential backoff**.
 

@@ -3586,7 +3586,13 @@ paths:
       tags:
         - 5. Preview
       summary: Preview leads
-      description: Search database leads with masked response data. Preview results include an internal lead ID for later enrichment and do not include LinkedIn URL, company domain, email, or phone.
+      description: >-
+        Search database leads with masked response data. Preview results include
+        an internal lead ID for later enrichment and do not include LinkedIn URL,
+        company domain, email, or phone. Billed at $0.002 per returned row — a
+        search that matches nothing is free — and free for the rest of the
+        calendar month once the account's total spend that month reaches $2,000
+        (see `preview_tier` on `GET /api/v1/accounts/me/`).
       requestBody:
         required: true
         content:
@@ -3719,7 +3725,7 @@ paths:
                       seniority: VP
                       headcount_range: 201-500
                 meta:
-                  amount_charged: 0
+                  amount_charged: 0.004
   /api/v1/preview/leads/count/:
     post:
       tags:
@@ -7570,7 +7576,11 @@ components:
                   type: number
             preview_tier:
               type: boolean
-              description: Whether the account is eligible for the Preview endpoints.
+              description: >-
+                True while `POST /api/v1/preview/leads/` is free for this
+                account — that is, once total spend in the current calendar
+                month reaches $2,000. Resets on the 1st. Not an access flag:
+                permission to call the Preview endpoints is granted separately.
     AccountUsageResponse:
       type: object
       properties:

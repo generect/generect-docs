@@ -2,7 +2,7 @@
 title: Data discovery
 ---
 
-### 1\. SaaS platform displays search results to users at no cost(Preview API)
+### 1\. SaaS platform displays search results to users for \$0.002 a result (Preview API)
 
 **Who it's for**
 
@@ -10,11 +10,11 @@ SaaS platforms (Clay, n8n, AI SDR tools), developers building lead discovery fea
 
 **Problem**
 
-SaaS platforms want to show search results to their users, but current API charges for every displayed lead — even before the user decides to buy contact data. This makes it too expensive to build "browse → decide → reveal" flows.
+SaaS platforms want to show search results to their users, but paying the full enrichment price for every displayed lead — before the user decides to buy contact data — makes "browse → decide → reveal" flows too expensive to build.
 
 **What Generect enables**
 
-Preview API returns masked cached lead data, such as name, title, company, location, industry, and seniority, with a unique lead ID. Users browse results and pay only when they reveal full profiles or contact data.
+Preview API returns masked cached lead data, such as name, title, company, location, industry, and seniority, with a unique lead ID. Browsing costs \$0.002 per lead shown — a tenth of the database enrichment price — and the full price is paid only when a user reveals a profile or contact data.
 
 **How it works**
 
@@ -22,7 +22,7 @@ Preview API returns masked cached lead data, such as name, title, company, locat
 2. Generect returns masked cached data: name, title, company, location, industry, seniority, and lead ID
 3. Your users browse and select leads
 4. Call `POST /enrich/database/lead/` with `id` for selected leads
-5. Pay only for enrichment
+5. Pay \$0.002 per lead shown in step 2, and the enrichment price only for the ones your users select
 
 **Input data**
 
