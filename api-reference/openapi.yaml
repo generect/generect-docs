@@ -394,7 +394,13 @@ paths:
                           example: -10
                         balance_type:
                           type: string
-                          example: leads_by_icp
+                          description: >-
+                            Which wallet the transaction moved. Every charge
+                            written since the single-wallet migration says
+                            `platform`; older rows may still carry a per-service
+                            value. What the money was spent on is in
+                            `description`, not here.
+                          example: platform
                         created_at:
                           type: string
                           example: '2025-01-07T13:01:15.397996'
@@ -415,7 +421,7 @@ paths:
                         created_at: '2025-01-07T13:01:15.397996'
                         updated_at: '2025-01-07T13:01:58.195959'
                         status: success
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2400
@@ -423,7 +429,7 @@ paths:
                         created_at: '2025-01-07T11:27:54.628500'
                         updated_at: '2025-01-07T11:28:40.966949'
                         status: success
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2390
@@ -431,7 +437,7 @@ paths:
                         created_at: '2025-01-07T00:31:06.785495'
                         updated_at: '2025-01-07T00:31:40.788266'
                         status: success
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2380
@@ -449,7 +455,7 @@ paths:
                         created_at: '2025-01-07T13:01:15.397996'
                         updated_at: '2025-01-07T13:01:58.195959'
                         status: success
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2400
@@ -457,7 +463,7 @@ paths:
                         created_at: '2025-01-07T11:27:54.628500'
                         updated_at: '2025-01-07T11:28:40.966949'
                         status: success
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2390
@@ -465,7 +471,7 @@ paths:
                         created_at: '2025-01-07T00:31:06.785495'
                         updated_at: '2025-01-07T00:31:40.788266'
                         status: success
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         amount: -10
                         description: leads info by ICP
                         after_balance: -2380
@@ -5392,7 +5398,7 @@ paths:
                       type: search_database_leads
                       credits: -25
                       details:
-                        balance_type: leads_by_icp
+                        balance_type: platform
                         status: success
   /api/v1/accounts/tokens/analytics/:
     get:
@@ -7625,6 +7631,10 @@ components:
                     properties:
                       balance_type:
                         type: string
+                        description: >-
+                          Which wallet the transaction moved. Always `platform`
+                          on current data — every charge draws on the one
+                          balance. What the money was spent on is in `type`.
                       status:
                         type: string
     AccountTokenAnalyticsResponse:
