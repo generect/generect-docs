@@ -3589,9 +3589,9 @@ paths:
       description: >-
         Search database leads with masked response data. Preview results include
         an internal lead ID for later enrichment and do not include LinkedIn URL,
-        company domain, email, or phone. Billed at $0.002 per returned row — a
+        company domain, email, or phone. Billed at \$0.002 per returned row — a
         search that matches nothing is free — and free for the rest of the
-        calendar month once the account's total spend that month reaches $2,000
+        calendar month once the account's total spend that month reaches \$2,000
         (see `preview_tier` on `GET /api/v1/accounts/me/`).
       requestBody:
         required: true
