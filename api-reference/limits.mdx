@@ -19,6 +19,8 @@ You can request data depending on your data plan and account balance (default: `
 
 - [Preview](/api-reference/endpoint/preview/preview-leads) — `POST /preview/leads/` and `POST /preview/leads/count/`: 100 requests
 
+- [Profile resolve](/api-reference/endpoint/profiles/resolve) — `POST /profile/resolve/` and `POST /profile/resolve/bulk/`: shares the lead-enrichment budget above. A bulk call counts as **one** request against it, whatever number of profiles it carries.
+
 ## Recommended timeouts
 - [Company search](/api-reference/endpoint/search/realtime-companies): 300 seconds
 
@@ -38,10 +40,25 @@ Limits are enforced per **API token + source IP**, per operation type. Exceeding
 
 ## Batch size caps
 
-- **Bulk jobs** (enrich bulk, email find bulk, phone find bulk): up to **50 items** per request; a larger array is rejected with `400`.
+- **Bulk jobs** (enrich bulk, email find bulk, phone find bulk) and [`POST /profile/resolve/bulk/`](/api-reference/endpoint/profiles/resolve-bulk): up to **50 items** per request; a larger array is rejected with `400`.
 - **`POST /email/validate/`** has no fixed array cap, but it is a synchronous endpoint — response time grows with batch size. Keep batches to **~50 emails** per request and parallelize, matching the bulk-endpoint convention.
 
-Responses do not currently include `X-RateLimit-*` or `Retry-After` headers — on a `429`, apply exponential backoff (see [Errors](/api-reference/errors)).
+### Reading the headers
+
+Every response on a rate-limited operation carries:
+
+| Header | Meaning |
+| --- | --- |
+| `X-RateLimit-Limit` | Requests you may have **in flight at once** for this operation |
+| `X-RateLimit-Remaining` | Free slots at the moment the response left |
+| `X-RateLimit-Scope` | Which cap applied — the caps are per operation, not per plan |
+| `Retry-After` | Sent on `429` only |
+
+<Warning>
+These are **not** a windowed quota. `Remaining` is a gauge of what you currently have open, and it climbs again as your own in-flight requests finish — it does not refill on a schedule, and there is deliberately no `X-RateLimit-Reset`. An SDK that reads `Remaining` as "requests left this minute" will pace itself against the wrong thing.
+
+For the same reason, a `429` here does not call for long exponential backoff: a slot frees the instant one of your in-flight requests finishes, which is what `Retry-After` reflects. Retry on that interval and keep your concurrency below `X-RateLimit-Limit` instead.
+</Warning>
 
 ## Capacity limits on live data
 

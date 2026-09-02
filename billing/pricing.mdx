@@ -18,10 +18,13 @@ These are the per-result prices every account starts on (see [Spend & Save tiers
 | Email Validation | `POST /email/validate/` | **$0.005** | per email checked |
 | Preview | `POST /preview/leads/` | **\$0.002** | per returned (masked) result — free for the rest of the month once your spend that month reaches \$2,000 |
 | Phone Finder | `POST /phone/find/` (+ `/bulk/`) | **$0.40** | per **found** phone |
+| Profile Resolve | `POST /profile/resolve/` (+ `/bulk/`) | **\$0.0005** | per **resolved** profile |
 
 <Info>Prices above are the Tier 0 (standard) rate, and they are what **every API account pays until its lifetime spend reaches \$20,000**. API discounts begin at that threshold and then deepen with each tier; the platform (UI) operations start discounting much earlier, at \$500. Your current rate is always the one in your [billing settings](https://beta.generect.com/settings/billing) — and in `meta.amount_charged` on every response. See [Spend & Save tiers](/billing/managing-billing).</Info>
 
 <Note>**Preview** is the one API price that never moves with your tier — it stays at \$0.002 per returned result on every tier. What does move is the monthly free tier: once your account's total spend within the current calendar month reaches \$2,000, `POST /preview/leads/` is free for the rest of that month, and the counter restarts on the 1st (UTC). The `preview_tier` flag on [`GET /accounts/me/`](/api-reference/endpoint/accounts/get-account-me) reports the current state. Preview inside the Generect web app is always free — \$0.002 is the API price.</Note>
+
+<Note>**Profile Resolve** is priced apart from the cached search & enrich rate because it is a single identity lookup, not a full record: it returns the real profile URL, name, headline and photos, and nothing else. Like Preview, it does **not** move with your tier — it stays at \$0.0005 per resolved profile on every tier. A reference that does not resolve is free, and duplicate references in one bulk call are billed per row.</Note>
 
 ## How a charge is calculated
 

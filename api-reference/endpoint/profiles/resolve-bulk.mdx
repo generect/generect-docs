@@ -1,0 +1,34 @@
+---
+sidebarTitle: "Resolve (Bulk)"
+openapi: post /api/v1/profile/resolve/bulk/
+---
+
+## Use Case:
+Resolve up to **50** references in one call — URLs and ids mixed freely. Results come back in input order, one row per input, and the batch runs concurrently, so a batch of 50 is not 50× the latency of one.
+
+Same accepted input as [the single endpoint](/api-reference/endpoint/profiles/resolve).
+
+## Partial results are the normal case
+One bad row never sinks the batch: it comes back as an `error` row alongside the successful ones, and `input` echoes what you sent so every row stays traceable without your own index.
+
+```json
+{
+  "data": [
+    { "linkedin_url": "https://www.linkedin.com/in/jennifertoton", "input": "https://www.linkedin.com/in/ACwAAAB118EB…" },
+    { "input": "not a linkedin reference at all", "error": "Not a LinkedIn profile URL or id." }
+  ],
+  "meta": { "total": 2, "resolved": 1, "amount_charged": 0.0005 }
+}
+```
+
+## Pricing
+`meta.resolved` is the number of rows that came back with a profile, and it is exactly what you were charged for. Send 50, resolve 38, pay for 38.
+
+<Warning>
+**Duplicates are billed per row.** The same reference twice in one batch is two lookups and two charges — we do not deduplicate your input for you.
+
+The same person can also arrive as an `ACwAA…` id, an `ACoAA…` id and a vanity slug, and those three strings cannot be compared offline — they are different namespaces with different signatures. Resolve once, then key your data on `id` or `linkedin_id`, which are stable.
+</Warning>
+
+## Rate limits
+A bulk call is **one** request against your concurrency cap regardless of how many profiles it carries, so batching is the cheaper way to stay well inside it. See [Limits](/api-reference/limits).

@@ -6534,6 +6534,162 @@ paths:
                   status: pending
                 meta:
                   event: webhook.test
+  /api/v1/profile/resolve/:
+    post:
+      tags:
+        - 12. Profiles
+      summary: Resolve a profile URL
+      description: >-
+        Turn an anonymous LinkedIn reference — an obfuscated `/in/ACwAA…` link, a
+        Sales Navigator lead URL, a bare profile id or an urn — into the real
+        profile URL and the identity behind it. Billed per resolved profile; a
+        reference that does not resolve is free.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileResolveRequest'
+            examples:
+              Obfuscated link:
+                value:
+                  linkedin_url: https://www.linkedin.com/in/ACwAAA0pmqQBms_MKrU8fQ97Zr3uq5ZwsixSju0
+              Public identifier:
+                value:
+                  id: oleg-zaremba
+      responses:
+        '400':
+          description: >-
+            Not a LinkedIn person reference, the profile does not exist, or a
+            field is missing or unknown. Nothing is charged.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Not a person reference:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Not a LinkedIn profile URL or id.
+                    input: hello world
+                Company URL:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Not a LinkedIn person URL.
+                    input: https://www.linkedin.com/company/generect
+                Numeric member id:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: >-
+                      The numeric member id is not resolvable here — pass a profile
+                      URL, a public identifier or an obfuscated profile id
+                      (ACwAA…/ACoAA…).
+                    input: '220830372'
+                Profile does not exist:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: Person does not exist
+                    input: ACwAAA0pmqQBms_MKrU8fQ97Zr3uq5ZwsixSjXX
+                    meta:
+                      amount_charged: 0.0
+                Exactly one identifier:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"fields": ["exactly one of linkedin_url, id is required"]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: The resolved profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResolveResponse'
+              example:
+                data:
+                  linkedin_url: https://www.linkedin.com/in/oleg-zaremba
+                  public_identifier: oleg-zaremba
+                  linkedin_id: '220830372'
+                  id: ACoAAA0pmqQBAI1iA7ykCT0a_O-3TfWpeu3MPTk
+                  sales_id: ACoAAA0pmqQBAI1iA7ykCT0a_O-3TfWpeu3MPTk
+                  first_name: Oleg
+                  middle_name: ''
+                  last_name: Zaremba
+                  full_name: Oleg Zaremba
+                  unformatted_full_name: Oleg Zaremba
+                  headline: CTO & Co-founder at AiSDR
+                  profile_photo: https://media.licdn.com/dms/image/…
+                  background_photo: https://media.licdn.com/dms/image/…
+                  is_memorialized: false
+                  input: https://www.linkedin.com/in/ACwAAA0pmqQBms_MKrU8fQ97Zr3uq5ZwsixSju0
+                meta:
+                  amount_charged: 0.0005
+  /api/v1/profile/resolve/bulk/:
+    post:
+      tags:
+        - 12. Profiles
+      summary: Resolve profile URLs in bulk
+      description: >-
+        Resolve up to 50 references in one call, URLs and ids mixed freely.
+        Results come back in input order, one row per input. Billed per resolved
+        profile — rows that come back as an error are free. Duplicate references
+        are billed per row; deduplicate before sending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileResolveBulkRequest'
+            example:
+              profiles:
+                - https://www.linkedin.com/in/ACwAAAB118EBLfAT0T5bO6ue_rQx4MTJnhjn_so
+                - oleg-zaremba
+                - not a linkedin reference at all
+      responses:
+        '400':
+          description: Validation error — an empty list, more than 50 items, or an unknown field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                status: error
+                status_code: 400
+                detail: {"profiles": ["Ensure this field has no more than 50 elements."]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: One row per input, in input order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResolveBulkResponse'
+              example:
+                data:
+                  - linkedin_url: https://www.linkedin.com/in/jennifertoton
+                    public_identifier: jennifertoton
+                    linkedin_id: '7722945'
+                    id: ACoAAAB118EB1tzH8aGRU6GFYl-5MljYnWg0HVc
+                    full_name: Jennifer Toton
+                    input: https://www.linkedin.com/in/ACwAAAB118EBLfAT0T5bO6ue_rQx4MTJnhjn_so
+                  - input: not a linkedin reference at all
+                    error: Not a LinkedIn profile URL or id.
+                meta:
+                  total: 2
+                  resolved: 1
+                  amount_charged: 0.0005
 components:
   schemas:
     LeadBulkEnrichRequest:
@@ -7694,6 +7850,117 @@ components:
                     additionalProperties:
                       type: integer
 
+    ProfileResolveRequest:
+      type: object
+      description: Exactly one of `linkedin_url` or `id`. `url` is accepted as an alias for `linkedin_url`.
+      properties:
+        linkedin_url:
+          type: string
+          description: >-
+            Profile URL of any flavour (including an obfuscated `/in/ACwAA…` link
+            and a Sales Navigator `/sales/lead/…` URL), a public identifier, an
+            obfuscated profile id or an urn. Matched case-insensitively.
+          example: https://www.linkedin.com/in/ACwAAA0pmqQBms_MKrU8fQ97Zr3uq5ZwsixSju0
+        url:
+          type: string
+          description: Alias for `linkedin_url`.
+        id:
+          type: string
+          description: Same accepted values as `linkedin_url` — use whichever name fits your code.
+          example: oleg-zaremba
+    ProfileResolveBulkRequest:
+      type: object
+      required:
+        - profiles
+      properties:
+        profiles:
+          type: array
+          minItems: 1
+          maxItems: 50
+          description: 1–50 references, URLs and ids mixed freely.
+          items:
+            type: string
+    ProfileResolveProfile:
+      type: object
+      properties:
+        linkedin_url:
+          type: string
+          description: The real, public profile URL.
+        public_identifier:
+          type: string
+          description: Vanity slug.
+        linkedin_id:
+          type: string
+          description: Numeric LinkedIn member id.
+        id:
+          type: string
+          description: The identifier the rest of the v1 API uses for a lead — feed it straight into enrich, email or phone.
+        sales_id:
+          type: string
+          description: Obfuscated profile id in the `ACoAA…` namespace. Same value as `id`.
+        first_name:
+          type: string
+        middle_name:
+          type: string
+        last_name:
+          type: string
+        full_name:
+          type: string
+        unformatted_full_name:
+          type: string
+        headline:
+          type: string
+        profile_photo:
+          type: string
+          description: Signed CDN URL with an expiry in the query string — download what you intend to keep.
+        background_photo:
+          type: string
+          description: Signed CDN URL with an expiry in the query string.
+        is_memorialized:
+          type: boolean
+          description: True when the profile belongs to someone who has died. Filter these out of outreach.
+        input:
+          type: string
+          description: The value you sent, echoed back so a row stays traceable.
+    ProfileResolveResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ProfileResolveProfile'
+        meta:
+          type: object
+          properties:
+            amount_charged:
+              type: number
+              description: US dollars actually charged, to four decimal places.
+              example: 0.0005
+    ProfileResolveBulkResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          description: One row per input, in input order — either a resolved profile or `{input, error}`.
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ProfileResolveProfile'
+              - type: object
+                properties:
+                  input:
+                    type: string
+                  error:
+                    type: string
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+              description: References sent.
+            resolved:
+              type: integer
+              description: Rows that came back with a profile — exactly what you were charged for.
+            amount_charged:
+              type: number
+              example: 0.0005
   responses:
     Unauthorized:
       description: Missing or invalid API token.
@@ -7766,3 +8033,5 @@ tags:
     description: Find phone numbers for leads.
   - name: 11. Webhooks
     description: Register and manage async job notifications.
+  - name: 12. Profiles
+    description: Resolve anonymous LinkedIn profile references to real URLs and identities.

@@ -1,0 +1,48 @@
+---
+sidebarTitle: "Resolve"
+openapi: post /api/v1/profile/resolve/
+---
+
+## Use Case:
+A link like `linkedin.com/in/ACwAAA0pmqQBms_MKrU8fQ97Zr3uq5ZwsixSju0` is a valid profile link that tells you nothing about who it belongs to. These turn up wherever Sales Navigator has been in the loop — exported lists, CRM records, ad platforms, scraped datasets. This endpoint resolves one to the person.
+
+## Accepted input
+Pass any of these, in either `linkedin_url` or `id` — the split is naming, not behaviour:
+
+| Input | Example |
+| --- | --- |
+| Full profile URL | `https://www.linkedin.com/in/oleg-zaremba` |
+| Obfuscated URL | `https://www.linkedin.com/in/ACwAAA0pmqQBms_MKrU8fQ97Zr3uq5ZwsixSju0` |
+| Sales Navigator lead URL | `https://www.linkedin.com/sales/lead/ACwAAA0pmqQ…,NAME_SEARCH,abcd` |
+| Public identifier | `oleg-zaremba` |
+| Obfuscated id, either namespace | `ACwAAA0pmqQ…` or `ACoAAA0pmqQ…` |
+| Sales profile urn | `urn:li:fs_salesProfile:(ACwAAA0pmqQ…,NAME_SEARCH,abcd)` |
+
+URLs are matched case-insensitively, so a CRM export that shouts `HTTPS://WWW.LINKEDIN.COM/IN/…` is accepted as-is. The id itself keeps its original case — obfuscated ids are base64url and case-sensitive.
+
+<Note>
+The **numeric member id** is not an accepted input. `220830372` and `urn:li:member:220830372` are rejected with a 400 and cost nothing: LinkedIn answers 403 for a numeric lookup, the same answer it gives for a profile that does not exist. It travels the other way — a numeric member id comes back *in* the response as `linkedin_id`.
+</Note>
+
+This endpoint resolves **people**, not organisations. A company URL is rejected with `400 Not a LinkedIn person URL.` and costs nothing.
+
+## Pricing
+Billed per resolved profile. Three things cost nothing at all:
+
+| Case | Response | Charge |
+| --- | --- | --- |
+| Input is not a LinkedIn person reference | 400 | \$0 — rejected before any lookup |
+| Profile does not exist or is not reachable | 400 | \$0 |
+| Our side fails | 500 | \$0 — refunded |
+
+`meta.amount_charged` is the amount actually debited, in US dollars to four decimal places. The matching ledger entry is described as `Profile URL resolve` — list it with [`GET /api/auth/transactions/`](/api-reference/endpoint/accounts/get-account-transactions).
+
+<Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://beta.generect.com/settings/billing)</Tip>
+
+## Feeding the result onward
+`id` is the same identifier the rest of the v1 API uses for a lead, so a resolved profile goes straight into [enrich](/api-reference/endpoint/enrich/enrich-database-lead), [email](/api-reference/endpoint/emails/email-finder) or [phone](/api-reference/endpoint/phone/phone-finder) with no extra translation step.
+
+## What it does not return
+Identity only: name, headline, photos, URL and ids. Location, current company, work history and contact data are a different call — use enrich with the `id` you get back.
+
+`profile_photo` and `background_photo` are signed CDN URLs with an expiry in the query string. Download what you intend to keep; do not store the URL as if it were permanent.

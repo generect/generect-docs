@@ -130,6 +130,13 @@
             ]
           },
           {
+            "group": "Profiles",
+            "pages": [
+              "api-reference/endpoint/profiles/resolve",
+              "api-reference/endpoint/profiles/resolve-bulk"
+            ]
+          },
+          {
             "group": "Search",
             "pages": [
               {
