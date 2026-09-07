@@ -5616,7 +5616,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompanySearchRequest'
+              $ref: '#/components/schemas/DatabaseCompanySearchRequest'
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -5667,7 +5667,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompanySearchRequest'
+              $ref: '#/components/schemas/DatabaseCompanySearchRequest'
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -7027,6 +7027,51 @@ components:
         locations:
           - United States
         limit_by: 50
+    DatabaseCompanySearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/CompanySearchRequest'
+        - type: object
+          properties:
+            founded_year:
+              description: >-
+                Founding year of the company — the "company age" filter. Accepts
+                either an explicit list of years, or a `{"min", "max"}` range of
+                founding years; both bounds are inclusive and either may be
+                omitted (an omitted `max` means "up to the current year").
+
+
+                Database mode only. Realtime company search has no founded-year
+                facet upstream, so it rejects this field rather than accepting it
+                and returning a wider result set than you asked for.
+
+
+                Coverage matters here: the founding year is known for roughly 57%
+                of companies, and a company without one never matches. Filtering
+                by company age therefore also drops records that simply lack the
+                data, not only those outside your range.
+              oneOf:
+                - type: array
+                  items:
+                    type: integer
+                - type: object
+                  properties:
+                    min:
+                      type: integer
+                      description: >-
+                        Earliest founding year, inclusive. Clamped up to 1800 —
+                        earlier values in the data are junk, not history.
+                    max:
+                      type: integer
+                      description: Latest founding year, inclusive. Clamped down to the current year.
+                  description: >-
+                    A range that names bounds but covers no year after clamping
+                    — `max` before `min`, or a window entirely in the future or
+                    before 1800 — is a 400, not an empty result set. Omitting
+                    both bounds is not a filter at all and is rejected by the
+                    "at least one search filter" rule.
+              example:
+                min: 2010
+                max: 2020
     RealtimeCompanySearchRequest:
       allOf:
         - $ref: '#/components/schemas/CompanySearchRequest'
@@ -7120,7 +7165,7 @@ components:
       type: object
       properties:
         company_search_criteria:
-          $ref: '#/components/schemas/CompanySearchRequest'
+          $ref: '#/components/schemas/DatabaseCompanySearchRequest'
         lead_search_criteria:
           $ref: '#/components/schemas/LeadSearchRequest'
       example:
