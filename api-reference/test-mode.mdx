@@ -112,6 +112,14 @@ The same request body returns the same fictional people every time. You can asse
 
 Change the query and you get different people.
 
+## Page size
+
+Test mode honours the `limit_by` you send, up to **500 rows per response**. The live endpoints go higher, but every fixture row is generated through the real serializers, so a page has a real cost.
+
+Ask for more than 500 and you get 500, with `results_count` still reporting the full population so your pagination logic has something to page through. If your integration tests assert on the page size, assert `<=` rather than `==` above that number.
+
+Nested criteria are read where the live endpoint reads them. For company-leads, the page comes from `lead_search_criteria.limit_by`, not from a top-level `limit_by`.
+
 ## Bulk jobs
 
 Bulk endpoints behave like bulk endpoints: the submit returns `pending` with a `job_id`, the first poll returns `processing`, and the second returns `completed` with the rows. That is deliberate — a job that is already finished on the first poll would let you ship a client that never handles the waiting state.
