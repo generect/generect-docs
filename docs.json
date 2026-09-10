@@ -89,6 +89,7 @@
             "pages": [
               "api-reference/introduction",
               "api-reference/quickstart",
+              "api-reference/test-mode",
               "api-reference/database-vs-realtime",
               "api-reference/limits",
               "api-reference/reliability",

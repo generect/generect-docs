@@ -1,0 +1,183 @@
+---
+title: 'Test mode'
+icon: 'flask'
+description: 'Build and rehearse an integration without spending anything'
+---
+
+Test mode gives you a key that answers every endpoint with fictional data, at the speed the real endpoint runs, showing the price the real call would have cost — and charges nothing.
+
+There is **no separate host and no separate base URL**. `https://api.generect.com` serves both modes and the key decides which one you get. Moving an integration from test to live is a change of credential, nothing else.
+
+## Get a test key
+
+Create one over the API with the key you already have:
+
+```bash
+curl -X POST https://api.generect.com/api/auth/api_tokens/ \
+  -H "Authorization: Token YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "sandbox", "mode": "test"}'
+```
+
+The response carries the new key. Test keys start with `test_`, so you can tell one from a live key at a glance, in a log line or in a support ticket.
+
+<Note>
+  Picking **Test** when creating a key in the app is rolling out. Until it reaches your account, use the call above.
+</Note>
+
+## Your first test call
+
+```bash
+curl -X POST https://api.generect.com/api/v1/search/database/leads/ \
+  -H "Authorization: Token test_YOUR_TEST_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"job_titles": ["marketing manager"], "locations": ["Germany"], "limit_by": 3}'
+```
+
+Identical to the live call in every respect but the key. The response carries a header:
+
+```
+X-Generect-Mode: test
+```
+
+Check that header in your integration tests. It is the one signal that is present on every endpoint, including the older `/api/linkedin/*` ones that have no `meta` envelope.
+
+## What is real, and what is not
+
+<CardGroup cols={2}>
+  <Card title="Real: validation" icon="circle-check">
+    An unknown filter is still a `400`, with the same message. A sandbox that accepted anything would teach you that a broken payload is fine.
+  </Card>
+  <Card title="Real: response shapes" icon="circle-check">
+    Fixtures are generated through the same serializers that build live responses, so every field a live row has, a test row has.
+  </Card>
+  <Card title="Real: timings" icon="circle-check">
+    Each endpoint waits about as long as it really takes, drawn from production percentiles. Write your timeouts against these.
+  </Card>
+  <Card title="Real: prices" icon="circle-check">
+    `meta.amount_charged` is computed by the live pricing code against your own tier. Nothing is debited.
+  </Card>
+  <Card title="Not real: the data" icon="circle-xmark">
+    Fictional people at fictional companies. Nothing is fetched from LinkedIn or any provider.
+  </Card>
+  <Card title="Not real: the ledger" icon="circle-xmark">
+    No transaction is written and your balance never moves. Test calls do not appear in billing history.
+  </Card>
+</CardGroup>
+
+### Recognising a fixture
+
+Test data is meant to be unmistakable:
+
+| Field | What you get | Why |
+| --- | --- | --- |
+| Company domains | `*.example.com` | Reserved by RFC 2606 — the domain can never be registered |
+| Phone numbers | `+1 555 01xx` | The block reserved for fictional use |
+| Names | Invented surnames — Testwell, Mockridge, Stubbs | No real person carries them |
+| `source` | `test_mode` | Machine-readable on every row that has the field |
+
+<Warning>
+  One exception worth knowing. The email finder builds its address on **the domain you asked for**, because that is what the live endpoint does and your integration needs to check it. Ask for `ada.testwell` at `microsoft.com` and you get `ada.testwell@microsoft.com` — a synthetic address that looks real. It is not deliverable, and the row is marked `"source": "test_mode"`. Never feed test-mode output into a sending pipeline.
+</Warning>
+
+## Magic inputs: reproduce a failure on demand
+
+The paths worth rehearsing are the ones you cannot ask production for. You cannot request a `402` without actually running out of money, so test mode gives you reserved values that force an outcome.
+
+Put one in any identity field — an email, a LinkedIn URL, a company name:
+
+| Magic value | What happens |
+| --- | --- |
+| `not-found@example.com`, `.../in/sandbox-not-found` | The endpoint's genuine "no data" outcome: an empty result for a search, a `400 Person does not exist` for an enrich. Nothing is charged. |
+| `insufficient-funds@example.com` | `402 Payment Required`, the same body a real empty balance produces |
+| `rate-limited@example.com` | `429 Too Many Requests` with `Retry-After: 1` |
+| `upstream-error@example.com` | `502` — the data source is unavailable |
+| `slow@example.com` | The endpoint's 90th-percentile response time, for testing timeouts |
+
+The fragment has to be a whole segment, so `slowik@example.com` is an ordinary address and does not trigger anything.
+
+```bash
+curl -X POST https://api.generect.com/api/v1/enrich/database/lead/ \
+  -H "Authorization: Token test_YOUR_TEST_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "insufficient-funds@example.com"}'
+```
+
+### The header form
+
+Searches have no single subject to hide a magic value in, so the same behaviours are available as a request header:
+
+```bash
+curl -X POST https://api.generect.com/api/v1/search/database/leads/ \
+  -H "Authorization: Token test_YOUR_TEST_KEY" \
+  -H "X-Generect-Test-Behaviour: rate_limited" \
+  -H "Content-Type: application/json" \
+  -d '{"job_titles": ["ceo"]}'
+```
+
+Accepted values: `not_found`, `insufficient_funds`, `rate_limited`, `upstream_error`, `slow`, and `latency=<seconds>` to force a specific delay.
+
+The header is ignored by live keys.
+
+## Determinism
+
+The same request body returns the same fictional people every time. You can assert on a name or a count in your own test suite and it will keep passing, and a retry after a timeout returns what the first attempt would have.
+
+Change the query and you get different people.
+
+## Page size
+
+Test mode honours the `limit_by` you send, up to a ceiling on how many rows it will fabricate for one response. Every fixture row is generated through the same serializers that build live responses, so a page has a real cost.
+
+Ask for more than the ceiling and you get the ceiling, not an error, and `results_count` still reports the full population so your pagination logic has something to page through. **Assert `<=` on the page size rather than `==`** and your tests keep passing when the ceiling moves.
+
+Nested criteria are read where the live endpoint reads them. For company-leads, the page comes from `lead_search_criteria.limit_by`, not from a top-level `limit_by`.
+
+## Bulk jobs
+
+Bulk endpoints behave like bulk endpoints: the submit returns `pending` with a `job_id`, the first poll returns `processing`, and the second returns `completed` with the rows. That is deliberate — a job that is already finished on the first poll would let you ship a client that never handles the waiting state.
+
+```bash
+# submit
+curl -X POST https://api.generect.com/api/v1/enrich/database/leads/bulk/ \
+  -H "Authorization: Token test_YOUR_TEST_KEY" -H "Content-Type: application/json" \
+  -d '{"leads": [{"linkedin_url": "https://www.linkedin.com/in/sandbox-ada"}]}'
+
+# poll — first call: processing, second: completed
+curl https://api.generect.com/api/v1/enrich/leads/bulk/JOB_ID/ \
+  -H "Authorization: Token test_YOUR_TEST_KEY"
+```
+
+## Coverage
+
+Supported: search (leads, companies, company-leads, and their counts), enrich (leads and companies, database and realtime, single and bulk), email finder and validation, phone finder, preview, and the legacy `/api/linkedin/*` endpoints.
+
+`/api/v1/accounts/*` works normally with a test key and returns **your real account** — that is what you want when you are checking a balance or a tier.
+
+Not yet supported: the datahub gateway (`/api/v1/data/…`) and webhook management. A test key on an endpoint without fixtures returns:
+
+```json
+{
+  "status": "error",
+  "status_code": 501,
+  "detail": "This endpoint does not support test mode yet. Use a live API key."
+}
+```
+
+That refusal is deliberate. An endpoint we have not covered will not quietly answer a test key with real data.
+
+## Going live
+
+Swap the key. Nothing else changes — same URL, same payloads, same response shapes.
+
+<Steps>
+  <Step title="Check the header is gone">
+    Assert `X-Generect-Mode` is absent in production. If it says `test`, you shipped the wrong key.
+  </Step>
+  <Step title="Fund the account">
+    See [Pay as you go](/billing/pay-as-you-go). Test mode reports prices but never debits, so a live key is the first thing that will meet an empty balance.
+  </Step>
+  <Step title="Keep the test key">
+    It costs nothing to keep and it is the cheapest way to rehearse the next change.
+  </Step>
+</Steps>

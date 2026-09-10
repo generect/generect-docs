@@ -15,3 +15,21 @@ headers = {
 ```
 
 The `Token` prefix is required. A raw token without the prefix will not authenticate.
+
+## Live and test keys
+
+Every account can hold two kinds of key, and the key decides how the API behaves. There is no separate host and no separate base URL — both go to `https://api.generect.com`.
+
+| Key | Looks like | What it does |
+| --- | --- | --- |
+| Live | `a1b2c3d4…` (32 hex characters) | Real data, charged to your balance |
+| Test | `test_a1b2c3d4…` | Fictional data, same shapes and timings, charged nothing |
+
+```python
+live = {"Authorization": "Token a1b2c3d4e5f6..."}
+test = {"Authorization": "Token test_a1b2c3d4e5f6..."}
+```
+
+A response served in test mode carries `X-Generect-Mode: test`. Assert on that header in your integration tests — it is the quickest way to catch a test key that reached production, or a live key that reached a load test.
+
+See [Test mode](/api-reference/test-mode) for magic inputs, coverage and the going-live checklist.
