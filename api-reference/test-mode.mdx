@@ -8,9 +8,22 @@ Test mode gives you a key that answers every endpoint with fictional data, at th
 
 There is **no separate host and no separate base URL**. `https://api.generect.com` serves both modes and the key decides which one you get. Moving an integration from test to live is a change of credential, nothing else.
 
-<Card title="Create a test key" icon="key" href="https://beta.generect.com/settings/api">
-  Settings → API → **New key** → choose **Test**. Test keys start with `test_` and stay visible on that page, so you can copy one whenever you need it.
-</Card>
+## Get a test key
+
+Create one over the API with the key you already have:
+
+```bash
+curl -X POST https://api.generect.com/api/auth/api_tokens/ \
+  -H "Authorization: Token YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "sandbox", "mode": "test"}'
+```
+
+The response carries the new key. Test keys start with `test_`, so you can tell one from a live key at a glance, in a log line or in a support ticket.
+
+<Note>
+  Picking **Test** when creating a key in the app is rolling out. Until it reaches your account, use the call above.
+</Note>
 
 ## Your first test call
 
