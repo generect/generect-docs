@@ -13,9 +13,10 @@ safe to hand to an autonomous agent:
    human what it spent is quoting the biller, not guessing.
 
 <Info>
-  Requires MCP server **0.7.0 or newer**. Remote users
-  (`https://mcp.generect.com/mcp`) are always on the current version. Local users
-  should run `npx generect-ultimate-mcp@latest`.
+  Requires MCP server **0.9.0 or newer** for resources, prompts and the
+  vocabulary guard; the tools themselves work from 0.7.0. Remote users
+  (`https://mcp.generect.com/mcp`) are always on the deployed version. Local
+  users should run `npx generect-ultimate-mcp@latest`.
 </Info>
 
 ## Free tools
@@ -23,8 +24,9 @@ safe to hand to an autonomous agent:
 | Tool | What it gives you |
 |------|-------------------|
 | `count_leads` | How many leads match, plus the cost of the next step at **your** account's rates |
+| `preview_leads` with `count_only: true` | A second opinion on the count from the Preview index. Free — and the two indexes do disagree, so it is worth asking both |
 | `count_companies` | The same, for companies |
-| `get_balance` | Balance, month-to-date usage, and your real per-operation prices |
+| `get_balance` | Balance and your real per-operation prices. `include_usage` adds spend broken down by operation; `include_token_analytics` adds per-API-token request counts, which answers "which integration is making these calls?" |
 | `get_bulk_job` | Status and results of a bulk job (the work was billed at submit time) |
 | `manage_webhooks` | Register, list, update, delete or test a webhook endpoint |
 | `health` | Liveness and credential check — touches no data endpoint, safe for monitors |
@@ -46,6 +48,70 @@ safe to hand to an autonomous agent:
 Exact per-operation prices for your account are in
 [billing settings](https://beta.generect.com/settings/billing), and `get_balance`
 returns them too. See [Pricing](/billing/pricing) for the list rates.
+
+## Filter values are matched exactly — and two of them are not validated
+
+This is the most expensive thing to get wrong, so it is worth stating plainly.
+The search endpoints do **not** validate all filters the same way:
+
+| Filter | An unknown value |
+|--------|------------------|
+| `locations`, `company_headcounts`, `company_types` | rejected with `400`, naming the field |
+| `company_industries`, `seniorities` | **accepted — 0 results, no charge, no error** |
+
+`company_industries: ["Fintech"]` is not a LinkedIn industry, so it matches
+nothing and you get a perfectly successful count of **zero**. That is
+indistinguishable from a real empty audience, and it is how an agent ends up
+telling a user "there is nobody like that" when the truth is "that is not the
+name of an industry".
+
+From 0.9.0 the MCP server checks these values before it sends anything:
+
+- an unknown **industry**, headcount bucket or company type is refused locally,
+  with the closest valid names — `Fintech` → `Financial Services`,
+  `50-200` → `51-200`. Nothing is sent and nothing is charged;
+- a value that is merely mis-spelled or mis-cased is **corrected**
+  (`software development` → `Software Development`), because matching is exact;
+- an unknown **seniority** or job function is a warning rather than a refusal:
+  the engine does match loosely (`Owner` finds people even though the canonical
+  label is `Owner / Partner`);
+- `allow_unlisted_values: true` overrides the check, for the case where the API
+  has gained a value the server's snapshot does not have yet.
+
+### Resources
+
+The vocabularies are exposed as MCP resources, so a client can read the exact
+list once instead of guessing:
+
+| Resource | Contents |
+|----------|----------|
+| `generect://vocabulary/industries` | all 434 industry names, each with its parent |
+| `generect://vocabulary/seniorities` | canonical seniority labels |
+| `generect://vocabulary/functions` | job functions (realtime only) |
+| `generect://vocabulary/company-types` | company types |
+| `generect://vocabulary/headcounts` | headcount buckets |
+| `generect://vocabulary/follower-ranges` | follower buckets (realtime only) |
+| `generect://account/pricing` | your real per-operation prices |
+| `generect://account/balance` | balance and month-to-date usage |
+
+Reading a resource is free and touches no data endpoint.
+
+### Prompts
+
+The server also ships workflow prompts, which appear as slash commands in
+clients that support them: `size_an_audience`, `build_prospect_list`,
+`enrich_my_list`, `spend_report`. Each starts from the free step.
+
+## Spend ceiling
+
+A row cap bounds how many results you get, not how much you pay — the per-row
+price depends on the mode and your tier. So any call whose worst case exceeds the
+server's per-call ceiling (default **\$5**, `MCP_MAX_SPEND_PER_CALL`) is refused
+with the exact figure, and has to be repeated with `confirm_spend_usd` set to at
+least that amount.
+
+This is checked **before** `start_bulk_job` submits, because a bulk job reserves
+its whole cost at submit time and cannot be called back.
 
 ## Database or realtime
 
@@ -70,11 +136,12 @@ you to ask again with `mode: "realtime"`.
 ## The order to call things in
 
 ```text
-count_leads              free            → is this audience big enough to be worth anything?
-preview_leads            $0.002/row      → who is actually in it? keep the ids that fit
-search_leads             per row         → pull only the rows you decided to keep
-generate_email           per valid email → contact details for those ids only
-get_balance              free            → report the exact spend back to the user
+read generect://vocabulary/industries   free            → get the filter names exactly right
+count_leads                             free            → is this audience big enough to be worth anything?
+preview_leads                           $0.002/row      → who is actually in it? keep the ids that fit
+search_leads                            per row         → pull only the rows you decided to keep
+generate_email                          per valid email → contact details for those ids only
+get_balance                             free            → report the exact spend back to the user
 ```
 
 Records carry a stable `id` across preview, search and enrich, so once a lead is
