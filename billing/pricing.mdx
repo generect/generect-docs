@@ -8,7 +8,7 @@ Your account balance is held in **US dollars**. Every billable result deducts a 
 
 ## Standard prices
 
-These are the per-result prices every account starts on (see [Spend & Save tiers](/billing/managing-billing) for the volume discounts). Your effective price never goes **up**; your current rate is always shown in your [billing settings](https://beta.generect.com/settings/billing).
+These are the per-result prices every account starts on (see [Spend & Save tiers](/billing/managing-billing) for the volume discounts). Your effective price never goes **up**; your current rate is always shown in your [billing settings](https://app.generect.com/settings/billing).
 
 | Operation | Endpoints | Price (USD) | Billed |
 | --- | --- | --- | --- |
@@ -19,7 +19,7 @@ These are the per-result prices every account starts on (see [Spend & Save tiers
 | Preview | `POST /preview/leads/` | **\$0.002** | per returned (masked) result — free for the rest of the month once your spend that month reaches \$2,000 |
 | Phone Finder | `POST /phone/find/` (+ `/bulk/`) | **$0.40** | per **found** phone |
 
-<Info>Prices above are the Tier 0 (standard) rate, and they are what **every API account pays until its lifetime spend reaches \$20,000**. API discounts begin at that threshold and then deepen with each tier; the platform (UI) operations start discounting much earlier, at \$500. Your current rate is always the one in your [billing settings](https://beta.generect.com/settings/billing) — and in `meta.amount_charged` on every response. See [Spend & Save tiers](/billing/managing-billing).</Info>
+<Info>Prices above are the Tier 0 (standard) rate, and they are what **every API account pays until its lifetime spend reaches \$20,000**. API discounts begin at that threshold and then deepen with each tier; the platform (UI) operations start discounting much earlier, at \$500. Your current rate is always the one in your [billing settings](https://app.generect.com/settings/billing) — and in `meta.amount_charged` on every response. See [Spend & Save tiers](/billing/managing-billing).</Info>
 
 <Note>**Preview** is the one API price that never moves with your tier — it stays at \$0.002 per returned result on every tier. What does move is the monthly free tier: once your account's total spend within the current calendar month reaches \$2,000, `POST /preview/leads/` is free for the rest of that month, and the counter restarts on the 1st (UTC). The `preview_tier` flag on [`GET /accounts/me/`](/api-reference/endpoint/accounts/get-account-me) reports the current state. Preview inside the Generect web app is always free — \$0.002 is the API price.</Note>
 
@@ -94,4 +94,4 @@ There is no separate sandbox environment — the live API is safe to evaluate fo
 
 ## Keeping a positive balance
 
-API usage requires a positive balance. If it reaches $0, requests stop until you top up. Enable [Auto Top-Up](/billing/managing-billing) so production traffic never halts. New accounts start with free credit to try the API — your current balance is shown in your [billing settings](https://beta.generect.com/settings/billing).
+API usage requires a positive balance. If it reaches $0, requests stop until you top up. Enable [Auto Top-Up](/billing/managing-billing) so production traffic never halts. New accounts start with free credit to try the API — your current balance is shown in your [billing settings](https://app.generect.com/settings/billing).

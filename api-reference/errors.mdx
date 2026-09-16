@@ -36,7 +36,7 @@ A validation error looks like this:
 | --- | --- | --- |
 | `400` | Bad Request | Missing or invalid parameters, an unsupported filter for the chosen mode, a malformed LinkedIn URL, or a lookup that matched no record. |
 | `401` | Unauthorized | Missing `Authorization` header or an invalid token. See [Authentication](/api-reference/authentication). |
-| `402` | Payment Required | Not enough balance to run the operation (`"Insufficient funds in the account."`). Top up in your [billing settings](https://beta.generect.com/settings/billing). |
+| `402` | Payment Required | Not enough balance to run the operation (`"Insufficient funds in the account."`). Top up in your [billing settings](https://app.generect.com/settings/billing). |
 | `403` | Forbidden | Your account or API key is not entitled to this endpoint. |
 | `404` | Not Found | The requested resource does not exist — for example, a lead that can't be found by the provided email. |
 | `429` | Too Many Requests | You exceeded a per-operation [rate or parallel-request limit](/api-reference/limits). Back off and retry. |

@@ -39,7 +39,7 @@ Do not use Generect for: personal email searches, non-business contacts, or when
 ```
 Authorization: Token <your-api-key>
 ```
-Replace `<your-api-key>` with your actual API key from https://beta.generect.com.
+Replace `<your-api-key>` with your actual API key from https://app.generect.com.
 
 ### Core API endpoints (current, `/api/v1/...`)
 

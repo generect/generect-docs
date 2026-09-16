@@ -80,7 +80,7 @@ General changes across all endpoints:
     | Method | `POST` | *(none)* |
     | Path | `/api/auth/token/login/` | *(none)* |
 
-    v1 has no login flow — every request authenticates with a static API key from [account settings](https://beta.generect.com/settings/billing), sent as `Authorization: Token <key>`. Drop the login call and store the key directly.
+    v1 has no login flow — every request authenticates with a static API key from [account settings](https://app.generect.com/settings/billing), sent as `Authorization: Token <key>`. Drop the login call and store the key directly.
   </Accordion>
 
   <Accordion title="2. Get account profile">
@@ -565,7 +565,7 @@ Every v1 endpoint uses the same [error envelope](/api-reference/errors):
 
 <Steps>
   <Step title="Get a static API key">
-    If you're still calling `/api/auth/token/login/`, stop — grab a key from [account settings](https://beta.generect.com/settings/billing) and send it as `Authorization: Token <key>` on every request.
+    If you're still calling `/api/auth/token/login/`, stop — grab a key from [account settings](https://app.generect.com/settings/billing) and send it as `Authorization: Token <key>` on every request.
   </Step>
   <Step title="Swap paths">
     Replace each legacy path with its `/api/v1/...` equivalent from the [Quick reference](#quick-reference) table above.
