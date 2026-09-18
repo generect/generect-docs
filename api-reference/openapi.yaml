@@ -7785,7 +7785,7 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      description: "Use the required Token prefix. Example: Authorization: Token xxxxxxxxx"
+      description: "Paste the whole header value, including the word Token and a space: `Token a1b2c3d4...`. The playground sends exactly what you type here, so a key on its own is sent without the prefix and comes back 401. Test keys look like `Token test_a1b2c3d4...` and are charged nothing."
 security:
   - apiKey: []
 tags:

@@ -16,6 +16,10 @@ headers = {
 
 The `Token` prefix is required. A raw token without the prefix will not authenticate.
 
+<Warning>
+  The same applies in the **API playground** on every endpoint page: the `Authorization` field is sent verbatim, so paste `Token a1b2c3d4...` there — not the key on its own. A key without the prefix comes back `401` with no hint about why, and that is the single most common first-call failure we see.
+</Warning>
+
 ## Live and test keys
 
 Every account can hold two kinds of key, and the key decides how the API behaves. There is no separate host and no separate base URL — both go to `https://api.generect.com`.

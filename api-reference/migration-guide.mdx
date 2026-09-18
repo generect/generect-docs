@@ -87,7 +87,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `GET` | `GET` |
-    | Path | `/api/auth/users/me/` | `/api/v1/accounts/me/` |
+    | Path | `/api/auth/users/me/` | [`/api/v1/accounts/me/`](/api-reference/endpoint/accounts/get-account-me) |
 
     **Response field mapping:**
 
@@ -137,7 +137,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `GET` | `GET` |
-    | Path | `/api/auth/transactions/` | `/api/v1/accounts/transactions/` |
+    | Path | `/api/auth/transactions/` | [`/api/v1/accounts/transactions/`](/api-reference/endpoint/accounts/get-account-transactions) |
 
     **Response field mapping:**
 
@@ -158,7 +158,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `GET` | `GET` |
-    | Path | `/api/auth/transactions/spent_credits/` | `/api/v1/accounts/usage/` |
+    | Path | `/api/auth/transactions/spent_credits/` | [`/api/v1/accounts/usage/`](/api-reference/endpoint/accounts/get-account-usage) |
 
     **Response field mapping:**
 
@@ -178,7 +178,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/leads/by_icp/` | `/api/v1/search/{database\|realtime}/leads/` |
+    | Path | `/api/linkedin/leads/by_icp/` | [`/api/v1/search/{database\|realtime}/leads/`](/api-reference/endpoint/search/database-leads) |
 
     **Request** — most filters keep their name: `locations`, `personas`, `company_locations`, `company_headcounts`, `company_types`, `limit_by`, `offset_by`, `exclude_names`, `exclude_ids`, `filter_empty_vars`, `company_link`, `company_id`.
     
@@ -202,7 +202,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/leads/by_icp/get_count/` | `/api/v1/search/{database\|realtime}/leads/count/` |
+    | Path | `/api/linkedin/leads/by_icp/get_count/` | [`/api/v1/search/{database\|realtime}/leads/count/`](/api-reference/endpoint/search/count-database-leads) |
 
     Same request filters as Search leads. `results_count`/`status` → `data.results_count`. Database-mode counts are always free; realtime counts are billable.
 
@@ -213,7 +213,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/companies/by_icp/` | `/api/v1/search/{database\|realtime}/companies/` |
+    | Path | `/api/linkedin/companies/by_icp/` | [`/api/v1/search/{database\|realtime}/companies/`](/api-reference/endpoint/search/database-companies) |
 
     **Request** — most filters keep their name: `company_types`, `headcounts`, `industries`, `keywords`, `locations`, `num_of_followers`, `limit_by`, `offset_by`. New: `exclude_industries`, `exclude_locations`, `exclude_ids`, `exclude_domains`, `technologies`, `company_names`, `strict` (any mode) and `revenues_range`, `department_headcount`, `headcount_growth`, `hiring_on_linkedin`, `linkedins_links` (realtime mode only).
 
@@ -234,7 +234,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/companies/by_icp/get_count/` | `/api/v1/search/{database\|realtime}/companies/count/` |
+    | Path | `/api/linkedin/companies/by_icp/get_count/` | [`/api/v1/search/{database\|realtime}/companies/count/`](/api-reference/endpoint/search/count-database-companies) |
 
     Same request filters as Search companies. `results_count` → `data.results_count`. Database-mode counts are always free; realtime counts are billable.
 
@@ -249,7 +249,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/companies/by_link/` | `/api/v1/enrich/{database\|realtime}/company/` |
+    | Path | `/api/linkedin/companies/by_link/` | [`/api/v1/enrich/{database\|realtime}/company/`](/api-reference/endpoint/enrich/enrich-realtime-company) |
 
     **Request** — send exactly ONE identifier field (was: LinkedIn company URL / company website):
 
@@ -320,7 +320,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/leads/by_link/` | `/api/v1/enrich/{database\|realtime}/lead/` |
+    | Path | `/api/linkedin/leads/by_link/` | [`/api/v1/enrich/{database\|realtime}/lead/`](/api-reference/endpoint/enrich/enrich-realtime-lead) |
   
     **Request:**
     ```json
@@ -395,7 +395,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/email_finder/` | `/api/v1/email/find/` |
+    | Path | `/api/linkedin/email_finder/` | [`/api/v1/email/find/`](/api-reference/endpoint/emails/email-finder) |
 
     **Request** — same 3 fields, unchanged:
     ```json
@@ -465,7 +465,7 @@ General changes across all endpoints:
     |  | Old | New |
     | --- | --- | --- |
     | Method | `POST` | `POST` |
-    | Path | `/api/linkedin/email_validator/` | `/api/v1/email/validate/` |
+    | Path | `/api/linkedin/email_validator/` | [`/api/v1/email/validate/`](/api-reference/endpoint/emails/email-validation) |
 
     **Request** — legacy took a bare array of email strings; v1 requires an object wrapper:
 
