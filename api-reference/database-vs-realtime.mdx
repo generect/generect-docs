@@ -45,7 +45,24 @@ POST /enrich/database/company/    POST /enrich/realtime/company/
 
 **Companies:** `industries`, `exclude_industries`, `headcounts`, `locations`, `exclude_locations`, `company_types`. The `sub_industries` toggle is also accepted here and behaves the same as in real-time mode (it modifies `industries` rather than counting as a filter on its own).
 
-Anything outside this set is rejected with `400` and a message pointing to the realtime endpoint, so a filter is never silently ignored. At least one search filter is always required.
+Anything outside this set is rejected with `400` and a message pointing to the realtime endpoint, so an unsupported *filter* is never silently ignored. At least one search filter is always required.
+
+<Warning>
+  A supported filter given an **unknown value** is a different matter, and the
+  behaviour is not uniform:
+
+  * `locations`, `company_headcounts` and `company_types` reject an unknown value
+    with `400`, naming the field (the headcount error also lists the valid buckets).
+  * `company_industries` / `industries` and `seniorities` do **not** validate.
+    An unrecognised value simply matches nothing, so the request succeeds, returns
+    `0` results and charges `\$0`.
+
+  So `company_industries: ["Fintech"]` — not a LinkedIn industry — looks exactly
+  like a real empty audience. Industry and seniority values are matched
+  **exactly**: use the names from
+  [ICP Search](/docs/icp-search), and when a count comes back as zero, re-check
+  the spelling before concluding the audience does not exist.
+</Warning>
 
 ## Billing
 
