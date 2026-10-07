@@ -41,6 +41,8 @@ A validation error looks like this:
 | `404` | Not Found | The requested resource does not exist — for example, a lead that can't be found by the provided email. |
 | `429` | Too Many Requests | You exceeded a per-operation [rate or parallel-request limit](/api-reference/limits). Back off and retry. |
 | `500` | Server Error | Something failed on our side. Safe to retry with backoff; if it persists, contact [support](mailto:support@generect.com). |
+| `502` | Bad Gateway | A live source we query for you did not answer (`"The provider is temporarily unavailable, please try again later."`). Nothing is charged. Retry with backoff. |
+| `503` | Service Unavailable | A data source is temporarily unreachable or paused (`"This data source is temporarily unavailable. Please retry shortly."`, error code `source_unavailable`). Nothing is charged. Retry with backoff. |
 
 ## No data is never billed
 
@@ -57,3 +59,16 @@ A "not found" result — an enrichment, email, or phone lookup that returns no m
 <Info>
   A `4xx` response (other than `429`) means the request itself needs to change — fix the input and resend; retrying the same request unchanged will return the same error.
 </Info>
+
+## When a source is down
+
+Some operations are answered by a live source rather than from our own store. When that source does not answer, the API says so instead of pretending the request was malformed:
+
+- **`502`** — a live provider behind a real-time operation did not answer.
+- **`503`** with error code `source_unavailable` — a data source is unreachable, or we have paused it deliberately.
+
+Both are transient and **neither is charged**: the credits reserved for the call are released before the error reaches you. Retry with the same backoff you use for `429` and `500`.
+
+<Warning>
+  A `400` from the same endpoints means something different and must not be retried unchanged: the payload does not match that endpoint's contract. Each source names its search field differently (`search` for one, `keyword` for another, `text` for a third), and the response body names the field the endpoint expects. Fix the field and resend.
+</Warning>

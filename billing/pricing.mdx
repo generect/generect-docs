@@ -18,6 +18,7 @@ These are the per-result prices every account starts on (see [Spend & Save tiers
 | Email Validation | `POST /email/validate/` | **$0.005** | per email checked |
 | Preview | `POST /preview/leads/` | **\$0.002** | per returned (masked) result — free for the rest of the month once your spend that month reaches \$2,000 |
 | Phone Finder | `POST /phone/find/` (+ `/bulk/`) | **$0.40** | per **found** phone |
+| Profile URL Resolve | `POST /profile/resolve/` (+ `/bulk/`) | **\$0.0005** | per profile resolved — a URL LinkedIn has no profile for costs \$0 |
 
 <Info>Prices above are the Tier 0 (standard) rate, and they are what **every API account pays until its lifetime spend reaches \$20,000**. API discounts begin at that threshold and then deepen with each tier; the platform (UI) operations start discounting much earlier, at \$500. Your current rate is always the one in your [billing settings](https://app.generect.com/settings/billing) — and in `meta.amount_charged` on every response. See [Spend & Save tiers](/billing/managing-billing).</Info>
 
@@ -45,6 +46,7 @@ Every API response reports exactly what it cost in `meta.amount_charged` (USD), 
 - **Preview in the Generect web app** — the \$0.002 Preview price applies to API calls only.
 - **Account, status, and webhook** endpoints.
 - **Not-found results** on enrich, phone, and email find (see below).
+- **Unresolved profile URLs** — `POST /profile/resolve/` settles a URL LinkedIn has no profile for at \$0.
 
 <Warning>**Real-time count** endpoints (`POST /search/realtime/*/count/`) are **not** free — each costs $0.04, the real-time rate, because they hit live sources. Use the free database count to size an audience before paying.</Warning>
 
@@ -60,6 +62,7 @@ You are not billed for results we don't return:
 | Phone Finder | Charged **only for phones found** |
 | Email Validation | Charged **per email checked** — a verdict (valid, risky, catch-all, invalid) is the result you paid for |
 | Preview | Billed **per returned row** — zero rows costs \$0 |
+| Profile URL Resolve | Charged **only when the URL resolves to a profile** |
 | Real-time count | Flat $0.04 per request (even if the count is 0) |
 
 <Note>Email Validation is the one case where every submitted address is billed: validation *is* the deliverable, so each checked email costs $0.005 regardless of its verdict.</Note>
