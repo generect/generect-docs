@@ -24,23 +24,32 @@ Remote MCP servers extend AI capabilities beyond your local environment, providi
 
 ---
 
-## Claude Desktop — Custom Connectors
+## Claude (web and Desktop) — Custom Connectors
 
-<Warning>
-Claude documentation states:
-**Custom connectors are available for users with paid plans (Pro, Max, Team, or Enterprise).**
+Generect is added to Claude once, as a custom connector. Claude cannot add a
+connector for you from inside a chat, so this is done in settings.
 
-This may change in the future, but for now this restriction applies.
+<Note>
+  Per [Claude's documentation](https://claude.com/docs/connectors/custom/add-unlisted),
+  custom connectors work on Free (one custom connector), Pro, Max, Team and
+  Enterprise plans.
 
-</Warning>
+  **Team and Enterprise:** an Owner (on Enterprise, also a member whose custom
+  role can manage the organization's libraries) adds the connector once in
+  [**Organization settings > Connectors**](https://claude.ai/admin-settings/connectors):
+  **Add** → **Custom** → **Web**, with the URL below. Members then find it under
+  **Customize > Connectors** with the **Custom** label and click **Connect**
+  (step 3). A member without one of those roles cannot add it and needs to ask
+  an Owner.
+</Note>
 
 <Steps>
-  <Step title="Navigate to Connector Settings">
-    Open [Claude Desktop](https://claude.ai/download). Click on your profile icon and select **Settings** from the dropdown menu. Then click on **Connectors** in the sidebar.
+  <Step title="Open Connectors">
+    In [claude.ai](https://claude.ai) or the [Claude desktop app](https://claude.ai/download), go to [**Customize > Connectors**](https://claude.ai/customize/connectors).
   </Step>
 
   <Step title="Add a Custom Connector">
-    Scroll to the bottom and click **Add custom connector**.
+    Click **Add custom connector**.
 
     Enter the Generect MCP server URL:
 
@@ -61,19 +70,17 @@ This may change in the future, but for now this restriction applies.
   </Step>
 
   <Step title="Complete Authentication">
-    Then click on "Connect". You will be redirected to login page.
+    Click **Connect**.
     <img
       src="/media/mcp-connect-button.png"
       alt="click-connect"
       className="rounded-lg"
     />
 
-    Get your API key from <a href="https://app.generect.com" target="_blank">app.generect.com</a> and enter it on the login page.
-    <img
-      src="/media/mcp-oauth-login.png"
-      alt="click-connect"
-      className="rounded-lg"
-    />
+    Claude opens <a href="https://app.generect.com" target="_blank">app.generect.com</a>
+    and asks you to grant it access to your Generect account. Sign in if you
+    aren't already, then click **Approve**. There is no API key to copy:
+    Generect creates a named API token for the connection.
 
   </Step>
 
