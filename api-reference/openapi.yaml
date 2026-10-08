@@ -5517,7 +5517,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LeadSearchRequest'
+              $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -5569,7 +5569,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LeadSearchRequest'
+              $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       responses:
         '400':
           description: Validation error or insufficient balance.
@@ -6765,6 +6765,38 @@ components:
         company_headcounts:
           - 51-200
         limit_by: 50
+    DatabaseLeadSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/LeadSearchRequest'
+        - type: object
+          properties:
+            gender:
+              type: array
+              items:
+                type: string
+                enum:
+                  - male
+                  - female
+                  - unknown
+              description: >-
+                Gender of the lead; a lead is included if it matches at least one
+                value. Case-insensitive; any other value is rejected with `400`.
+                Gender is inferred from the lead's name, so it is an estimate, and
+                a lead whose name does not point to one is `unknown`. To leave a
+                gender out, list the others — e.g. `["female", "unknown"]`.
+
+
+                Database mode only. LinkedIn search has no gender facet, so
+                realtime search rejects this field rather than accepting it and
+                returning a wider result set than you asked for.
+
+
+                Coverage matters here: gender is known for roughly a third of
+                leads, and the rest are `unknown`. Filtering by `male` or `female`
+                therefore also drops leads whose gender simply is not known, not
+                only those of the other gender.
+              example:
+                - female
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
@@ -7167,7 +7199,7 @@ components:
         company_search_criteria:
           $ref: '#/components/schemas/DatabaseCompanySearchRequest'
         lead_search_criteria:
-          $ref: '#/components/schemas/LeadSearchRequest'
+          $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       example:
         company_search_criteria:
           industries:

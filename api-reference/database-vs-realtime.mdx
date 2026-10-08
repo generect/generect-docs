@@ -41,7 +41,7 @@ POST /enrich/database/company/    POST /enrich/realtime/company/
 
 ## Filters supported in database mode
 
-**Leads:** `job_titles`, `seniorities`, `locations`, `exclude_locations`, `company_locations`, `exclude_company_locations`, `company_industries`, `exclude_company_industries`, `company_headcounts`, `exclude_company_headcounts`, `company_types` — plus targeting a single company via `company_id`, `company_link`, or `company_name`.
+**Leads:** `job_titles`, `seniorities`, `locations`, `exclude_locations`, `company_locations`, `exclude_company_locations`, `company_industries`, `exclude_company_industries`, `company_headcounts`, `exclude_company_headcounts`, `company_types`, `gender` (database mode only) — plus targeting a single company via `company_id`, `company_link`, or `company_name`.
 
 **Companies:** `industries`, `exclude_industries`, `headcounts`, `locations`, `exclude_locations`, `company_types`. The `sub_industries` toggle is also accepted here and behaves the same as in real-time mode (it modifies `industries` rather than counting as a filter on its own).
 
@@ -51,8 +51,9 @@ Anything outside this set is rejected with `400` and a message pointing to the r
   A supported filter given an **unknown value** is a different matter, and the
   behaviour is not uniform:
 
-  * `locations`, `company_headcounts` and `company_types` reject an unknown value
-    with `400`, naming the field (the headcount error also lists the valid buckets).
+  * `locations`, `company_headcounts`, `company_types` and `gender` reject an unknown
+    value with `400`, naming the field (the headcount and gender errors also list the
+    valid values).
   * `company_industries` / `industries` and `seniorities` do **not** validate.
     An unrecognised value simply matches nothing, so the request succeeds, returns
     `0` results and charges `\$0`.
