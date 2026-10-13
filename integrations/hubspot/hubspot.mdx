@@ -1,0 +1,150 @@
+---
+title: Generect for HubSpot
+description: "Install, set up and use the Generect app for HubSpot: enrich contacts and companies, find work emails and phone numbers, by hand or in workflows."
+---
+
+Generect for HubSpot enriches the contacts and companies in your HubSpot account with Generect's B2B data. It runs on **your own Generect account and API key**, and lookups are billed to that account, only when data is found.
+
+What you get:
+
+- **Record cards** on contacts and companies: Enrich contact, Enrich company, Find work email, Find phone.
+- **Workflow actions** (HubSpot Professional and Enterprise): the same four lookups as steps in contact and company workflows, with a status you can branch on.
+- **Settings** in HubSpot: your API key, enrichment rules and an optional daily spend cap.
+
+<Note>
+  Generect for HubSpot is in early access and not yet listed in the HubSpot App Marketplace. Install it from the link below. Until HubSpot finishes its review, the install screen says **"You're connecting an unverified app"**; this is expected.
+</Note>
+
+## Requirements
+
+| | Requirement |
+| --- | --- |
+| HubSpot | Any plan. Record cards and settings work on Free and Starter. Workflow actions need **Professional or Enterprise**, because workflows do. |
+| Who installs | A HubSpot user who can install apps (usually a Super Admin). |
+| Generect | A Generect account and an API key. [Create a free account](https://app.generect.com) and copy your key from **Settings → API**. |
+
+## Install
+
+1. Open the install link: **https://hubspot.generect.com/oauth/install**.
+2. Sign in to HubSpot if asked, and choose the HubSpot account to connect.
+
+<img src="/media/hubspot-01-choose-account.png" alt="Choose the HubSpot account" className="rounded-lg" />
+
+3. Review the permissions and click **Connect app**.
+
+<img src="/media/hubspot-02-permissions.png" alt="Permissions Generect requests" className="rounded-lg" />
+
+| Permission | Why Generect needs it |
+| --- | --- |
+| View and change contacts and companies | Read the identifiers a lookup starts from (LinkedIn URL, email, domain) and write the results back. |
+| View and change property settings for contacts and companies | Create Generect's own properties in a **Generect** group, for example the status and date of each lookup. |
+| View properties about the installing account | Required by HubSpot for every app. |
+| Workflows (optional) | Lets the Generect actions appear in workflows. You can leave it unchecked; cards and settings still work. |
+
+4. After install you land on a page with the two remaining steps: connect your key and add the cards.
+
+<img src="/media/hubspot-03-installed.png" alt="Generect is installed in HubSpot" className="rounded-lg" />
+
+## Connect your Generect key
+
+1. In HubSpot, go to **Marketplace → Connected apps → Generect → Settings**.
+2. Paste your Generect API key and click **Connect**. Generect checks the key, then shows only its last four characters, your balance and what was spent today.
+
+<img src="/media/hubspot-06-key-connected.png" alt="Generect key connected" className="rounded-lg" />
+
+<Tip>
+  A test key (it starts with `test_`) returns synthetic data and is never billed. The settings page marks it **Test mode**. Use it to try the app first.
+</Tip>
+
+## Enrichment rules
+
+| Setting | Default | What it does |
+| --- | --- | --- |
+| Replace existing values | Off | **Off:** Generect fills empty fields only; values your team entered stay. **On:** it also refreshes job titles, locations and company details. Names, emails, phone numbers, LinkedIn URLs, company names and domains are never replaced. |
+| Also enrich the contact's company | On | Enriching a contact also enriches its primary company. |
+| Daily spend cap, USD | Empty (no cap) | Lookups from HubSpot stop for the day once it is reached. Lookups already running can go over it by a few calls. |
+
+<img src="/media/hubspot-07-rules.png" alt="Enrichment rules" className="rounded-lg" />
+
+## Add the cards to your records
+
+HubSpot does not place app cards by itself. Add them once:
+
+1. Open the **App cards** tab in the Generect settings, or open any contact and click **Customize**.
+2. Add **Generect for contacts** to the contact record and **Generect for companies** to the company record.
+
+<img src="/media/hubspot-08-app-cards.png" alt="Add the Generect cards" className="rounded-lg" />
+
+## Enrich by hand
+
+On a contact:
+
+- **Enrich contact** looks the person up by LinkedIn URL, then by email, and fills empty fields such as LinkedIn URL, job title, company name and location. With "Also enrich the contact's company" on, the company is enriched too.
+- **Find work email** finds and verifies a work email from the LinkedIn URL, or from first name, last name and company website. Pattern guesses are never written.
+- **Find phone** fills an empty phone field: mobile numbers go to **Mobile phone**, others to **Phone**.
+
+<img src="/media/hubspot-09-contact-enriched.png" alt="Contact enriched" className="rounded-lg" />
+
+On a company, **Enrich company** looks it up by LinkedIn company page, then domain, then exact name, and fills description, industry, number of employees, year founded and headquarters. If Generect matches a company whose domain contradicts the record's domain, **nothing is written**.
+
+<img src="/media/hubspot-13-company-mismatch.png" alt="Different company found, nothing written" className="rounded-lg" />
+
+A record enriched in the last 30 days is skipped to save credits; the card's **Refresh** button looks it up again.
+
+## Use in workflows
+
+In a contact or company workflow, add an action from the **Generect** section: **Enrich contact**, **Enrich company**, **Find work email** or **Find phone**.
+
+<img src="/media/hubspot-14-workflow-actions.png" alt="Generect workflow actions" className="rounded-lg" />
+
+Each action has one optional input, **Skip if enriched within (days)** (default 30, use 0 to always look up), and returns:
+
+| Output | Content |
+| --- | --- |
+| Generect status | One of the statuses below. Branch on it. |
+| Fields filled | The HubSpot fields the step filled. |
+| Generect message | A one-line explanation. |
+| Email found / Phone found | Find work email and Find phone only. |
+
+Statuses: Enriched, Nothing to change, No match, Skipped: enriched recently, Skipped: different company, Not enough to look up, Generect not connected, Generect key rejected, Generect balance empty, Daily spend cap reached, Rate limited, App not installed, Error, Interrupted by a restart, Expired in queue.
+
+A lookup that takes longer than a few seconds does not fail: Generect asks HubSpot to wait and completes the step when the result arrives. The run log shows the output values and the branch taken.
+
+<img src="/media/hubspot-16-run-log.png" alt="Workflow run log with Generect outputs" className="rounded-lg" />
+
+## Billing
+
+Lookups are billed to the Generect account whose key is connected, at your Generect prices, and only when data is found. A lookup that finds nothing is free. Top up and see usage at [app.generect.com](https://app.generect.com).
+
+## Disconnect
+
+In **Connected apps → Generect → Settings**, click **Disconnect**. Your key is deleted from Generect's servers; your rules stay. Cards and workflow steps stop looking anything up (workflow steps report **Generect not connected**) until you connect a key again.
+
+## Uninstall
+
+In **Connected apps → Generect → Settings**, click **Uninstall Generect** and confirm. This is the recommended way: it deletes your Generect key right away. (You can also uninstall from HubSpot's **Connected apps** list; Generect then deletes your key and tokens the next time HubSpot refuses its access.)
+
+<img src="/media/hubspot-18-uninstall.png" alt="Uninstall Generect" className="rounded-lg" />
+
+What happens to your data:
+
+- Generect deletes your API key and your HubSpot access tokens from its servers.
+- Everything already written to your records stays in HubSpot: the values Generect filled and the Generect properties.
+- Generect steps left in your workflows can no longer look anything up; remove them.
+- To use Generect again, reinstall from the same link and add the cards back.
+
+## Troubleshooting
+
+| You see | Do this |
+| --- | --- |
+| The card is not on the record | Add it under **App cards** (see above). |
+| "Generect is not connected" | Paste your key in **Connected apps → Generect → Settings**. |
+| "Generect key rejected" | The key was revoked or is wrong. Copy a current one from **Settings → API** in Generect. |
+| "Generect balance empty" | Top up at app.generect.com. |
+| "Daily spend cap reached" | Raise or remove the cap in the settings. |
+| "Different company found" | The record's domain does not match the company Generect found. Check the domain. |
+| Generect actions missing in workflows | Workflows need HubSpot Professional or Enterprise, and the optional workflows permission granted at install. |
+
+## Support
+
+Email [support@generect.com](mailto:support@generect.com).
