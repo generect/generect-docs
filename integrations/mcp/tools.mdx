@@ -38,7 +38,7 @@ safe to hand to an autonomous agent:
 | Tool | Billed |
 |------|--------|
 | `count_leads`, `count_companies` with `mode: "realtime"` | a flat \$0.04 per count at the standard price, even when the count is 0. Without `mode: "realtime"` a count is free |
-| `preview_leads` | \$0.002 per returned row — the cheapest way to see real people |
+| `preview_leads` | \$0.002 per returned row, from the separate Preview index. To browse people for free, use thin rows from `search_leads` (above) while the daily quota lasts |
 | `resolve_profile` | \$0.0005 per resolved profile. Reveals who is behind an anonymous LinkedIn link (`/in/ACwAA…`, Sales Navigator lead URLs), up to 50 per call, and returns the id the enrich and email tools accept. An unresolvable reference is free; duplicates in one batch are billed per row |
 | `search_leads` | per returned row with `detail: "full"` or `mode: "realtime"`. Without `detail` a search returns free thin rows while the quota lasts, then continues with full rows billed per row and says so in `thin_unavailable`; with `mode: "auto"` (the default) it can also escalate to realtime for a filter the database lacks |
 | `search_companies` | the same as `search_leads` |
