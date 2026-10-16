@@ -28,7 +28,7 @@ safe to hand to an autonomous agent:
 | `preview_leads` with `count_only: true` | A second opinion on the count from the Preview index. Free — and the two indexes do disagree, so it is worth asking both |
 | `count_companies` | The same, for companies |
 | `get_balance` | Balance and your real per-operation prices. `include_usage` adds spend broken down by operation; `include_token_analytics` adds per-API-token request counts, which answers "which integration is making these calls?" |
-| `search_leads`, `search_companies` | Free by default: thin rows (who, role, where, which company) up to a daily per-account quota. `detail: "thin"` guarantees \$0 |
+| `search_leads`, `search_companies` with `detail: "thin"` | Thin rows (who, role, where, which company) up to a daily per-account quota. Never billed: a spent quota is refused with a `429`, and a thin search is never sent to realtime (asking for both is an error) |
 | `get_bulk_job` | Status and results of a bulk job (the work was billed at submit time) |
 | `list_webhooks`, `create_webhook`, `update_webhook`, `delete_webhook`, `test_webhook` | Manage the endpoints that receive bulk-job completion events, one tool per operation |
 | `health` | Liveness and credential check — touches no data endpoint, safe for monitors |
@@ -38,7 +38,7 @@ safe to hand to an autonomous agent:
 | Tool | Billed |
 |------|--------|
 | `preview_leads` | \$0.002 per returned row — the cheapest way to see real people |
-| `search_leads` | per returned row with `detail: "full"`, in realtime, and once the free quota is used up |
+| `search_leads` | per returned row with `detail: "full"` or `mode: "realtime"`. Without `detail` a search returns free thin rows while the quota lasts, then continues with full rows billed per row and says so in `thin_unavailable`; with `mode: "auto"` (the default) it can also escalate to realtime for a filter the database lacks |
 | `search_companies` | the same as `search_leads` |
 | `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
 | `enrich_company` | per record found (not found is free) |
@@ -140,7 +140,7 @@ you to ask again with `mode: "realtime"`.
 ```text
 read generect://vocabulary/industries   free            → get the filter names exactly right
 count_leads                             free            → is this audience big enough to be worth anything?
-search_leads (thin rows, the default)   free            → who is actually in it? keep the ids that fit
+search_leads  detail "thin"             free            → who is actually in it? keep the ids that fit
 search_leads (detail "full")            per row         → full records, only for the rows you decided to keep
 generate_email                          per valid email → contact details for those ids only
 get_balance                             free            → report the exact spend back to the user
@@ -180,9 +180,12 @@ Money inside the cards follows the same rules as the tools:
   only after you confirm. A miss is free.
 - **Found emails go back to Claude**, so "write to them" works without asking
   again. With a test key they are marked as fictional.
-- **Claude asks before any tool that can charge.** Counting, balance, health,
-  bulk-job status and listing webhooks run without asking; every other tool
-  needs your approval ("Always allow" works per tool).
+- **Claude asks before tools that can charge.** Only tools that are free by
+  default are marked read-only, which lets Claude run them without asking:
+  counting, balance, health, bulk-job status and listing webhooks. The one
+  paid case among them, a realtime count (\$0.02), runs only when
+  `mode: "realtime"` is requested explicitly. Every other tool needs your
+  approval ("Always allow" works per tool).
 
 ## When to use the REST API instead
 
