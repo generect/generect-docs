@@ -37,7 +37,9 @@ safe to hand to an autonomous agent:
 
 | Tool | Billed |
 |------|--------|
+| `count_leads`, `count_companies` with `mode: "realtime"` | a flat \$0.04 per count at the standard price, even when the count is 0. Without `mode: "realtime"` a count is free |
 | `preview_leads` | \$0.002 per returned row — the cheapest way to see real people |
+| `resolve_profile` | \$0.0005 per resolved profile. Reveals who is behind an anonymous LinkedIn link (`/in/ACwAA…`, Sales Navigator lead URLs), up to 50 per call, and returns the id the enrich and email tools accept. An unresolvable reference is free; duplicates in one batch are billed per row |
 | `search_leads` | per returned row with `detail: "full"` or `mode: "realtime"`. Without `detail` a search returns free thin rows while the quota lasts, then continues with full rows billed per row and says so in `thin_unavailable`; with `mode: "auto"` (the default) it can also escalate to realtime for a filter the database lacks |
 | `search_companies` | the same as `search_leads` |
 | `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
@@ -183,9 +185,9 @@ Money inside the cards follows the same rules as the tools:
 - **Claude asks before tools that can charge.** Only tools that are free by
   default are marked read-only, which lets Claude run them without asking:
   counting, balance, health, bulk-job status and listing webhooks. The one
-  paid case among them, a realtime count (\$0.02), runs only when
-  `mode: "realtime"` is requested explicitly. Every other tool needs your
-  approval ("Always allow" works per tool).
+  paid case among them, a realtime count (\$0.04 at the standard price),
+  runs only when `mode: "realtime"` is requested explicitly. Every other tool
+  needs your approval ("Always allow" works per tool).
 
 ## When to use the REST API instead
 
