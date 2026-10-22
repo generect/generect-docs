@@ -556,8 +556,9 @@ Every v1 endpoint uses the same [error envelope](/api-reference/errors):
 
 | Code | Meaning |
 | --- | --- |
-| `400` | Validation error or insufficient account balance. |
+| `400` | Validation error. |
 | `401` | Missing or invalid API token. |
+| `402` | Insufficient account balance (`"Insufficient funds in the account."`). |
 | `403` | Account/plan doesn't have access to this endpoint. |
 | `429` | Rate limit exceeded. |
 

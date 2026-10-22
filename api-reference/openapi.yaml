@@ -15,7 +15,7 @@ info:
 
     # Rate limits
 
-    You can request data depending on your data plan and account balance (default: 10000/month). Pricing depends on the operation and the number of results returned, and may increase with additional data flags. For exact pricing, see each endpoint's Pricing section or your billing settings: https://app.generect.com/settings/billing
+    There is no monthly request quota. What you can run is bounded by your account balance and by the parallel-request caps on the Limits page. Pricing depends on the operation and the number of results returned, and may increase with additional data flags. For exact pricing, see each endpoint's Pricing section or your billing settings: https://app.generect.com/settings/billing
 
     # Note
 
@@ -3966,7 +3966,7 @@ paths:
                   get_full_experience: false
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -3977,13 +3977,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, linkedin_url, email is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -3997,24 +3994,108 @@ paths:
               example:
                 data:
                   id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                  first_name: Jordan
-                  last_name: Ellis
-                  title: CEO
-                  headline: CEO at Microsoft
-                  has_current_position: true
+                  sales_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  linkedin_id: '78461298'
                   linkedin_url: https://www.linkedin.com/in/jordan-ellis
-                  location: San Francisco, CA
-                  seniority: CXO
-                  company:
-                    id: 1035
-                    name: Microsoft
-                    domain: microsoft.com
-                    linkedin_url: https://www.linkedin.com/company/microsoft/
-                    industry: Software Development
-                    headcount: 150
-                  work_history: []
-                  education: []
-                  skills: []
+                  linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9,NAME_SEARCH,x7Kq
+                  first_name: Jordan
+                  middle_name: ''
+                  last_name: Ellis
+                  full_name: Jordan Ellis
+                  unformatted_full_name: Jordan Ellis
+                  translated_first_name: null
+                  headline: CEO at Microsoft
+                  summary: Building the platforms other companies build on.
+                  gender: male
+                  nationality: American
+                  industry: Software Development
+                  location: Redmond, Washington, United States
+                  location_city: Redmond
+                  location_state: Washington
+                  location_county: King County
+                  location_country: United States
+                  num_of_connections: 500
+                  profile_photo: https://media.licdn.com/dms/image/v2/C5603AQExample/profile-displayphoto-shrink_800_800/0/1
+                  twitter_link: null
+                  private_website: null
+                  contact_info:
+                    websites:
+                      - url: https://jordanellis.example.com
+                        category: PERSONAL
+                        dataSource: LINKEDIN
+                  is_premium: true
+                  is_openlink: false
+                  is_job_seeker: false
+                  is_retired: false
+                  is_full_data: true
+                  has_current_position: true
+                  job_title: Chief Executive Officer
+                  raw_job_title: CEO
+                  job_started_on: Feb 2014
+                  job_ended_on: null
+                  job_location: Redmond, Washington, United States
+                  job_location_city: Redmond
+                  job_location_state: Washington
+                  job_location_county: King County
+                  job_location_country: United States
+                  company_id: '1035'
+                  company_name: Microsoft
+                  company_url: https://www.linkedin.com/company/microsoft
+                  company_website: https://www.microsoft.com
+                  company_industry: Software Development
+                  company_location: Redmond, Washington, United States
+                  company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                  jobs:
+                    - job_title: Chief Executive Officer
+                      raw_job_title: CEO
+                      job_description: null
+                      job_started_on: Feb 2014
+                      job_ended_on: null
+                      job_still_working: true
+                      job_location: Redmond, Washington, United States
+                      job_location_city: Redmond
+                      job_location_state: Washington
+                      job_location_county: King County
+                      job_location_country: United States
+                      company_id: '1035'
+                      company_name: Microsoft
+                      raw_company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      company_location: Redmond, Washington, United States
+                      company_city: Redmond
+                      company_state: Washington
+                      company_country: United States
+                      company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                      company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  educations:
+                    - university_id: '1792'
+                      university_name: Stanford University
+                      university_url: https://www.linkedin.com/school/stanford-university
+                      university_logo: https://media.licdn.com/dms/image/v2/C4E0BAQExample/company-logo_200_200/0/1
+                      university_description: null
+                      degree: Master of Science (MS)
+                      fields_of_study:
+                        - Computer Science
+                      started_on:
+                        year: 2004
+                      ended_on:
+                        year: 2006
+                  certifications: []
+                  languages:
+                    - name: English
+                      proficiency: NATIVE_OR_BILINGUAL
+                  volunteering: []
+                  patents: []
+                  publications: []
+                  skills:
+                    - Cloud Computing
+                    - Software Development
+                    - Leadership
+                  source: lead_by_link
                 meta:
                   amount_charged: 0.02
   /api/v1/enrich/realtime/lead/:
@@ -4154,7 +4235,7 @@ paths:
                   get_full_experience: false
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4165,13 +4246,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, linkedin_url, email is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -4185,18 +4263,108 @@ paths:
               example:
                 data:
                   id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                  first_name: Jordan
-                  last_name: Ellis
-                  title: CEO
-                  has_current_position: true
+                  sales_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  linkedin_id: '78461298'
                   linkedin_url: https://www.linkedin.com/in/jordan-ellis
-                  company:
-                    id: 1035
-                    name: Microsoft
-                    domain: microsoft.com
-                  work_history: []
-                  education: []
-                  skills: []
+                  linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9,NAME_SEARCH,x7Kq
+                  first_name: Jordan
+                  middle_name: ''
+                  last_name: Ellis
+                  full_name: Jordan Ellis
+                  unformatted_full_name: Jordan Ellis
+                  translated_first_name: null
+                  headline: CEO at Microsoft
+                  summary: Building the platforms other companies build on.
+                  gender: male
+                  nationality: American
+                  industry: Software Development
+                  location: Redmond, Washington, United States
+                  location_city: Redmond
+                  location_state: Washington
+                  location_county: King County
+                  location_country: United States
+                  num_of_connections: 500
+                  profile_photo: https://media.licdn.com/dms/image/v2/C5603AQExample/profile-displayphoto-shrink_800_800/0/1
+                  twitter_link: null
+                  private_website: null
+                  contact_info:
+                    websites:
+                      - url: https://jordanellis.example.com
+                        category: PERSONAL
+                        dataSource: LINKEDIN
+                  is_premium: true
+                  is_openlink: false
+                  is_job_seeker: false
+                  is_retired: false
+                  is_full_data: true
+                  has_current_position: true
+                  job_title: Chief Executive Officer
+                  raw_job_title: CEO
+                  job_started_on: Feb 2014
+                  job_ended_on: null
+                  job_location: Redmond, Washington, United States
+                  job_location_city: Redmond
+                  job_location_state: Washington
+                  job_location_county: King County
+                  job_location_country: United States
+                  company_id: '1035'
+                  company_name: Microsoft
+                  company_url: https://www.linkedin.com/company/microsoft
+                  company_website: https://www.microsoft.com
+                  company_industry: Software Development
+                  company_location: Redmond, Washington, United States
+                  company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                  jobs:
+                    - job_title: Chief Executive Officer
+                      raw_job_title: CEO
+                      job_description: null
+                      job_started_on: Feb 2014
+                      job_ended_on: null
+                      job_still_working: true
+                      job_location: Redmond, Washington, United States
+                      job_location_city: Redmond
+                      job_location_state: Washington
+                      job_location_county: King County
+                      job_location_country: United States
+                      company_id: '1035'
+                      company_name: Microsoft
+                      raw_company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      company_location: Redmond, Washington, United States
+                      company_city: Redmond
+                      company_state: Washington
+                      company_country: United States
+                      company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                      company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  educations:
+                    - university_id: '1792'
+                      university_name: Stanford University
+                      university_url: https://www.linkedin.com/school/stanford-university
+                      university_logo: https://media.licdn.com/dms/image/v2/C4E0BAQExample/company-logo_200_200/0/1
+                      university_description: null
+                      degree: Master of Science (MS)
+                      fields_of_study:
+                        - Computer Science
+                      started_on:
+                        year: 2004
+                      ended_on:
+                        year: 2006
+                  certifications: []
+                  languages:
+                    - name: English
+                      proficiency: NATIVE_OR_BILINGUAL
+                  volunteering: []
+                  patents: []
+                  publications: []
+                  skills:
+                    - Cloud Computing
+                    - Software Development
+                    - Leadership
+                  source: lead_by_link
                 meta:
                   amount_charged: 0.04
   /api/v1/enrich/database/company/:
@@ -4319,7 +4487,7 @@ paths:
                   people_also_follow: true
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4330,13 +4498,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -4477,7 +4642,7 @@ paths:
                   people_also_follow: true
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4488,13 +4653,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -4529,7 +4691,7 @@ paths:
               $ref: '#/components/schemas/LeadBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4540,13 +4702,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4578,7 +4737,7 @@ paths:
               $ref: '#/components/schemas/LeadBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4589,13 +4748,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4675,7 +4831,7 @@ paths:
                       jobs:
                         - company_name: Microsoft
                           job_title: Chief Executive Officer
-                          job_started_on: '2014-02-01'
+                          job_started_on: Feb 2014
                           job_still_working: true
                       educations: []
                       languages: []
@@ -4706,7 +4862,7 @@ paths:
               $ref: '#/components/schemas/CompanyBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4717,13 +4873,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4755,7 +4908,7 @@ paths:
               $ref: '#/components/schemas/CompanyBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4766,13 +4919,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4926,7 +5076,7 @@ paths:
                   domain: microsoft.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4937,13 +5087,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+domain."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '200':
@@ -5036,7 +5183,7 @@ paths:
                       domain: salesforce.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5047,13 +5194,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -5146,7 +5290,7 @@ paths:
                   - morgan.lee@salesforce.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5157,13 +5301,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"emails": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '200':
@@ -5520,7 +5661,7 @@ paths:
               $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5531,13 +5672,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5572,7 +5710,7 @@ paths:
               $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5583,13 +5721,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5619,7 +5754,7 @@ paths:
               $ref: '#/components/schemas/DatabaseCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5630,13 +5765,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5670,7 +5802,7 @@ paths:
               $ref: '#/components/schemas/DatabaseCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5681,13 +5813,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5717,7 +5846,7 @@ paths:
               $ref: '#/components/schemas/CompanyLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5728,13 +5857,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5768,7 +5894,7 @@ paths:
               $ref: '#/components/schemas/CompanyLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5779,13 +5905,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5817,7 +5940,7 @@ paths:
               $ref: '#/components/schemas/RealtimeLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5828,13 +5951,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5869,7 +5989,7 @@ paths:
               $ref: '#/components/schemas/RealtimeLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5880,13 +6000,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5916,7 +6033,7 @@ paths:
               $ref: '#/components/schemas/RealtimeCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5927,13 +6044,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5967,7 +6081,7 @@ paths:
               $ref: '#/components/schemas/RealtimeCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5978,13 +6092,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -6014,7 +6125,7 @@ paths:
               $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -6025,13 +6136,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -6084,7 +6192,7 @@ paths:
                 - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -6095,13 +6203,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+company."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '200':
@@ -6179,7 +6284,7 @@ paths:
                       company: microsoft.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -6190,13 +6295,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -6640,7 +6742,7 @@ components:
           description: >-
             Human-readable message (string) for most errors, or a field-level
             validation map ({ field: [messages] }) for 400 validation errors.
-          example: Insufficient funds in the account.
+          example: Person does not exist
     LeadSearchRequest:
       type: object
       properties:
@@ -7457,10 +7559,549 @@ components:
       type: object
       properties:
         data:
-          type: object
-          description: Full lead profile — see the example for the field set.
+          $ref: '#/components/schemas/Lead'
         meta:
           $ref: '#/components/schemas/Meta'
+    Lead:
+      type: object
+      description: >-
+        A lead profile. Every field below comes back from both the realtime and
+        the database lead enrich. A field the profile does not have comes back
+        null or as an empty list. Database and email lookups
+        add derived fields on top, such as seniority, schools, past_companies,
+        past_job_titles, position_since and company_since, and a realtime lookup
+        by URL adds input_url and raw_headline. Treat any field not listed here
+        as optional.
+      properties:
+        id:
+          type: string
+          description: >-
+            Generect lead ID (the LinkedIn Sales Navigator member ID). Pass it as
+            `id` to enrich, or as `lead_id` to the email and phone finders.
+        sales_id:
+          type: string
+          description: >-
+            Same value as `id`.
+        linkedin_id:
+          type: string
+          description: >-
+            Numeric LinkedIn member ID, as a string.
+        linkedin_url:
+          type: string
+          description: >-
+            Public LinkedIn profile URL.
+        linkedin_sales_link:
+          type: string
+          description: >-
+            Sales Navigator URL of the profile.
+        first_name:
+          type: string
+          description: >-
+            First name.
+        middle_name:
+          type: string
+          description: >-
+            Middle name; empty string when there is none.
+        last_name:
+          type: string
+          description: >-
+            Last name.
+        full_name:
+          type: string
+          description: >-
+            Cleaned full name.
+        unformatted_full_name:
+          type: string
+          description: >-
+            Name exactly as shown on LinkedIn, before cleanup (credentials, emojis
+            and so on kept).
+        translated_first_name:
+          type: string
+          nullable: true
+          description: >-
+            Usually null.
+        headline:
+          type: string
+          description: >-
+            Profile headline.
+        summary:
+          type: string
+          nullable: true
+          description: >-
+            The profile's About section.
+        gender:
+          type: string
+          nullable: true
+          description: >-
+            Gender inferred from the name, e.g. `male`.
+        nationality:
+          type: string
+          nullable: true
+          description: >-
+            Nationality inferred from the profile, e.g. `American`.
+        industry:
+          type: string
+          nullable: true
+          description: >-
+            Industry the person lists on the profile.
+        location:
+          type: string
+          nullable: true
+          description: >-
+            Location as shown on the profile.
+        location_city:
+          type: string
+          nullable: true
+          description: >-
+            City parsed from `location`.
+        location_state:
+          type: string
+          nullable: true
+          description: >-
+            State or region parsed from `location`.
+        location_county:
+          type: string
+          nullable: true
+          description: >-
+            County parsed from `location`.
+        location_country:
+          type: string
+          nullable: true
+          description: >-
+            Country parsed from `location`.
+        num_of_connections:
+          type: integer
+          nullable: true
+          description: >-
+            Connection count LinkedIn reports for the profile.
+        profile_photo:
+          type: string
+          nullable: true
+          description: >-
+            Profile photo URL on LinkedIn's CDN. These URLs expire; store the image,
+            not the link.
+        twitter_link:
+          type: string
+          nullable: true
+          description: >-
+            X (Twitter) profile URL, when listed.
+        private_website:
+          type: string
+          nullable: true
+          description: >-
+            Personal website, when listed.
+        contact_info:
+          type: object
+          description: Contact details listed on the profile.
+          properties:
+            websites:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  category:
+                    type: string
+                    description: e.g. `PERSONAL`, `COMPANY`, `BLOG`.
+                  dataSource:
+                    type: string
+                    description: e.g. `LINKEDIN`.
+        is_premium:
+          type: boolean
+          description: >-
+            LinkedIn Premium member.
+        is_openlink:
+          type: boolean
+          description: >-
+            Open Profile: can receive InMail from anyone.
+        is_job_seeker:
+          type: boolean
+          description: >-
+            Marked as open to work.
+        is_retired:
+          type: boolean
+          description: >-
+            Profile reads as retired.
+        is_full_data:
+          type: boolean
+          description: >-
+            True when the record was built from the full profile.
+        has_current_position:
+          type: boolean
+          description: >-
+            True when the profile lists a current position.
+        job_title:
+          type: string
+          nullable: true
+          description: >-
+            Current job title, normalized. The `job_*` and `company_*` fields below
+            describe the current position, the same values as the current entry in
+            `jobs`.
+        raw_job_title:
+          type: string
+          nullable: true
+          description: >-
+            Current job title exactly as written on the profile.
+        job_started_on:
+          type: string
+          nullable: true
+          description: >-
+            Start of the current position as LinkedIn shows it, `YYYY` or `Mon YYYY`
+            (e.g. `Feb 2014`).
+        job_ended_on:
+          type: string
+          nullable: true
+          description: >-
+            End of the current position; null while it is ongoing.
+        job_location:
+          type: string
+          nullable: true
+          description: >-
+            Location of the current position.
+        job_location_city:
+          type: string
+          nullable: true
+          description: >-
+            City of the current position.
+        job_location_state:
+          type: string
+          nullable: true
+          description: >-
+            State or region of the current position.
+        job_location_county:
+          type: string
+          nullable: true
+          description: >-
+            County of the current position.
+        job_location_country:
+          type: string
+          nullable: true
+          description: >-
+            Country of the current position.
+        company_id:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn company ID of the current employer, as a string. Pass it to
+            company enrich.
+        company_name:
+          type: string
+          nullable: true
+          description: >-
+            Current employer.
+        company_url:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's LinkedIn page.
+        company_website:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's website.
+        company_industry:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's industry.
+        company_location:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's headquarters.
+        company_description:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's LinkedIn description.
+        company_image:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's logo URL.
+        jobs:
+          type: array
+          description: >-
+            Work history. Current positions only when `get_full_experience` is
+            false.
+          items:
+            $ref: '#/components/schemas/LeadJob'
+        educations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadEducation'
+        certifications:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              authority:
+                type: string
+                description: Issuing organization.
+              company_id:
+                type: string
+                description: LinkedIn company ID of the issuer, when known.
+              startedOn:
+                $ref: '#/components/schemas/LeadDate'
+        languages:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              proficiency:
+                type: string
+                nullable: true
+                description: e.g. `NATIVE_OR_BILINGUAL`, `FULL_PROFESSIONAL`, `ELEMENTARY`.
+        volunteering:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              cause:
+                type: string
+              companyName:
+                type: string
+              company_id:
+                type: string
+              description:
+                type: string
+              startedOn:
+                $ref: '#/components/schemas/LeadDate'
+        patents:
+          type: array
+          items:
+            type: object
+        publications:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+          description: >-
+            Internal tag for how the record was obtained, e.g. `lead_by_link`.
+        people_also_viewed:
+          type: array
+          nullable: true
+          description: >-
+            Only when `people_also_viewed` was requested. Profiles LinkedIn lists
+            under "People also viewed"; null when the section could not be read.
+          items:
+            type: object
+            properties:
+              full_name:
+                type: string
+              linkedin_link:
+                type: string
+              title:
+                type: string
+        posts:
+          type: array
+          nullable: true
+          description: Only when `posts` was requested. The lead's recent posts.
+          items:
+            type: object
+        comments:
+          type: array
+          nullable: true
+          description: Only when `comments` was requested. The lead's recent comments.
+          items:
+            type: object
+        reactions:
+          type: array
+          nullable: true
+          description: Only when `reactions` was requested. The lead's recent reactions.
+          items:
+            type: object
+    LeadJob:
+      type: object
+      description: >-
+        One position in the lead's work history.
+      properties:
+        job_title:
+          type: string
+          nullable: true
+          description: >-
+            Job title, normalized.
+        raw_job_title:
+          type: string
+          nullable: true
+          description: >-
+            Job title exactly as written on the profile.
+        job_description:
+          type: string
+          nullable: true
+          description: >-
+            Position description.
+        job_started_on:
+          type: string
+          nullable: true
+          description: >-
+            `YYYY` or `Mon YYYY`, as LinkedIn shows it.
+        job_ended_on:
+          type: string
+          nullable: true
+          description: >-
+            `YYYY` or `Mon YYYY`; null while ongoing.
+        job_still_working:
+          type: boolean
+          description: >-
+            True for a current position.
+        job_location:
+          type: string
+          nullable: true
+          description: >-
+            Location of the position.
+        job_location_city:
+          type: string
+          nullable: true
+          description: >-
+            City of the position.
+        job_location_state:
+          type: string
+          nullable: true
+          description: >-
+            State or region of the position.
+        job_location_county:
+          type: string
+          nullable: true
+          description: >-
+            County of the position.
+        job_location_country:
+          type: string
+          nullable: true
+          description: >-
+            Country of the position.
+        company_id:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn company ID, as a string.
+        company_name:
+          type: string
+          nullable: true
+          description: >-
+            Company name, normalized.
+        raw_company_name:
+          type: string
+          nullable: true
+          description: >-
+            Company name exactly as written on the profile.
+        company_url:
+          type: string
+          nullable: true
+          description: >-
+            Company's LinkedIn page.
+        company_website:
+          type: string
+          nullable: true
+          description: >-
+            Company website.
+        company_industry:
+          type: string
+          nullable: true
+          description: >-
+            Company industry.
+        company_headcount_range:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn headcount band, e.g. `1001-5000` or `10001+`.
+        company_location:
+          type: string
+          nullable: true
+          description: >-
+            Company headquarters.
+        company_city:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters city.
+        company_state:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters state or region.
+        company_country:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters country.
+        company_image:
+          type: string
+          nullable: true
+          description: >-
+            Company logo URL.
+        company_description:
+          type: string
+          nullable: true
+          description: >-
+            Company's LinkedIn description.
+    LeadEducation:
+      type: object
+      description: >-
+        One school in the lead's education history.
+      properties:
+        university_id:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn ID of the school, as a string.
+        university_name:
+          type: string
+          nullable: true
+          description: >-
+            School name.
+        university_url:
+          type: string
+          nullable: true
+          description: >-
+            School's LinkedIn page.
+        university_logo:
+          type: string
+          nullable: true
+          description: >-
+            School logo URL.
+        university_description:
+          type: string
+          nullable: true
+          description: >-
+            School's LinkedIn description.
+        degree:
+          type: string
+          nullable: true
+          description: >-
+            Degree as written on the profile.
+        fields_of_study:
+          type: array
+          nullable: true
+          items:
+            type: string
+        started_on:
+          $ref: '#/components/schemas/LeadDate'
+        ended_on:
+          $ref: '#/components/schemas/LeadDate'
+    LeadDate:
+      type: object
+      nullable: true
+      description: >-
+        A date as LinkedIn stores it. Month is absent when the profile gives
+        only a year; the whole object is null when the profile gives no date.
+      properties:
+        year:
+          type: integer
+        month:
+          type: integer
     EnrichCompanyResponse:
       type: object
       properties:
@@ -7792,6 +8433,18 @@ components:
             status: error
             status_code: 403
             detail: You do not have permission to perform this action.
+    PaymentRequired:
+      description: >-
+        Not enough balance to run a billable request. Top up in your billing
+        settings; requests already accepted run to completion.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 402
+            detail: Insufficient funds in the account.
     NotFound:
       description: Resource or job not found (or not owned by the caller).
       content:
