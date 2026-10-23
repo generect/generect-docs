@@ -7,31 +7,32 @@ description: This page describes common Problems you may encounter when using **
 
 ## The agent spent more credits than I expected
 
-**Cause:** search and enrich are billed **per returned row**, so an agent that
-searches before sizing the audience pays for every row it looks at, including the
-ones it then throws away.
+**Cause:** full search rows, realtime searches and enrichments are billed **per
+returned row**, so an agent that pulls full rows before sizing the audience pays
+for every row it looks at, including the ones it then throws away.
 
 **Solution:**
-- Size the audience with `count_leads` / `count_companies` first — cached counts
+- Size the audience with `count_leads` / `count_companies` first: cached counts
   are **free** and also return the cost of the next step at your account's rates.
-- Look at real people with `preview_leads` before paying for a full search.
+- Browse real people with free thin rows (`search_leads` with `detail: "thin"`)
+  before paying for full rows or emails.
 - Keep `mode` on `auto` (the default) or `database`. `realtime` costs more per row,
   and a realtime *count* is billable.
 - Check `cost.amount_charged_usd` in each response, and `get_balance` before and
   after a batch, to see exactly what was spent.
 - If you are running an old local install, upgrade: builds before **0.7.0** have
-  no free counting tools and no row cap. See [MCP tools and what they cost](tools).
+  no free counting tools and no row cap. See [MCP tools and what they cost](/integrations/mcp/tools).
 
 ---
 
 ## MCP Registry not found or connection failed
 
-**Cause**: The client doesn't support MCP Registry, or the registry identifier is incorrect.
+**Cause**: The client doesn't support MCP Registry or the registry identifier is incorrect.
 
 **Solution**:
 - Ensure you're using a client that supports MCP Registry (e.g., latest Claude Desktop versions).
 - Verify the registry identifier: `com.generect/generect-mcp`
-- If your client doesn't support registry, use the [Local MCP (npx)](quick-start) method instead.
+- If your client doesn't support registry, use the [Local MCP (npx)](/integrations/mcp/quick-start) method instead.
 
 ---
 
@@ -40,8 +41,8 @@ ones it then throws away.
 
 **Solution:**
 - Make sure you replaced `your-api-key` with your actual key.
-- For **Local MCP**, set the env var to either `GENERECT_API_KEY="your-real-key"` or `GENERECT_API_KEY="Token your-real-key"` — both are accepted.
-- For **Remote MCP** with a custom `Authorization` header, any of these forms work: `YOUR_API_KEY`, `Bearer YOUR_API_KEY`, `Token YOUR_API_KEY`, or `Bearer Token YOUR_API_KEY`.
+- For **Local MCP**, set the env var to either `GENERECT_API_KEY="your-real-key"` or `GENERECT_API_KEY="Token your-real-key"`. Both are accepted.
+- For **Remote MCP** with a custom `Authorization` header, any of these forms work: `YOUR_API_KEY`, `Bearer YOUR_API_KEY`, `Token YOUR_API_KEY` or `Bearer Token YOUR_API_KEY`.
 - Verify the key is active in <a href="https://app.generect.com" target="_blank">app.generect.com</a>.
 
 ---
@@ -60,7 +61,7 @@ ones it then throws away.
 
 ## MCP server does not appear in the client
 
-**Cause**: Configuration file is invalid, or the MCP server didn't start.
+**Cause**: Configuration file is invalid or the MCP server didn't start.
 
 **Solution**:
 - Double-check JSON syntax and content in your config (`claude_desktop_config.json`, Cursor config). NPM should be `generect-ultimate-mcp`
@@ -71,7 +72,7 @@ ones it then throws away.
 
 ### LLM doesn't call MCP tools
 
-**Cause**: The LLM decides when to call external tools — it may not always trigger them.
+**Cause**: The LLM decides when to call external tools, so it may not always trigger them.
 
 **Solution**:
 - Rephrase your request in a way that makes tool usage more likely (e.g., explicitly ask to "search leads").
