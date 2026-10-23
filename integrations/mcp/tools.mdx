@@ -25,13 +25,13 @@ safe to hand to an autonomous agent:
 | Tool | What it gives you |
 |------|-------------------|
 | `count_leads` | How many leads match, plus the cost of the next step at **your** account's rates |
-| `preview_leads` with `count_only: true` | A second opinion on the count from the Preview index. Free — and the two indexes do disagree, so it is worth asking both |
+| `preview_leads` with `count_only: true` | A second opinion on the count from the Preview index. Free, and the two indexes do disagree, so it is worth asking both |
 | `count_companies` | The same, for companies |
 | `get_balance` | Balance and your real per-operation prices. `include_usage` adds spend broken down by operation; `include_token_analytics` adds per-API-token request counts, which answers "which integration is making these calls?" |
 | `search_leads`, `search_companies` with `detail: "thin"` | Thin rows (who, role, where, which company) up to a daily per-account quota. Never billed: a spent quota is refused with a `429`, and a thin search is never sent to realtime (asking for both is an error) |
 | `get_bulk_job` | Status and results of a bulk job (the work was billed at submit time) |
 | `list_webhooks`, `create_webhook`, `update_webhook`, `delete_webhook`, `test_webhook` | Manage the endpoints that receive bulk-job completion events, one tool per operation |
-| `health` | Liveness and credential check — touches no data endpoint, safe for monitors |
+| `health` | Liveness and credential check. It touches no data endpoint, so it is safe for monitors |
 
 ## Billable tools
 
@@ -45,15 +45,15 @@ safe to hand to an autonomous agent:
 | `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
 | `enrich_company` | per record found (not found is free) |
 | `generate_email` | per **valid** email found (a miss is free) |
-| `validate_email` | per email **submitted** — every address, whatever the verdict |
-| `find_phone` | per phone found — the most expensive operation |
+| `validate_email` | per email **submitted**: every address, whatever the verdict |
+| `find_phone` | per phone found (the most expensive operation) |
 | `start_bulk_job` | per record, and the worst case is **reserved at submit time** |
 
 Exact per-operation prices for your account are in
 [billing settings](https://app.generect.com/settings/billing), and `get_balance`
 returns them too. See [Pricing](/billing/pricing) for the list rates.
 
-## Filter values are matched exactly — and two of them are not validated
+## Filter values are matched exactly, and two of them are not validated
 
 This is the most expensive thing to get wrong, so it is worth stating plainly.
 The search endpoints do **not** validate all filters the same way:
@@ -61,7 +61,7 @@ The search endpoints do **not** validate all filters the same way:
 | Filter | An unknown value |
 |--------|------------------|
 | `locations`, `company_headcounts`, `company_types` | rejected with `400`, naming the field |
-| `company_industries`, `seniorities` | **accepted — 0 results, no charge, no error** |
+| `company_industries`, `seniorities` | **accepted: 0 results, no charge, no error** |
 
 `company_industries: ["Fintech"]` is not a LinkedIn industry, so it matches
 nothing and you get a perfectly successful count of **zero**. That is
@@ -72,7 +72,7 @@ name of an industry".
 From 0.9.0 the MCP server checks these values before it sends anything:
 
 - an unknown **industry**, headcount bucket or company type is refused locally,
-  with the closest valid names — `Fintech` → `Financial Services`,
+  with the closest valid names: `Fintech` → `Financial Services`,
   `50-200` → `51-200`. Nothing is sent and nothing is charged;
 - a value that is merely mis-spelled or mis-cased is **corrected**
   (`software development` → `Software Development`), because matching is exact;
@@ -108,7 +108,7 @@ clients that support them: `size_an_audience`, `build_prospect_list`,
 
 ## Spend ceiling
 
-A row cap bounds how many results you get, not how much you pay — the per-row
+A row cap bounds how many results you get, not how much you pay: the per-row
 price depends on the mode and your tier. So any call whose worst case exceeds the
 server's per-call ceiling (default **\$5**, `MCP_MAX_SPEND_PER_CALL`) is refused
 with the exact figure, and has to be repeated with `confirm_spend_usd` set to at
@@ -119,7 +119,7 @@ its whole cost at submit time and cannot be called back.
 
 ## Database or realtime
 
-Every search and enrich exists in two modes — cached `database` (sub-second,
+Every search and enrich exists in two modes: cached `database` (sub-second,
 cheaper, **free counts**, core filters) and live `realtime` (5–60s, pricier,
 billable counts, every filter). See
 [Database vs Real-time](/api-reference/database-vs-realtime).
@@ -128,7 +128,7 @@ Tools take a `mode` parameter:
 
 | `mode` | Behaviour |
 |--------|-----------|
-| `auto` (default) | Tries the cheap cached path. Escalates to realtime **only** if the API reports that a filter you passed does not exist there — and says so in the response. |
+| `auto` (default) | Tries the cheap cached path. Escalates to realtime **only** if the API reports that a filter you passed does not exist there, and says so in the response. |
 | `database` | Never escalates. An unsupported filter comes back as an error, not a larger bill. |
 | `realtime` | Goes straight to the live index. |
 
@@ -149,14 +149,14 @@ get_balance                             free            → report the exact spe
 ```
 
 Records carry a stable `id` across preview, search and enrich, so once a lead is
-in your list you never have to search for them again — pass the `id` to
+in your list you never have to search for them again: pass the `id` to
 `enrich_lead`, `generate_email` or `find_phone` directly.
 
 <Tip>
   For repeatable or scheduled work, submit up to 50 records with `start_bulk_job`
   and register a webhook with `create_webhook` instead of polling. A submitted
   job runs to completion even if your balance later hits zero, because its cost
-  was reserved at submit time — so only submit lists that have been approved.
+  was reserved at submit time. Only submit lists that have been approved.
 </Tip>
 
 ## Interactive results in Claude
@@ -187,7 +187,12 @@ Money inside the cards follows the same rules as the tools:
   counting, balance, health, bulk-job status and listing webhooks. The one
   paid case among them, a realtime count (\$0.04 at the standard price),
   runs only when `mode: "realtime"` is requested explicitly. Every other tool
-  needs your approval ("Always allow" works per tool).
+  needs your approval ("Always allow" works per tool, except for the three
+  webhook tools below).
+- **Webhook changes are confirmed every time.** `create_webhook`,
+  `update_webhook` and `delete_webhook` are marked destructive, so Claude asks
+  before each call. A bulk-job completion event carries the job's results
+  (emails, phones, records), so these tools decide where your paid data is sent.
 
 ## When to use the REST API instead
 
