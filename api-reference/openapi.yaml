@@ -4514,12 +4514,61 @@ paths:
                 $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
-                  id: 1035
+                  id: '1035'
+                  linkedin_id: '1035'
+                  linkedin_urn: microsoft
+                  linkedin_link: https://www.linkedin.com/company/microsoft/
                   name: Microsoft
+                  raw_name: Microsoft
+                  tagline: null
+                  description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  website: https://news.microsoft.com/
                   domain: microsoft.com
-                  linkedin_url: https://www.linkedin.com/company/microsoft/
                   industry: Software Development
-                  headcount: 150
+                  specialities:
+                    - Business Software
+                    - Developer Tools
+                    - Home & Educational Software
+                  hashtags:
+                    - microsoftlife
+                    - microsoft
+                  company_type: Public Company
+                  founded_year: null
+                  headcount_range: 10 000+
+                  location: Redmond, Washington, United States
+                  hq_street: 1 Microsoft Way
+                  hq_city: Redmond
+                  hq_state: Washington
+                  hq_postal_code: '98052'
+                  hq_country: United States
+                  hq_country_code: US
+                  hq_additional_info: null
+                  raw_location:
+                    country: United States
+                    state: Washington
+                    city: Redmond
+                    street: 1 Microsoft Way
+                    postal_code: '98052'
+                    additional_info: null
+                  number_of_locations: 45
+                  other_locations_json:
+                    - country: Australia
+                      state: NSW
+                      city: North Sydney
+                      street: 1 Denison Street
+                      postal_code: '2060'
+                      additional_info: null
+                      description: null
+                  phone_number: null
+                  logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                  background_image: https://media.licdn.com/dms/image/v2/D4E1BAQHb1Lu8fVYoHg/company-background_10000/B4EZ8ZTXy5JIAI-/0/1782835936908/microsoft_cover
+                  default_locale: en
+                  groups: []
+                  is_claimable: false
+                  acquired_by: null
+                  crunchbase_urn: null
+                  showcase_pages: null
+                  source: company_by_link
                 meta:
                   amount_charged: 0.02
   /api/v1/enrich/realtime/company/:
@@ -4669,12 +4718,61 @@ paths:
                 $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
-                  id: 1035
+                  id: '1035'
+                  linkedin_id: '1035'
+                  linkedin_urn: microsoft
+                  linkedin_link: https://www.linkedin.com/company/microsoft/
                   name: Microsoft
+                  raw_name: Microsoft
+                  tagline: null
+                  description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  website: https://news.microsoft.com/
                   domain: microsoft.com
-                  linkedin_url: https://www.linkedin.com/company/microsoft/
                   industry: Software Development
-                  headcount: 150
+                  specialities:
+                    - Business Software
+                    - Developer Tools
+                    - Home & Educational Software
+                  hashtags:
+                    - microsoftlife
+                    - microsoft
+                  company_type: Public Company
+                  founded_year: null
+                  headcount_range: 10 000+
+                  location: Redmond, Washington, United States
+                  hq_street: 1 Microsoft Way
+                  hq_city: Redmond
+                  hq_state: Washington
+                  hq_postal_code: '98052'
+                  hq_country: United States
+                  hq_country_code: US
+                  hq_additional_info: null
+                  raw_location:
+                    country: United States
+                    state: Washington
+                    city: Redmond
+                    street: 1 Microsoft Way
+                    postal_code: '98052'
+                    additional_info: null
+                  number_of_locations: 45
+                  other_locations_json:
+                    - country: Australia
+                      state: NSW
+                      city: North Sydney
+                      street: 1 Denison Street
+                      postal_code: '2060'
+                      additional_info: null
+                      description: null
+                  phone_number: null
+                  logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                  background_image: https://media.licdn.com/dms/image/v2/D4E1BAQHb1Lu8fVYoHg/company-background_10000/B4EZ8ZTXy5JIAI-/0/1782835936908/microsoft_cover
+                  default_locale: en
+                  groups: []
+                  is_claimable: false
+                  acquired_by: null
+                  crunchbase_urn: null
+                  showcase_pages: null
+                  source: company_by_link
                 meta:
                   amount_charged: 0.04
   /api/v1/enrich/database/leads/bulk/:
@@ -7730,14 +7828,17 @@ components:
         has_current_position:
           type: boolean
           description: >-
-            True when the profile lists a current position.
+            True when the profile lists a current position. When it is false,
+            `company_name` and `company_website` are empty, and `job_title` holds
+            the profile headline if there is one.
         job_title:
           type: string
           nullable: true
           description: >-
             Current job title, normalized. The `job_*` and `company_*` fields below
             describe the current position, the same values as the current entry in
-            `jobs`.
+            `jobs`. When `has_current_position` is false, this is the profile
+            headline, or null if there is none.
         raw_job_title:
           type: string
           nullable: true
@@ -8106,10 +8207,290 @@ components:
       type: object
       properties:
         data:
-          type: object
-          description: Full company profile — see the example for the field set.
+          $ref: '#/components/schemas/Company'
         meta:
           $ref: '#/components/schemas/Meta'
+    Company:
+      type: object
+      description: >-
+        A company profile, as the realtime and the database company enrich return
+        it for a request by `linkedin_url` or `id`. A field the company page does
+        not have comes back null or as an empty list. A request by `id` also
+        echoes the identifier back as `input_id`. Treat any field not listed here
+        as optional.
+      properties:
+        id:
+          type: string
+          description: >-
+            Generect company ID: the company's LinkedIn ID, the same value as
+            `linkedin_id`. Pass it as `id` to enrich the company again.
+        linkedin_id:
+          type: string
+          description: >-
+            Numeric LinkedIn company ID, as a string.
+        linkedin_urn:
+          type: string
+          description: >-
+            The company's LinkedIn URL slug, e.g. `microsoft`.
+        linkedin_link:
+          type: string
+          description: >-
+            LinkedIn company page URL.
+        name:
+          type: string
+          description: >-
+            Cleaned company name.
+        raw_name:
+          type: string
+          description: >-
+            Company name exactly as shown on LinkedIn.
+        tagline:
+          type: string
+          nullable: true
+          description: >-
+            The short line under the company name on LinkedIn.
+        description:
+          type: string
+          nullable: true
+          description: >-
+            The company's About section.
+        website:
+          type: string
+          nullable: true
+          description: >-
+            Website URL as listed on the LinkedIn page. It can be a careers page or
+            another subpage rather than the home page.
+        domain:
+          type: string
+          nullable: true
+          description: >-
+            Registered domain of `website`, without protocol or subdomain, e.g.
+            `microsoft.com`.
+        industry:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn industry, e.g. `Software Development`.
+        specialities:
+          type: array
+          nullable: true
+          description: >-
+            Specialties listed on the LinkedIn page.
+          items:
+            type: string
+        hashtags:
+          type: array
+          nullable: true
+          description: >-
+            Hashtags associated with the company page.
+          items:
+            type: string
+        company_type:
+          type: string
+          nullable: true
+          description: >-
+            Organization type, e.g. `Privately Held`, `Public Company`, `Non Profit`.
+        founded_year:
+          type: integer
+          nullable: true
+          description: >-
+            Year founded.
+        headcount_range:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn employee range: `self-employed`, `1-10`, `11-50`, `51-200`,
+            `201-500`, `501-1000`, `1001-5000`, `5001-10000` or `10 000+`.
+        headcount_exact:
+          type: integer
+          nullable: true
+          description: >-
+            Exact number of employees on LinkedIn. Returned only on accounts with
+            exact headcount enabled.
+        location:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters location as one string, e.g. `Seattle, WA, United States`.
+        hq_street:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters street address.
+        hq_city:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters city.
+        hq_state:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters state or region.
+        hq_postal_code:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters postal code.
+        hq_country:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters country name.
+        hq_country_code:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters country, two-letter ISO code.
+        hq_additional_info:
+          type: string
+          nullable: true
+          description: >-
+            Second address line of the headquarters, such as a suite.
+        raw_location:
+          type: object
+          nullable: true
+          description: >-
+            Headquarters address as LinkedIn returns it, before the country and city
+            names are normalized.
+          properties:
+            country:
+              type: string
+              nullable: true
+            state:
+              type: string
+              nullable: true
+            city:
+              type: string
+              nullable: true
+            street:
+              type: string
+              nullable: true
+            postal_code:
+              type: string
+              nullable: true
+            additional_info:
+              type: string
+              nullable: true
+        number_of_locations:
+          type: integer
+          nullable: true
+          description: >-
+            Number of office locations on the LinkedIn page, headquarters included.
+        other_locations_json:
+          type: array
+          nullable: true
+          description: >-
+            Office locations other than the headquarters.
+          items:
+            type: object
+            properties:
+              country:
+                type: string
+                nullable: true
+              state:
+                type: string
+                nullable: true
+              city:
+                type: string
+                nullable: true
+              street:
+                type: string
+                nullable: true
+              postal_code:
+                type: string
+                nullable: true
+              additional_info:
+                type: string
+                nullable: true
+              description:
+                type: string
+                nullable: true
+        phone_number:
+          type: string
+          nullable: true
+          description: >-
+            Phone number listed on the LinkedIn page.
+        logo_url:
+          type: string
+          nullable: true
+          description: >-
+            Logo image URL.
+        background_image:
+          type: string
+          nullable: true
+          description: >-
+            Cover image URL.
+        default_locale:
+          type: string
+          nullable: true
+          description: >-
+            Language of the LinkedIn page, e.g. `en`.
+        groups:
+          type: array
+          nullable: true
+          description: >-
+            LinkedIn group IDs associated with the company page.
+          items:
+            type: integer
+        is_claimable:
+          type: boolean
+          nullable: true
+          description: >-
+            Whether the LinkedIn page can be claimed by the company.
+        acquired_by:
+          type: object
+          nullable: true
+          description: >-
+            The acquiring company when LinkedIn shows this one as acquired, otherwise
+            null.
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+              nullable: true
+            linkedin_url:
+              type: string
+        crunchbase_urn:
+          type: string
+          nullable: true
+          description: >-
+            Crunchbase identifier from the LinkedIn page, when it has one.
+        showcase_pages:
+          type: array
+          nullable: true
+          description: >-
+            Currently always null.
+          items:
+            type: object
+        source:
+          type: string
+          description: >-
+            Internal source tag, e.g. `company_by_link`.
+        people_also_viewed:
+          type: array
+          nullable: true
+          description: >-
+            Only when `people_also_viewed` was requested. Companies LinkedIn shows
+            under "People also viewed".
+          items:
+            type: object
+        people_also_follow:
+          type: array
+          nullable: true
+          description: >-
+            Only when `people_also_follow` was requested. Companies LinkedIn shows
+            under "People also follow".
+          items:
+            type: object
+        posts:
+          type: array
+          nullable: true
+          description: >-
+            Only when `posts` was requested. The company's recent posts.
+          items:
+            type: object
     EmailFindResponse:
       type: object
       properties:
