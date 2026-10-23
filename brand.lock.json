@@ -1,0 +1,35 @@
+{
+  "$comment": "Written by generect/brand tools/sync.js. Do not edit: run sync again (see the brand repo README).",
+  "brand": "generect",
+  "manifest": "https://home.generect.com/brand/brand.json",
+  "logo": "2.0.0",
+  "files": {
+    "favicon-black.svg": {
+      "asset": "favicon.svg",
+      "sha256": "c0e8395c23db4290cfee10af1923b4bd918f3fd3f9f58a56c63c50f7704387e2"
+    },
+    "favicon-white.svg": {
+      "asset": "generect-monogram-white.svg",
+      "sha256": "59c785ec1f81f6bf0581df1922074d462c53fef5d226b7dbfe0f65aabe971ffc"
+    }
+  },
+  "scan": [
+    "."
+  ],
+  "retired": {
+    "sha256": {
+      "5668c0c2de668d338053e37d142bc231bcd30621ee5d71fe15413f6f171868a7": "v1 c-mark-telegram-avatar.jpg",
+      "c1ed9b45d32e3e27da6382d9be749f9a3cf4dc9c144cf39a69ce885288f6b051": "v1 wordmark-color-n.svg"
+    },
+    "text": [
+      {
+        "label": "напис з триколірною N: #2D5AC9 + #C62E44 + #C6AC2E в одному файлі",
+        "all": [
+          "#2d5ac9",
+          "#c62e44",
+          "#c6ac2e"
+        ]
+      }
+    ]
+  }
+}
