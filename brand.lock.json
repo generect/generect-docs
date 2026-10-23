@@ -2,7 +2,7 @@
   "$comment": "Written by generect/brand tools/sync.js. Do not edit: run sync again (see the brand repo README).",
   "brand": "generect",
   "manifest": "https://home.generect.com/brand/brand.json",
-  "logo": "2.0.0",
+  "logo": "2.1.0",
   "files": {
     "favicon-black.svg": {
       "asset": "favicon.svg",
@@ -18,8 +18,14 @@
   ],
   "retired": {
     "sha256": {
+      "172de02004b3caa9f997f39b55eaaf4842580d142c936ba18575001dc6e9dade": "v1 email-banner-sparkle.jpg",
       "5668c0c2de668d338053e37d142bc231bcd30621ee5d71fe15413f6f171868a7": "v1 c-mark-telegram-avatar.jpg",
-      "c1ed9b45d32e3e27da6382d9be749f9a3cf4dc9c144cf39a69ce885288f6b051": "v1 wordmark-color-n.svg"
+      "82dd7bdb1948e1cf417fc6d9e03306125722c403393c547a67cac680501860d7": "v1 c-mark-favicon-aichat.ico",
+      "920539da3117d7261c414dcc1e5b9cb92750c65ac5f8766e0e12d84efc77cd76": "v1 email-banner-color-n.png",
+      "b1c1b860690958e1d5d89a6edc9ed93ad678d9da8b3340803e743269887ac6ac": "v1 sparkle-icon.svg",
+      "bd20fbdd5f2c8da2daec3d394d9349015756a1618d4c99d7d99af115381dd49d": "v1 sparkle-wordmark-beta3.svg",
+      "c1ed9b45d32e3e27da6382d9be749f9a3cf4dc9c144cf39a69ce885288f6b051": "v1 wordmark-color-n.svg",
+      "c44d85a7443e67b1877b5459dc5f85a3a5de76287d18af4e459681d35fea9093": "v1 sparkle-wordmark-qa.svg"
     },
     "text": [
       {
@@ -28,6 +34,37 @@
           "#2d5ac9",
           "#c62e44",
           "#c6ac2e"
+        ]
+      },
+      {
+        "label": "знак C: синя риска #587EDA і жовта крапка #D7C051 в одному файлі",
+        "all": [
+          "#587eda",
+          "#d7c051"
+        ]
+      },
+      {
+        "label": "знак-зірочка: контур іконки",
+        "all": [
+          "m15 4.89281c15 5.03734 14.9936 5.18041"
+        ]
+      },
+      {
+        "label": "напис-зірочка 2023 (бета, QA): контур G",
+        "all": [
+          "m79.3826 43.6978c68.8647 43.6978 61.352 35.6034"
+        ]
+      },
+      {
+        "label": "посилання на старий банер листів generect/images/master/logo.jpg",
+        "all": [
+          "raw.githubusercontent.com/generect/images/master/logo.jpg"
+        ]
+      },
+      {
+        "label": "посилання на старий банер листів generect/images/master/generect_logo.png",
+        "all": [
+          "raw.githubusercontent.com/generect/images/master/generect_logo.png"
         ]
       }
     ]
