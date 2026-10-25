@@ -5706,7 +5706,7 @@ paths:
                   value:
                     status: error
                     status_code: 429
-                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row.'
+                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row. Expected available in 3600 seconds.'
         '200':
           description: Lead search results
           content:
@@ -5854,7 +5854,7 @@ paths:
                   value:
                     status: error
                     status_code: 429
-                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row.'
+                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row. Expected available in 3600 seconds.'
         '200':
           description: Company search results
           content:
