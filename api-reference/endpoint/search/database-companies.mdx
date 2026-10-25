@@ -7,6 +7,16 @@ openapi: post /api/v1/search/database/companies/
 Search cached company data with database filters.
 
 ## Pricing
-This is a billable endpoint — you are charged for each result returned. If no results are found, the request is free.
+Full rows are billed: you are charged for each result returned. If no results are found, the request is free.
+
+### Free thin rows
+Send `"detail": "thin"` and the same search returns thin rows at no charge. A thin row tells you what the company is and where: `id` (the LinkedIn company id), `name`, `industry`, `headcount_range`, `hq_country`, `hq_city`, `company_type` and `founded_year`. It has no domain or website, no LinkedIn URL and no contacts. Keep the `id`s that fit and pay only for what you take further ([enrich the company](/api-reference/endpoint/enrich/enrich-database-company) or search its people).
+
+- Thin rows are free up to a daily quota per account, currently 2,000 rows per UTC day. `meta.free_tier` on every thin response reports `daily_rows`, `rows_used_today` and `rows_left_today`, and a page is cut to the rows you have left today.
+- When the day's rows are used up, a thin search returns `429` with a `Retry-After` header until 00:00 UTC. It is never billed instead: `"detail": "full"` keeps working, billed per row.
+- `meta.amount_charged` is `0` on every thin response, and a thin search works on a zero balance.
+- Leaving `detail` out, or sending `"detail": "full"`, returns full rows billed per row exactly as before. Existing integrations are unaffected.
+- Accounts on a custom API contract are priced by their contract, so a thin search there returns `400` unless the contract includes it.
+- The [Generect MCP](/integrations/mcp/tools) asks for thin rows by default.
 
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>
