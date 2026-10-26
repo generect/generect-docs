@@ -5816,10 +5816,27 @@ paths:
                   value:
                     data:
                       leads:
-                        - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                        - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                          linkedin_id: '78461298'
+                          linkedin_url: https://www.linkedin.com/in/jordan-ellis
                           first_name: Jordan
                           last_name: Ellis
-                          title: CEO
+                          full_name: Jordan Ellis
+                          headline: CEO at Microsoft
+                          job_title: Chief Executive Officer
+                          seniority: CXO
+                          job_started_on: Feb 2014
+                          company_name: Microsoft
+                          linkedin_company_id: 1035
+                          company_url: https://www.linkedin.com/company/microsoft
+                          company_website: https://www.microsoft.com
+                          company_industry: Software Development
+                          location: Redmond, Washington, United States
+                          location_city: Redmond
+                          location_country: United States
+                          is_premium: true
+                          num_of_connections: 500
+                          updated_at: '2026-09-03T14:29:05.540898'
                       results_count: 1240
                     meta:
                       amount_charged: 24.8
@@ -5964,9 +5981,21 @@ paths:
                   value:
                     data:
                       companies:
-                        - linkedin_id: '1035'
+                        - id: '1035'
+                          linkedin_id: '1035'
+                          linkedin_link: https://www.linkedin.com/company/microsoft/
+                          linkedin_sales_link: https://www.linkedin.com/sales/company/1035
                           name: Microsoft
                           domain: microsoft.com
+                          website: https://news.microsoft.com/
+                          industry: Software Development
+                          company_type: Public Company
+                          headcount_range: 10 000+
+                          location: Redmond, Washington, United States
+                          hq_city: Redmond
+                          hq_country: United States
+                          logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                          logo_url_cached: null
                       results_count: 530
                     meta:
                       amount_charged: 10.6
@@ -6076,9 +6105,27 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
                       first_name: Jordan
                       last_name: Ellis
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      seniority: CXO
+                      job_started_on: Feb 2014
+                      company_name: Microsoft
+                      linkedin_company_id: 1035
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      location: Redmond, Washington, United States
+                      location_city: Redmond
+                      location_country: United States
+                      is_premium: true
+                      num_of_connections: 500
+                      updated_at: '2026-09-03T14:29:05.540898'
                   results_count: 320
                 meta:
                   amount_charged: 6.4
@@ -6170,10 +6217,28 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
                       first_name: Jordan
                       last_name: Ellis
-                      title: CEO
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      linkedin_lead_persona: CXO
+                      job_started_on: Feb 2014
+                      company_id: '1035'
+                      linkedin_company_id: '1035'
+                      company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      location: Redmond, Washington, United States
+                      location_city: Redmond
+                      location_country: United States
+                      is_premium: true
+                      num_of_connections: 500
                   results_count: 1240
                 meta:
                   amount_charged: 49.6
@@ -6263,9 +6328,21 @@ paths:
               example:
                 data:
                   companies:
-                    - linkedin_id: '1035'
+                    - id: '1035'
+                      linkedin_id: '1035'
+                      linkedin_link: https://www.linkedin.com/company/microsoft/
+                      linkedin_sales_link: https://www.linkedin.com/sales/company/1035
                       name: Microsoft
                       domain: microsoft.com
+                      website: https://news.microsoft.com/
+                      industry: Software Development
+                      company_type: Public Company
+                      headcount_range: 10 000+
+                      location: Redmond, Washington, United States
+                      hq_city: Redmond
+                      hq_country: United States
+                      logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                      logo_url_cached: null
                   results_count: 530
                 meta:
                   amount_charged: 21.2
@@ -6355,9 +6432,28 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
                       first_name: Jordan
                       last_name: Ellis
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      linkedin_lead_persona: CXO
+                      job_started_on: Feb 2014
+                      company_id: '1035'
+                      linkedin_company_id: '1035'
+                      company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      location: Redmond, Washington, United States
+                      location_city: Redmond
+                      location_country: United States
+                      is_premium: true
+                      num_of_connections: 500
                   results_count: 320
                 meta:
                   amount_charged: 12.8
@@ -7700,9 +7796,11 @@ components:
           properties:
             leads:
               type: array
-              description: Lead profiles — see the example for the full field set.
+              description: >-
+                One row per lead. Full rows carry the lead profile; thin rows
+                (`"detail": "thin"`) carry a short subset, see `detail`.
               items:
-                type: object
+                $ref: '#/components/schemas/LeadSearchRow'
             results_count:
               oneOf:
                 - type: integer
@@ -7723,9 +7821,11 @@ components:
           properties:
             companies:
               type: array
-              description: Company profiles — see the example for the full field set.
+              description: >-
+                One row per company. Full rows carry the company profile; thin rows
+                (`"detail": "thin"`) carry a short subset, see `detail`.
               items:
-                type: object
+                $ref: '#/components/schemas/CompanySearchRow'
             results_count:
               type: integer
               description: Total number of companies matching the query.
@@ -7743,11 +7843,11 @@ components:
             companies:
               type: array
               items:
-                type: object
+                $ref: '#/components/schemas/CompanySearchRow'
             leads:
               type: array
               items:
-                type: object
+                $ref: '#/components/schemas/LeadSearchRow'
             companies_count:
               type: integer
             leads_count:
@@ -7756,6 +7856,79 @@ components:
               type: integer
         meta:
           $ref: '#/components/schemas/Meta'
+    LeadSearchRow:
+      description: >-
+        A full lead search row: the Lead profile (see `Lead`) as search returns
+        it, plus the fields below. Search rows have no `has_current_position`
+        (enrich adds it). Database rows carry `linkedin_company_id` instead of
+        `company_id`, and `updated_at`; realtime rows carry both IDs and the
+        matched `linkedin_lead_persona`. Derived fields such as `seniority`,
+        `schools` and `past_companies` come on database rows and on some
+        realtime rows.
+      allOf:
+        - $ref: '#/components/schemas/Lead'
+        - type: object
+          properties:
+            linkedin_company_id:
+              oneOf:
+                - type: string
+                  nullable: true
+                - type: integer
+              description: >-
+                LinkedIn company ID of the current employer. A number on
+                database and thin rows, a string on realtime rows.
+            linkedin_lead_persona:
+              type: string
+              nullable: true
+              description: >-
+                Seniority band the row matched in a realtime search, e.g.
+                `Director`, `VP`, `CXO`.
+            seniority:
+              type: string
+              nullable: true
+              description: Seniority of the current position (database rows).
+            updated_at:
+              type: string
+              description: >-
+                When the stored record was last refreshed, UTC without a zone
+                suffix (database and thin rows).
+            phone:
+              type: string
+              nullable: true
+              description: Usually null. Use the phone finder for phone numbers.
+            profile_photo_cached:
+              type: string
+              nullable: true
+              description: Copy of the profile photo on Generect's storage, when cached.
+            persona:
+              type: array
+              description: Reserved; currently an empty list.
+              items:
+                type: string
+            email_candidates:
+              type: integer
+              description: Reserved; currently always 0.
+            input_email:
+              type: string
+              nullable: true
+              description: Echo of the email on email lookups; null on search rows.
+    CompanySearchRow:
+      description: >-
+        A full company search row: the Company profile (see `Company`) as search
+        returns it, plus the fields below. Search rows leave out the enrich-only
+        fields (`source`, `groups`, `showcase_pages`, `default_locale`,
+        `is_claimable`) and the opt-in sections.
+      allOf:
+        - $ref: '#/components/schemas/Company'
+        - type: object
+          properties:
+            linkedin_sales_link:
+              type: string
+              description: Sales Navigator URL of the company.
+            logo_url_cached:
+              type: string
+              nullable: true
+              description: Copy of the logo on Generect's storage, when cached.
     SearchCountResponse:
       type: object
       properties:
@@ -7872,6 +8045,7 @@ components:
             Usually null.
         headline:
           type: string
+          nullable: true
           description: >-
             Profile headline.
         summary:
@@ -8141,8 +8315,10 @@ components:
             type: string
         source:
           type: string
+          nullable: true
           description: >-
             Internal tag for how the record was obtained, e.g. `lead_by_link`.
+            Often null or absent on search rows.
         people_also_viewed:
           type: array
           nullable: true
