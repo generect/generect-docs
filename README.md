@@ -56,6 +56,8 @@ Price catalogs (datacircle.dev and others) and AI agents read `openapi.yaml` lit
 
 Changes are deployed to production automatically after pushing to the default branch (via the Mintlify GitHub App). Merging a PR into `master` publishes it.
 
+A PR built on top of another open PR: merge the lower one first, then merge `master` into the upper branch (a plain merge commit, no force-push) and merge the upper PR only after GitHub shows it as clean. If the upper branch already has its own merge of the lower PR, `master` and the branch have two merge bases, and GitHub reports a conflict that `git merge` does not have (#36 and #37, 26.10.2026).
+
 `mint` needs Node 20.17 or newer. On a host with an older Node, run it as `npx -y -p node@22 -p mint@latest -- mint validate` (also `openapi-check`, `broken-links`).
 
 ### Troubleshooting
