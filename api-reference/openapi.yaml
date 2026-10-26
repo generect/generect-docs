@@ -5750,7 +5750,10 @@ paths:
       tags:
         - 9. Search
       summary: Search database leads
-      description: Search cached leads. Database mode returns results in under 1 second. Billed per result returned.
+      description: >-
+        Search cached leads. Database mode returns results in under 1 second.
+        Full rows are billed per result returned; `"detail": "thin"` returns
+        thin rows free up to a daily quota.
       requestBody:
         required: true
         content:
@@ -5770,6 +5773,11 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
+                Thin search not available:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"detail": ["\"thin\" search is not available on custom-contract accounts; search is priced by your contract."]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
@@ -5777,23 +5785,70 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: >-
+            Rate limit exceeded, or (for `"detail": "thin"`) today's free row
+            quota is used up. The quota resets at 00:00 UTC and `Retry-After`
+            gives the seconds until then; `"detail": "full"` keeps working,
+            billed per row.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Rate limited:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: Request was throttled.
+                Free quota used up:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row. Expected available in 3600 seconds.'
         '200':
-          description: Full lead search results
+          description: Lead search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchLeadsResponse'
-              example:
-                data:
-                  leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                      first_name: Jordan
-                      last_name: Ellis
-                      title: CEO
-                  results_count: 1240
-                meta:
-                  amount_charged: 24.8
+              examples:
+                Full rows:
+                  value:
+                    data:
+                      leads:
+                        - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                          first_name: Jordan
+                          last_name: Ellis
+                          title: CEO
+                      results_count: 1240
+                    meta:
+                      amount_charged: 24.8
+                Thin rows (free):
+                  value:
+                    data:
+                      leads:
+                        - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                          first_name: Jordan
+                          last_name: Ellis
+                          full_name: Jordan Ellis
+                          job_title: CEO
+                          seniority: CXO
+                          location_name: Austin, Texas, United States
+                          location_country: United States
+                          location_city: Austin
+                          company_name: Northwind Labs
+                          linkedin_company_id: 2814573
+                          company_industry: Software Development
+                          company_location_country: United States
+                          updated_at: '2026-10-21T08:14:02.481305'
+                      results_count: 1240
+                    meta:
+                      amount_charged: 0
+                      free_tier:
+                        detail: thin
+                        daily_rows: 2000
+                        rows_used_today: 100
+                        rows_left_today: 1900
   /api/v1/search/database/leads/count/:
     post:
       tags:
@@ -5843,7 +5898,10 @@ paths:
       tags:
         - 9. Search
       summary: Search database companies
-      description: Search cached companies. Database mode returns results in under 1 second. Billed per result returned.
+      description: >-
+        Search cached companies. Database mode returns results in under 1 second.
+        Full rows are billed per result returned; `"detail": "thin"` returns
+        thin rows free up to a daily quota.
       requestBody:
         required: true
         content:
@@ -5863,6 +5921,11 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Thin search not available:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"detail": ["\"thin\" search is not available on custom-contract accounts; search is priced by your contract."]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
@@ -5870,22 +5933,63 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: >-
+            Rate limit exceeded, or (for `"detail": "thin"`) today's free row
+            quota is used up. The quota resets at 00:00 UTC and `Retry-After`
+            gives the seconds until then; `"detail": "full"` keeps working,
+            billed per row.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Rate limited:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: Request was throttled.
+                Free quota used up:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row. Expected available in 3600 seconds.'
         '200':
-          description: Full company search results
+          description: Company search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchCompaniesResponse'
-              example:
-                data:
-                  companies:
-                    - linkedin_id: '1035'
-                      name: Microsoft
-                      domain: microsoft.com
-                  results_count: 530
-                meta:
-                  amount_charged: 10.6
+              examples:
+                Full rows:
+                  value:
+                    data:
+                      companies:
+                        - linkedin_id: '1035'
+                          name: Microsoft
+                          domain: microsoft.com
+                      results_count: 530
+                    meta:
+                      amount_charged: 10.6
+                Thin rows (free):
+                  value:
+                    data:
+                      companies:
+                        - id: '1035'
+                          name: Microsoft
+                          industry: Software Development
+                          headcount_range: 10 000+
+                          hq_country: United States
+                          hq_city: Redmond
+                          company_type: Public Company
+                          founded_year: 1975
+                      results_count: 530
+                    meta:
+                      amount_charged: 0
+                      free_tier:
+                        detail: thin
+                        daily_rows: 2000
+                        rows_used_today: 25
+                        rows_left_today: 1975
   /api/v1/search/database/companies/count/:
     post:
       tags:
@@ -6970,6 +7074,20 @@ components:
         - $ref: '#/components/schemas/LeadSearchRequest'
         - type: object
           properties:
+            detail:
+              type: string
+              enum:
+                - full
+                - thin
+              default: full
+              description: >-
+                Row shape. `full` (the default) returns full rows, billed per row.
+                `thin` returns who, what role, where and which company at no charge, up to a daily quota per account
+                (currently 2,000 rows per UTC day); a thin row has no LinkedIn profile URL, company domain, contacts or work history. A
+                spent quota is refused with `429` until 00:00 UTC, never billed.
+                Accounts on a custom API contract get `400` unless their contract
+                includes thin search. The count endpoints ignore this field: counts
+                are always free.
             gender:
               type: array
               items:
@@ -7264,6 +7382,20 @@ components:
         - $ref: '#/components/schemas/CompanySearchRequest'
         - type: object
           properties:
+            detail:
+              type: string
+              enum:
+                - full
+                - thin
+              default: full
+              description: >-
+                Row shape. `full` (the default) returns full rows, billed per row.
+                `thin` returns the company's name, industry, size and location at no charge, up to a daily quota per account
+                (currently 2,000 rows per UTC day); a thin row has no domain, website, LinkedIn URL or contacts. A
+                spent quota is refused with `429` until 00:00 UTC, never billed.
+                Accounts on a custom API contract get `400` unless their contract
+                includes thin search. The count endpoints ignore this field: counts
+                are always free.
             founded_year:
               description: >-
                 Founding year of the company — the "company age" filter. Accepts
@@ -7498,6 +7630,26 @@ components:
             When the cached result set was originally collected (returned by
             database company search when results are served from a previous
             identical search).
+        free_tier:
+          type: object
+          description: >-
+            Present only on a database lead or company search sent with
+            `"detail": "thin"`: where your account stands against today's free
+            row quota. The quota resets at 00:00 UTC.
+          properties:
+            detail:
+              type: string
+              enum:
+                - thin
+            daily_rows:
+              type: integer
+              description: Free thin rows per account per UTC day.
+            rows_used_today:
+              type: integer
+              description: Thin rows returned to your account today, this page included.
+            rows_left_today:
+              type: integer
+              description: Thin rows your account can still take today.
     BulkJobMeta:
       type: object
       description: >-

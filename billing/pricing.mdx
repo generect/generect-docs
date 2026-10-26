@@ -13,7 +13,7 @@ These are the per-result prices every account starts on (see [Spend & Save tiers
 | Operation | Endpoints | Price (USD) | Billed |
 | --- | --- | --- | --- |
 | Real-time search & enrich | `POST /search/realtime/*`, `POST /enrich/realtime/*` | **$0.04** | per returned result |
-| Database (cached) search & enrich | `POST /search/database/*`, `POST /enrich/database/*` | **$0.02** | per returned result |
+| Database (cached) search & enrich | `POST /search/database/*`, `POST /enrich/database/*` | **$0.02** | per returned result (thin lead and company search rows are free, see below) |
 | Email Finder | `POST /email/find/` (+ `/bulk/`) | **$0.02** | per **valid** email found |
 | Email Validation | `POST /email/validate/` | **$0.005** | per email checked |
 | Preview | `POST /preview/leads/` | **\$0.002** | per returned (masked) result — free for the rest of the month once your spend that month reaches \$2,000 |
@@ -41,6 +41,7 @@ Every API response reports exactly what it cost in `meta.amount_charged` (USD), 
 ## What's free
 
 - **Database (cached) count** endpoints (`POST /search/database/*/count/`) — a cached count, no charge.
+- **Thin database search rows**: `POST /search/database/leads/` and `POST /search/database/companies/` with `"detail": "thin"` return who, what role, where and which company at \$0, up to a daily quota per account (currently 2,000 rows per UTC day, reported in `meta.free_tier`). A spent quota is refused with `429` until 00:00 UTC, never billed. Thin rows have no LinkedIn URL, domain or contacts; pay only for the rows you take further. Accounts on a custom API contract are priced by their contract. See [Search database leads](/api-reference/endpoint/search/database-leads).
 - **Preview count** (`POST /preview/leads/count/`) — sizing a Preview audience is free, always.
 - **Preview in the Generect web app** — the \$0.002 Preview price applies to API calls only.
 - **Account, status, and webhook** endpoints.
@@ -55,7 +56,7 @@ You are not billed for results we don't return:
 | Operation | If nothing is found |
 | --- | --- |
 | Enrich lead / company | **Not charged** — the reserved amount is refunded automatically |
-| Search (database or real-time) | Billed **per returned row** — zero rows costs $0 |
+| Search (database or real-time) | Billed **per returned row** — zero rows costs $0. Thin database rows are free up to the daily quota |
 | Email Finder | Charged **only for valid emails found** |
 | Phone Finder | Charged **only for phones found** |
 | Email Validation | Charged **per email checked** — a verdict (valid, risky, catch-all, invalid) is the result you paid for |
@@ -79,7 +80,7 @@ The exact sequence, so production behavior is predictable:
 1. Credits are **reserved up front** when a request or bulk job is accepted — anything already accepted **runs to completion** and is never interrupted mid-flight.
 2. A submitted bulk job keeps processing even if your balance reaches $0 afterwards — its cost was reserved at submit time.
 3. **New** billable requests are rejected with `402` and `"Insufficient funds in the account."` (standard [error envelope](/api-reference/errors)) until you top up.
-4. Free endpoints (database counts, `POST /preview/leads/count/`, account, status polling, webhooks) keep working at \$0.
+4. Free endpoints (database counts, thin database search within the daily quota, `POST /preview/leads/count/`, account, status polling, webhooks) keep working at \$0.
 
 Enable [Auto Top-Up](/billing/managing-billing) to make this state unreachable in production.
 
@@ -88,6 +89,7 @@ Enable [Auto Top-Up](/billing/managing-billing) to make this state unreachable i
 There is no separate sandbox environment — the live API is safe to evaluate for free:
 
 - **Database count** endpoints are free — size any audience at $0.
+- **Thin database search** (`"detail": "thin"`) returns real people and companies at \$0, up to the daily quota.
 - **Preview** returns real (masked) leads at \$0.002 per result — and is free for the rest of the calendar month once your spend that month reaches \$2,000.
 - New accounts start with a **free starter credit**, and not-found results are never billed — a failed experiment costs nothing.
 - Every response tells you what it actually cost (`meta.amount_charged`), so a $1 test budget goes a long way.
