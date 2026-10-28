@@ -23,8 +23,8 @@
     }
   },
   "favicon": {
-    "light": "/favicon-white.svg",
-    "dark": "/favicon-black.svg"
+    "light": "/favicon-black.svg",
+    "dark": "/favicon-white.svg"
   },
   "colors": {
     "primary": "#2d59c8",
