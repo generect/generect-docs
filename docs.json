@@ -240,6 +240,12 @@
         "tab": "Integrations",
         "groups": [
           {
+            "group": "HubSpot",
+            "pages": [
+              "integrations/hubspot/hubspot"
+            ]
+          },
+          {
             "group": "MCP",
             "pages": [
               "integrations/mcp/about-mcp",
