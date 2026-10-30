@@ -22,7 +22,10 @@
       "name": "Authorization"
     }
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/favicon-black.svg",
+    "dark": "/favicon-white.svg"
+  },
   "colors": {
     "primary": "#2d59c8",
     "light": "#5b85e6",
