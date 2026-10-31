@@ -8337,21 +8337,29 @@ components:
         posts:
           type: array
           nullable: true
-          description: Only when `posts` was requested. The lead's recent posts.
+          description: >-
+            Only when `posts` was requested. Up to 20 of the lead's recent posts
+            and reposts. Each item is an `ActivityPost`.
           items:
-            type: object
+            $ref: '#/components/schemas/ActivityPost'
         comments:
           type: array
           nullable: true
-          description: Only when `comments` was requested. The lead's recent comments.
+          description: >-
+            Only when `comments` was requested. Up to 20 posts the lead recently
+            commented on. Each item is an `ActivityPost`: `author_*` is whoever
+            wrote the post, and the lead's own comment is in its `comments`.
           items:
-            type: object
+            $ref: '#/components/schemas/ActivityPost'
         reactions:
           type: array
           nullable: true
-          description: Only when `reactions` was requested. The lead's recent reactions.
+          description: >-
+            Only when `reactions` was requested. Up to 20 posts the lead recently
+            reacted to. Each item is an `ActivityPost`; `author_*` is whoever
+            wrote the post.
           items:
-            type: object
+            $ref: '#/components/schemas/ActivityPost'
     LeadJob:
       type: object
       description: >-
@@ -8800,25 +8808,336 @@ components:
           type: array
           nullable: true
           description: >-
-            Only when `people_also_viewed` was requested. Companies LinkedIn shows
-            under "People also viewed".
+            Only when `people_also_viewed` was requested. Pages LinkedIn shows
+            under "People also viewed" (similar pages); null when the section
+            could not be read.
           items:
-            type: object
+            $ref: '#/components/schemas/CompanyRelatedPage'
         people_also_follow:
           type: array
           nullable: true
           description: >-
-            Only when `people_also_follow` was requested. Companies LinkedIn shows
-            under "People also follow".
+            Only when `people_also_follow` was requested. Pages LinkedIn shows
+            under "People also follow"; null when the section could not be read.
           items:
-            type: object
+            $ref: '#/components/schemas/CompanyRelatedPage'
         posts:
           type: array
           nullable: true
           description: >-
-            Only when `posts` was requested. The company's recent posts.
+            Only when `posts` was requested. The company's recent posts, up to 10,
+            in LinkedIn's feed order. Each item is an `ActivityPost`.
           items:
-            type: object
+            $ref: '#/components/schemas/ActivityPost'
+    CompanyRelatedPage:
+      type: object
+      description: >-
+        A LinkedIn page listed next to a company under "People also viewed" or
+        "People also follow".
+      properties:
+        company_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the page, as LinkedIn shows it.
+        linkedin_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the page, such as
+            `https://www.linkedin.com/company/contoso/`.
+      example:
+        company_name: Contoso
+        linkedin_link: https://www.linkedin.com/company/contoso/
+    ActivityPost:
+      type: object
+      description: >-
+        One LinkedIn feed item. The same shape is used for a lead's `posts`,
+        `comments` and `reactions` and for a company's `posts`. In `comments`
+        and `reactions` the item is the post the lead commented on or reacted
+        to, so `author_*` is whoever wrote that post. Any field is null when
+        LinkedIn does not show it.
+      properties:
+        author_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the person or page that published the item.
+        author_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the author (`/in/…`, `/company/…` or `/school/…`),
+            without the query string.
+        posted_time_ago:
+          type: string
+          nullable: true
+          description: >-
+            How long ago it was posted, as LinkedIn shows it, such as `14h`,
+            `2d`, `3w`, `4mo` or `1yr`. LinkedIn gives no absolute date here.
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Text of the post. Null when the post has no text.
+        video:
+          $ref: '#/components/schemas/ActivityVideo'
+        pictures:
+          type: array
+          nullable: true
+          description: >-
+            The post's images, when it has any.
+          items:
+            $ref: '#/components/schemas/ActivityPicture'
+        link:
+          $ref: '#/components/schemas/ActivityLink'
+        share_link:
+          type: string
+          nullable: true
+          description: >-
+            Permalink of the post (`https://www.linkedin.com/posts/…`), without
+            the query string.
+        comments:
+          type: array
+          nullable: true
+          description: >-
+            Comments LinkedIn highlights under the item. On a `comments` item
+            this is the lead's own comment; on a `posts` item it is usually
+            empty.
+          items:
+            $ref: '#/components/schemas/ActivityComment'
+        count_likes:
+          type: integer
+          nullable: true
+          description: >-
+            Reactions (likes) on the post.
+        count_comments:
+          type: integer
+          nullable: true
+          description: >-
+            Comments on the post.
+        count_re_post:
+          type: integer
+          nullable: true
+          description: >-
+            Reposts of the post.
+        re_post:
+          $ref: '#/components/schemas/ActivityRepost'
+      example:
+        author_name: Jordan Ellis
+        author_link: https://www.linkedin.com/in/jordan-ellis
+        posted_time_ago: 2d
+        text: We just opened our new office in Redmond. Thank you to the whole team!
+        video: null
+        pictures:
+          - picture_url: https://media.licdn.com/dms/image/v2/D5622AQExample/feedshare-shrink_800/0/1
+            picture_expires_at: 1793998800000
+        link: null
+        share_link: https://www.linkedin.com/posts/jordan-ellis_new-office-activity-7390000000000000000-AbCd
+        comments: []
+        count_likes: 412
+        count_comments: 37
+        count_re_post: 9
+        re_post: null
+    ActivityRepost:
+      type: object
+      nullable: true
+      description: >-
+        The original post when an `ActivityPost` reshares one (its `re_post`);
+        null when the item is not a repost. Same fields, except that `comments`
+        and `re_post` are always null here.
+      properties:
+        author_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the person or page that published the original post.
+        author_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the original author, without the query string.
+        posted_time_ago:
+          type: string
+          nullable: true
+          description: >-
+            How long ago the original was posted, as LinkedIn shows it (`3w`).
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Text of the original post.
+        video:
+          $ref: '#/components/schemas/ActivityVideo'
+        pictures:
+          type: array
+          nullable: true
+          description: >-
+            The original post's images, when it has any.
+          items:
+            $ref: '#/components/schemas/ActivityPicture'
+        link:
+          $ref: '#/components/schemas/ActivityLink'
+        share_link:
+          type: string
+          nullable: true
+          description: >-
+            Permalink of the original post.
+        comments:
+          type: array
+          nullable: true
+          description: >-
+            Always null on a reshared post.
+          items:
+            $ref: '#/components/schemas/ActivityComment'
+        count_likes:
+          type: integer
+          nullable: true
+          description: >-
+            Reactions (likes) on the original post.
+        count_comments:
+          type: integer
+          nullable: true
+          description: >-
+            Comments on the original post.
+        count_re_post:
+          type: integer
+          nullable: true
+          description: >-
+            Reposts of the original post.
+        re_post:
+          type: object
+          nullable: true
+          description: >-
+            Always null: a repost goes one level deep.
+      example:
+        author_name: Contoso
+        author_link: https://www.linkedin.com/company/contoso/
+        posted_time_ago: 3w
+        text: Contoso is hiring engineers in Redmond.
+        video: null
+        pictures: null
+        link:
+          text: Careers at Contoso
+          link: https://careers.contoso.example.com
+        share_link: https://www.linkedin.com/posts/contoso_hiring-activity-7380000000000000000-WxYz
+        comments: null
+        count_likes: 1280
+        count_comments: 64
+        count_re_post: 51
+        re_post: null
+    ActivityVideo:
+      type: object
+      nullable: true
+      description: >-
+        The video attached to a post; null when the post has none.
+      properties:
+        url:
+          type: string
+          nullable: true
+          description: >-
+            Direct link to the video file on LinkedIn's media server. It stops
+            working at `expires_at`.
+        expires_at:
+          type: integer
+          nullable: true
+          description: >-
+            When `url` expires, Unix time in milliseconds.
+        width:
+          type: integer
+          nullable: true
+          description: >-
+            Width of the video in pixels.
+        height:
+          type: integer
+          nullable: true
+          description: >-
+            Height of the video in pixels.
+        media_type:
+          type: string
+          nullable: true
+          description: >-
+            MIME type, such as `video/mp4`.
+      example:
+        url: https://dms.licdn.com/playlist/vid/v2/D5605AQExample/mp4-720p-30fp-crf28/0/1
+        expires_at: 1793998800000
+        width: 1280
+        height: 720
+        media_type: video/mp4
+    ActivityPicture:
+      type: object
+      description: >-
+        An image attached to a post.
+      properties:
+        picture_url:
+          type: string
+          nullable: true
+          description: >-
+            Direct link to the image on LinkedIn's media server. It stops working
+            at `picture_expires_at`.
+        picture_expires_at:
+          type: integer
+          nullable: true
+          description: >-
+            When `picture_url` expires, Unix time in milliseconds.
+      example:
+        picture_url: https://media.licdn.com/dms/image/v2/D5622AQExample/feedshare-shrink_800/0/1
+        picture_expires_at: 1793998800000
+    ActivityLink:
+      type: object
+      nullable: true
+      description: >-
+        The article or web page attached to a post; null when there is none.
+      properties:
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Title of the attached page, or its description when it has no title.
+        link:
+          type: string
+          nullable: true
+          description: >-
+            URL of the attached page.
+      example:
+        text: Careers at Contoso
+        link: https://careers.contoso.example.com
+    ActivityComment:
+      type: object
+      description: >-
+        A comment LinkedIn shows under a post.
+      properties:
+        author_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the commenter.
+        author_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the commenter.
+        author_title:
+          type: string
+          nullable: true
+          description: >-
+            The commenter's headline, as shown next to the comment.
+        count_likes:
+          type: integer
+          nullable: true
+          description: >-
+            Reactions (likes) on the comment.
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Text of the comment.
+      example:
+        author_name: Jordan Ellis
+        author_link: https://www.linkedin.com/in/jordan-ellis
+        author_title: CEO at Microsoft
+        count_likes: 12
+        text: Congratulations to the whole team, well deserved.
     EmailFindResponse:
       type: object
       properties:
