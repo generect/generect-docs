@@ -9,4 +9,12 @@ Search fresh company data with full realtime filters.
 ## Pricing
 This is a billable endpoint — you are charged for each result returned. If no results are found, the request is free.
 
+## Companies without a website
+By default the search leaves out every company that has no website. Send `"include_companies_without_website": true` to also get companies that have a LinkedIn page but no site, such as many hospitals, clinics and local businesses.
+
+- They have no website and no domain, so there are no corporate emails to find for their people, and lead matching by domain does not work for them. An `exclude_domains` entry cannot remove one; use `exclude_ids`.
+- Each one is returned and billed as a result like any other. Many of them have few or no leads on LinkedIn, so expect more companies without leads.
+- Companies with zero employees on LinkedIn are still left out, and the blocked-domain list still applies to companies that have a website.
+- [The realtime count](/api-reference/endpoint/search/count-realtime-companies) comes from LinkedIn and always included them.
+
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>

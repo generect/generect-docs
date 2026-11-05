@@ -19,4 +19,12 @@ Send `"detail": "thin"` and the same search returns thin rows at no charge. A th
 - Accounts on a custom API contract are priced by their contract, so a thin search there returns `400` unless the contract includes it.
 - The [Generect MCP](/integrations/mcp/tools) asks for thin rows by default.
 
+## Companies without a website
+By default the search leaves out every company that has no website. Send `"include_companies_without_website": true` to also get companies that have a LinkedIn page but no site, such as many hospitals, clinics and local businesses.
+
+- They have no website and no domain, so there are no corporate emails to find for their people, and lead matching by domain does not work for them. An `exclude_domains` entry cannot remove one; use `exclude_ids`.
+- Each one is returned and billed as a result like any other. Many of them have few or no leads on LinkedIn, so expect more companies without leads.
+- Companies with zero employees on LinkedIn are still left out, and the blocked-domain list still applies to companies that have a website.
+- `results_count` counts them, here and on [the count endpoint](/api-reference/endpoint/search/count-database-companies).
+
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>
