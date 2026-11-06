@@ -7184,6 +7184,14 @@ components:
                 Accounts on a custom API contract get `400` unless their contract
                 includes thin search. The count endpoints ignore this field: counts
                 are always free.
+            limit_by:
+              type: integer
+              default: 100
+              description: >-
+                Maximum number of leads to return. Without it, a search returns
+                100 rows: `results_count` is the whole match, and `offset_by` reaches
+                the rest. For filter-only searches (no company_id/company_link/company_name)
+                the maximum is 2400.
             gender:
               type: array
               items:
@@ -7492,6 +7500,16 @@ components:
                 Accounts on a custom API contract get `400` unless their contract
                 includes thin search. The count endpoints ignore this field: counts
                 are always free.
+            limit_by:
+              type: integer
+              default: 100
+              description: >-
+                Maximum number of companies to return, from 1 to 10000. Without it,
+                a search returns 100 rows: `results_count` is the whole match, and
+                `offset_by` reaches the rest.
+            offset_by:
+              type: integer
+              description: Number of companies to skip (0-9999, for pagination).
             founded_year:
               description: >-
                 Founding year of the company — the "company age" filter. Accepts
