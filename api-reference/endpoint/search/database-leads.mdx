@@ -9,6 +9,8 @@ Search cached lead data with fast database filters.
 ## Pricing
 Full rows are billed: you are charged for each result returned. If no results are found, the request is free.
 
+A request without `limit_by` returns at most 100 rows, so that is the most it is billed for. `data.results_count` is the whole match; page through the rest with `offset_by`.
+
 ### Free thin rows
 Send `"detail": "thin"` and the same search returns thin rows at no charge. A thin row tells you who the person is, their role, where they are and which company they work at: `id`, `first_name`, `last_name`, `full_name`, `job_title`, `seniority`, `location_name`, `location_country`, `location_city`, `company_name`, `linkedin_company_id`, `company_industry`, `company_location_country` and `updated_at`. It has no LinkedIn profile URL, no company domain or website, no contacts and no work history. Keep the `id`s that fit and pay only for what you take further ([enrich](/api-reference/endpoint/enrich/enrich-database-lead), find an email or a phone).
 

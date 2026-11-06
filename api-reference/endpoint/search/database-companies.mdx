@@ -9,6 +9,8 @@ Search cached company data with database filters.
 ## Pricing
 Full rows are billed: you are charged for each result returned. If no results are found, the request is free.
 
+A request without `limit_by` returns at most 100 rows, so that is the most it is billed for. `data.results_count` is the whole match; page through the rest with `offset_by`.
+
 ### Free thin rows
 Send `"detail": "thin"` and the same search returns thin rows at no charge. A thin row tells you what the company is and where: `id` (the LinkedIn company id), `name`, `industry`, `headcount_range`, `hq_country`, `hq_city`, `company_type` and `founded_year`. It has no domain or website, no LinkedIn URL and no contacts. Keep the `id`s that fit and pay only for what you take further ([enrich the company](/api-reference/endpoint/enrich/enrich-database-company) or search its people).
 
