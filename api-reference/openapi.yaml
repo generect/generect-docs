@@ -7473,6 +7473,24 @@ components:
             count always matches what the pages can deliver; in realtime the
             records are dropped after retrieval, so a page may hold fewer
             companies than `results_count` implies.
+        include_companies_without_website:
+          type: boolean
+          default: false
+          description: >-
+            Also return companies that have a LinkedIn page but no website,
+            such as many hospitals, clinics and local businesses. Off by
+            default: the company search endpoints drop every company without a
+            website, in both database and realtime mode. Such a company has no
+            website and no domain, so there are no corporate emails to find for
+            its people and lead matching by domain does not work for it; an
+            `exclude_domains` entry cannot remove it (use `exclude_ids`). Each
+            one is returned and billed as a result like any other, and many of
+            them have few or no leads on LinkedIn. The other quality rules
+            stay: a company with zero employees on LinkedIn is still dropped,
+            and the blocked-domain list still applies to companies that have a
+            website. In database search these companies are counted in
+            `results_count`; the realtime count comes from LinkedIn and always
+            included them. The company-leads endpoints do not read it.
       example:
         industries:
           - Software Development
