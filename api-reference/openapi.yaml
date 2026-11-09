@@ -6351,7 +6351,11 @@ paths:
       tags:
         - 9. Search
       summary: Count realtime companies
-      description: Count fresh companies matching filters. Billed per request.
+      description: >-
+        Count fresh companies matching filters. Billed per request. LinkedIn
+        counts companies by filters only, so this count does not take
+        `company_names` or `linkedins_links`. To count named companies, use
+        the database count (`/api/v1/search/database/companies/count/`).
       requestBody:
         required: true
         content:
@@ -7593,7 +7597,12 @@ components:
               type: array
               items:
                 type: string
-              description: Search by specific company names or domains.
+              description: >-
+                Look up specific companies by name or domain. With
+                `company_names` or `linkedins_links` the search returns those
+                companies; LinkedIn signals (`hiring_on_linkedin`,
+                `recent_activities`, `keywords`) are not applied to them. Not
+                taken by the realtime count.
             recent_activities:
               type: array
               items:
@@ -7647,7 +7656,10 @@ components:
               type: array
               items:
                 type: string
-              description: Filter by specific LinkedIn company URLs.
+              description: >-
+                Look up specific companies by LinkedIn company URL. Works like
+                `company_names`: LinkedIn signals are not applied, and the
+                realtime count does not take it.
             include_total_count:
               type: boolean
               default: false
