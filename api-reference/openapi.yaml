@@ -7219,6 +7219,43 @@ components:
                 only those of the other gender.
               example:
                 - female
+            seniority_levels:
+              type: array
+              items:
+                type: string
+                enum:
+                  - In Training
+                  - Entry Level
+                  - Senior
+                  - Entry Level Manager
+                  - Experienced Manager
+                  - Director
+                  - Vice President
+                  - Strategic
+                  - Owner & Partner
+                  - CXO
+              description: >-
+                Seniority level of the lead's current role, as our model reads it
+                from the lead's job title and profile summary. A lead is included
+                if it matches at least one level. Case-insensitive; any other value
+                is rejected with `400`, and the error lists the levels. To leave a
+                level out, list the others.
+
+
+                Not the same as `seniorities`, which matches words in the job
+                title (`vp`, `director`, …). Each lead has one level, so a level
+                finds every title that means it without listing the titles. About
+                1% of leads have no level yet; a `seniority_levels` filter leaves
+                them out.
+
+
+                Database mode only. LinkedIn search has no such field, so realtime
+                search rejects it rather than returning a wider result set than you
+                asked for.
+              example:
+                - Director
+                - Vice President
+                - CXO
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
