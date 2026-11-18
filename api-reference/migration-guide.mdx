@@ -6,6 +6,8 @@ description: 'Moving from Apollo, Hunter, or ZoomInfo — or from our own legacy
 
 Already integrated with another data provider? Most concepts map directly onto Generect endpoints. Start here, then open the matching endpoint reference for request and response details.
 
+Still comparing providers before you switch? Our guide to the [best B2B data providers for lead generation](https://generect.com/blog/b2b-data-provider/) includes a repeatable 200-record test for match rate, verified-email yield, and cost per usable result.
+
 ## Before you map endpoints
 
 A few things work differently on Generect — knowing them up front makes the mapping obvious:
@@ -44,6 +46,8 @@ A few things work differently on Generect — knowing them up front makes the ma
 | Company Search | [`POST /search/{database\|realtime}/companies/`](/api-reference/endpoint/search/database-companies) |
 | Company Enrich | [`POST /enrich/{database\|realtime}/company/`](/api-reference/endpoint/enrich/enrich-database-company) |
 | Phone append | [`POST /phone/find/`](/api-reference/endpoint/phone/phone-finder) |
+
+Weighing the move first? See how Generect compares with other [ZoomInfo alternatives](https://generect.com/blog/zoominfo-api/) by buyer job and cost per usable result — including the intent and conversation-intelligence features Generect doesn't offer.
 
 <Tip>
   Records carry a stable `id` across Preview, Search, and Enrich. Find leads with a cheap [Preview](/api-reference/endpoint/preview/preview-leads) or database search, then pass the `id` into Enrich or Email Finder instead of re-sending name and company.
