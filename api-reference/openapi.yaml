@@ -3636,6 +3636,14 @@ paths:
                       type: array
                       items:
                         type: string
+                    exact_locations:
+                      type: array
+                      items:
+                        type: string
+                      description: >-
+                        Locations matched against the lead's whole location: a
+                        state here finds leads with no city. See
+                        /search/database/leads/.
                     company_industries:
                       type: array
                       items:
@@ -3771,6 +3779,14 @@ paths:
                       type: array
                       items:
                         type: string
+                    exact_locations:
+                      type: array
+                      items:
+                        type: string
+                      description: >-
+                        Locations matched against the lead's whole location: a
+                        state here finds leads with no city. See
+                        /search/database/leads/.
                     company_industries:
                       type: array
                       items:
@@ -7256,6 +7272,31 @@ components:
                 - Director
                 - Vice President
                 - CXO
+            exact_locations:
+              type: array
+              items:
+                type: string
+              description: >-
+                Locations matched against the lead's whole location, not anything
+                inside it. `"California, United States"` here finds leads whose
+                location is the state alone, with no city, while in `locations` it
+                finds every city of the state as well. LinkedIn metro areas
+                ("San Francisco Bay Area", "Los Angeles Metropolitan Area") are
+                locations of their own and are not included.
+
+
+                Combined with `locations` by OR: `locations: ["Los Angeles,
+                California, United States"]` with `exact_locations: ["California,
+                United States"]` returns leads in Los Angeles and leads who give
+                only California, and no other city of the state. Takes the same
+                names as `locations`; an unknown name is rejected with `400`.
+
+
+                Database mode only. LinkedIn search cannot leave out the cities of
+                a state, so realtime search rejects this field rather than
+                returning the whole state.
+              example:
+                - California, United States
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
