@@ -20,7 +20,7 @@ Recent LinkedIn activity and the "People also viewed" list are opt-in — send t
 
 <Note>An extra credit is only charged for a section that actually comes back with data. Requesting `posts` on a lead who never posted costs nothing.</Note>
 
-"Latest" is a count, not a date window: a section holds up to 20 items however old they are. Each item carries `posted_time_ago` (`2d`, `1w`, `1mo`), the age LinkedIn shows, and no absolute date. One credit is one billable result at this endpoint's price, so a real-time profile with all three activity sections costs four results. The fields of an item are listed under `posts` in the response schema below.
+"Latest" is a count, not a date window: a section holds up to 20 items however old they are. Each item carries `posted_time_ago` (`2d`, `1w`, `1mo`), the age LinkedIn shows, and no absolute date. One credit is one billable result at this endpoint's price, so a real-time profile with all three activity sections costs four results.
 
 ## Pricing
 This is a billable endpoint — you are charged only when a lead is found and returned. If nothing is found, the request is free.

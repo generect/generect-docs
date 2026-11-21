@@ -8463,153 +8463,21 @@ components:
         posts:
           type: array
           nullable: true
-          description: >-
-            Only when `posts` was requested. The lead's latest posts, up to 20, in
-            the order LinkedIn lists them on the profile. Reposts are listed too: a
-            repost with the lead's own text carries the original in `re_post`, a
-            plain repost appears as the original post with its author in
-            `author_name`. There is no date window: for someone who posts rarely
-            the list reaches back months. Null when the section could not be read.
+          description: Only when `posts` was requested. The lead's recent posts.
           items:
-            $ref: '#/components/schemas/ActivityPost'
+            type: object
         comments:
           type: array
           nullable: true
-          description: >-
-            Only when `comments` was requested. The posts the lead commented on most
-            recently, up to 20. Each item is the post, and the lead's own comment is
-            in its `comments` list. `posted_time_ago` is the age of the post, not of
-            the comment.
+          description: Only when `comments` was requested. The lead's recent comments.
           items:
-            $ref: '#/components/schemas/ActivityPost'
+            type: object
         reactions:
           type: array
           nullable: true
-          description: >-
-            Only when `reactions` was requested. The posts the lead reacted to most
-            recently, up to 20. Each item is the post, `author_name` is its author.
-            The reaction type is not returned.
-          items:
-            $ref: '#/components/schemas/ActivityPost'
-    ActivityPost:
-      type: object
-      description: >-
-        One LinkedIn post, as returned in the `posts`, `comments` and `reactions`
-        sections of lead enrich and in `posts` of company enrich.
-      properties:
-        author_name:
-          type: string
-          description: Who published the post. In `comments` and `reactions` this is the author of the post, not the lead.
-        author_link:
-          type: string
-          description: LinkedIn URL of the author (a profile or a company page).
-        posted_time_ago:
-          type: string
-          description: >-
-            Age of the post as LinkedIn shows it, e.g. `23h`, `2d`, `1w`, `1mo`.
-            Relative to the moment of the request. No absolute date is returned.
-          example: 2d
-        text:
-          type: string
-          nullable: true
-          description: Text of the post. Null when the post has no text of its own.
-        video:
-          type: object
-          nullable: true
-          properties:
-            url:
-              type: string
-              description: Temporary link to the video file.
-            expires_at:
-              type: integer
-              description: When `url` stops working, Unix time in milliseconds.
-            width:
-              type: integer
-            height:
-              type: integer
-            media_type:
-              type: string
-              example: video/mp4
-        pictures:
-          type: array
-          nullable: true
+          description: Only when `reactions` was requested. The lead's recent reactions.
           items:
             type: object
-            properties:
-              picture_url:
-                type: string
-                description: Temporary link to the image.
-              picture_expires_at:
-                type: integer
-                description: When `picture_url` stops working, Unix time in milliseconds.
-        link:
-          type: object
-          nullable: true
-          description: The article or page the post links to.
-          properties:
-            text:
-              type: string
-              nullable: true
-            link:
-              type: string
-              nullable: true
-        share_link:
-          type: string
-          nullable: true
-          description: Permanent link to the post.
-        comments:
-          type: array
-          nullable: true
-          description: >-
-            Comments LinkedIn highlights on the post. In the `comments` section of
-            lead enrich this holds the lead's own comment. Usually empty elsewhere.
-          items:
-            type: object
-            properties:
-              author_name:
-                type: string
-                nullable: true
-              author_link:
-                type: string
-                nullable: true
-              author_title:
-                type: string
-                nullable: true
-              count_likes:
-                type: integer
-                nullable: true
-              text:
-                type: string
-                nullable: true
-        count_likes:
-          type: integer
-          nullable: true
-          description: Reactions on the post.
-        count_comments:
-          type: integer
-          nullable: true
-        count_re_post:
-          type: integer
-          nullable: true
-          description: Reposts of the post.
-        re_post:
-          type: object
-          nullable: true
-          description: The original post when this one is a repost with the author's own text. Same fields as the post itself.
-      example:
-        author_name: Jordan Ellis
-        author_link: https://www.linkedin.com/in/jordan-ellis
-        posted_time_ago: 2d
-        text: We just opened our Lisbon office.
-        video: null
-        pictures: null
-        link: null
-        share_link: https://www.linkedin.com/posts/jordan-ellis_we-just-opened-our-lisbon-office-activity-7528942674436022274-nOsn
-        comments: []
-        count_likes: 108
-        count_comments: 25
-        count_re_post: 3
-        re_post: null
     LeadJob:
       type: object
       description: >-
@@ -9074,10 +8942,9 @@ components:
           type: array
           nullable: true
           description: >-
-            Only when `posts` was requested. The company page's latest posts, up to
-            10. There is no date window.
+            Only when `posts` was requested. The company's recent posts.
           items:
-            $ref: '#/components/schemas/ActivityPost'
+            type: object
     EmailFindResponse:
       type: object
       properties:
