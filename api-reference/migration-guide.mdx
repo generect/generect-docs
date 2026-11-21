@@ -180,7 +180,7 @@ General changes across all endpoints:
     | Method | `POST` | `POST` |
     | Path | `/api/linkedin/leads/by_icp/` | `/api/v1/search/{database\|realtime}/leads/` |
 
-    **Request** — most filters keep their name: `locations`, `personas`, `company_locations`, `company_headcounts`, `company_types`, `limit_by`, `offset_by`, `exclude_names`, `exclude_ids`, `filter_empty_vars`, `company_link`, `company_id`.
+    **Request** — most filters keep their name: `locations`, `company_locations`, `company_headcounts`, `company_types`, `limit_by`, `offset_by`, `exclude_names`, `exclude_ids`, `filter_empty_vars`, `company_link`, `company_id`.
     
     New: `job_titles`, `seniorities`, `exclude_locations`, `exclude_company_locations`, `exclude_company_industries`, `exclude_company_headcounts`, `strict`, `company_name` (any mode) and `keywords`, `functions` (realtime mode only) — not required for a straight migration, but available if useful.
 
@@ -190,8 +190,8 @@ General changes across all endpoints:
     | --- | --- | --- |
     | `lead_industries` | `company_industries` | Renamed. |
     | `without_company` | — | Removed — omit all company identifiers instead. |
-    | `mentioned_in_news` | — | Removed — no v1 equivalent in either mode. |
-    | `changed_jobs`, `posted_on_linkedin`, `groups`, `schools`, `linkedin_filter_link`, `years_in_company`, `years_in_position`, `past_company_names` | same names | Realtime mode only — no longer accepted in `database` mode. |
+    | `mentioned_in_news` | — | Removed. LinkedIn retired this filter, so there is no v1 equivalent in either mode. Do not send it. |
+    | `personas`, `changed_jobs`, `posted_on_linkedin`, `groups`, `schools`, `linkedin_filter_link`, `years_in_company`, `years_in_position`, `past_company_names` | same names | Realtime mode only — no longer accepted in `database` mode. In `database` mode replace `personas` with `job_titles` and `seniorities`. |
 
     **Response:** item field names largely match [Enrich lead](#enrich) (`title`, nested `company` object, etc.), but each item's identifier is returned as `lead_id`, not `id`. `amount` → `meta.amount_charged` (positive now); `status` removed.
 
@@ -222,7 +222,7 @@ General changes across all endpoints:
     | Old field | New field | Notes |
     | --- | --- | --- |
     | `get_max_companies` | — | Removed, no v1 equivalent. |
-    | `revenues_range` | `revenues_range` | Same `{min, max}` shape, but now realtime mode only. |
+    | `revenues_range` | `revenues_range` | Same `{min, max}` shape, in millions of USD (`{"min": 1, "max": 10}` is \$1M to \$10M), but now realtime mode only. |
     | `website_blacklist` | — | Removed, no v1 equivalent. |
 
     **Response:** item field names largely match [Enrich company](#enrich), but each item's identifier is returned as `linkedin_id`, not `id`. `amount` → `meta.amount_charged` (positive now); `time_cached` removed.

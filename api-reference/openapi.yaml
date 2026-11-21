@@ -1352,13 +1352,13 @@ paths:
                     type: string
                 changed_jobs:
                   type: boolean
-                  description: "Optional, flag to specify if jobs have changed."
+                  description: "Optional. Only leads who changed jobs in the last 90 days."
                 posted_on_linkedin:
                   type: boolean
-                  description: "Optional, flag to specify if posted on LinkedIn."
+                  description: "Optional. Only leads who posted on LinkedIn in the last 30 days."
                 mentioned_in_news:
                   type: boolean
-                  description: "Optional, flag to specify if mentioned in news."
+                  description: "Do not send. LinkedIn retired this filter, so the flag no longer narrows the search."
                 lead_industries:
                   type: array
                   items:
@@ -2120,13 +2120,13 @@ paths:
                     type: string
                 changed_jobs:
                   type: boolean
-                  description: "Optional, flag to specify if jobs have changed."
+                  description: "Optional. Only leads who changed jobs in the last 90 days."
                 posted_on_linkedin:
                   type: boolean
-                  description: "Optional, flag to specify if posted on LinkedIn."
+                  description: "Optional. Only leads who posted on LinkedIn in the last 30 days."
                 mentioned_in_news:
                   type: boolean
-                  description: "Optional, flag to specify if mentioned in news."
+                  description: "Do not send. LinkedIn retired this filter, so the flag no longer narrows the search."
                 lead_industries:
                   type: array
                   items:
@@ -3873,15 +3873,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -3909,15 +3909,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -3942,15 +3942,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4142,15 +4142,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4178,15 +4178,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4211,15 +4211,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4415,7 +4415,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4439,7 +4439,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Domain
                   type: object
                   required:
@@ -4460,7 +4460,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Company Name
                   type: object
                   required:
@@ -4481,7 +4481,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
             examples:
               By Generect ID:
                 value:
@@ -4619,7 +4619,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4643,7 +4643,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Domain
                   type: object
                   required:
@@ -4664,7 +4664,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Company Name
                   type: object
                   required:
@@ -4685,7 +4685,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
             examples:
               By Generect ID:
                 value:
@@ -7380,7 +7380,10 @@ components:
                 min: 500
             mentioned_in_news:
               type: boolean
-              description: Filter for leads recently mentioned in the news.
+              deprecated: true
+              description: >-
+                Do not send. LinkedIn retired its "Mentioned in news" filter, so this
+                flag no longer narrows the search.
               default: false
             keywords:
               type: array
@@ -7422,11 +7425,17 @@ components:
               description: 'Time at current company: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
             changed_jobs:
               type: boolean
-              description: Filter for leads who recently changed jobs.
+              description: >-
+                Only leads who changed jobs in the last 90 days. The window is
+                LinkedIn's and cannot be changed.
               default: false
             posted_on_linkedin:
               type: boolean
-              description: Filter for leads who recently posted on LinkedIn.
+              description: >-
+                Only leads who posted on LinkedIn in the last 30 days. The window is
+                LinkedIn's and cannot be changed, so there is no custom date range.
+                For a narrower window, enrich the leads with `posts` and filter by
+                post age on your side.
               default: false
             linkedin_filter_link:
               type: string
@@ -7693,7 +7702,10 @@ components:
                   type: number
             revenues_range:
               type: object
-              description: 'Revenue filter with min/max (e.g. {"min": 1000000, "max": 50000000}).'
+              description: >-
+                Annual revenue in millions of USD, e.g. {"min": 1, "max": 10} for
+                1 to 10 million USD. Use the steps 0, 1, 10, 50, 100, 250, 500, 1000.
+                Leave `max` out for no upper limit.
               properties:
                 min:
                   type: number
