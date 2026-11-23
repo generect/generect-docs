@@ -1,0 +1,24 @@
+---
+sidebarTitle: "Technologies"
+openapi: get /api/v1/search/technologies/
+---
+
+## Use Case:
+Find the exact names the `technologies` filter accepts, before you search or count companies by technology.
+
+## Pricing
+This endpoint is free. It does not incur any charges.
+
+## How names work
+The `technologies` filter on [database company search](/api-reference/endpoint/search/database-companies) and [its count](/api-reference/endpoint/search/count-database-companies) takes a name only as this list writes it, case included. The list is LinkedIn's technologies list, so most names are products rather than brands:
+
+| You might send | The list has |
+| --- | --- |
+| `HubSpot` | `HubSpot Marketing Hub`, `HubSpot Sales Hub` |
+| `Salesforce` | `Salesforce Sales Cloud`, `Salesforce B2B Commerce` and other Salesforce products |
+| `Marketo` | `Adobe Marketo` |
+| `google analytics` | `Google Analytics` |
+
+Search by part of a name, in any case: `?search=hubspot` returns every name that contains "hubspot", the ones that start with it first. A name that is not on the list makes the search return `400`, and the error names the closest listed names.
+
+Leave `search` out to page through the whole list alphabetically with `limit` and `offset`.
