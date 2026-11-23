@@ -44,7 +44,7 @@ safe to hand to an autonomous agent:
 | `search_companies` | the same as `search_leads` |
 | `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
 | `enrich_company` | per record found (not found is free) |
-| `generate_email` | per **valid** email found (a miss is free) |
+| `generate_email` | per **valid** email found (a miss, and a "Probably valid" address, `email_status` `catchall_unverified`, are free) |
 | `validate_email` | per email **submitted**: every address, whatever the verdict |
 | `find_phone` | per phone found (the most expensive operation) |
 | `start_bulk_job` | per record, and the worst case is **reserved at submit time** |

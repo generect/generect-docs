@@ -13,4 +13,6 @@ Reveal a work email for a lead from Preview, or find a verified email from a nam
 ## Pricing
 This is a billable endpoint — you are charged only for each valid email found. If no email is found, the request is free.
 
+A "Probably valid" address is free too. That is an address on a domain that accepts any address (catch-all), where nobody confirmed the mailbox: it comes back with `email_status: catchall_unverified` and `meta.amount_charged: 0`. Addresses with `email_status` `verified` or `catchall_verified` are billed as usual.
+
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>
