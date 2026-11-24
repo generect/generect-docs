@@ -9,4 +9,6 @@ Start an asynchronous bulk job to find verified work emails for many leads (up t
 ## Pricing
 This is a billable endpoint — you are charged only for each valid email found. If no email is found, the request is free.
 
+A "Probably valid" address (`email_status: catchall_unverified`: a catch-all domain, mailbox not confirmed) is returned free and is not counted in `amount_charged`.
+
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>

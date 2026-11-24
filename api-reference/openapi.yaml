@@ -5132,7 +5132,10 @@ paths:
       tags:
         - 7. Email
       summary: Find email
-      description: Find a verified work email by lead ID, LinkedIn URL, or by name and domain. Billed only when a valid email is found.
+      description: >-
+        Find a verified work email by lead ID, LinkedIn URL, or by name and domain. Billed only when a valid email is
+        found. A "Probably valid" address (`email_status` `catchall_unverified`: the domain accepts any address and
+        nobody confirmed the mailbox) is returned free, with `meta.amount_charged` 0.
       requestBody:
         required: true
         content:
@@ -5225,8 +5228,19 @@ paths:
                       result: valid
                       catch_all: false
                       source: generect
+                      email_status: verified
                     meta:
                       amount_charged: 0.02
+                Probably valid (free):
+                  value:
+                    data:
+                      valid_email: jordan.ellis@acme.io
+                      result: valid
+                      catch_all: true
+                      source: generect
+                      email_status: catchall_unverified
+                    meta:
+                      amount_charged: 0
                 Not found:
                   value:
                     data:
@@ -5238,7 +5252,9 @@ paths:
       tags:
         - 7. Email
       summary: Start bulk email find
-      description: Start an asynchronous bulk email find job. Billed only for valid emails found.
+      description: >-
+        Start an asynchronous bulk email find job. Billed only for valid emails found; a "Probably valid" address
+        (`email_status` `catchall_unverified`) is returned free.
       requestBody:
         required: true
         content:
@@ -5375,7 +5391,9 @@ paths:
                     result: valid
                     catch_all: false
                     source: generect
+                    email_status: verified
                   - valid_email: null
+                    email_status: null
                 meta:
                   job_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
                   status: completed
@@ -9305,6 +9323,20 @@ components:
             source:
               type: string
               description: Where the email was resolved (e.g. generect, findymail, FORMAT).
+            email_status:
+              type: string
+              nullable: true
+              enum:
+                - verified
+                - catchall_verified
+                - catchall_unverified
+                - null
+              description: >-
+                How sure the found address is, as the Generect app shows it. `verified`: the mailbox was confirmed.
+                `catchall_verified`: the domain accepts any address, but Microsoft, Google or Mimecast confirmed this
+                mailbox. `catchall_unverified` ("Probably valid"): the domain accepts any address and nobody confirmed
+                the mailbox, or the address was built from the company's email format; it is not billed. Null when no
+                address was found.
             email_format:
               type: string
               description: Detected address pattern for the domain.
