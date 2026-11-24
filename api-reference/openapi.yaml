@@ -3732,7 +3732,7 @@ paths:
                       company_name: Salesforce
                       location: New York, NY
                       industry: Software Development
-                      seniority: VP
+                      seniority: Vice President
                       headcount_range: 201-500
                 meta:
                   amount_charged: 0.004
