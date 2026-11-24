@@ -15,7 +15,7 @@ info:
 
     # Rate limits
 
-    You can request data depending on your data plan and account balance (default: 10000/month). Pricing depends on the operation and the number of results returned, and may increase with additional data flags. For exact pricing, see each endpoint's Pricing section or your billing settings: https://app.generect.com/settings/billing
+    There is no monthly request quota. What you can run is bounded by your account balance and by the parallel-request caps on the Limits page. Pricing depends on the operation and the number of results returned, and may increase with additional data flags. For exact pricing, see each endpoint's Pricing section or your billing settings: https://app.generect.com/settings/billing
 
     # Note
 
@@ -1352,13 +1352,13 @@ paths:
                     type: string
                 changed_jobs:
                   type: boolean
-                  description: "Optional, flag to specify if jobs have changed."
+                  description: "Optional. Only leads who changed jobs in the last 90 days."
                 posted_on_linkedin:
                   type: boolean
-                  description: "Optional, flag to specify if posted on LinkedIn."
+                  description: "Optional. Only leads who posted on LinkedIn in the last 30 days."
                 mentioned_in_news:
                   type: boolean
-                  description: "Optional, flag to specify if mentioned in news."
+                  description: "Do not send. LinkedIn retired this filter, so the flag no longer narrows the search."
                 lead_industries:
                   type: array
                   items:
@@ -2120,13 +2120,13 @@ paths:
                     type: string
                 changed_jobs:
                   type: boolean
-                  description: "Optional, flag to specify if jobs have changed."
+                  description: "Optional. Only leads who changed jobs in the last 90 days."
                 posted_on_linkedin:
                   type: boolean
-                  description: "Optional, flag to specify if posted on LinkedIn."
+                  description: "Optional. Only leads who posted on LinkedIn in the last 30 days."
                 mentioned_in_news:
                   type: boolean
-                  description: "Optional, flag to specify if mentioned in news."
+                  description: "Do not send. LinkedIn retired this filter, so the flag no longer narrows the search."
                 lead_industries:
                   type: array
                   items:
@@ -3632,10 +3632,20 @@ paths:
                       type: array
                       items:
                         type: string
+                    seniority_levels:
+                      $ref: '#/components/schemas/SeniorityLevels'
                     locations:
                       type: array
                       items:
                         type: string
+                    exact_locations:
+                      type: array
+                      items:
+                        type: string
+                      description: >-
+                        Locations matched against the lead's whole location: a
+                        state here finds leads with no city. See
+                        /search/database/leads/.
                     company_industries:
                       type: array
                       items:
@@ -3722,7 +3732,7 @@ paths:
                       company_name: Salesforce
                       location: New York, NY
                       industry: Software Development
-                      seniority: VP
+                      seniority: Vice President
                       headcount_range: 201-500
                 meta:
                   amount_charged: 0.004
@@ -3767,10 +3777,20 @@ paths:
                       type: array
                       items:
                         type: string
+                    seniority_levels:
+                      $ref: '#/components/schemas/SeniorityLevels'
                     locations:
                       type: array
                       items:
                         type: string
+                    exact_locations:
+                      type: array
+                      items:
+                        type: string
+                      description: >-
+                        Locations matched against the lead's whole location: a
+                        state here finds leads with no city. See
+                        /search/database/leads/.
                     company_industries:
                       type: array
                       items:
@@ -3857,15 +3877,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -3893,15 +3913,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -3926,15 +3946,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -3966,7 +3986,7 @@ paths:
                   get_full_experience: false
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -3977,13 +3997,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, linkedin_url, email is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -3997,24 +4014,108 @@ paths:
               example:
                 data:
                   id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                  first_name: Jordan
-                  last_name: Ellis
-                  title: CEO
-                  headline: CEO at Microsoft
-                  has_current_position: true
+                  sales_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  linkedin_id: '78461298'
                   linkedin_url: https://www.linkedin.com/in/jordan-ellis
-                  location: San Francisco, CA
-                  seniority: CXO
-                  company:
-                    id: 1035
-                    name: Microsoft
-                    domain: microsoft.com
-                    linkedin_url: https://www.linkedin.com/company/microsoft/
-                    industry: Software Development
-                    headcount: 150
-                  work_history: []
-                  education: []
-                  skills: []
+                  linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9,NAME_SEARCH,x7Kq
+                  first_name: Jordan
+                  middle_name: ''
+                  last_name: Ellis
+                  full_name: Jordan Ellis
+                  unformatted_full_name: Jordan Ellis
+                  translated_first_name: null
+                  headline: CEO at Microsoft
+                  summary: Building the platforms other companies build on.
+                  gender: male
+                  nationality: American
+                  industry: Software Development
+                  location: Redmond, Washington, United States
+                  location_city: Redmond
+                  location_state: Washington
+                  location_county: King County
+                  location_country: United States
+                  num_of_connections: 500
+                  profile_photo: https://media.licdn.com/dms/image/v2/C5603AQExample/profile-displayphoto-shrink_800_800/0/1
+                  twitter_link: null
+                  private_website: null
+                  contact_info:
+                    websites:
+                      - url: https://jordanellis.example.com
+                        category: PERSONAL
+                        dataSource: LINKEDIN
+                  is_premium: true
+                  is_openlink: false
+                  is_job_seeker: false
+                  is_retired: false
+                  is_full_data: true
+                  has_current_position: true
+                  job_title: Chief Executive Officer
+                  raw_job_title: CEO
+                  job_started_on: Feb 2014
+                  job_ended_on: null
+                  job_location: Redmond, Washington, United States
+                  job_location_city: Redmond
+                  job_location_state: Washington
+                  job_location_county: King County
+                  job_location_country: United States
+                  company_id: '1035'
+                  company_name: Microsoft
+                  company_url: https://www.linkedin.com/company/microsoft
+                  company_website: https://www.microsoft.com
+                  company_industry: Software Development
+                  company_location: Redmond, Washington, United States
+                  company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                  jobs:
+                    - job_title: Chief Executive Officer
+                      raw_job_title: CEO
+                      job_description: null
+                      job_started_on: Feb 2014
+                      job_ended_on: null
+                      job_still_working: true
+                      job_location: Redmond, Washington, United States
+                      job_location_city: Redmond
+                      job_location_state: Washington
+                      job_location_county: King County
+                      job_location_country: United States
+                      company_id: '1035'
+                      company_name: Microsoft
+                      raw_company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      company_location: Redmond, Washington, United States
+                      company_city: Redmond
+                      company_state: Washington
+                      company_country: United States
+                      company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                      company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  educations:
+                    - university_id: '1792'
+                      university_name: Stanford University
+                      university_url: https://www.linkedin.com/school/stanford-university
+                      university_logo: https://media.licdn.com/dms/image/v2/C4E0BAQExample/company-logo_200_200/0/1
+                      university_description: null
+                      degree: Master of Science (MS)
+                      fields_of_study:
+                        - Computer Science
+                      started_on:
+                        year: 2004
+                      ended_on:
+                        year: 2006
+                  certifications: []
+                  languages:
+                    - name: English
+                      proficiency: NATIVE_OR_BILINGUAL
+                  volunteering: []
+                  patents: []
+                  publications: []
+                  skills:
+                    - Cloud Computing
+                    - Software Development
+                    - Leadership
+                  source: lead_by_link
                 meta:
                   amount_charged: 0.02
   /api/v1/enrich/realtime/lead/:
@@ -4045,15 +4146,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4081,15 +4182,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4114,15 +4215,15 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the lead's recent posts (+1 credit when data is returned).
+                      description: Include the lead's latest posts, up to 20, reposts included. No date window (+1 credit when data is returned).
                     comments:
                       type: boolean
                       default: false
-                      description: Include the lead's recent comments (+1 credit when data is returned).
+                      description: Include the posts the lead commented on most recently, up to 20, each with the lead's comment (+1 credit when data is returned).
                     reactions:
                       type: boolean
                       default: false
-                      description: Include the lead's recent reactions/likes (+1 credit when data is returned).
+                      description: Include the posts the lead reacted to most recently, up to 20 (+1 credit when data is returned).
                     get_full_experience:
                       type: boolean
                       default: true
@@ -4154,7 +4255,7 @@ paths:
                   get_full_experience: false
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4165,13 +4266,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, linkedin_url, email is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -4185,18 +4283,108 @@ paths:
               example:
                 data:
                   id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                  first_name: Jordan
-                  last_name: Ellis
-                  title: CEO
-                  has_current_position: true
+                  sales_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                  linkedin_id: '78461298'
                   linkedin_url: https://www.linkedin.com/in/jordan-ellis
-                  company:
-                    id: 1035
-                    name: Microsoft
-                    domain: microsoft.com
-                  work_history: []
-                  education: []
-                  skills: []
+                  linkedin_sales_link: https://www.linkedin.com/sales/lead/ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9,NAME_SEARCH,x7Kq
+                  first_name: Jordan
+                  middle_name: ''
+                  last_name: Ellis
+                  full_name: Jordan Ellis
+                  unformatted_full_name: Jordan Ellis
+                  translated_first_name: null
+                  headline: CEO at Microsoft
+                  summary: Building the platforms other companies build on.
+                  gender: male
+                  nationality: American
+                  industry: Software Development
+                  location: Redmond, Washington, United States
+                  location_city: Redmond
+                  location_state: Washington
+                  location_county: King County
+                  location_country: United States
+                  num_of_connections: 500
+                  profile_photo: https://media.licdn.com/dms/image/v2/C5603AQExample/profile-displayphoto-shrink_800_800/0/1
+                  twitter_link: null
+                  private_website: null
+                  contact_info:
+                    websites:
+                      - url: https://jordanellis.example.com
+                        category: PERSONAL
+                        dataSource: LINKEDIN
+                  is_premium: true
+                  is_openlink: false
+                  is_job_seeker: false
+                  is_retired: false
+                  is_full_data: true
+                  has_current_position: true
+                  job_title: Chief Executive Officer
+                  raw_job_title: CEO
+                  job_started_on: Feb 2014
+                  job_ended_on: null
+                  job_location: Redmond, Washington, United States
+                  job_location_city: Redmond
+                  job_location_state: Washington
+                  job_location_county: King County
+                  job_location_country: United States
+                  company_id: '1035'
+                  company_name: Microsoft
+                  company_url: https://www.linkedin.com/company/microsoft
+                  company_website: https://www.microsoft.com
+                  company_industry: Software Development
+                  company_location: Redmond, Washington, United States
+                  company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                  jobs:
+                    - job_title: Chief Executive Officer
+                      raw_job_title: CEO
+                      job_description: null
+                      job_started_on: Feb 2014
+                      job_ended_on: null
+                      job_still_working: true
+                      job_location: Redmond, Washington, United States
+                      job_location_city: Redmond
+                      job_location_state: Washington
+                      job_location_county: King County
+                      job_location_country: United States
+                      company_id: '1035'
+                      company_name: Microsoft
+                      raw_company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      company_location: Redmond, Washington, United States
+                      company_city: Redmond
+                      company_state: Washington
+                      company_country: United States
+                      company_image: https://media.licdn.com/dms/image/v2/C560BAQExample/company-logo_200_200/0/1
+                      company_description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  educations:
+                    - university_id: '1792'
+                      university_name: Stanford University
+                      university_url: https://www.linkedin.com/school/stanford-university
+                      university_logo: https://media.licdn.com/dms/image/v2/C4E0BAQExample/company-logo_200_200/0/1
+                      university_description: null
+                      degree: Master of Science (MS)
+                      fields_of_study:
+                        - Computer Science
+                      started_on:
+                        year: 2004
+                      ended_on:
+                        year: 2006
+                  certifications: []
+                  languages:
+                    - name: English
+                      proficiency: NATIVE_OR_BILINGUAL
+                  volunteering: []
+                  patents: []
+                  publications: []
+                  skills:
+                    - Cloud Computing
+                    - Software Development
+                    - Leadership
+                  source: lead_by_link
                 meta:
                   amount_charged: 0.04
   /api/v1/enrich/database/company/:
@@ -4231,7 +4419,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4255,7 +4443,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Domain
                   type: object
                   required:
@@ -4276,7 +4464,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Company Name
                   type: object
                   required:
@@ -4297,7 +4485,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
             examples:
               By Generect ID:
                 value:
@@ -4319,7 +4507,7 @@ paths:
                   people_also_follow: true
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4330,13 +4518,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -4349,12 +4534,61 @@ paths:
                 $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
-                  id: 1035
+                  id: '1035'
+                  linkedin_id: '1035'
+                  linkedin_urn: microsoft
+                  linkedin_link: https://www.linkedin.com/company/microsoft/
                   name: Microsoft
+                  raw_name: Microsoft
+                  tagline: null
+                  description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  website: https://news.microsoft.com/
                   domain: microsoft.com
-                  linkedin_url: https://www.linkedin.com/company/microsoft/
                   industry: Software Development
-                  headcount: 150
+                  specialities:
+                    - Business Software
+                    - Developer Tools
+                    - Home & Educational Software
+                  hashtags:
+                    - microsoftlife
+                    - microsoft
+                  company_type: Public Company
+                  founded_year: null
+                  headcount_range: 10 000+
+                  location: Redmond, Washington, United States
+                  hq_street: 1 Microsoft Way
+                  hq_city: Redmond
+                  hq_state: Washington
+                  hq_postal_code: '98052'
+                  hq_country: United States
+                  hq_country_code: US
+                  hq_additional_info: null
+                  raw_location:
+                    country: United States
+                    state: Washington
+                    city: Redmond
+                    street: 1 Microsoft Way
+                    postal_code: '98052'
+                    additional_info: null
+                  number_of_locations: 45
+                  other_locations_json:
+                    - country: Australia
+                      state: NSW
+                      city: North Sydney
+                      street: 1 Denison Street
+                      postal_code: '2060'
+                      additional_info: null
+                      description: null
+                  phone_number: null
+                  logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                  background_image: https://media.licdn.com/dms/image/v2/D4E1BAQHb1Lu8fVYoHg/company-background_10000/B4EZ8ZTXy5JIAI-/0/1782835936908/microsoft_cover
+                  default_locale: en
+                  groups: []
+                  is_claimable: false
+                  acquired_by: null
+                  crunchbase_urn: null
+                  showcase_pages: null
+                  source: company_by_link
                 meta:
                   amount_charged: 0.02
   /api/v1/enrich/realtime/company/:
@@ -4389,7 +4623,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By LinkedIn URL
                   type: object
                   required:
@@ -4413,7 +4647,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Domain
                   type: object
                   required:
@@ -4434,7 +4668,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
                 - title: By Company Name
                   type: object
                   required:
@@ -4455,7 +4689,7 @@ paths:
                     posts:
                       type: boolean
                       default: false
-                      description: Include the company's recent posts (+1 credit when data is returned).
+                      description: Include the company page's latest posts, up to 10. No date window (+1 credit when data is returned).
             examples:
               By Generect ID:
                 value:
@@ -4477,7 +4711,7 @@ paths:
                   people_also_follow: true
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4488,13 +4722,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"fields": "exactly one of id, domain, linkedin_url, name is required"}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -4507,12 +4738,61 @@ paths:
                 $ref: '#/components/schemas/EnrichCompanyResponse'
               example:
                 data:
-                  id: 1035
+                  id: '1035'
+                  linkedin_id: '1035'
+                  linkedin_urn: microsoft
+                  linkedin_link: https://www.linkedin.com/company/microsoft/
                   name: Microsoft
+                  raw_name: Microsoft
+                  tagline: null
+                  description: Every company has a mission. What's ours? To empower every person and every organization to achieve more.
+                  website: https://news.microsoft.com/
                   domain: microsoft.com
-                  linkedin_url: https://www.linkedin.com/company/microsoft/
                   industry: Software Development
-                  headcount: 150
+                  specialities:
+                    - Business Software
+                    - Developer Tools
+                    - Home & Educational Software
+                  hashtags:
+                    - microsoftlife
+                    - microsoft
+                  company_type: Public Company
+                  founded_year: null
+                  headcount_range: 10 000+
+                  location: Redmond, Washington, United States
+                  hq_street: 1 Microsoft Way
+                  hq_city: Redmond
+                  hq_state: Washington
+                  hq_postal_code: '98052'
+                  hq_country: United States
+                  hq_country_code: US
+                  hq_additional_info: null
+                  raw_location:
+                    country: United States
+                    state: Washington
+                    city: Redmond
+                    street: 1 Microsoft Way
+                    postal_code: '98052'
+                    additional_info: null
+                  number_of_locations: 45
+                  other_locations_json:
+                    - country: Australia
+                      state: NSW
+                      city: North Sydney
+                      street: 1 Denison Street
+                      postal_code: '2060'
+                      additional_info: null
+                      description: null
+                  phone_number: null
+                  logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                  background_image: https://media.licdn.com/dms/image/v2/D4E1BAQHb1Lu8fVYoHg/company-background_10000/B4EZ8ZTXy5JIAI-/0/1782835936908/microsoft_cover
+                  default_locale: en
+                  groups: []
+                  is_claimable: false
+                  acquired_by: null
+                  crunchbase_urn: null
+                  showcase_pages: null
+                  source: company_by_link
                 meta:
                   amount_charged: 0.04
   /api/v1/enrich/database/leads/bulk/:
@@ -4529,7 +4809,7 @@ paths:
               $ref: '#/components/schemas/LeadBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4540,13 +4820,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4578,7 +4855,7 @@ paths:
               $ref: '#/components/schemas/LeadBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4589,13 +4866,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4675,7 +4949,7 @@ paths:
                       jobs:
                         - company_name: Microsoft
                           job_title: Chief Executive Officer
-                          job_started_on: '2014-02-01'
+                          job_started_on: Feb 2014
                           job_still_working: true
                       educations: []
                       languages: []
@@ -4706,7 +4980,7 @@ paths:
               $ref: '#/components/schemas/CompanyBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4717,13 +4991,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4755,7 +5026,7 @@ paths:
               $ref: '#/components/schemas/CompanyBulkEnrichRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4766,13 +5037,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -4926,7 +5194,7 @@ paths:
                   domain: microsoft.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -4937,13 +5205,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+domain."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '200':
@@ -5036,7 +5301,7 @@ paths:
                       domain: salesforce.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5047,13 +5312,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -5146,7 +5408,7 @@ paths:
                   - morgan.lee@salesforce.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5157,13 +5419,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"emails": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '200':
@@ -5511,16 +5770,19 @@ paths:
       tags:
         - 9. Search
       summary: Search database leads
-      description: Search cached leads. Database mode returns results in under 1 second. Billed per result returned.
+      description: >-
+        Search cached leads. Database mode returns results in under 1 second.
+        Full rows are billed per result returned; `"detail": "thin"` returns
+        thin rows free up to a daily quota.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LeadSearchRequest'
+              $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5531,33 +5793,99 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
+                Thin search not available:
                   value:
                     status: error
                     status_code: 400
-                    detail: Insufficient funds in the account.
+                    detail: {"detail": ["\"thin\" search is not available on custom-contract accounts; search is priced by your contract."]}
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: >-
+            Rate limit exceeded, or (for `"detail": "thin"`) today's free row
+            quota is used up. The quota resets at 00:00 UTC and `Retry-After`
+            gives the seconds until then; `"detail": "full"` keeps working,
+            billed per row.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Rate limited:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: Request was throttled.
+                Free quota used up:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row. Expected available in 3600 seconds.'
         '200':
-          description: Full lead search results
+          description: Lead search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchLeadsResponse'
-              example:
-                data:
-                  leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
-                      first_name: Jordan
-                      last_name: Ellis
-                      title: CEO
-                  results_count: 1240
-                meta:
-                  amount_charged: 24.8
+              examples:
+                Full rows:
+                  value:
+                    data:
+                      leads:
+                        - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                          linkedin_id: '78461298'
+                          linkedin_url: https://www.linkedin.com/in/jordan-ellis
+                          first_name: Jordan
+                          last_name: Ellis
+                          full_name: Jordan Ellis
+                          headline: CEO at Microsoft
+                          job_title: Chief Executive Officer
+                          seniority: CXO
+                          job_started_on: Feb 2014
+                          company_name: Microsoft
+                          linkedin_company_id: 1035
+                          company_url: https://www.linkedin.com/company/microsoft
+                          company_website: https://www.microsoft.com
+                          company_industry: Software Development
+                          location: Redmond, Washington, United States
+                          location_city: Redmond
+                          location_country: United States
+                          is_premium: true
+                          num_of_connections: 500
+                          updated_at: '2026-09-03T14:29:05.540898'
+                      results_count: 1240
+                    meta:
+                      amount_charged: 24.8
+                Thin rows (free):
+                  value:
+                    data:
+                      leads:
+                        - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                          first_name: Jordan
+                          last_name: Ellis
+                          full_name: Jordan Ellis
+                          job_title: CEO
+                          seniority: CXO
+                          location_name: Austin, Texas, United States
+                          location_country: United States
+                          location_city: Austin
+                          company_name: Northwind Labs
+                          linkedin_company_id: 2814573
+                          company_industry: Software Development
+                          company_location_country: United States
+                          updated_at: '2026-10-21T08:14:02.481305'
+                      results_count: 1240
+                    meta:
+                      amount_charged: 0
+                      free_tier:
+                        detail: thin
+                        daily_rows: 2000
+                        rows_used_today: 100
+                        rows_left_today: 1900
   /api/v1/search/database/leads/count/:
     post:
       tags:
@@ -5569,10 +5897,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LeadSearchRequest'
+              $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5583,13 +5911,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5610,7 +5935,10 @@ paths:
       tags:
         - 9. Search
       summary: Search database companies
-      description: Search cached companies. Database mode returns results in under 1 second. Billed per result returned.
+      description: >-
+        Search cached companies. Database mode returns results in under 1 second.
+        Full rows are billed per result returned; `"detail": "thin"` returns
+        thin rows free up to a daily quota.
       requestBody:
         required: true
         content:
@@ -5619,7 +5947,7 @@ paths:
               $ref: '#/components/schemas/DatabaseCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5630,32 +5958,87 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
+                Thin search not available:
                   value:
                     status: error
                     status_code: 400
-                    detail: Insufficient funds in the account.
+                    detail: {"detail": ["\"thin\" search is not available on custom-contract accounts; search is priced by your contract."]}
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: >-
+            Rate limit exceeded, or (for `"detail": "thin"`) today's free row
+            quota is used up. The quota resets at 00:00 UTC and `Retry-After`
+            gives the seconds until then; `"detail": "full"` keeps working,
+            billed per row.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Rate limited:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: Request was throttled.
+                Free quota used up:
+                  value:
+                    status: error
+                    status_code: 429
+                    detail: 'Daily free search quota reached (2000 thin rows). It resets at 00:00 UTC; "detail": "full" keeps working, billed per row. Expected available in 3600 seconds.'
         '200':
-          description: Full company search results
+          description: Company search results
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchCompaniesResponse'
-              example:
-                data:
-                  companies:
-                    - linkedin_id: '1035'
-                      name: Microsoft
-                      domain: microsoft.com
-                  results_count: 530
-                meta:
-                  amount_charged: 10.6
+              examples:
+                Full rows:
+                  value:
+                    data:
+                      companies:
+                        - id: '1035'
+                          linkedin_id: '1035'
+                          linkedin_link: https://www.linkedin.com/company/microsoft/
+                          linkedin_sales_link: https://www.linkedin.com/sales/company/1035
+                          name: Microsoft
+                          domain: microsoft.com
+                          website: https://news.microsoft.com/
+                          industry: Software Development
+                          company_type: Public Company
+                          headcount_range: 10 000+
+                          location: Redmond, Washington, United States
+                          hq_city: Redmond
+                          hq_country: United States
+                          logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                          logo_url_cached: null
+                      results_count: 530
+                    meta:
+                      amount_charged: 10.6
+                Thin rows (free):
+                  value:
+                    data:
+                      companies:
+                        - id: '1035'
+                          name: Microsoft
+                          industry: Software Development
+                          headcount_range: 10 000+
+                          hq_country: United States
+                          hq_city: Redmond
+                          company_type: Public Company
+                          founded_year: 1975
+                      results_count: 530
+                    meta:
+                      amount_charged: 0
+                      free_tier:
+                        detail: thin
+                        daily_rows: 2000
+                        rows_used_today: 25
+                        rows_left_today: 1975
   /api/v1/search/database/companies/count/:
     post:
       tags:
@@ -5670,7 +6053,7 @@ paths:
               $ref: '#/components/schemas/DatabaseCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5681,13 +6064,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5717,7 +6097,7 @@ paths:
               $ref: '#/components/schemas/CompanyLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5728,13 +6108,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5748,9 +6125,27 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
                       first_name: Jordan
                       last_name: Ellis
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      seniority: CXO
+                      job_started_on: Feb 2014
+                      company_name: Microsoft
+                      linkedin_company_id: 1035
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      location: Redmond, Washington, United States
+                      location_city: Redmond
+                      location_country: United States
+                      is_premium: true
+                      num_of_connections: 500
+                      updated_at: '2026-09-03T14:29:05.540898'
                   results_count: 320
                 meta:
                   amount_charged: 6.4
@@ -5768,7 +6163,7 @@ paths:
               $ref: '#/components/schemas/CompanyLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5779,13 +6174,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5817,7 +6209,7 @@ paths:
               $ref: '#/components/schemas/RealtimeLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5828,13 +6220,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5848,10 +6237,28 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
                       first_name: Jordan
                       last_name: Ellis
-                      title: CEO
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      linkedin_lead_persona: CXO
+                      job_started_on: Feb 2014
+                      company_id: '1035'
+                      linkedin_company_id: '1035'
+                      company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      location: Redmond, Washington, United States
+                      location_city: Redmond
+                      location_country: United States
+                      is_premium: true
+                      num_of_connections: 500
                   results_count: 1240
                 meta:
                   amount_charged: 49.6
@@ -5869,7 +6276,7 @@ paths:
               $ref: '#/components/schemas/RealtimeLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5880,13 +6287,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"company_headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5916,7 +6320,7 @@ paths:
               $ref: '#/components/schemas/RealtimeCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5927,13 +6331,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -5947,9 +6348,21 @@ paths:
               example:
                 data:
                   companies:
-                    - linkedin_id: '1035'
+                    - id: '1035'
+                      linkedin_id: '1035'
+                      linkedin_link: https://www.linkedin.com/company/microsoft/
+                      linkedin_sales_link: https://www.linkedin.com/sales/company/1035
                       name: Microsoft
                       domain: microsoft.com
+                      website: https://news.microsoft.com/
+                      industry: Software Development
+                      company_type: Public Company
+                      headcount_range: 10 000+
+                      location: Redmond, Washington, United States
+                      hq_city: Redmond
+                      hq_country: United States
+                      logo_url: https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo
+                      logo_url_cached: null
                   results_count: 530
                 meta:
                   amount_charged: 21.2
@@ -5967,7 +6380,7 @@ paths:
               $ref: '#/components/schemas/RealtimeCompanySearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -5978,13 +6391,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -6014,7 +6424,7 @@ paths:
               $ref: '#/components/schemas/RealtimeCompanyLeadSearchRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -6025,13 +6435,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["company_search_criteria or lead_search_criteria must be specified"]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -6045,9 +6452,28 @@ paths:
               example:
                 data:
                   leads:
-                    - lead_id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                    - id: ACwAAAE9bk0BxY7Qf2mN4pR8sT1vW3zA5cE6gH9
+                      linkedin_id: '78461298'
+                      linkedin_url: https://www.linkedin.com/in/jordan-ellis
                       first_name: Jordan
                       last_name: Ellis
+                      full_name: Jordan Ellis
+                      headline: CEO at Microsoft
+                      job_title: Chief Executive Officer
+                      linkedin_lead_persona: CXO
+                      job_started_on: Feb 2014
+                      company_id: '1035'
+                      linkedin_company_id: '1035'
+                      company_name: Microsoft
+                      company_url: https://www.linkedin.com/company/microsoft
+                      company_website: https://www.microsoft.com
+                      company_industry: Software Development
+                      company_headcount_range: 10001+
+                      location: Redmond, Washington, United States
+                      location_city: Redmond
+                      location_country: United States
+                      is_premium: true
+                      num_of_connections: 500
                   results_count: 320
                 meta:
                   amount_charged: 12.8
@@ -6084,7 +6510,7 @@ paths:
                 - $ref: '#/components/schemas/PhoneFindByNameRequest'
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -6095,13 +6521,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"non_field_errors": ["Provide one of: lead_id, linkedin_url, or first_name+last_name+company."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '200':
@@ -6179,7 +6602,7 @@ paths:
                       company: microsoft.com
       responses:
         '400':
-          description: Validation error or insufficient balance.
+          description: Validation error.
           content:
             application/json:
               schema:
@@ -6190,13 +6613,10 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"leads": ["This field is required."]}
-                Insufficient funds:
-                  value:
-                    status: error
-                    status_code: 400
-                    detail: Insufficient funds in the account.
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
         '403':
           $ref: '#/components/responses/Forbidden'
         '202':
@@ -6640,7 +7060,7 @@ components:
           description: >-
             Human-readable message (string) for most errors, or a field-level
             validation map ({ field: [messages] }) for 400 validation errors.
-          example: Insufficient funds in the account.
+          example: Person does not exist
     LeadSearchRequest:
       type: object
       properties:
@@ -6765,6 +7185,124 @@ components:
         company_headcounts:
           - 51-200
         limit_by: 50
+    DatabaseLeadSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/LeadSearchRequest'
+        - type: object
+          properties:
+            detail:
+              type: string
+              enum:
+                - full
+                - thin
+              default: full
+              description: >-
+                Row shape. `full` (the default) returns full rows, billed per row.
+                `thin` returns who, what role, where and which company at no charge, up to a daily quota per account
+                (currently 2,000 rows per UTC day); a thin row has no LinkedIn profile URL, company domain, contacts or work history. A
+                spent quota is refused with `429` until 00:00 UTC, never billed.
+                Accounts on a custom API contract get `400` unless their contract
+                includes thin search. The count endpoints ignore this field: counts
+                are always free.
+            limit_by:
+              type: integer
+              default: 100
+              description: >-
+                Maximum number of leads to return. Without it, a search returns
+                100 rows: `results_count` is the whole match, and `offset_by` reaches
+                the rest. For filter-only searches (no company_id/company_link/company_name)
+                the maximum is 2400.
+            gender:
+              type: array
+              items:
+                type: string
+                enum:
+                  - male
+                  - female
+                  - unknown
+              description: >-
+                Gender of the lead; a lead is included if it matches at least one
+                value. Case-insensitive; any other value is rejected with `400`.
+                Gender is inferred from the lead's name, so it is an estimate, and
+                a lead whose name does not point to one is `unknown`. To leave a
+                gender out, list the others — e.g. `["female", "unknown"]`.
+
+
+                Database mode only. LinkedIn search has no gender facet, so
+                realtime search rejects this field rather than accepting it and
+                returning a wider result set than you asked for.
+
+
+                Coverage matters here: gender is known for roughly a third of
+                leads, and the rest are `unknown`. Filtering by `male` or `female`
+                therefore also drops leads whose gender simply is not known, not
+                only those of the other gender.
+              example:
+                - female
+            seniority_levels:
+              $ref: '#/components/schemas/SeniorityLevels'
+            exact_locations:
+              type: array
+              items:
+                type: string
+              description: >-
+                Locations matched against the lead's whole location, not anything
+                inside it. `"California, United States"` here finds leads whose
+                location is the state alone, with no city, while in `locations` it
+                finds every city of the state as well. LinkedIn metro areas
+                ("San Francisco Bay Area", "Los Angeles Metropolitan Area") are
+                locations of their own and are not included.
+
+
+                Combined with `locations` by OR: `locations: ["Los Angeles,
+                California, United States"]` with `exact_locations: ["California,
+                United States"]` returns leads in Los Angeles and leads who give
+                only California, and no other city of the state. Takes the same
+                names as `locations`; an unknown name is rejected with `400`.
+
+
+                Database mode only. LinkedIn search cannot leave out the cities of
+                a state, so realtime search rejects this field rather than
+                returning the whole state.
+              example:
+                - California, United States
+    SeniorityLevels:
+      type: array
+      items:
+        type: string
+        enum:
+          - In Training
+          - Entry Level
+          - Senior
+          - Entry Level Manager
+          - Experienced Manager
+          - Director
+          - Vice President
+          - Strategic
+          - Owner & Partner
+          - CXO
+      description: >-
+        Seniority level of the lead's current role, as our model reads it
+        from the lead's job title and profile summary. A lead is included
+        if it matches at least one level. Case-insensitive; any other value
+        is rejected with `400`, and the error lists the levels. To leave a
+        level out, list the others.
+
+
+        Not the same as `seniorities`, which matches words in the job
+        title (`vp`, `director`, …). Each lead has one level, so a level
+        finds every title that means it without listing the titles. About
+        1% of leads have no level yet; a `seniority_levels` filter leaves
+        them out.
+
+
+        Database mode only. LinkedIn search has no such field, so realtime
+        search rejects it rather than returning a wider result set than you
+        asked for.
+      example:
+        - Director
+        - Vice President
+        - CXO
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
@@ -6848,7 +7386,10 @@ components:
                 min: 500
             mentioned_in_news:
               type: boolean
-              description: Filter for leads recently mentioned in the news.
+              deprecated: true
+              description: >-
+                Do not send. LinkedIn retired its "Mentioned in news" filter, so this
+                flag no longer narrows the search.
               default: false
             keywords:
               type: array
@@ -6890,11 +7431,17 @@ components:
               description: 'Time at current company: 1 = under 1y, 2 = 1-2y, 3 = 3-5y, 4 = 6-10y, 5 = 10y+.'
             changed_jobs:
               type: boolean
-              description: Filter for leads who recently changed jobs.
+              description: >-
+                Only leads who changed jobs in the last 90 days. The window is
+                LinkedIn's and cannot be changed.
               default: false
             posted_on_linkedin:
               type: boolean
-              description: Filter for leads who recently posted on LinkedIn.
+              description: >-
+                Only leads who posted on LinkedIn in the last 30 days. The window is
+                LinkedIn's and cannot be changed, so there is no custom date range.
+                For a narrower window, enrich the leads with `posts` and filter by
+                post age on your side.
               default: false
             linkedin_filter_link:
               type: string
@@ -7019,6 +7566,24 @@ components:
             count always matches what the pages can deliver; in realtime the
             records are dropped after retrieval, so a page may hold fewer
             companies than `results_count` implies.
+        include_companies_without_website:
+          type: boolean
+          default: false
+          description: >-
+            Also return companies that have a LinkedIn page but no website,
+            such as many hospitals, clinics and local businesses. Off by
+            default: the company search endpoints drop every company without a
+            website, in both database and realtime mode. Such a company has no
+            website and no domain, so there are no corporate emails to find for
+            its people and lead matching by domain does not work for it; an
+            `exclude_domains` entry cannot remove it (use `exclude_ids`). Each
+            one is returned and billed as a result like any other, and many of
+            them have few or no leads on LinkedIn. The other quality rules
+            stay: a company with zero employees on LinkedIn is still dropped,
+            and the blocked-domain list still applies to companies that have a
+            website. In database search these companies are counted in
+            `results_count`; the realtime count comes from LinkedIn and always
+            included them. The company-leads endpoints do not read it.
       example:
         industries:
           - Software Development
@@ -7032,6 +7597,30 @@ components:
         - $ref: '#/components/schemas/CompanySearchRequest'
         - type: object
           properties:
+            detail:
+              type: string
+              enum:
+                - full
+                - thin
+              default: full
+              description: >-
+                Row shape. `full` (the default) returns full rows, billed per row.
+                `thin` returns the company's name, industry, size and location at no charge, up to a daily quota per account
+                (currently 2,000 rows per UTC day); a thin row has no domain, website, LinkedIn URL or contacts. A
+                spent quota is refused with `429` until 00:00 UTC, never billed.
+                Accounts on a custom API contract get `400` unless their contract
+                includes thin search. The count endpoints ignore this field: counts
+                are always free.
+            limit_by:
+              type: integer
+              default: 100
+              description: >-
+                Maximum number of companies to return, from 1 to 10000. Without it,
+                a search returns 100 rows: `results_count` is the whole match, and
+                `offset_by` reaches the rest.
+            offset_by:
+              type: integer
+              description: Number of companies to skip (0-9999, for pagination).
             founded_year:
               description: >-
                 Founding year of the company — the "company age" filter. Accepts
@@ -7119,7 +7708,10 @@ components:
                   type: number
             revenues_range:
               type: object
-              description: 'Revenue filter with min/max (e.g. {"min": 1000000, "max": 50000000}).'
+              description: >-
+                Annual revenue in millions of USD, e.g. {"min": 1, "max": 10} for
+                1 to 10 million USD. Use the steps 0, 1, 10, 50, 100, 250, 500, 1000.
+                Leave `max` out for no upper limit.
               properties:
                 min:
                   type: number
@@ -7167,7 +7759,7 @@ components:
         company_search_criteria:
           $ref: '#/components/schemas/DatabaseCompanySearchRequest'
         lead_search_criteria:
-          $ref: '#/components/schemas/LeadSearchRequest'
+          $ref: '#/components/schemas/DatabaseLeadSearchRequest'
       example:
         company_search_criteria:
           industries:
@@ -7266,6 +7858,26 @@ components:
             When the cached result set was originally collected (returned by
             database company search when results are served from a previous
             identical search).
+        free_tier:
+          type: object
+          description: >-
+            Present only on a database lead or company search sent with
+            `"detail": "thin"`: where your account stands against today's free
+            row quota. The quota resets at 00:00 UTC.
+          properties:
+            detail:
+              type: string
+              enum:
+                - thin
+            daily_rows:
+              type: integer
+              description: Free thin rows per account per UTC day.
+            rows_used_today:
+              type: integer
+              description: Thin rows returned to your account today, this page included.
+            rows_left_today:
+              type: integer
+              description: Thin rows your account can still take today.
     BulkJobMeta:
       type: object
       description: >-
@@ -7316,9 +7928,11 @@ components:
           properties:
             leads:
               type: array
-              description: Lead profiles — see the example for the full field set.
+              description: >-
+                One row per lead. Full rows carry the lead profile; thin rows
+                (`"detail": "thin"`) carry a short subset, see `detail`.
               items:
-                type: object
+                $ref: '#/components/schemas/LeadSearchRow'
             results_count:
               oneOf:
                 - type: integer
@@ -7339,9 +7953,11 @@ components:
           properties:
             companies:
               type: array
-              description: Company profiles — see the example for the full field set.
+              description: >-
+                One row per company. Full rows carry the company profile; thin rows
+                (`"detail": "thin"`) carry a short subset, see `detail`.
               items:
-                type: object
+                $ref: '#/components/schemas/CompanySearchRow'
             results_count:
               type: integer
               description: Total number of companies matching the query.
@@ -7359,11 +7975,11 @@ components:
             companies:
               type: array
               items:
-                type: object
+                $ref: '#/components/schemas/CompanySearchRow'
             leads:
               type: array
               items:
-                type: object
+                $ref: '#/components/schemas/LeadSearchRow'
             companies_count:
               type: integer
             leads_count:
@@ -7372,6 +7988,79 @@ components:
               type: integer
         meta:
           $ref: '#/components/schemas/Meta'
+    LeadSearchRow:
+      description: >-
+        A full lead search row: the Lead profile (see `Lead`) as search returns
+        it, plus the fields below. Search rows have no `has_current_position`
+        (enrich adds it). Database rows carry `linkedin_company_id` instead of
+        `company_id`, and `updated_at`; realtime rows carry both IDs and the
+        matched `linkedin_lead_persona`. Derived fields such as `seniority`,
+        `schools` and `past_companies` come on database rows and on some
+        realtime rows.
+      allOf:
+        - $ref: '#/components/schemas/Lead'
+        - type: object
+          properties:
+            linkedin_company_id:
+              oneOf:
+                - type: string
+                  nullable: true
+                - type: integer
+              description: >-
+                LinkedIn company ID of the current employer. A number on
+                database and thin rows, a string on realtime rows.
+            linkedin_lead_persona:
+              type: string
+              nullable: true
+              description: >-
+                Seniority band the row matched in a realtime search, e.g.
+                `Director`, `VP`, `CXO`.
+            seniority:
+              type: string
+              nullable: true
+              description: Seniority of the current position (database rows).
+            updated_at:
+              type: string
+              description: >-
+                When the stored record was last refreshed, UTC without a zone
+                suffix (database and thin rows).
+            phone:
+              type: string
+              nullable: true
+              description: Usually null. Use the phone finder for phone numbers.
+            profile_photo_cached:
+              type: string
+              nullable: true
+              description: Copy of the profile photo on Generect's storage, when cached.
+            persona:
+              type: array
+              description: Reserved; currently an empty list.
+              items:
+                type: string
+            email_candidates:
+              type: integer
+              description: Reserved; currently always 0.
+            input_email:
+              type: string
+              nullable: true
+              description: Echo of the email on email lookups; null on search rows.
+    CompanySearchRow:
+      description: >-
+        A full company search row: the Company profile (see `Company`) as search
+        returns it, plus the fields below. Search rows leave out the enrich-only
+        fields (`source`, `groups`, `showcase_pages`, `default_locale`,
+        `is_claimable`) and the opt-in sections.
+      allOf:
+        - $ref: '#/components/schemas/Company'
+        - type: object
+          properties:
+            linkedin_sales_link:
+              type: string
+              description: Sales Navigator URL of the company.
+            logo_url_cached:
+              type: string
+              nullable: true
+              description: Copy of the logo on Generect's storage, when cached.
     SearchCountResponse:
       type: object
       properties:
@@ -7425,18 +8114,1162 @@ components:
       type: object
       properties:
         data:
-          type: object
-          description: Full lead profile — see the example for the field set.
+          $ref: '#/components/schemas/Lead'
         meta:
           $ref: '#/components/schemas/Meta'
+    Lead:
+      type: object
+      description: >-
+        A lead profile. Every field below comes back from both the realtime and
+        the database lead enrich. A field the profile does not have comes back
+        null or as an empty list. Database and email lookups
+        add derived fields on top, such as seniority, schools, past_companies,
+        past_job_titles, position_since and company_since, and a realtime lookup
+        by URL adds input_url and raw_headline. Treat any field not listed here
+        as optional.
+      properties:
+        id:
+          type: string
+          description: >-
+            Generect lead ID (the LinkedIn Sales Navigator member ID). Pass it as
+            `id` to enrich, or as `lead_id` to the email and phone finders.
+        sales_id:
+          type: string
+          description: >-
+            Same value as `id`.
+        linkedin_id:
+          type: string
+          description: >-
+            Numeric LinkedIn member ID, as a string.
+        linkedin_url:
+          type: string
+          description: >-
+            Public LinkedIn profile URL.
+        linkedin_sales_link:
+          type: string
+          description: >-
+            Sales Navigator URL of the profile.
+        first_name:
+          type: string
+          description: >-
+            First name.
+        middle_name:
+          type: string
+          description: >-
+            Middle name; empty string when there is none.
+        last_name:
+          type: string
+          description: >-
+            Last name.
+        full_name:
+          type: string
+          description: >-
+            Cleaned full name.
+        unformatted_full_name:
+          type: string
+          description: >-
+            Name exactly as shown on LinkedIn, before cleanup (credentials, emojis
+            and so on kept).
+        translated_first_name:
+          type: string
+          nullable: true
+          description: >-
+            Usually null.
+        headline:
+          type: string
+          nullable: true
+          description: >-
+            Profile headline.
+        summary:
+          type: string
+          nullable: true
+          description: >-
+            The profile's About section.
+        gender:
+          type: string
+          nullable: true
+          description: >-
+            Gender inferred from the name, e.g. `male`.
+        nationality:
+          type: string
+          nullable: true
+          description: >-
+            Nationality inferred from the profile, e.g. `American`.
+        industry:
+          type: string
+          nullable: true
+          description: >-
+            Industry the person lists on the profile.
+        location:
+          type: string
+          nullable: true
+          description: >-
+            Location as shown on the profile.
+        location_city:
+          type: string
+          nullable: true
+          description: >-
+            City parsed from `location`.
+        location_state:
+          type: string
+          nullable: true
+          description: >-
+            State or region parsed from `location`.
+        location_county:
+          type: string
+          nullable: true
+          description: >-
+            County parsed from `location`.
+        location_country:
+          type: string
+          nullable: true
+          description: >-
+            Country parsed from `location`.
+        num_of_connections:
+          type: integer
+          nullable: true
+          description: >-
+            Connection count LinkedIn reports for the profile.
+        profile_photo:
+          type: string
+          nullable: true
+          description: >-
+            Profile photo URL on LinkedIn's CDN. These URLs expire; store the image,
+            not the link.
+        twitter_link:
+          type: string
+          nullable: true
+          description: >-
+            X (Twitter) profile URL, when listed.
+        private_website:
+          type: string
+          nullable: true
+          description: >-
+            Personal website, when listed.
+        contact_info:
+          type: object
+          description: Contact details listed on the profile.
+          properties:
+            websites:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  category:
+                    type: string
+                    description: e.g. `PERSONAL`, `COMPANY`, `BLOG`.
+                  dataSource:
+                    type: string
+                    description: e.g. `LINKEDIN`.
+        is_premium:
+          type: boolean
+          description: >-
+            LinkedIn Premium member.
+        is_openlink:
+          type: boolean
+          description: >-
+            Open Profile: can receive InMail from anyone.
+        is_job_seeker:
+          type: boolean
+          description: >-
+            Marked as open to work.
+        is_retired:
+          type: boolean
+          description: >-
+            Profile reads as retired.
+        is_full_data:
+          type: boolean
+          description: >-
+            True when the record was built from the full profile.
+        has_current_position:
+          type: boolean
+          description: >-
+            True when the profile lists a current position. When it is false,
+            `company_name` and `company_website` are empty, and `job_title` holds
+            the profile headline if there is one.
+        job_title:
+          type: string
+          nullable: true
+          description: >-
+            Current job title, normalized. The `job_*` and `company_*` fields below
+            describe the current position, the same values as the current entry in
+            `jobs`. When `has_current_position` is false, this is the profile
+            headline, or null if there is none.
+        raw_job_title:
+          type: string
+          nullable: true
+          description: >-
+            Current job title exactly as written on the profile.
+        job_started_on:
+          type: string
+          nullable: true
+          description: >-
+            Start of the current position as LinkedIn shows it, `YYYY` or `Mon YYYY`
+            (e.g. `Feb 2014`).
+        job_ended_on:
+          type: string
+          nullable: true
+          description: >-
+            End of the current position; null while it is ongoing.
+        job_location:
+          type: string
+          nullable: true
+          description: >-
+            Location of the current position.
+        job_location_city:
+          type: string
+          nullable: true
+          description: >-
+            City of the current position.
+        job_location_state:
+          type: string
+          nullable: true
+          description: >-
+            State or region of the current position.
+        job_location_county:
+          type: string
+          nullable: true
+          description: >-
+            County of the current position.
+        job_location_country:
+          type: string
+          nullable: true
+          description: >-
+            Country of the current position.
+        company_id:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn company ID of the current employer, as a string. Pass it to
+            company enrich.
+        company_name:
+          type: string
+          nullable: true
+          description: >-
+            Current employer.
+        company_url:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's LinkedIn page.
+        company_website:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's website.
+        company_industry:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's industry.
+        company_location:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's headquarters.
+        company_description:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's LinkedIn description.
+        company_image:
+          type: string
+          nullable: true
+          description: >-
+            Current employer's logo URL.
+        jobs:
+          type: array
+          description: >-
+            Work history. Current positions only when `get_full_experience` is
+            false.
+          items:
+            $ref: '#/components/schemas/LeadJob'
+        educations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadEducation'
+        certifications:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              authority:
+                type: string
+                description: Issuing organization.
+              company_id:
+                type: string
+                description: LinkedIn company ID of the issuer, when known.
+              startedOn:
+                $ref: '#/components/schemas/LeadDate'
+        languages:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              proficiency:
+                type: string
+                nullable: true
+                description: e.g. `NATIVE_OR_BILINGUAL`, `FULL_PROFESSIONAL`, `ELEMENTARY`.
+        volunteering:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              cause:
+                type: string
+              companyName:
+                type: string
+              company_id:
+                type: string
+              description:
+                type: string
+              startedOn:
+                $ref: '#/components/schemas/LeadDate'
+        patents:
+          type: array
+          items:
+            type: object
+        publications:
+          type: array
+          items:
+            type: object
+        skills:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+          nullable: true
+          description: >-
+            Internal tag for how the record was obtained, e.g. `lead_by_link`.
+            Often null or absent on search rows.
+        people_also_viewed:
+          type: array
+          nullable: true
+          description: >-
+            Only when `people_also_viewed` was requested. Profiles LinkedIn lists
+            under "People also viewed"; null when the section could not be read.
+          items:
+            type: object
+            properties:
+              full_name:
+                type: string
+              linkedin_link:
+                type: string
+              title:
+                type: string
+        posts:
+          type: array
+          nullable: true
+          description: >-
+            Only when `posts` was requested. Up to 20 of the lead's recent posts
+            and reposts. Each item is an `ActivityPost`.
+          items:
+            $ref: '#/components/schemas/ActivityPost'
+        comments:
+          type: array
+          nullable: true
+          description: >-
+            Only when `comments` was requested. Up to 20 posts the lead recently
+            commented on. Each item is an `ActivityPost`: `author_*` is whoever
+            wrote the post, and the lead's own comment is in its `comments`.
+          items:
+            $ref: '#/components/schemas/ActivityPost'
+        reactions:
+          type: array
+          nullable: true
+          description: >-
+            Only when `reactions` was requested. Up to 20 posts the lead recently
+            reacted to. Each item is an `ActivityPost`; `author_*` is whoever
+            wrote the post.
+          items:
+            $ref: '#/components/schemas/ActivityPost'
+    LeadJob:
+      type: object
+      description: >-
+        One position in the lead's work history.
+      properties:
+        job_title:
+          type: string
+          nullable: true
+          description: >-
+            Job title, normalized.
+        raw_job_title:
+          type: string
+          nullable: true
+          description: >-
+            Job title exactly as written on the profile.
+        job_description:
+          type: string
+          nullable: true
+          description: >-
+            Position description.
+        job_started_on:
+          type: string
+          nullable: true
+          description: >-
+            `YYYY` or `Mon YYYY`, as LinkedIn shows it.
+        job_ended_on:
+          type: string
+          nullable: true
+          description: >-
+            `YYYY` or `Mon YYYY`; null while ongoing.
+        job_still_working:
+          type: boolean
+          description: >-
+            True for a current position.
+        job_location:
+          type: string
+          nullable: true
+          description: >-
+            Location of the position.
+        job_location_city:
+          type: string
+          nullable: true
+          description: >-
+            City of the position.
+        job_location_state:
+          type: string
+          nullable: true
+          description: >-
+            State or region of the position.
+        job_location_county:
+          type: string
+          nullable: true
+          description: >-
+            County of the position.
+        job_location_country:
+          type: string
+          nullable: true
+          description: >-
+            Country of the position.
+        company_id:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn company ID, as a string.
+        company_name:
+          type: string
+          nullable: true
+          description: >-
+            Company name, normalized.
+        raw_company_name:
+          type: string
+          nullable: true
+          description: >-
+            Company name exactly as written on the profile.
+        company_url:
+          type: string
+          nullable: true
+          description: >-
+            Company's LinkedIn page.
+        company_website:
+          type: string
+          nullable: true
+          description: >-
+            Company website.
+        company_industry:
+          type: string
+          nullable: true
+          description: >-
+            Company industry.
+        company_headcount_range:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn headcount band, e.g. `1001-5000` or `10001+`.
+        company_location:
+          type: string
+          nullable: true
+          description: >-
+            Company headquarters.
+        company_city:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters city.
+        company_state:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters state or region.
+        company_country:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters country.
+        company_image:
+          type: string
+          nullable: true
+          description: >-
+            Company logo URL.
+        company_description:
+          type: string
+          nullable: true
+          description: >-
+            Company's LinkedIn description.
+    LeadEducation:
+      type: object
+      description: >-
+        One school in the lead's education history.
+      properties:
+        university_id:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn ID of the school, as a string.
+        university_name:
+          type: string
+          nullable: true
+          description: >-
+            School name.
+        university_url:
+          type: string
+          nullable: true
+          description: >-
+            School's LinkedIn page.
+        university_logo:
+          type: string
+          nullable: true
+          description: >-
+            School logo URL.
+        university_description:
+          type: string
+          nullable: true
+          description: >-
+            School's LinkedIn description.
+        degree:
+          type: string
+          nullable: true
+          description: >-
+            Degree as written on the profile.
+        fields_of_study:
+          type: array
+          nullable: true
+          items:
+            type: string
+        started_on:
+          $ref: '#/components/schemas/LeadDate'
+        ended_on:
+          $ref: '#/components/schemas/LeadDate'
+    LeadDate:
+      type: object
+      nullable: true
+      description: >-
+        A date as LinkedIn stores it. Month is absent when the profile gives
+        only a year; the whole object is null when the profile gives no date.
+      properties:
+        year:
+          type: integer
+        month:
+          type: integer
     EnrichCompanyResponse:
       type: object
       properties:
         data:
-          type: object
-          description: Full company profile — see the example for the field set.
+          $ref: '#/components/schemas/Company'
         meta:
           $ref: '#/components/schemas/Meta'
+    Company:
+      type: object
+      description: >-
+        A company profile, as the realtime and the database company enrich return
+        it for a request by `linkedin_url` or `id`. A field the company page does
+        not have comes back null or as an empty list. A request by `id` also
+        echoes the identifier back as `input_id`. Treat any field not listed here
+        as optional.
+      properties:
+        id:
+          type: string
+          description: >-
+            Generect company ID: the company's LinkedIn ID, the same value as
+            `linkedin_id`. Pass it as `id` to enrich the company again.
+        linkedin_id:
+          type: string
+          description: >-
+            Numeric LinkedIn company ID, as a string.
+        linkedin_urn:
+          type: string
+          description: >-
+            The company's LinkedIn URL slug, e.g. `microsoft`.
+        linkedin_link:
+          type: string
+          description: >-
+            LinkedIn company page URL.
+        name:
+          type: string
+          description: >-
+            Cleaned company name.
+        raw_name:
+          type: string
+          description: >-
+            Company name exactly as shown on LinkedIn.
+        tagline:
+          type: string
+          nullable: true
+          description: >-
+            The short line under the company name on LinkedIn.
+        description:
+          type: string
+          nullable: true
+          description: >-
+            The company's About section.
+        website:
+          type: string
+          nullable: true
+          description: >-
+            Website URL as listed on the LinkedIn page. It can be a careers page or
+            another subpage rather than the home page.
+        domain:
+          type: string
+          nullable: true
+          description: >-
+            Registered domain of `website`, without protocol or subdomain, e.g.
+            `microsoft.com`.
+        industry:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn industry, e.g. `Software Development`.
+        specialities:
+          type: array
+          nullable: true
+          description: >-
+            Specialties listed on the LinkedIn page.
+          items:
+            type: string
+        hashtags:
+          type: array
+          nullable: true
+          description: >-
+            Hashtags associated with the company page.
+          items:
+            type: string
+        company_type:
+          type: string
+          nullable: true
+          description: >-
+            Organization type, e.g. `Privately Held`, `Public Company`, `Non Profit`.
+        founded_year:
+          type: integer
+          nullable: true
+          description: >-
+            Year founded.
+        headcount_range:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn employee range: `self-employed`, `1-10`, `11-50`, `51-200`,
+            `201-500`, `501-1000`, `1001-5000`, `5001-10000` or `10 000+`.
+        headcount_exact:
+          type: integer
+          nullable: true
+          description: >-
+            Exact number of employees on LinkedIn. Returned only on accounts with
+            exact headcount enabled.
+        location:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters location as one string, e.g. `Seattle, WA, United States`.
+        hq_street:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters street address.
+        hq_city:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters city.
+        hq_state:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters state or region.
+        hq_postal_code:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters postal code.
+        hq_country:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters country name.
+        hq_country_code:
+          type: string
+          nullable: true
+          description: >-
+            Headquarters country, two-letter ISO code.
+        hq_additional_info:
+          type: string
+          nullable: true
+          description: >-
+            Second address line of the headquarters, such as a suite.
+        raw_location:
+          type: object
+          nullable: true
+          description: >-
+            Headquarters address as LinkedIn returns it, before the country and city
+            names are normalized.
+          properties:
+            country:
+              type: string
+              nullable: true
+            state:
+              type: string
+              nullable: true
+            city:
+              type: string
+              nullable: true
+            street:
+              type: string
+              nullable: true
+            postal_code:
+              type: string
+              nullable: true
+            additional_info:
+              type: string
+              nullable: true
+        number_of_locations:
+          type: integer
+          nullable: true
+          description: >-
+            Number of office locations on the LinkedIn page, headquarters included.
+        other_locations_json:
+          type: array
+          nullable: true
+          description: >-
+            Office locations other than the headquarters.
+          items:
+            type: object
+            properties:
+              country:
+                type: string
+                nullable: true
+              state:
+                type: string
+                nullable: true
+              city:
+                type: string
+                nullable: true
+              street:
+                type: string
+                nullable: true
+              postal_code:
+                type: string
+                nullable: true
+              additional_info:
+                type: string
+                nullable: true
+              description:
+                type: string
+                nullable: true
+        phone_number:
+          type: string
+          nullable: true
+          description: >-
+            Phone number listed on the LinkedIn page.
+        logo_url:
+          type: string
+          nullable: true
+          description: >-
+            Logo image URL.
+        background_image:
+          type: string
+          nullable: true
+          description: >-
+            Cover image URL.
+        default_locale:
+          type: string
+          nullable: true
+          description: >-
+            Language of the LinkedIn page, e.g. `en`.
+        groups:
+          type: array
+          nullable: true
+          description: >-
+            LinkedIn group IDs associated with the company page.
+          items:
+            type: integer
+        is_claimable:
+          type: boolean
+          nullable: true
+          description: >-
+            Whether the LinkedIn page can be claimed by the company.
+        acquired_by:
+          type: object
+          nullable: true
+          description: >-
+            The acquiring company when LinkedIn shows this one as acquired, otherwise
+            null.
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+              nullable: true
+            linkedin_url:
+              type: string
+        crunchbase_urn:
+          type: string
+          nullable: true
+          description: >-
+            Crunchbase identifier from the LinkedIn page, when it has one.
+        showcase_pages:
+          type: array
+          nullable: true
+          description: >-
+            Currently always null.
+          items:
+            type: object
+        source:
+          type: string
+          description: >-
+            Internal source tag, e.g. `company_by_link`.
+        people_also_viewed:
+          type: array
+          nullable: true
+          description: >-
+            Only when `people_also_viewed` was requested. Pages LinkedIn shows
+            under "People also viewed" (similar pages); null when the section
+            could not be read.
+          items:
+            $ref: '#/components/schemas/CompanyRelatedPage'
+        people_also_follow:
+          type: array
+          nullable: true
+          description: >-
+            Only when `people_also_follow` was requested. Pages LinkedIn shows
+            under "People also follow"; null when the section could not be read.
+          items:
+            $ref: '#/components/schemas/CompanyRelatedPage'
+        posts:
+          type: array
+          nullable: true
+          description: >-
+            Only when `posts` was requested. The company's recent posts, up to 10,
+            in LinkedIn's feed order. Each item is an `ActivityPost`.
+          items:
+            $ref: '#/components/schemas/ActivityPost'
+    CompanyRelatedPage:
+      type: object
+      description: >-
+        A LinkedIn page listed next to a company under "People also viewed" or
+        "People also follow".
+      properties:
+        company_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the page, as LinkedIn shows it.
+        linkedin_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the page, such as
+            `https://www.linkedin.com/company/contoso/`.
+      example:
+        company_name: Contoso
+        linkedin_link: https://www.linkedin.com/company/contoso/
+    ActivityPost:
+      type: object
+      description: >-
+        One LinkedIn feed item. The same shape is used for a lead's `posts`,
+        `comments` and `reactions` and for a company's `posts`. In `comments`
+        and `reactions` the item is the post the lead commented on or reacted
+        to, so `author_*` is whoever wrote that post. Any field is null when
+        LinkedIn does not show it.
+      properties:
+        author_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the person or page that published the item.
+        author_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the author (`/in/…`, `/company/…` or `/school/…`),
+            without the query string.
+        posted_time_ago:
+          type: string
+          nullable: true
+          description: >-
+            How long ago it was posted, as LinkedIn shows it, such as `14h`,
+            `2d`, `3w`, `4mo` or `1yr`. LinkedIn gives no absolute date here.
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Text of the post. Null when the post has no text.
+        video:
+          $ref: '#/components/schemas/ActivityVideo'
+        pictures:
+          type: array
+          nullable: true
+          description: >-
+            The post's images, when it has any.
+          items:
+            $ref: '#/components/schemas/ActivityPicture'
+        link:
+          $ref: '#/components/schemas/ActivityLink'
+        share_link:
+          type: string
+          nullable: true
+          description: >-
+            Permalink of the post (`https://www.linkedin.com/posts/…`), without
+            the query string.
+        comments:
+          type: array
+          nullable: true
+          description: >-
+            Comments LinkedIn highlights under the item. On a `comments` item
+            this is the lead's own comment; on a `posts` item it is usually
+            empty.
+          items:
+            $ref: '#/components/schemas/ActivityComment'
+        count_likes:
+          type: integer
+          nullable: true
+          description: >-
+            Reactions (likes) on the post.
+        count_comments:
+          type: integer
+          nullable: true
+          description: >-
+            Comments on the post.
+        count_re_post:
+          type: integer
+          nullable: true
+          description: >-
+            Reposts of the post.
+        re_post:
+          $ref: '#/components/schemas/ActivityRepost'
+      example:
+        author_name: Jordan Ellis
+        author_link: https://www.linkedin.com/in/jordan-ellis
+        posted_time_ago: 2d
+        text: We just opened our new office in Redmond. Thank you to the whole team!
+        video: null
+        pictures:
+          - picture_url: https://media.licdn.com/dms/image/v2/D5622AQExample/feedshare-shrink_800/0/1
+            picture_expires_at: 1793998800000
+        link: null
+        share_link: https://www.linkedin.com/posts/jordan-ellis_new-office-activity-7390000000000000000-AbCd
+        comments: []
+        count_likes: 412
+        count_comments: 37
+        count_re_post: 9
+        re_post: null
+    ActivityRepost:
+      type: object
+      nullable: true
+      description: >-
+        The original post when an `ActivityPost` reshares one (its `re_post`);
+        null when the item is not a repost. Same fields, except that `comments`
+        and `re_post` are always null here.
+      properties:
+        author_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the person or page that published the original post.
+        author_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the original author, without the query string.
+        posted_time_ago:
+          type: string
+          nullable: true
+          description: >-
+            How long ago the original was posted, as LinkedIn shows it (`3w`).
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Text of the original post.
+        video:
+          $ref: '#/components/schemas/ActivityVideo'
+        pictures:
+          type: array
+          nullable: true
+          description: >-
+            The original post's images, when it has any.
+          items:
+            $ref: '#/components/schemas/ActivityPicture'
+        link:
+          $ref: '#/components/schemas/ActivityLink'
+        share_link:
+          type: string
+          nullable: true
+          description: >-
+            Permalink of the original post.
+        comments:
+          type: array
+          nullable: true
+          description: >-
+            Always null on a reshared post.
+          items:
+            $ref: '#/components/schemas/ActivityComment'
+        count_likes:
+          type: integer
+          nullable: true
+          description: >-
+            Reactions (likes) on the original post.
+        count_comments:
+          type: integer
+          nullable: true
+          description: >-
+            Comments on the original post.
+        count_re_post:
+          type: integer
+          nullable: true
+          description: >-
+            Reposts of the original post.
+        re_post:
+          type: object
+          nullable: true
+          description: >-
+            Always null: a repost goes one level deep.
+      example:
+        author_name: Contoso
+        author_link: https://www.linkedin.com/company/contoso/
+        posted_time_ago: 3w
+        text: Contoso is hiring engineers in Redmond.
+        video: null
+        pictures: null
+        link:
+          text: Careers at Contoso
+          link: https://careers.contoso.example.com
+        share_link: https://www.linkedin.com/posts/contoso_hiring-activity-7380000000000000000-WxYz
+        comments: null
+        count_likes: 1280
+        count_comments: 64
+        count_re_post: 51
+        re_post: null
+    ActivityVideo:
+      type: object
+      nullable: true
+      description: >-
+        The video attached to a post; null when the post has none.
+      properties:
+        url:
+          type: string
+          nullable: true
+          description: >-
+            Direct link to the video file on LinkedIn's media server. It stops
+            working at `expires_at`.
+        expires_at:
+          type: integer
+          nullable: true
+          description: >-
+            When `url` expires, Unix time in milliseconds.
+        width:
+          type: integer
+          nullable: true
+          description: >-
+            Width of the video in pixels.
+        height:
+          type: integer
+          nullable: true
+          description: >-
+            Height of the video in pixels.
+        media_type:
+          type: string
+          nullable: true
+          description: >-
+            MIME type, such as `video/mp4`.
+      example:
+        url: https://dms.licdn.com/playlist/vid/v2/D5605AQExample/mp4-720p-30fp-crf28/0/1
+        expires_at: 1793998800000
+        width: 1280
+        height: 720
+        media_type: video/mp4
+    ActivityPicture:
+      type: object
+      description: >-
+        An image attached to a post.
+      properties:
+        picture_url:
+          type: string
+          nullable: true
+          description: >-
+            Direct link to the image on LinkedIn's media server. It stops working
+            at `picture_expires_at`.
+        picture_expires_at:
+          type: integer
+          nullable: true
+          description: >-
+            When `picture_url` expires, Unix time in milliseconds.
+      example:
+        picture_url: https://media.licdn.com/dms/image/v2/D5622AQExample/feedshare-shrink_800/0/1
+        picture_expires_at: 1793998800000
+    ActivityLink:
+      type: object
+      nullable: true
+      description: >-
+        The article or web page attached to a post; null when there is none.
+      properties:
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Title of the attached page, or its description when it has no title.
+        link:
+          type: string
+          nullable: true
+          description: >-
+            URL of the attached page.
+      example:
+        text: Careers at Contoso
+        link: https://careers.contoso.example.com
+    ActivityComment:
+      type: object
+      description: >-
+        A comment LinkedIn shows under a post.
+      properties:
+        author_name:
+          type: string
+          nullable: true
+          description: >-
+            Name of the commenter.
+        author_link:
+          type: string
+          nullable: true
+          description: >-
+            LinkedIn URL of the commenter.
+        author_title:
+          type: string
+          nullable: true
+          description: >-
+            The commenter's headline, as shown next to the comment.
+        count_likes:
+          type: integer
+          nullable: true
+          description: >-
+            Reactions (likes) on the comment.
+        text:
+          type: string
+          nullable: true
+          description: >-
+            Text of the comment.
+      example:
+        author_name: Jordan Ellis
+        author_link: https://www.linkedin.com/in/jordan-ellis
+        author_title: CEO at Microsoft
+        count_likes: 12
+        text: Congratulations to the whole team, well deserved.
     EmailFindResponse:
       type: object
       properties:
@@ -7760,6 +9593,18 @@ components:
             status: error
             status_code: 403
             detail: You do not have permission to perform this action.
+    PaymentRequired:
+      description: >-
+        Not enough balance to run a billable request. Top up in your billing
+        settings; requests already accepted run to completion.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: error
+            status_code: 402
+            detail: Insufficient funds in the account.
     NotFound:
       description: Resource or job not found (or not owned by the caller).
       content:

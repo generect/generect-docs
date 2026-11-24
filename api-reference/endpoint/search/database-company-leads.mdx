@@ -9,4 +9,6 @@ Find cached leads at matching companies.
 ## Pricing
 This is a billable endpoint — you are charged for each result returned. If no results are found, the request is free.
 
+A criteria object without its own `limit_by` returns at most 100 rows, so that is the most it is billed for. `data.results_count` is the whole match; page through the rest with `offset_by`.
+
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>

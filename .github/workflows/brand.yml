@@ -1,0 +1,15 @@
+name: brand
+on:
+  pull_request:
+  push:
+    branches: [master]
+jobs:
+  logo-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # brand.lock.json pins the logo files to github.com/generect/brand; this fails on a swapped file or a retired logo.
+      - run: node --test brand/*.test.js

@@ -13,8 +13,9 @@ safe to hand to an autonomous agent:
    human what it spent is quoting the biller, not guessing.
 
 <Info>
-  Requires MCP server **0.9.0 or newer** for resources, prompts and the
-  vocabulary guard; the tools themselves work from 0.7.0. Remote users
+  This page describes MCP server **0.13.0**: interactive results arrived in
+  0.12.0, the five webhook tools replaced `manage_webhooks` in 0.13.0, and
+  resources, prompts and the vocabulary guard date from 0.9.0. Remote users
   (`https://mcp.generect.com/mcp`) are always on the deployed version. Local
   users should run `npx generect-ultimate-mcp@latest`.
 </Info>
@@ -24,32 +25,35 @@ safe to hand to an autonomous agent:
 | Tool | What it gives you |
 |------|-------------------|
 | `count_leads` | How many leads match, plus the cost of the next step at **your** account's rates |
-| `preview_leads` with `count_only: true` | A second opinion on the count from the Preview index. Free — and the two indexes do disagree, so it is worth asking both |
+| `preview_leads` with `count_only: true` | A second opinion on the count from the Preview index. Free, and the two indexes do disagree, so it is worth asking both |
 | `count_companies` | The same, for companies |
 | `get_balance` | Balance and your real per-operation prices. `include_usage` adds spend broken down by operation; `include_token_analytics` adds per-API-token request counts, which answers "which integration is making these calls?" |
+| `search_leads`, `search_companies` with `detail: "thin"` | Thin rows (who, role, where, which company) up to a daily per-account quota. Never billed: a spent quota is refused with a `429`, and a thin search is never sent to realtime (asking for both is an error) |
 | `get_bulk_job` | Status and results of a bulk job (the work was billed at submit time) |
-| `manage_webhooks` | Register, list, update, delete or test a webhook endpoint |
-| `health` | Liveness and credential check — touches no data endpoint, safe for monitors |
+| `list_webhooks`, `create_webhook`, `update_webhook`, `delete_webhook`, `test_webhook` | Manage the endpoints that receive bulk-job completion events, one tool per operation |
+| `health` | Liveness and credential check. It touches no data endpoint, so it is safe for monitors |
 
 ## Billable tools
 
 | Tool | Billed |
 |------|--------|
-| `preview_leads` | \$0.002 per returned row — the cheapest way to see real people |
-| `search_leads` | per returned row |
-| `search_companies` | per returned row |
+| `count_leads`, `count_companies` with `mode: "realtime"` | a flat \$0.04 per count at the standard price, even when the count is 0. Without `mode: "realtime"` a count is free |
+| `preview_leads` | \$0.002 per returned row, from the separate Preview index. To browse people for free, use thin rows from `search_leads` (above) while the daily quota lasts |
+| `resolve_profile` | \$0.0005 per resolved profile. Reveals who is behind an anonymous LinkedIn link (`/in/ACwAA…`, Sales Navigator lead URLs), up to 50 per call, and returns the id the enrich and email tools accept. An unresolvable reference is free; duplicates in one batch are billed per row |
+| `search_leads` | per returned row with `detail: "full"` or `mode: "realtime"`. Without `detail` a search returns free thin rows while the quota lasts, then continues with full rows billed per row and says so in `thin_unavailable`; with `mode: "auto"` (the default) it can also escalate to realtime for a filter the database lacks |
+| `search_companies` | the same as `search_leads` |
 | `enrich_lead` / `get_lead_by_url` | per record found (not found is free) |
 | `enrich_company` | per record found (not found is free) |
 | `generate_email` | per **valid** email found (a miss is free) |
-| `validate_email` | per email **submitted** — every address, whatever the verdict |
-| `find_phone` | per phone found — the most expensive operation |
+| `validate_email` | per email **submitted**: every address, whatever the verdict |
+| `find_phone` | per phone found (the most expensive operation) |
 | `start_bulk_job` | per record, and the worst case is **reserved at submit time** |
 
 Exact per-operation prices for your account are in
 [billing settings](https://app.generect.com/settings/billing), and `get_balance`
 returns them too. See [Pricing](/billing/pricing) for the list rates.
 
-## Filter values are matched exactly — and two of them are not validated
+## Filter values are matched exactly, and two of them are not validated
 
 This is the most expensive thing to get wrong, so it is worth stating plainly.
 The search endpoints do **not** validate all filters the same way:
@@ -57,7 +61,7 @@ The search endpoints do **not** validate all filters the same way:
 | Filter | An unknown value |
 |--------|------------------|
 | `locations`, `company_headcounts`, `company_types` | rejected with `400`, naming the field |
-| `company_industries`, `seniorities` | **accepted — 0 results, no charge, no error** |
+| `company_industries`, `seniorities` | **accepted: 0 results, no charge, no error** |
 
 `company_industries: ["Fintech"]` is not a LinkedIn industry, so it matches
 nothing and you get a perfectly successful count of **zero**. That is
@@ -68,7 +72,7 @@ name of an industry".
 From 0.9.0 the MCP server checks these values before it sends anything:
 
 - an unknown **industry**, headcount bucket or company type is refused locally,
-  with the closest valid names — `Fintech` → `Financial Services`,
+  with the closest valid names: `Fintech` → `Financial Services`,
   `50-200` → `51-200`. Nothing is sent and nothing is charged;
 - a value that is merely mis-spelled or mis-cased is **corrected**
   (`software development` → `Software Development`), because matching is exact;
@@ -104,7 +108,7 @@ clients that support them: `size_an_audience`, `build_prospect_list`,
 
 ## Spend ceiling
 
-A row cap bounds how many results you get, not how much you pay — the per-row
+A row cap bounds how many results you get, not how much you pay: the per-row
 price depends on the mode and your tier. So any call whose worst case exceeds the
 server's per-call ceiling (default **\$5**, `MCP_MAX_SPEND_PER_CALL`) is refused
 with the exact figure, and has to be repeated with `confirm_spend_usd` set to at
@@ -115,7 +119,7 @@ its whole cost at submit time and cannot be called back.
 
 ## Database or realtime
 
-Every search and enrich exists in two modes — cached `database` (sub-second,
+Every search and enrich exists in two modes: cached `database` (sub-second,
 cheaper, **free counts**, core filters) and live `realtime` (5–60s, pricier,
 billable counts, every filter). See
 [Database vs Real-time](/api-reference/database-vs-realtime).
@@ -124,7 +128,7 @@ Tools take a `mode` parameter:
 
 | `mode` | Behaviour |
 |--------|-----------|
-| `auto` (default) | Tries the cheap cached path. Escalates to realtime **only** if the API reports that a filter you passed does not exist there — and says so in the response. |
+| `auto` (default) | Tries the cheap cached path. Escalates to realtime **only** if the API reports that a filter you passed does not exist there, and says so in the response. |
 | `database` | Never escalates. An unsupported filter comes back as an error, not a larger bill. |
 | `realtime` | Goes straight to the live index. |
 
@@ -138,22 +142,57 @@ you to ask again with `mode: "realtime"`.
 ```text
 read generect://vocabulary/industries   free            → get the filter names exactly right
 count_leads                             free            → is this audience big enough to be worth anything?
-preview_leads                           $0.002/row      → who is actually in it? keep the ids that fit
-search_leads                            per row         → pull only the rows you decided to keep
+search_leads  detail "thin"             free            → who is actually in it? keep the ids that fit
+search_leads (detail "full")            per row         → full records, only for the rows you decided to keep
 generate_email                          per valid email → contact details for those ids only
 get_balance                             free            → report the exact spend back to the user
 ```
 
 Records carry a stable `id` across preview, search and enrich, so once a lead is
-in your list you never have to search for them again — pass the `id` to
+in your list you never have to search for them again: pass the `id` to
 `enrich_lead`, `generate_email` or `find_phone` directly.
 
 <Tip>
   For repeatable or scheduled work, submit up to 50 records with `start_bulk_job`
-  and register a webhook with `manage_webhooks` instead of polling. A submitted
+  and register a webhook with `create_webhook` instead of polling. A submitted
   job runs to completion even if your balance later hits zero, because its cost
-  was reserved at submit time — so only submit lists that have been approved.
+  was reserved at submit time. Only submit lists that have been approved.
 </Tip>
+
+## Interactive results in Claude
+
+In Claude (web, desktop and mobile), ChatGPT and other clients that support
+[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview), results
+come back as cards in the conversation instead of raw JSON. Clients without it
+get the same text and structured results as before.
+
+| Tool | What you see |
+|------|--------------|
+| `count_leads`, `count_companies` | The audience size, your filters, what the next step costs at your prices, and a button to see the first 25 |
+| `search_leads`, `preview_leads` | The top people in the card; open all of them as a table, filter, select, and find work emails right there |
+| `search_companies` | Company cards and a table, with a one-click ask for decision makers at them |
+| `enrich_lead`, `get_lead_by_url`, `enrich_company` | A profile card with the experience timeline and a find-email button |
+| `get_balance` | Balance, this month's spend and your per-operation prices |
+| `generate_email` | Which emails were found and what it cost |
+
+Money inside the cards follows the same rules as the tools:
+
+- **Nothing paid happens on the first click.** "Find emails" first reads your
+  real email price, shows the maximum for the people you selected, and spends
+  only after you confirm. A miss is free.
+- **Found emails go back to Claude**, so "write to them" works without asking
+  again. With a test key they are marked as fictional.
+- **Claude asks before tools that can charge.** Only tools that are free by
+  default are marked read-only, which lets Claude run them without asking:
+  counting, balance, health, bulk-job status and listing webhooks. The one
+  paid case among them, a realtime count (\$0.04 at the standard price),
+  runs only when `mode: "realtime"` is requested explicitly. Every other tool
+  needs your approval ("Always allow" works per tool, except for the three
+  webhook tools below).
+- **Webhook changes are confirmed every time.** `create_webhook`,
+  `update_webhook` and `delete_webhook` are marked destructive, so Claude asks
+  before each call. A bulk-job completion event carries the job's results
+  (emails, phones, records), so these tools decide where your paid data is sent.
 
 ## When to use the REST API instead
 
