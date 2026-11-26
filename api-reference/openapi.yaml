@@ -3632,6 +3632,8 @@ paths:
                       type: array
                       items:
                         type: string
+                    seniority_levels:
+                      $ref: '#/components/schemas/SeniorityLevels'
                     locations:
                       type: array
                       items:
@@ -3730,7 +3732,7 @@ paths:
                       company_name: Salesforce
                       location: New York, NY
                       industry: Software Development
-                      seniority: VP
+                      seniority: Vice President
                       headcount_range: 201-500
                 meta:
                   amount_charged: 0.004
@@ -3775,6 +3777,8 @@ paths:
                       type: array
                       items:
                         type: string
+                    seniority_levels:
+                      $ref: '#/components/schemas/SeniorityLevels'
                     locations:
                       type: array
                       items:
@@ -6448,7 +6452,11 @@ paths:
       tags:
         - 9. Search
       summary: Count realtime companies
-      description: Count fresh companies matching filters. Billed per request.
+      description: >-
+        Count fresh companies matching filters. Billed per request. LinkedIn
+        counts companies by filters only, so this count does not take
+        `company_names` or `linkedins_links`. To count named companies, use
+        the database count (`/api/v1/search/database/companies/count/`).
       requestBody:
         required: true
         content:
@@ -7317,42 +7325,7 @@ components:
               example:
                 - female
             seniority_levels:
-              type: array
-              items:
-                type: string
-                enum:
-                  - In Training
-                  - Entry Level
-                  - Senior
-                  - Entry Level Manager
-                  - Experienced Manager
-                  - Director
-                  - Vice President
-                  - Strategic
-                  - Owner & Partner
-                  - CXO
-              description: >-
-                Seniority level of the lead's current role, as our model reads it
-                from the lead's job title and profile summary. A lead is included
-                if it matches at least one level. Case-insensitive; any other value
-                is rejected with `400`, and the error lists the levels. To leave a
-                level out, list the others.
-
-
-                Not the same as `seniorities`, which matches words in the job
-                title (`vp`, `director`, …). Each lead has one level, so a level
-                finds every title that means it without listing the titles. About
-                1% of leads have no level yet; a `seniority_levels` filter leaves
-                them out.
-
-
-                Database mode only. LinkedIn search has no such field, so realtime
-                search rejects it rather than returning a wider result set than you
-                asked for.
-              example:
-                - Director
-                - Vice President
-                - CXO
+              $ref: '#/components/schemas/SeniorityLevels'
             exact_locations:
               type: array
               items:
@@ -7378,6 +7351,43 @@ components:
                 returning the whole state.
               example:
                 - California, United States
+    SeniorityLevels:
+      type: array
+      items:
+        type: string
+        enum:
+          - In Training
+          - Entry Level
+          - Senior
+          - Entry Level Manager
+          - Experienced Manager
+          - Director
+          - Vice President
+          - Strategic
+          - Owner & Partner
+          - CXO
+      description: >-
+        Seniority level of the lead's current role, as our model reads it
+        from the lead's job title and profile summary. A lead is included
+        if it matches at least one level. Case-insensitive; any other value
+        is rejected with `400`, and the error lists the levels. To leave a
+        level out, list the others.
+
+
+        Not the same as `seniorities`, which matches words in the job
+        title (`vp`, `director`, …). Each lead has one level, so a level
+        finds every title that means it without listing the titles. About
+        1% of leads have no level yet; a `seniority_levels` filter leaves
+        them out.
+
+
+        Database mode only. LinkedIn search has no such field, so realtime
+        search rejects it rather than returning a wider result set than you
+        asked for.
+      example:
+        - Director
+        - Vice President
+        - CXO
     RealtimeLeadSearchRequest:
       allOf:
         - $ref: '#/components/schemas/LeadSearchRequest'
@@ -7784,7 +7794,12 @@ components:
               type: array
               items:
                 type: string
-              description: Search by specific company names or domains.
+              description: >-
+                Look up specific companies by name or domain. With
+                `company_names` or `linkedins_links` the search returns those
+                companies; LinkedIn signals (`hiring_on_linkedin`,
+                `recent_activities`, `keywords`) are not applied to them. Not
+                taken by the realtime count.
             recent_activities:
               type: array
               items:
@@ -7841,7 +7856,10 @@ components:
               type: array
               items:
                 type: string
-              description: Filter by specific LinkedIn company URLs.
+              description: >-
+                Look up specific companies by LinkedIn company URL. Works like
+                `company_names`: LinkedIn signals are not applied, and the
+                realtime count does not take it.
             include_total_count:
               type: boolean
               default: false
