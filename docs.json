@@ -143,7 +143,8 @@
                   "api-reference/endpoint/search/realtime-companies",
                   "api-reference/endpoint/search/database-companies",
                   "api-reference/endpoint/search/count-realtime-companies",
-                  "api-reference/endpoint/search/count-database-companies"
+                  "api-reference/endpoint/search/count-database-companies",
+                  "api-reference/endpoint/search/technologies"
                 ]
               },
               {

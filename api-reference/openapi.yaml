@@ -5958,6 +5958,11 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Unknown technology:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"technologies": ["Object with name=HubSpot does not exist. Closest names: \"HubSpot Sales Hub\", \"HubSpot Marketing Hub\", \"Hubspot Connector for IICS\", \"greenclicks for Hubspot\", \"Integrasjon mellom Teams og HubSpot\". Technologies are named as LinkedIn names them; find a name with GET /api/v1/search/technologies/?search=<part of the name>."]}
                 Thin search not available:
                   value:
                     status: error
@@ -6064,6 +6069,11 @@ paths:
                     status: error
                     status_code: 400
                     detail: {"headcounts": ["Object with name=999 does not exist."]}
+                Unknown technology:
+                  value:
+                    status: error
+                    status_code: 400
+                    detail: {"technologies": ["Object with name=HubSpot does not exist. Closest names: \"HubSpot Sales Hub\", \"HubSpot Marketing Hub\", \"Hubspot Connector for IICS\", \"greenclicks for Hubspot\", \"Integrasjon mellom Teams og HubSpot\". Technologies are named as LinkedIn names them; find a name with GET /api/v1/search/technologies/?search=<part of the name>."]}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '402':
@@ -6083,6 +6093,77 @@ paths:
                   results_count: 530
                 meta:
                   amount_charged: 0
+  /api/v1/search/technologies/:
+    get:
+      tags:
+        - 9. Search
+      summary: List technologies
+      description: >-
+        The names the `technologies` company filter accepts, searched by part of
+        a name. Always free.
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 100
+          description: >-
+            Part of a name, any case. Names that start with it come first, then
+            the shorter, closer name. Leave it out to page through every name
+            alphabetically.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 50
+          description: Names to return, from 1 to 1000.
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Names to skip, for pagination.
+      responses:
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                status: error
+                status_code: 400
+                detail: {"limit": ["A whole number from 1 to 1000."]}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '200':
+          description: Technology names
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TechnologiesResponse'
+              example:
+                data:
+                  technologies:
+                    - id: 1157
+                      name: HubSpot Sales Hub
+                    - id: 1140
+                      name: HubSpot Marketing Hub
+                  results_count: 6
+                meta:
+                  amount_charged: 0
+                  limit: 2
+                  offset: 0
   /api/v1/search/database/company-leads/:
     post:
       tags:
@@ -7665,6 +7746,29 @@ components:
               example:
                 min: 2010
                 max: 2020
+            technologies:
+              type: array
+              items:
+                type: string
+              description: >-
+                Technologies the company works with; a company is included if it
+                matches at least one. Each value is a name from Generect's
+                technologies list, written exactly as listed, case included. The
+                list is LinkedIn's, so its names are products rather than brands:
+                "HubSpot Marketing Hub" and "HubSpot Sales Hub", not "HubSpot".
+                Find a name with
+                [`GET /api/v1/search/technologies/?search=hubspot`](/api-reference/endpoint/search/technologies).
+                A name that is not on the list is a `400` that names the closest
+                listed ones.
+
+
+                In database mode a listed name matches companies whose LinkedIn
+                specialties contain it, ignoring case, so "Shopify" also matches
+                "Shopify Plus development". Examples: "Google Analytics",
+                "WordPress", "Shopify", "Salesforce Sales Cloud".
+              example:
+                - Google Analytics
+                - Shopify
     RealtimeCompanySearchRequest:
       allOf:
         - $ref: '#/components/schemas/CompanySearchRequest'
@@ -8084,6 +8188,37 @@ components:
               description: Number of records matching the filters.
         meta:
           $ref: '#/components/schemas/Meta'
+    TechnologiesResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            technologies:
+              type: array
+              description: One page of names, in the order described under `search`.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The technology's id on Generect's list.
+                  name:
+                    type: string
+                    description: The name to send in `technologies`, exactly as written here.
+            results_count:
+              type: integer
+              description: Every name that matches `search`, not only this page.
+        meta:
+          type: object
+          properties:
+            amount_charged:
+              type: number
+              description: Always 0.
+            limit:
+              type: integer
+            offset:
+              type: integer
     CompanyLeadsCountResponse:
       type: object
       properties:

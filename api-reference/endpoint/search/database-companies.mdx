@@ -29,4 +29,7 @@ By default the search leaves out every company that has no website. Send `"inclu
 - Companies with zero employees on LinkedIn are still left out, and the blocked-domain list still applies to companies that have a website.
 - `results_count` counts them, here and on [the count endpoint](/api-reference/endpoint/search/count-database-companies).
 
+## Filtering by technology
+`technologies` takes names from Generect's technologies list, written exactly as listed: `["Google Analytics", "Shopify"]`. A company is included if it matches at least one. The names are LinkedIn's, so they are products rather than brands ("HubSpot Marketing Hub", not "HubSpot"). Look a name up with [List technologies](/api-reference/endpoint/search/technologies); a name that is not on the list returns `400` with the closest listed names.
+
 <Tip>Your price decreases automatically as your lifetime spend grows. [Check your current tier and pricing →](https://app.generect.com/settings/billing)</Tip>
